@@ -1,0 +1,2 @@
+# winsoul
+Daily QT
