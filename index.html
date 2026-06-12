@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>오늘의 묵상</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', 'Apple SD Gothic Neo', sans-serif;
+      background: #f5f5f7;
+      min-height: 100vh;
+      padding: 48px 20px 72px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 600px; margin: 0 auto; }
+    .page-header { text-align: center; margin-bottom: 40px; }
+    .page-header .date { font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #86868b; margin-bottom: 10px; }
+    .page-header h1 { font-size: 32px; font-weight: 700; color: #1d1d1f; letter-spacing: -0.5px; margin-bottom: 8px; }
+    .page-header .ref-title { font-size: 18px; font-weight: 500; color: #6e4c1e; }
+    .card { background: #fff; border-radius: 18px; padding: 28px 32px; margin-bottom: 16px; }
+    .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #86868b; margin-bottom: 18px; }
+    .passage-text { font-size: 15px; line-height: 2.15; color: #1d1d1f; }
+    .passage-text p { margin-bottom: 3px; }
+    .term-row { display: flex; align-items: baseline; gap: 16px; padding: 11px 0; border-bottom: 0.5px solid #f0f0f0; }
+    .term-row:last-child { border-bottom: none; }
+    .term-name { font-size: 14px; font-weight: 600; color: #1d1d1f; min-width: 88px; flex-shrink: 0; }
+    .term-desc { font-size: 14px; color: #6e6e73; line-height: 1.65; }
+    .prose { font-size: 14px; color: #1d1d1f; line-height: 1.85; }
+    .footer { text-align: center; font-size: 12px; color: #aeaeb2; margin-top: 16px; }
+    .footer a { color: #aeaeb2; text-decoration: none; }
+    .loading { text-align: center; padding: 100px 20px; color: #86868b; }
+    .spinner { width: 32px; height: 32px; border: 2.5px solid #e0e0e0; border-top-color: #6e4c1e; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+    .loading p { font-size: 14px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .mini-spin { display: inline-block; width: 11px; height: 11px; border: 1.5px solid #ccc; border-top-color: #999; border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: middle; margin-right: 6px; }
+    .err { background: #fff2f2; border-radius: 14px; padding: 24px; color: #c0392b; font-size: 14px; text-align: center; line-height: 1.8; }
+    .ai-err { font-size: 12px; color: #aeaeb2; font-style: italic; }
+    .ai-link { display: inline-block; margin-top: 14px; padding: 10px 20px; background: #1d1d1f; color: #fff; border-radius: 980px; font-size: 14px; font-weight: 500; text-decoration: none; }
+    .ai-link:hover { background: #3a3a3c; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div id="loading" class="loading"><div class="spinner"></div><p>오늘의 묵상을 불러오는 중...</p></div>
+  <div id="app" style="display:none"></div>
+  <div id="err" class="err" style="display:none"></div>
+</div>
+<script>
+const CODES = {
+  '창세기':'gen','출애굽기':'exo','레위기':'lev','민수기':'num','신명기':'deu',
+  '여호수아':'jos','사사기':'jdg','룻기':'rut','사무엘상':'sa1','사무엘하':'sa2',
+  '열왕기상':'ki1','열왕기하':'ki2','역대상':'ch1','역대하':'ch2','에스라':'ezr',
+  '느헤미야':'neh','에스더':'est','욥기':'job','시편':'psa','잠언':'pro',
+  '전도서':'ecc','아가':'sng','이사야':'isa','예레미야':'jer','예레미야애가':'lam',
+  '에스겔':'eze','다니엘':'dan','호세아':'hos','요엘':'joe','아모스':'amo',
+  '오바댜':'oba','요나':'jon','미가':'mic','나훔':'nah','하박국':'hab',
+  '스바냐':'zep','학개':'hag','스가랴':'zec','말라기':'mal',
+  '마태복음':'mat','마가복음':'mar','누가복음':'luk','요한복음':'joh',
+  '사도행전':'act','로마서':'rom','고린도전서':'co1','고린도후서':'co2',
+  '갈라디아서':'gal','에베소서':'eph','빌립보서':'php','골로새서':'col',
+  '데살로니가전서':'th1','데살로니가후서':'th2','디모데전서':'ti1','디모데후서':'ti2',
+  '디도서':'tit','빌레몬서':'phm','히브리서':'heb','야고보서':'jam',
+  '베드로전서':'pe1','베드로후서':'pe2','요한일서':'jo1','요한이서':'jo2',
+  '요한삼서':'jo3','유다서':'jde','요한계시록':'rev'
+};
+
+const DICT = [
+  {k:'엠마오',d:'예루살렘에서 약 11km 떨어진 마을. 두 제자가 실망 속에 걸어가던 곳입니다.'},
+  {k:'글로바',d:'엠마오로 가던 두 제자 중 이름이 밝혀진 한 명. 글로바의 아내 마리아는 요한복음에 등장합니다.'},
+  {k:'이십오 리',d:'약 11km. 성인 걸음으로 2~3시간 거리입니다.'},
+  {k:'속량',d:'몸값을 치르고 포로를 해방시키는 것. 예수님이 인류를 죄에서 구해내신다는 의미입니다.'},
+  {k:'강권하여',d:'강하게 권하고 청하여. 제자들이 예수님을 간곡히 붙잡아 함께 머물기를 청한 것입니다.'},
+  {k:'축사',d:'감사 기도. 식사 전 하나님께 감사드리는 유대인의 전통입니다.'},
+  {k:'떡을 떼어',d:'빵을 나누는 것. 최후의 만찬을 연상시키며 제자들이 예수님을 알아보는 계기가 됩니다.'},
+  {k:'시몬',d:'베드로의 본래 이름. 예수님이 부활 후 베드로에게 먼저 나타나셨음을 가리킵니다.'},
+  {k:'바리새인',d:'율법을 엄격히 준수했던 유대교 종교 지도자 그룹입니다.'},
+  {k:'세리',d:'로마를 위해 세금을 징수하던 유대인. 동족에게 배신자로 여겨졌습니다.'},
+  {k:'회당',d:'유대인들이 예배와 교육을 위해 모이던 장소. 오늘날 교회와 유사한 역할을 했습니다.'},
+  {k:'유월절',d:'이스라엘이 이집트에서 탈출한 것을 기념하는 명절. 예수님의 수난과 겹쳐있습니다.'},
+  {k:'안식일',d:'유대인의 거룩한 휴일(토요일). 이 날에는 노동이 금지되었습니다.'},
+  {k:'성전',d:'예루살렘에 있던 유대인의 최고 예배 장소. 예수님 당시엔 헤롯 성전이었습니다.'},
+  {k:'선지자',d:'하나님의 말씀을 대신 전하는 사람. 이사야, 예레미야 등이 대표적입니다.'},
+  {k:'그리스도',d:'기름 부음 받은 자라는 뜻의 그리스어. 히브리어로는 메시아입니다.'},
+  {k:'인자',d:'예수님이 자신을 가리키던 표현. 다니엘서에서 온 메시아적 칭호입니다.'},
+  {k:'갈릴리',d:'이스라엘 북부 지역. 예수님이 자라고 사역을 시작하신 곳입니다.'},
+  {k:'예루살렘',d:'이스라엘의 성도. 성전이 있고 예수님이 십자가에 못 박히신 곳입니다.'},
+  {k:'대제사장',d:'성전 제사를 주관하는 최고 종교 지도자입니다.'},
+  {k:'세마포',d:'아마로 만든 흰 천. 예수님의 시신을 쌌던 천입니다.'},
+  {k:'향품',d:'시신에 바르는 향기로운 물질. 유대인 장례 풍습에서 사용했습니다.'},
+  {k:'막달라',d:'갈릴리 호수 서쪽 마을. 막달라 마리아의 출신지입니다.'},
+  {k:'천사',d:'하나님의 사자. 하나님의 뜻을 전하는 존재입니다.'},
+  {k:'부활',d:'죽음 이후 새로운 몸으로 다시 살아나는 것. 예수님의 부활은 기독교 신앙의 핵심입니다.'},
+  {k:'십자가',d:'로마의 사형 도구. 예수님이 달려 돌아가심으로 구원의 상징이 되었습니다.'},
+  {k:'나사렛',d:'예수님이 어린 시절을 보내신 마을. 갈릴리에 위치합니다.'},
+  {k:'베들레헴',d:'예수님이 태어나신 마을. 다윗 왕의 고향이기도 합니다.'},
+  {k:'모세와 모든 선지자',d:'구약성경 전체를 가리키는 표현. 율법(모세)과 선지서를 통칭합니다.'},
+];
+
+const DAYS = ['일','월','화','수','목','금','토'];
+function fmtDate(d) {
+  return d.getFullYear()+'년 '+(d.getMonth()+1)+'월 '+d.getDate()+'일 '+DAYS[d.getDay()]+'요일';
+}
+
+async function fetchPassage() {
+  const r = await fetch('https://r.jina.ai/https://bible.asher.design/', {
+    signal: AbortSignal.timeout(20000)
+  });
+  if (!r.ok) throw new Error('본문 목록 오류 (' + r.status + ')');
+  return r.text();
+}
+
+async function fetchBible(book, chap) {
+  const r = await fetch('https://r.jina.ai/https://www.bskorea.or.kr/bible/korbibReadpage.php?version=GAE&book=' + book + '&chap=' + chap + '&sec=1', {
+    signal: AbortSignal.timeout(20000)
+  });
+  if (!r.ok) throw new Error('성경 본문 오류 (' + r.status + ')');
+  return r.text();
+}
+
+function parseRef(text) {
+  const idx = text.indexOf('묵상');
+  if (idx === -1) return null;
+  const snippet = text.slice(idx, idx + 150);
+  const p = snippet.match(/([가-힣]+)\s+(\d+):(\d+)[-–](\d+)/);
+  if (!p) return null;
+  return { book: p[1], chap: +p[2], vs: +p[3], ve: +p[4], raw: p[0].trim() };
+}
+
+function extractVerses(raw, vs, ve) {
+  let t = raw;
+  t = t.replace(/\[\d+\)\]\([^)]*\)/g, ' ');
+  t = t.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1');
+  const paras = t.split(/\n{2,}/);
+  t = paras.filter(p => {
+    const s = p.trim();
+    if (!s) return false;
+    if (/^[가-힣]/.test(s) && /\([가-힣]{1,6}\s*\d+:\d+/.test(s)) return false;
+    return true;
+  }).join('\n');
+  t = t.replace(/\([가-힣]{1,6}[^)]*\d+:\d+[^)]*\)/g, '');
+  t = t.replace(/\*{1,3}([^*\n]*)\*{1,3}/g, '$1');
+  t = t.replace(/<[^>]+>/g, ' ');
+  t = t.replace(/&[a-z]+;/gi, ' ');
+  // r.jina.ai가 <a>링크 변환 시 생기는 공백 제거 (예: "엠마오 라" → "엠마오라")
+  // (?=\s|$) : 조사 다음에 공백이나 끝이 와야만 매칭 (단독 조사인 경우만)
+  t = t.replace(/([가-힣]) (라|이라|에서|에게|에|와|과|을|를|은|는|이|가|도|의|로|으로|만|이고|이며|부터|까지)(?=\s|$)/g, '$1$2');
+  const chapM = t.match(/제\s*\d+\s*장/);
+  if (chapM) {
+    const after = t.slice(chapM.index + chapM[0].length);
+    const v1 = after.match(/\b1\s+[가-힣]/);
+    if (v1) t = after.slice(v1.index);
+  }
+  t = t.replace(/\s+/g, ' ').trim();
+  const result = [];
+  for (let v = vs; v <= ve; v++) {
+    const nxt = v + 1;
+    let m;
+    if (v < ve) {
+      m = t.match(new RegExp('(?<!\\d)' + v + '\\s+([가-힣][\\s\\S]*?)(?=(?<!\\d)' + nxt + '\\s+[가-힣])'));
+    } else {
+      m = t.match(new RegExp('(?<!\\d)' + v + '\\s+([가-힣][\\s\\S]*?)(?=(?<!\\d)\\d{1,3}\\s+[가-힣]|$)'));
+    }
+    if (m) result.push(v + ' ' + m[1].trim().replace(/\s+/g, ' '));
+  }
+  return result;
+}
+
+function makeChatGPTLink(refRaw) {
+  const q = refRaw + ' 성경 본문의 역사적·문화적 배경을 3문장으로 설명하고, 본문 내용을 3문장으로 요약해줘. 한국어로.';
+  return 'https://chatgpt.com/?q=' + encodeURIComponent(q);
+}
+
+function matchTerms(verses) {
+  const j = verses.join(' ');
+  return DICT.filter(t => j.includes(t.k)).slice(0, 3);
+}
+
+
+async function main() {
+  try {
+    const homeText = await fetchPassage();
+    const ref = parseRef(homeText);
+    if (!ref) throw new Error('오늘의 묵상 본문을 찾을 수 없습니다.');
+    const code = CODES[ref.book];
+    if (!code) throw new Error('알 수 없는 성경 책: ' + ref.book);
+    const bibleText = await fetchBible(code, ref.chap);
+    const verses = extractVerses(bibleText, ref.vs, ref.ve);
+    if (!verses.length) throw new Error('본문 텍스트를 추출하지 못했습니다.');
+    const terms = matchTerms(verses);
+
+    document.getElementById('loading').style.display = 'none';
+    const app = document.getElementById('app');
+    app.style.display = 'block';
+    app.innerHTML =
+      '<div class="page-header">' +
+        '<div class="date">' + fmtDate(new Date()) + '</div>' +
+        '<h1>오늘의 묵상</h1>' +
+        '<div class="ref-title">' + ref.raw + '</div>' +
+      '</div>' +
+      '<div class="card"><div class="section-label">본문 · 개역개정</div>' +
+        '<div class="passage-text">' + verses.map(v => '<p>' + v + '</p>').join('') + '</div>' +
+      '</div>' +
+      (terms.length ?
+        '<div class="card"><div class="section-label">주요 단어</div>' +
+        terms.map(t => '<div class="term-row"><div class="term-name">' + t.k + '</div><div class="term-desc">' + t.d + '</div></div>').join('') +
+        '</div>' : '') +
+      '<div class="card"><div class="section-label">역사적 배경 · 본문 요약</div>' +
+        '<div class="prose">ChatGPT에서 오늘 본문의 역사적 배경과 요약을 확인하세요.</div>' +
+        '<a class="ai-link" href="' + makeChatGPTLink(ref.raw) + '" target="_blank">ChatGPT에서 보기 →</a>' +
+      '</div>' +
+      '<div class="footer">대한성서공회 개역개정판 &nbsp;·&nbsp; <a href="https://bible.asher.design" target="_blank">bible.asher.design</a></div>';
+
+  } catch(e) {
+    document.getElementById('loading').style.display = 'none';
+    const el = document.getElementById('err');
+    el.style.display = 'block';
+    el.innerHTML = '불러오기 실패<br><br>' + e.message;
+  }
+}
+
+main();
+</script>
+</body>
+</html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
