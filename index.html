@@ -184,6 +184,25 @@ function matchTerms(verses) {
 
 
 async function main() {
+  const today = new Date();
+
+  // 주일(일요일)은 별도 화면 표시
+  if (today.getDay() === 0) {
+    document.getElementById('loading').style.display = 'none';
+    const app = document.getElementById('app');
+    app.style.display = 'block';
+    app.innerHTML =
+      '<div class="page-header">' +
+        '<div class="date">' + fmtDate(today) + '</div>' +
+        '<h1>오늘의 묵상</h1>' +
+      '</div>' +
+      '<div class="card" style="text-align:center; padding:48px 32px;">' +
+        '<div style="font-size:15px; font-weight:600; color:#1d1d1f; margin-bottom:14px;">주일 예배의 날입니다</div>' +
+        '<div style="font-size:14px; color:#6e6e73; line-height:1.9;">오늘은 교회에서 드리는 주일 예배를 통해<br>말씀으로 묵상하세요.</div>' +
+      '</div>';
+    return;
+  }
+
   try {
     const homeText = await fetchPassage();
     const ref = parseRef(homeText);
@@ -200,7 +219,7 @@ async function main() {
     app.style.display = 'block';
     app.innerHTML =
       '<div class="page-header">' +
-        '<div class="date">' + fmtDate(new Date()) + '</div>' +
+        '<div class="date">' + fmtDate(today) + '</div>' +
         '<h1>오늘의 묵상</h1>' +
         '<div class="ref-title">' + ref.raw + '</div>' +
       '</div>' +
@@ -214,8 +233,7 @@ async function main() {
       '<div class="card"><div class="section-label">역사적 배경 · 본문 요약</div>' +
         '<div class="prose">ChatGPT에서 오늘 본문의 역사적 배경과 요약을 확인하세요.</div>' +
         '<a class="ai-link" href="' + makeChatGPTLink(ref.raw) + '" target="_blank">ChatGPT에서 보기 →</a>' +
-      '</div>' +
-      '<div class="footer">대한성서공회 개역개정판 &nbsp;·&nbsp; <a href="https://bible.asher.design" target="_blank">bible.asher.design</a></div>';
+      '</div>';
 
   } catch(e) {
     document.getElementById('loading').style.display = 'none';
@@ -229,4 +247,3 @@ main();
 </script>
 </body>
 </html>
-                                                                                                                                                                                                                                                                                              
