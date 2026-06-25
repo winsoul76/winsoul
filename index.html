@@ -77,23 +77,11 @@ const DICT = [
   {k:'바리새인',d:'율법을 엄격히 준수했던 유대교 종교 지도자 그룹입니다.'},
   {k:'세리',d:'로마를 위해 세금을 징수하던 유대인. 동족에게 배신자로 여겨졌습니다.'},
   {k:'회당',d:'유대인들이 예배와 교육을 위해 모이던 장소. 오늘날 교회와 유사한 역할을 했습니다.'},
-  {k:'유월절',d:'이스라엘이 이집트에서 탈출한 것을 기념하는 명절. 예수님의 수난과 겹쳐있습니다.'},
-  {k:'안식일',d:'유대인의 거룩한 휴일(토요일). 이 날에는 노동이 금지되었습니다.'},
-  {k:'성전',d:'예루살렘에 있던 유대인의 최고 예배 장소. 예수님 당시엔 헤롯 성전이었습니다.'},
-  {k:'선지자',d:'하나님의 말씀을 대신 전하는 사람. 이사야, 예레미야 등이 대표적입니다.'},
-  {k:'그리스도',d:'기름 부음 받은 자라는 뜻의 그리스어. 히브리어로는 메시아입니다.'},
   {k:'인자',d:'예수님이 자신을 가리키던 표현. 다니엘서에서 온 메시아적 칭호입니다.'},
-  {k:'갈릴리',d:'이스라엘 북부 지역. 예수님이 자라고 사역을 시작하신 곳입니다.'},
-  {k:'예루살렘',d:'이스라엘의 성도. 성전이 있고 예수님이 십자가에 못 박히신 곳입니다.'},
   {k:'대제사장',d:'성전 제사를 주관하는 최고 종교 지도자입니다.'},
   {k:'세마포',d:'아마로 만든 흰 천. 예수님의 시신을 쌌던 천입니다.'},
   {k:'향품',d:'시신에 바르는 향기로운 물질. 유대인 장례 풍습에서 사용했습니다.'},
   {k:'막달라',d:'갈릴리 호수 서쪽 마을. 막달라 마리아의 출신지입니다.'},
-  {k:'천사',d:'하나님의 사자. 하나님의 뜻을 전하는 존재입니다.'},
-  {k:'부활',d:'죽음 이후 새로운 몸으로 다시 살아나는 것. 예수님의 부활은 기독교 신앙의 핵심입니다.'},
-  {k:'십자가',d:'로마의 사형 도구. 예수님이 달려 돌아가심으로 구원의 상징이 되었습니다.'},
-  {k:'나사렛',d:'예수님이 어린 시절을 보내신 마을. 갈릴리에 위치합니다.'},
-  {k:'베들레헴',d:'예수님이 태어나신 마을. 다윗 왕의 고향이기도 합니다.'},
   {k:'모세와 모든 선지자',d:'구약성경 전체를 가리키는 표현. 율법(모세)과 선지서를 통칭합니다.'},
 ];
 
@@ -122,16 +110,27 @@ function parseRef(text) {
   const idx = text.indexOf('묵상');
   if (idx === -1) return null;
   const snippet = text.slice(idx, idx + 150);
-  const p = snippet.match(/([가-힣]+)\s+(\d+):(\d+)[-–](\d+)/);
+  // 단일 장(3:1-32) 또는 장이 바뀌는 경우(3:33-4:6) 모두 지원
+  const p = snippet.match(/([가-힣]+)\s+(\d+):(\d+)[-–](?:(\d+):)?(\d+)/);
   if (!p) return null;
-  return { book: p[1], chap: +p[2], vs: +p[3], ve: +p[4], raw: p[0].trim() };
+  return {
+    book: p[1],
+    chap: +p[2],
+    vs: +p[3],
+    chap2: p[4] ? +p[4] : +p[2],
+    ve: +p[5],
+    raw: p[0].trim()
+  };
 }
 
-function extractVerses(raw, vs, ve) {
+// 한 장(chapter) 텍스트를 절 단위로 모두 분리해 [{num, text}, ...] 반환
+function parseAllVerses(raw) {
   let t = raw;
   // 1. 마크다운 이미지 제거
   t = t.replace(/!\[[^\]]*\]\([^)]*\)/g, '');
-  // 2. 마크다운 링크 [text](url) → text
+  // 2a. 링크+공백+조사 아티팩트 수정: [이름](url) 이 → 이름이 (이/가 포함, 링크 뒤일 때만 안전하게 적용)
+  t = t.replace(/\[([^\]]+)\]\([^)]*\)\s+(이며|이고|이라|에서|에게|으로|부터|까지|에|와|과|을|를|은|는|도|의|로|만|라|이|가)(?![가-힣])/g, '$1$2');
+  // 2b. 남은 마크다운 링크 → text
   t = t.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1');
   // 3. 대괄호 → 내용 유지, 괄호만 제거 ([하늘로 올려지시니] → 하늘로 올려지시니)
   t = t.replace(/\[([^\]]*)\]/g, '$1');
@@ -149,31 +148,30 @@ function extractVerses(raw, vs, ve) {
   t = paras.filter(p => /^\s*\d/.test(p.trim()) && p.trim().length > 3).join('\n');
   // 9. 공백 정리
   t = t.replace(/\s+/g, ' ').trim();
-  // 9-a. 각주 번호 제거 (4) 등 — 절 번호는 앞에 공백 없이 있으므로 안전)
-  // 단락 필터·공백 정리 후 실행해야 절 번호와 충돌 없음
+  // 9-a. 각주 번호 제거 (4) 등)
   t = t.replace(/(?<=\s)\d+\)\s*/g, '');
-  // 10. r.jina.ai <a>링크 공백 아티팩트 제거 ("엠마오 라" → "엠마오라")
+  // 10. 남은 조사 공백 아티팩트 제거 (이/가는 2a에서 이미 처리되어 여기선 제외)
   t = t.replace(/([가-힣]) (라|이라|에서|에게|에|와|과|을|를|은|는|도|의|로|으로|만|이고|이며|부터|까지)(?=\s|$)/g, '$1$2');
-  // 11. ve+1 절 이후 잘라내기
-  const cutM = t.search(new RegExp('(?<!\\d)' + (ve + 1) + '\\s+[가-힣]'));
-  if (cutM > 0) t = t.slice(0, cutM).trim();
-  // 12. vs~ve 절 추출
-  const result = [];
-  for (let v = vs; v <= ve; v++) {
-    const nxt = v + 1;
-    let m;
-    if (v < ve) {
-      m = t.match(new RegExp('(?<!\\d)' + v + '\\s+([가-힣][\\s\\S]*?)(?=(?<!\\d)' + nxt + '\\s+[가-힣])'));
-    } else {
-      m = t.match(new RegExp('(?<!\\d)' + v + '\\s+([가-힣][\\s\\S]*?)$'));
-    }
-    if (m) result.push(v + ' ' + m[1].trim().replace(/\s+/g, ' '));
+
+  // 절 번호 위치를 모두 찾아 절 단위로 분리
+  const marks = [...t.matchAll(/(?<!\d)(\d{1,3})\s+(?=[가-힣])/g)];
+  const verses = [];
+  for (let i = 0; i < marks.length; i++) {
+    const num = +marks[i][1];
+    const start = marks[i].index + marks[i][0].length;
+    const end = (i + 1 < marks.length) ? marks[i + 1].index : t.length;
+    const vt = t.slice(start, end).trim().replace(/\s+/g, ' ');
+    if (vt) verses.push({ num, text: vt });
   }
-  return result;
+  return verses;
+}
+
+function sliceVerses(all, vs, ve) {
+  return all.filter(v => v.num >= vs && (ve == null || v.num <= ve));
 }
 
 function makeChatGPTLink(refRaw) {
-  const q = refRaw + ' 성경 본문의 역사적·문화적 배경을 3문장으로 설명하고, 본문 내용을 3문장으로 요약해줘. 한국어로.';
+  const q = refRaw + ' 성경 본문에 대해 아래 3가지를 존댓말로, 반드시 1. 2. 3. 형식으로 번호를 매겨 답변해 주세요.\n1. 역사적·문화적 배경\n2. 등장인물·지명의 의미\n3. 본문 내용 요약\n각 항목은 2~3문장으로 작성해 주세요.';
   return 'https://chatgpt.com/?q=' + encodeURIComponent(q);
 }
 
@@ -209,8 +207,22 @@ async function main() {
     if (!ref) throw new Error('오늘의 묵상 본문을 찾을 수 없습니다.');
     const code = CODES[ref.book];
     if (!code) throw new Error('알 수 없는 성경 책: ' + ref.book);
-    const bibleText = await fetchBible(code, ref.chap);
-    const verses = extractVerses(bibleText, ref.vs, ref.ve);
+
+    let verseObjs;
+    if (ref.chap2 !== ref.chap) {
+      // 장이 바뀌는 본문: 두 장을 모두 가져와 이어붙임
+      const [text1, text2] = await Promise.all([
+        fetchBible(code, ref.chap),
+        fetchBible(code, ref.chap2)
+      ]);
+      const v1 = sliceVerses(parseAllVerses(text1), ref.vs, null);
+      const v2 = sliceVerses(parseAllVerses(text2), 1, ref.ve);
+      verseObjs = [...v1, ...v2];
+    } else {
+      const bibleText = await fetchBible(code, ref.chap);
+      verseObjs = sliceVerses(parseAllVerses(bibleText), ref.vs, ref.ve);
+    }
+    const verses = verseObjs.map(v => v.num + ' ' + v.text);
     if (!verses.length) throw new Error('본문 텍스트를 추출하지 못했습니다.');
     const terms = matchTerms(verses);
 
@@ -238,12 +250,3 @@ async function main() {
   } catch(e) {
     document.getElementById('loading').style.display = 'none';
     const el = document.getElementById('err');
-    el.style.display = 'block';
-    el.innerHTML = '불러오기 실패<br><br>' + e.message;
-  }
-}
-
-main();
-</script>
-</body>
-</html>
