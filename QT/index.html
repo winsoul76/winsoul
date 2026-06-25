@@ -229,6 +229,18 @@ async function main() {
     return;
   }
 
+  // 0. 정적 JSON 우선 시도 (GitHub Actions가 매일 새벽 미리 생성) — 가장 빠른 경로
+  try {
+    const r = await fetch('./data/today.json', { signal: AbortSignal.timeout(5000), cache: 'no-store' });
+    if (r.ok) {
+      const data = await r.json();
+      if (data.date === dateKey && !data.sunday && data.ref && data.verses && data.terms) {
+        renderApp(today, data.ref, data.verses, data.terms);
+        return;
+      }
+    }
+  } catch (e) { /* 정적 JSON 없거나 실패 시 기존 방식으로 진행 */ }
+
   // 캐시 확인: 같은 날 재방문이면 네트워크 호출 없이 즉시 렌더링
   try {
     const cachedRaw = localStorage.getItem('qt_' + dateKey);
