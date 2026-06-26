@@ -6,11 +6,12 @@
   <title>오늘의 묵상</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { overflow-x: hidden; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', 'Apple SD Gothic Neo', sans-serif;
       background: #f5f5f7;
       min-height: 100vh;
-      padding: 48px 20px 72px;
+      padding: 48px 14px 72px;
       -webkit-font-smoothing: antialiased;
     }
     .wrap { max-width: 600px; margin: 0 auto; }
@@ -18,17 +19,17 @@
     .page-header .date { font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #86868b; margin-bottom: 10px; }
     .page-header h1 { font-size: 32px; font-weight: 700; color: #1d1d1f; letter-spacing: -0.5px; margin-bottom: 8px; }
     .page-header .ref-title { font-size: 18px; font-weight: 500; color: #6e4c1e; }
-    .card { background: #fff; border-radius: 18px; padding: 28px 32px; margin-bottom: 16px; }
+    .card { background: #fff; border-radius: 18px; padding: 26px 22px; margin-bottom: 16px; max-width: 100%; }
     .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #86868b; margin-bottom: 18px; }
-    .passage-text { font-size: 15px; line-height: 2.15; color: #1d1d1f; }
+    .passage-text { font-size: 15px; line-height: 2.15; color: #1d1d1f; overflow-wrap: break-word; word-break: keep-all; }
     .passage-text p { display: flex; margin-bottom: 3px; }
-    .v-num { flex: 0 0 2.1em; font-weight: 700; color: #6e4c1e; }
-    .v-text { flex: 1 1 auto; }
+    .v-num { flex: 0 0 1.5em; padding-right: 4px; font-weight: 700; color: #6e4c1e; }
+    .v-text { flex: 1 1 auto; min-width: 0; overflow-wrap: break-word; word-break: keep-all; }
     .term-row { display: flex; align-items: baseline; gap: 16px; padding: 11px 0; border-bottom: 0.5px solid #f0f0f0; }
     .term-row:last-child { border-bottom: none; }
     .term-name { font-size: 14px; font-weight: 600; color: #1d1d1f; min-width: 88px; flex-shrink: 0; }
     .term-desc { font-size: 14px; color: #6e6e73; line-height: 1.65; }
-    .prose { font-size: 14px; color: #1d1d1f; line-height: 1.85; }
+    .prose { font-size: 14px; color: #1d1d1f; line-height: 1.85; overflow-wrap: break-word; word-break: keep-all; }
     .footer { text-align: center; font-size: 12px; color: #aeaeb2; margin-top: 16px; }
     .footer a { color: #aeaeb2; text-decoration: none; }
     .loading { text-align: center; padding: 100px 20px; color: #86868b; }
