@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
   <title>오늘의 묵상</title>
   <style>
+    :root { --fs-scale: 1; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { overflow-x: hidden; }
     body {
@@ -15,13 +16,22 @@
       -webkit-font-smoothing: antialiased;
     }
     .wrap { max-width: 600px; margin: 0 auto; }
+    .fab-group { position: fixed; right: 16px; bottom: 24px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
+    .fab-group button {
+      width: 44px; height: 44px; border-radius: 50%; border: none;
+      background: #1d1d1f; color: #fff; font-size: 14px; font-weight: 700;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.22); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .fab-group button:active { background: #3a3a3c; }
+    #toTop { display: none; background: #6e4c1e; font-size: 18px; }
     .page-header { text-align: center; margin-bottom: 40px; }
     .page-header .date { font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #86868b; margin-bottom: 10px; }
     .page-header h1 { font-size: 32px; font-weight: 700; color: #1d1d1f; letter-spacing: -0.5px; margin-bottom: 8px; }
     .page-header .ref-title { font-size: 18px; font-weight: 500; color: #6e4c1e; }
     .card { background: #fff; border-radius: 18px; padding: 26px 22px; margin-bottom: 16px; max-width: 100%; }
     .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #86868b; margin-bottom: 18px; }
-    .passage-text { font-size: 15px; line-height: 2.15; color: #1d1d1f; overflow-wrap: break-word; word-break: keep-all; }
+    .passage-text { font-size: calc(15px * var(--fs-scale)); line-height: 2.15; color: #1d1d1f; overflow-wrap: break-word; word-break: keep-all; }
     .passage-text p { display: flex; margin-bottom: 3px; }
     .v-num { flex: 0 0 1.5em; padding-right: 4px; font-weight: 700; color: #6e4c1e; }
     .v-text { flex: 1 1 auto; min-width: 0; overflow-wrap: break-word; word-break: keep-all; }
@@ -29,7 +39,7 @@
     .term-row:last-child { border-bottom: none; }
     .term-name { font-size: 14px; font-weight: 600; color: #1d1d1f; min-width: 88px; flex-shrink: 0; }
     .term-desc { font-size: 14px; color: #6e6e73; line-height: 1.65; }
-    .prose { font-size: 14px; color: #1d1d1f; line-height: 1.85; overflow-wrap: break-word; word-break: keep-all; }
+    .prose { font-size: calc(14px * var(--fs-scale)); color: #1d1d1f; line-height: 1.85; overflow-wrap: break-word; word-break: keep-all; }
     .footer { text-align: center; font-size: 12px; color: #aeaeb2; margin-top: 16px; }
     .footer a { color: #aeaeb2; text-decoration: none; }
     .loading { text-align: center; padding: 100px 20px; color: #86868b; }
@@ -44,12 +54,37 @@
   </style>
 </head>
 <body>
+<div class="fab-group">
+  <button id="fontUp" aria-label="글자 크게">A+</button>
+  <button id="fontDown" aria-label="글자 작게">A-</button>
+  <button id="toTop" aria-label="맨 위로">↑</button>
+</div>
 <div class="wrap">
   <div id="loading" class="loading"><div class="spinner"></div><p>오늘의 묵상을 불러오는 중...</p></div>
   <div id="app" style="display:none"></div>
   <div id="err" class="err" style="display:none"></div>
 </div>
 <script>
+function getFontScale() {
+  const v = parseFloat(localStorage.getItem('qt_fontScale'));
+  return (!isNaN(v) && v >= 0.85 && v <= 1.6) ? v : 1;
+}
+function applyFontScale(v) {
+  document.documentElement.style.setProperty('--fs-scale', v);
+}
+function bumpFontScale(delta) {
+  const v = Math.min(1.6, Math.max(0.85, +(getFontScale() + delta).toFixed(2)));
+  localStorage.setItem('qt_fontScale', v);
+  applyFontScale(v);
+}
+applyFontScale(getFontScale());
+document.getElementById('fontDown').addEventListener('click', () => bumpFontScale(-0.1));
+document.getElementById('fontUp').addEventListener('click', () => bumpFontScale(0.1));
+document.getElementById('toTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+window.addEventListener('scroll', () => {
+  document.getElementById('toTop').style.display = window.scrollY > 300 ? 'flex' : 'none';
+});
+
 const CODES = {
   '창세기':'gen','출애굽기':'exo','레위기':'lev','민수기':'num','신명기':'deu',
   '여호수아':'jos','사사기':'jdg','룻기':'rut','사무엘상':'sa1','사무엘하':'sa2',
