@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
   <title>오늘의 묵상</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -21,7 +21,9 @@
     .card { background: #fff; border-radius: 18px; padding: 28px 32px; margin-bottom: 16px; }
     .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #86868b; margin-bottom: 18px; }
     .passage-text { font-size: 15px; line-height: 2.15; color: #1d1d1f; }
-    .passage-text p { margin-bottom: 3px; }
+    .passage-text p { display: flex; margin-bottom: 3px; }
+    .v-num { flex: 0 0 2.1em; font-weight: 700; color: #6e4c1e; }
+    .v-text { flex: 1 1 auto; }
     .term-row { display: flex; align-items: baseline; gap: 16px; padding: 11px 0; border-bottom: 0.5px solid #f0f0f0; }
     .term-row:last-child { border-bottom: none; }
     .term-name { font-size: 14px; font-weight: 600; color: #1d1d1f; min-width: 88px; flex-shrink: 0; }
@@ -171,7 +173,10 @@ function renderApp(today, ref, verses) {
       '<div class="ref-title">' + ref.raw + '</div>' +
     '</div>' +
     '<div class="card"><div class="section-label">본문 · 개역개정</div>' +
-      '<div class="passage-text">' + verses.map(v => '<p>' + v + '</p>').join('') + '</div>' +
+      '<div class="passage-text">' + verses.map(v => {
+        const m = v.match(/^(\d+)\s+([\s\S]*)$/);
+        return m ? '<p><span class="v-num">' + m[1] + '</span><span class="v-text">' + m[2] + '</span></p>' : '<p>' + v + '</p>';
+      }).join('') + '</div>' +
     '</div>' +
     '<div class="card"><div class="section-label">역사적 배경 · 어려운 단어 · 본문 요약</div>' +
       '<div class="prose">ChatGPT에서 오늘 본문의 역사적 배경, 어려운 단어·인물·지명 설명, 요약을 확인하세요.</div>' +
