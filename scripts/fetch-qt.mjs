@@ -1,4 +1,4 @@
-// 매일 GitHub Actions가 실행해서 오늘의 묵상 본문을 미리 받아
+// 매일 GitHub Actions가 실행해서 오늘의 묵상 본문 + 주간 암송 구절을 미리 받아
 // QT/data/today.json 에 저장합니다. (index.html이 이 파일을 먼저 읽어
 // r.jina.ai 렌더링 대기 없이 즉시 로딩되게 합니다)
 import fs from 'fs';
@@ -21,6 +21,23 @@ const CODES = {
   '베드로전서':'pe1','베드로후서':'pe2','요한일서':'jo1','요한이서':'jo2',
   '요한삼서':'jo3','유다서':'jde','요한계시록':'rev'
 };
+
+const DOW_MAP = { Sun:0, Mon:1, Tue:2, Wed:3, Thu:4, Fri:5, Sat:6 };
+
+// 독일(Europe/Berlin) 현지 날짜를 DST(서머타임) 자동 반영해서 계산.
+// index.html(클라이언트)도 동일한 방식으로 계산하므로 두 쪽이 항상 같은 "오늘"을 가리킨다.
+function getBerlinParts(d) {
+  d = d || new Date();
+  const fmt = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Europe/Berlin', year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short'
+  });
+  const o = {};
+  fmt.formatToParts(d).forEach(p => { o[p.type] = p.value; });
+  return {
+    year: +o.year, month: +o.month, day: +o.day, dow: DOW_MAP[o.weekday],
+    dateKey: o.year + '-' + o.month + '-' + o.day
+  };
+}
 
 async function fetchPassage() {
   const r = await fetch('https://r.jina.ai/https://bible.asher.design/');
@@ -47,6 +64,25 @@ function parseRef(text) {
     chap2: p[4] ? +p[4] : +p[2],
     ve: +p[5],
     raw: p[0].trim()
+  };
+}
+
+// 홈페이지 텍스트에서 "주간 암송" 구절(날짜 범위 / 본문 / 출처)을 추출
+function parseWeekly(text) {
+  const idx = text.indexOf('주간 암송');
+  if (idx === -1) return null;
+  const snippet = text.slice(idx, idx + 500);
+  const rangeMatch = snippet.match(/(\d+월\s*\d+일\([일-토]\)\s*~\s*\d+월\s*\d+일\([일-토]\))/);
+  const quoteLines = [...snippet.matchAll(/^>[ \t]?(.*)$/gm)].map(m => m[1].trim()).filter(l => l.length > 0);
+  if (!quoteLines.length) return null;
+  const last = quoteLines[quoteLines.length - 1];
+  const isRef = /^[가-힣]+\s*\d+:\d+/.test(last);
+  const verseLines = isRef ? quoteLines.slice(0, -1) : quoteLines;
+  if (!verseLines.length) return null;
+  return {
+    range: rangeMatch ? rangeMatch[1] : '',
+    text: verseLines.join(' '),
+    ref: isRef ? last : ''
   };
 }
 
@@ -84,11 +120,10 @@ function sliceVerses(all, vs, ve) {
 }
 
 async function main() {
-  // KST(UTC+9) 기준 오늘 날짜로 키 생성
-  const now = new Date();
-  const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
-  const dateKey = kst.toISOString().slice(0, 10);
-  const dow = kst.getUTCDay(); // KST로 보정했으므로 getUTCDay = KST 요일
+  // 독일(Europe/Berlin) 현지 날짜 기준으로 날짜 키를 생성 (index.html과 동일한 방식)
+  const today = getBerlinParts();
+  const dateKey = today.dateKey;
+  const dow = today.dow;
 
   const outDir = path.join(process.cwd(), 'QT', 'data');
   fs.mkdirSync(outDir, { recursive: true });
@@ -103,6 +138,7 @@ async function main() {
   const homeText = await fetchPassage();
   const ref = parseRef(homeText);
   if (!ref) throw new Error('오늘의 묵상 본문을 찾을 수 없습니다.');
+  const weekly = parseWeekly(homeText);
   const code = CODES[ref.book];
   if (!code) throw new Error('알 수 없는 성경 책: ' + ref.book);
 
@@ -122,7 +158,7 @@ async function main() {
   const verses = verseObjs.map(v => v.num + ' ' + v.text);
   if (!verses.length) throw new Error('본문 텍스트를 추출하지 못했습니다.');
 
-  const data = { date: dateKey, sunday: false, ref, verses };
+  const data = { date: dateKey, sunday: false, ref, verses, weekly };
   fs.writeFileSync(outPath, JSON.stringify(data, null, 2));
   console.log('저장 완료:', outPath, '/', ref.raw);
 }
