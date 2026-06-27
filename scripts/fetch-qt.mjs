@@ -39,8 +39,10 @@ function getBerlinParts(d) {
   };
 }
 
-async function fetchPassage() {
-  const r = await fetch('https://r.jina.ai/https://bible.asher.design/');
+async function fetchPassage(dateKey) {
+  // r.jina.ai가 렌더링 결과를 캐싱하기 때문에, 날짜별로 바뀌는 쿼리를 붙여
+  // 매일 새 캐시(=새 렌더링)를 강제로 받아온다. (안 그러면 며칠~몇 주 전 캐시가 계속 반환됨)
+  const r = await fetch('https://r.jina.ai/https://bible.asher.design/?_=' + dateKey);
   if (!r.ok) throw new Error('본문 목록 오류 (' + r.status + ')');
   return r.text();
 }
@@ -135,7 +137,7 @@ async function main() {
     return;
   }
 
-  const homeText = await fetchPassage();
+  const homeText = await fetchPassage(dateKey);
   const ref = parseRef(homeText);
   if (!ref) throw new Error('오늘의 묵상 본문을 찾을 수 없습니다.');
   const weekly = parseWeekly(homeText);
