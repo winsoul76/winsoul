@@ -127,8 +127,10 @@ function fmtDate(p) {
   return p.year + '년 ' + p.month + '월 ' + p.day + '일 ' + DAYS[p.dow] + '요일';
 }
 
-async function fetchPassage() {
-  const r = await fetch('https://r.jina.ai/https://bible.asher.design/', {
+async function fetchPassage(dateKey) {
+  // r.jina.ai가 렌더링 결과를 캐싱하기 때문에, 날짜별로 바뀌는 쿼리를 붙여
+  // 매일 새 캐시(=새 렌더링)를 강제로 받아온다. (안 그러면 며칠~몇 주 전 캐시가 계속 반환됨)
+  const r = await fetch('https://r.jina.ai/https://bible.asher.design/?_=' + dateKey, {
     signal: AbortSignal.timeout(20000)
   });
   if (!r.ok) throw new Error('본문 목록 오류 (' + r.status + ')');
@@ -254,7 +256,7 @@ function renderApp(today, ref, verses, weekly) {
     '</div>' +
     (weekly && weekly.text ?
       '<div class="card"><div class="section-label">주간 암송 구절' + (weekly.range ? ' · ' + weekly.range : '') + '</div>' +
-        '<div class="weekly-text">“' + weekly.text + '”</div>' +
+        '<div class="weekly-text">"' + weekly.text + '"</div>' +
         (weekly.ref ? '<div class="weekly-ref">' + weekly.ref + '</div>' : '') +
       '</div>'
     : '') +
@@ -303,7 +305,7 @@ async function main() {
 
   // 캐시 확인: 같은 날 재방문이면 네트워크 호출 없이 즉시 렌더링
   try {
-    const cachedRaw = localStorage.getItem('qt_' + dateKey);
+    const cachedRaw = localStorage.getItem('qt2_' + dateKey);
     if (cachedRaw) {
       const cached = JSON.parse(cachedRaw);
       renderApp(today, cached.ref, cached.verses, cached.weekly);
@@ -313,7 +315,7 @@ async function main() {
 
   try {
     setLoadingText('오늘의 묵상 본문 확인 중...');
-    const homeText = await fetchPassage();
+    const homeText = await fetchPassage(dateKey);
     const ref = parseRef(homeText);
     if (!ref) throw new Error('오늘의 묵상 본문을 찾을 수 없습니다.');
     const weekly = parseWeekly(homeText);
@@ -341,9 +343,9 @@ async function main() {
     // 오늘자 결과 캐싱 + 어제 이전 캐시 정리
     try {
       Object.keys(localStorage)
-        .filter(k => k.startsWith('qt_') && k !== 'qt_' + dateKey && k !== 'qt_fontScale')
+        .filter(k => k.startsWith('qt2_') && k !== 'qt2_' + dateKey)
         .forEach(k => localStorage.removeItem(k));
-      localStorage.setItem('qt_' + dateKey, JSON.stringify({ ref, verses, weekly }));
+      localStorage.setItem('qt2_' + dateKey, JSON.stringify({ ref, verses, weekly }));
     } catch (e) { /* 저장 공간 부족 등은 무시 */ }
 
     renderApp(today, ref, verses, weekly);
