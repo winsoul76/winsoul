@@ -2,8 +2,10 @@ name: Fetch daily QT passage
 
 on:
   schedule:
-    # 매일 UTC 15:10 = KST 00:10 실행
-    - cron: '10 15 * * *'
+    # 매일 UTC 02:00 = 독일 현지시간 약 03:00(겨울)~04:00(여름) 실행
+    # KST 자정(UTC 15:10)에 bible.asher.design이 그날 본문으로 갱신되므로
+    # 그보다 한참 뒤, 독일 사용자가 깨어나기 전에 미리 받아둔다.
+    - cron: '0 2 * * *'
   workflow_dispatch: {}
 
 permissions:
