@@ -131,16 +131,18 @@ async function main() {
   fs.mkdirSync(outDir, { recursive: true });
   const outPath = path.join(outDir, 'today.json');
 
+  // 주일에도 주간 암송 구절은 보여줘야 하므로, 홈페이지는 요일과 상관없이 항상 가져온다.
+  const homeText = await fetchPassage(dateKey);
+  const weekly = parseWeekly(homeText);
+
   if (dow === 0) {
-    fs.writeFileSync(outPath, JSON.stringify({ date: dateKey, sunday: true }, null, 2));
-    console.log('주일 — sunday 플래그 저장:', outPath);
+    fs.writeFileSync(outPath, JSON.stringify({ date: dateKey, sunday: true, weekly }, null, 2));
+    console.log('주일 — sunday 플래그 + 주간 암송 저장:', outPath);
     return;
   }
 
-  const homeText = await fetchPassage(dateKey);
   const ref = parseRef(homeText);
   if (!ref) throw new Error('오늘의 묵상 본문을 찾을 수 없습니다.');
-  const weekly = parseWeekly(homeText);
   const code = CODES[ref.book];
   if (!code) throw new Error('알 수 없는 성경 책: ' + ref.book);
 
