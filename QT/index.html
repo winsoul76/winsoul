@@ -274,8 +274,41 @@ async function main() {
   const dateKey = today.dateKey;
   const dow = today.dow;
 
-  // 주일(일요일)은 별도 화면 표시
+  // 주일(일요일)은 별도 화면 표시 + 주간 암송 구절은 그대로 표시
   if (dow === 0) {
+    let weekly = null;
+
+    // 0. 정적 JSON 우선 시도
+    try {
+      const r = await fetch('./data/today.json', { signal: AbortSignal.timeout(5000), cache: 'no-store' });
+      if (r.ok) {
+        const data = await r.json();
+        if (data.date === dateKey && data.weekly) weekly = data.weekly;
+      }
+    } catch (e) { /* 무시 */ }
+
+    // 캐시 확인
+    if (!weekly) {
+      try {
+        const cachedRaw = localStorage.getItem('qt2_' + dateKey);
+        if (cachedRaw) {
+          const cached = JSON.parse(cachedRaw);
+          if (cached.weekly) weekly = cached.weekly;
+        }
+      } catch (e) { /* 무시 */ }
+    }
+
+    // 라이브 조회 (정적/캐시 둘 다 없을 때만)
+    if (!weekly) {
+      try {
+        const homeText = await fetchPassage(dateKey);
+        weekly = parseWeekly(homeText);
+        try {
+          localStorage.setItem('qt2_' + dateKey, JSON.stringify({ sunday: true, weekly }));
+        } catch (e) { /* 무시 */ }
+      } catch (e) { /* 주간 암송을 못 가져와도 주일 메시지는 그대로 표시 */ }
+    }
+
     document.getElementById('loading').style.display = 'none';
     const app = document.getElementById('app');
     app.style.display = 'block';
@@ -287,7 +320,13 @@ async function main() {
       '<div class="card" style="text-align:center; padding:48px 32px;">' +
         '<div style="font-size:15px; font-weight:600; color:#1d1d1f; margin-bottom:14px;">주일 예배의 날입니다</div>' +
         '<div style="font-size:14px; color:#6e6e73; line-height:1.9;">오늘은 교회에서 드리는 주일 예배를 통해<br>말씀으로 묵상하세요.</div>' +
-      '</div>';
+      '</div>' +
+      (weekly && weekly.text ?
+        '<div class="card"><div class="section-label">주간 암송 구절' + (weekly.range ? ' · ' + weekly.range : '') + '</div>' +
+          '<div class="weekly-text">"' + weekly.text + '"</div>' +
+          (weekly.ref ? '<div class="weekly-ref">' + weekly.ref + '</div>' : '') +
+        '</div>'
+      : '');
     return;
   }
 
