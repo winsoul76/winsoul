@@ -6,6 +6,7 @@
 <title>소그룹 리더 자료 · 청소년 아카데미 FOUND</title>
 <style>
   :root {
+    --fs-scale: 1;
     --bg: #f5f5f7;
     --card: #ffffff;
     --text: #1d1d1f;
@@ -82,12 +83,18 @@
     box-shadow: 0 2px 10px rgba(0,0,0,0.10); cursor: pointer;
     display: flex; align-items: center; justify-content: center;
   }
-  .top-fab { position: fixed; right: 16px; bottom: 24px; z-index: 900; display: none; }
-  .top-fab button {
-    width: 44px; height: 44px; border-radius: 50%; border: none;
-    background: #1d1d1f; color: #fff; font-size: 16px; font-weight: 700;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.22); cursor: pointer;
+  .side-fab {
+    position: fixed; right: 16px; bottom: 24px; z-index: 900;
+    display: flex; flex-direction: column; gap: 10px;
   }
+  .side-fab button {
+    width: 44px; height: 44px; border-radius: 50%; border: none;
+    background: #1d1d1f; color: #fff; font-size: 14px; font-weight: 700;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.22); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .side-fab button:active { background: #3a3a3c; }
+  .side-fab #toTop { display: none; background: var(--accent); font-size: 18px; }
 
   .wrap { max-width: 640px; margin: 0 auto; padding: 64px 16px 80px; }
 
@@ -147,13 +154,13 @@
   }
 
   .info-grid { display: flex; flex-direction: column; gap: 12px; }
-  .info-row { display: flex; gap: 14px; font-size: 14px; line-height: 1.6; }
+  .info-row { display: flex; gap: 14px; font-size: calc(14px * var(--fs-scale)); line-height: 1.6; }
   .info-k { flex: 0 0 92px; color: var(--muted); font-weight: 600; }
   .info-v { flex: 1; color: var(--text); }
 
   .bullet-list { list-style: none; }
   .bullet-list li {
-    position: relative; padding-left: 18px; font-size: 14.5px; line-height: 1.75;
+    position: relative; padding-left: 18px; font-size: calc(14.5px * var(--fs-scale)); line-height: 1.75;
     color: var(--text); margin-bottom: 10px;
   }
   .bullet-list li:last-child { margin-bottom: 0; }
@@ -173,12 +180,12 @@
   .timeline { display: flex; flex-direction: column; }
   .t-row {
     display: flex; gap: 16px; padding: 9px 0; border-bottom: 0.5px solid var(--border);
-    font-size: 14px;
+    font-size: calc(14px * var(--fs-scale));
   }
   .t-row:last-child { border-bottom: none; }
   .t-time { flex: 0 0 52px; font-weight: 700; color: var(--accent); }
   .t-desc { flex: 1; color: var(--text); }
-  .note-text { font-size: 12.5px; color: var(--muted); line-height: 1.7; margin-top: 4px; }
+  .note-text { font-size: calc(12.5px * var(--fs-scale)); color: var(--muted); line-height: 1.7; margin-top: 4px; }
 
   /* accordion (details/summary) */
   details.acc {
@@ -198,11 +205,11 @@
   details.acc .acc-body { padding: 0 20px 20px; }
   details.acc .acc-body .bullet-list li { font-size: 14px; }
 
-  .faq-q { font-size: 14.5px; font-weight: 600; }
-  .faq-a { font-size: 13.5px; color: var(--sub); line-height: 1.75; margin-top: 10px; }
+  .faq-q { font-size: calc(14.5px * var(--fs-scale)); font-weight: 600; }
+  .faq-a { font-size: calc(13.5px * var(--fs-scale)); color: var(--sub); line-height: 1.75; margin-top: 10px; }
 
   /* checklist */
-  .check-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; font-size: 14px; }
+  .check-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; font-size: calc(14px * var(--fs-scale)); }
   .check-item input[type="checkbox"] {
     width: 19px; height: 19px; margin-top: 1px; accent-color: var(--accent); flex-shrink: 0;
   }
@@ -214,8 +221,8 @@
   .round-header h2 { font-size: 21px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 6px; }
   .round-header .r-sub { font-size: 13.5px; color: var(--muted); font-style: italic; }
 
-  .verse-ref { font-size: 12.5px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
-  .verse-text { font-size: 14.5px; font-style: italic; color: var(--text); line-height: 1.75; }
+  .verse-ref { font-size: calc(12.5px * var(--fs-scale)); font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+  .verse-text { font-size: calc(14.5px * var(--fs-scale)); font-style: italic; color: var(--text); line-height: 1.75; }
 
   .activity { margin-bottom: 20px; }
   .activity:last-child { margin-bottom: 0; }
@@ -224,28 +231,28 @@
     flex: 0 0 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff;
     font-size: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700;
   }
-  .activity-body { font-size: 14px; line-height: 1.75; color: var(--text); margin-bottom: 8px; padding-left: 30px; }
+  .activity-body { font-size: calc(14px * var(--fs-scale)); line-height: 1.75; color: var(--text); margin-bottom: 8px; padding-left: 30px; }
   .activity .bullet-list { padding-left: 30px; }
   .example-box {
     margin-left: 30px; background: #fafafa; border-radius: 12px; padding: 12px 14px;
-    font-size: 13px; color: var(--sub); line-height: 1.7; margin-top: 6px;
+    font-size: calc(13px * var(--fs-scale)); color: var(--sub); line-height: 1.7; margin-top: 6px;
   }
   .fill-box {
     margin: 10px 0 0 30px; background: #fafafa; border: 1px dashed #d2d2d7; border-radius: 12px;
-    padding: 14px 16px; font-size: 13.5px; line-height: 2; color: var(--text);
+    padding: 14px 16px; font-size: calc(13.5px * var(--fs-scale)); line-height: 2; color: var(--text);
   }
 
-  .q-block { font-size: 14.5px; font-weight: 600; margin: 16px 0 10px; line-height: 1.65; }
+  .q-block { font-size: calc(14.5px * var(--fs-scale)); font-weight: 600; margin: 16px 0 10px; line-height: 1.65; }
   .q-block .q-num {
     display: inline-flex; width: 20px; height: 20px; border-radius: 50%; background: var(--accent-tint);
     color: var(--accent); font-size: 11.5px; font-weight: 700; align-items: center; justify-content: center;
     margin-right: 8px; vertical-align: middle;
   }
-  .p-block { font-size: 14px; line-height: 1.8; color: var(--text); margin-bottom: 10px; }
+  .p-block { font-size: calc(14px * var(--fs-scale)); line-height: 1.8; color: var(--text); margin-bottom: 10px; }
   .p-block:last-child { margin-bottom: 0; }
 
   .divider { height: 1px; background: var(--border); margin: 18px 0; }
-  .closing-note { text-align: center; font-size: 13px; color: var(--muted); font-style: italic; margin-top: 6px; padding: 0 8px; }
+  .closing-note { text-align: center; font-size: calc(13px * var(--fs-scale)); color: var(--muted); font-style: italic; margin-top: 6px; padding: 0 8px; }
 
   .footer { text-align: center; font-size: 12px; color: #aeaeb2; margin-top: 32px; line-height: 1.8; }
 </style>
@@ -253,7 +260,11 @@
 <body>
 
 <div class="fab-group"><button onclick="location.href='/'" aria-label="홈으로">‹</button></div>
-<div class="top-fab" id="toTopWrap"><button id="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button></div>
+<div class="side-fab">
+  <button id="fontUp" aria-label="글자 크게">A+</button>
+  <button id="fontDown" aria-label="글자 작게">A-</button>
+  <button id="toTop" aria-label="맨 위로">↑</button>
+</div>
 
 <!-- ===================== Lock screen ===================== -->
 <div class="lock-overlay" id="lockOverlay">
@@ -299,9 +310,9 @@
     <button class="chip" data-target="checklist">준비 체크리스트</button>
   </div>
   <div class="subnav-scroll" id="subnavMaterial" style="display:none;">
-    <button class="chip active" data-target="round1">Round 1</button>
+    <button class="chip active" data-target="orientation">Orientation</button>
+    <button class="chip" data-target="round1">Round 1</button>
     <button class="chip" data-target="round2">Round 2</button>
-    <button class="chip" data-target="round3">Round 3</button>
   </div>
 
   <div id="content">
@@ -423,7 +434,7 @@
           <li>핸드폰 사용: 게임즈 시간에만 사용 가능하며, 그 외 시간에는 리더·크루 모두 사용하지 않습니다.</li>
           <li>본당 2층: 기획팀과 강사 외 출입 금지입니다. 부득이한 경우 김치민 목사님께 사전 신청해 주세요.</li>
           <li>이성 간 스킨십: 손잡고 기도하는 것 이상의 신체 접촉(껴안기 등)은 불가합니다. 기도·축복 시간에는 어깨에 가볍게 손 올리기, 원형으로 손잡고 기도하기 등 정제된 방식을 권장합니다.</li>
-          <li>식사·간식: 특별한 제약이 없습니다. 알러지가 있는 크루는 사전에 확인해 케어해 주세요.</li>
+          <li>식사·간식: 알러지가 있는 크루는 사전에 확인해 케어해 주세요.</li>
           <li>개인 카톡: 긴급·위급 상황이 아니면 개인적인 연락은 자제해 주세요.</li>
           <li>책자·물통 이름 작성: 크루가 스스로 직접 작성하도록 지도해 주세요 (리더가 대신 써주지 않기). 조별로 네임펜을 비치해 자율적으로 작성하게 하고, 리더가 확인(사인/도장)해 주세요.</li>
         </ul>
@@ -610,10 +621,10 @@
       <p class="closing-note">함께 준비하는 청아, 함께 발견하는 은혜가 되기를 기도합니다.</p>
     </section>
 
-    <!-- ===== Round 1 ===== -->
-    <section id="round1" class="panel">
+    <!-- ===== Orientation ===== -->
+    <section id="orientation" class="panel">
       <div class="round-header">
-        <div class="r-eyebrow">Round 1</div>
+        <div class="r-eyebrow">Orientation</div>
         <h2>우리의 첫 발걸음</h2>
         <div class="r-sub">서로를 알아가고, 청아를 기대하며 기도하는 시간</div>
       </div>
@@ -667,10 +678,10 @@
       <p class="closing-note">조원 모두의 이름을 넣어 함께 짧은 통성 기도로 마무리합니다.</p>
     </section>
 
-    <!-- ===== Round 2 ===== -->
-    <section id="round2" class="panel">
+    <!-- ===== Round 1 ===== -->
+    <section id="round1" class="panel">
       <div class="round-header">
-        <div class="r-eyebrow">Round 2</div>
+        <div class="r-eyebrow">Round 1</div>
         <h2>복음을 만나, 예수님을 닮아가다</h2>
         <div class="r-sub">가스펠 톡 "복음을 따라 가는 두 여정" 1·2장 — 성화(예수님 닮아감)의 내적 여정</div>
       </div>
@@ -726,10 +737,10 @@
       <p class="closing-note">함께 기도하며 마무리합니다: 각자 적은 '적용' 내용을 놓고 조별로 짧게 기도합니다.</p>
     </section>
 
-    <!-- ===== Round 3 ===== -->
-    <section id="round3" class="panel">
+    <!-- ===== Round 2 ===== -->
+    <section id="round2" class="panel">
       <div class="round-header">
-        <div class="r-eyebrow">Round 3</div>
+        <div class="r-eyebrow">Round 2</div>
         <h2>복음을 들고, 세상으로 나아가다</h2>
         <div class="r-sub">가스펠 톡 "복음을 따라 가는 두 여정" 3·4장 — 복음 전파의 외적 여정 &amp; 두 여정의 통합</div>
       </div>
@@ -807,9 +818,6 @@
     pwInput.focus();
   });
 
-  // Normalizes input: strips whitespace/invisible chars and converts full-width
-  // digits (occasionally produced by some mobile Korean keyboards) to normal digits,
-  // so a visually-correct password never silently fails the comparison.
   function normalize(str) {
     str = (str || "").replace(/[０-９]/g, function (ch) {
       return String.fromCharCode(ch.charCodeAt(0) - 0xFF10 + 0x30);
@@ -830,8 +838,6 @@
     }
   }
 
-  // Using a <form> + submit event (rather than just click/keydown) ensures this
-  // works consistently across desktop Enter key AND mobile keyboards' Go/Done key.
   lockForm.addEventListener("submit", function (e) {
     e.preventDefault();
     tryUnlock();
@@ -856,7 +862,7 @@
   var subnavGuide = document.getElementById("subnavGuide");
   var subnavMaterial = document.getElementById("subnavMaterial");
   var guidePanelIds = ["overview","schedule","rnr","rules","sessions","rolling","aftercare","faq","checklist"];
-  var materialPanelIds = ["round1","round2","round3"];
+  var materialPanelIds = ["orientation","round1","round2"];
 
   function showPanel(id) {
     document.querySelectorAll(".panel").forEach(function (p) {
@@ -877,8 +883,8 @@
       } else {
         subnavGuide.style.display = "none";
         subnavMaterial.style.display = "flex";
-        showPanel("round1");
-        setActiveChip(subnavMaterial, "round1");
+        showPanel("orientation");
+        setActiveChip(subnavMaterial, "orientation");
       }
     });
   });
@@ -909,10 +915,30 @@
     });
   });
 
+  // ---------- Font size control ----------
+  function getFontScale() {
+    var v = parseFloat(localStorage.getItem("ecya_fontScale"));
+    return (!isNaN(v) && v >= 0.85 && v <= 1.6) ? v : 1;
+  }
+  function applyFontScale(v) {
+    document.documentElement.style.setProperty("--fs-scale", v);
+  }
+  function bumpFontScale(delta) {
+    var v = Math.min(1.6, Math.max(0.85, +(getFontScale() + delta).toFixed(2)));
+    try { localStorage.setItem("ecya_fontScale", v); } catch (e) {}
+    applyFontScale(v);
+  }
+  applyFontScale(getFontScale());
+  document.getElementById("fontUp").addEventListener("click", function () { bumpFontScale(0.1); });
+  document.getElementById("fontDown").addEventListener("click", function () { bumpFontScale(-0.1); });
+
   // ---------- Scroll-to-top button ----------
-  var toTopWrap = document.getElementById("toTopWrap");
+  var toTopBtn = document.getElementById("toTop");
+  toTopBtn.addEventListener("click", function () {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
   window.addEventListener("scroll", function () {
-    toTopWrap.style.display = window.scrollY > 400 ? "block" : "none";
+    toTopBtn.style.display = window.scrollY > 400 ? "flex" : "none";
   });
 </script>
 </body>
