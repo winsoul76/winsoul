@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  FOUND 캠프 신규 Crew 사전 워크북 시스템 — API 서버 (Google Apps Script)
+ *  청소년 아카데미 워크북 시스템 — API 서버 (Google Apps Script)
  * ============================================================================
  *  이 스크립트는 화면(HTML)을 직접 보여주지 않고, JSON API 역할만 합니다.
  *  실제로 참가자/관리자가 보는 화면은 winsoul.de(GitHub Pages) 등 원하는
@@ -65,7 +65,7 @@ function doGet(e) {
       return jsonOut_(exportResponsesAsXlsx());
     }
 
-    return jsonOut_({ ok: true, message: 'FOUND 캠프 워크북 API 서버입니다.' });
+    return jsonOut_({ ok: true, message: '청소년 아카데미 워크북 API 서버입니다.' });
   } catch (err) {
     return jsonOut_({ error: err.message || String(err) });
   }
@@ -100,7 +100,7 @@ function initializeSheets() {
   sh.clear();
   sh.getRange(1, 1, 1, 2).setValues([['Key', 'Value']]).setFontWeight('bold');
   sh.getRange(2, 1, 3, 2).setValues([
-    ['CampName', '2026 청소년 아카데미 FOUND 캠프'],
+    ['CampName', '청소년 아카데미 워크북'],
     ['AdminPassword', 'change-me-1234'],
     ['IntroText', '아래 영상을 순서대로 시청하고, 각 영상 뒤에 나오는 질문에 답해주세요.']
   ]);
@@ -435,7 +435,7 @@ function exportResponsesAsXlsx() {
   });
 
   // 임시 스프레드시트 생성 -> xlsx로 export -> 삭제
-  const tempSs = SpreadsheetApp.create('FOUND_캠프_응답_' + new Date().getTime());
+  const tempSs = SpreadsheetApp.create('청소년아카데미_워크북_응답_' + new Date().getTime());
   const tempSheet = tempSs.getSheets()[0];
   tempSheet.setName('Responses');
   tempSheet.getRange(1, 1, 1, header.length).setValues([header]).setFontWeight('bold');
@@ -458,7 +458,7 @@ function exportResponsesAsXlsx() {
 
   return {
     base64,
-    filename: 'FOUND캠프_응답_' + Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyyMMdd_HHmm') + '.xlsx',
+    filename: '청소년아카데미_워크북_응답_' + Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyyMMdd_HHmm') + '.xlsx',
     mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
   };
 }
