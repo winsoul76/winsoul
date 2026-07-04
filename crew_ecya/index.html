@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<title>소그룹 리더 자료 · 청소년 아카데미 FOUND</title>
+<style>
+  :root {
+    --bg: #f5f5f7;
+    --card: #ffffff;
+    --text: #1d1d1f;
+    --sub: #6e6e73;
+    --muted: #86868b;
+    --accent: #6e4c1e;
+    --accent-tint: #f7f1e8;
+    --danger: #c0392b;
+    --danger-bg: #fff2f2;
+    --border: #f0f0f0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { overflow-x: hidden; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', 'Apple SD Gothic Neo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    word-break: keep-all;
+  }
+
+  /* ---------- Lock screen ---------- */
+  .lock-overlay {
+    position: fixed; inset: 0; z-index: 2000;
+    background: linear-gradient(180deg, #fbfaf8 0%, #f5f5f7 100%);
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .lock-card {
+    width: 100%; max-width: 340px; background: var(--card);
+    border-radius: 24px; padding: 40px 30px 32px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    text-align: center;
+  }
+  .lock-icon {
+    width: 56px; height: 56px; margin: 0 auto 20px; border-radius: 50%;
+    background: var(--accent-tint); display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+  }
+  .lock-card h2 { font-size: 19px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 6px; }
+  .lock-card p { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+  .lock-card input {
+    width: 100%; border: 1.5px solid #e5e5ea; border-radius: 14px;
+    padding: 14px 16px; font-size: 20px; text-align: center; letter-spacing: 6px;
+    color: var(--text); outline: none; background: #fafafa;
+    transition: border-color 0.15s ease;
+  }
+  .lock-card input:focus { border-color: var(--accent); background: #fff; }
+  .lock-err {
+    color: var(--danger); font-size: 12.5px; margin-top: 10px; font-weight: 500;
+  }
+  .lock-card button {
+    width: 100%; margin-top: 18px; border: none; border-radius: 14px;
+    padding: 14px; font-size: 15px; font-weight: 600; color: #fff;
+    background: var(--accent); cursor: pointer; transition: opacity 0.15s ease;
+  }
+  .lock-card button:active { opacity: 0.75; }
+  .lock-foot { margin-top: 20px; font-size: 11px; color: #c2c2c2; letter-spacing: 0.04em; }
+
+  /* ---------- Shell ---------- */
+  .fab-group { position: fixed; left: 16px; top: 16px; z-index: 900; }
+  .fab-group button {
+    width: 40px; height: 40px; border-radius: 50%; border: none;
+    background: rgba(255,255,255,0.85); backdrop-filter: blur(10px);
+    color: var(--text); font-size: 16px; font-weight: 700;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.10); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .top-fab { position: fixed; right: 16px; bottom: 24px; z-index: 900; display: none; }
+  .top-fab button {
+    width: 44px; height: 44px; border-radius: 50%; border: none;
+    background: #1d1d1f; color: #fff; font-size: 16px; font-weight: 700;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.22); cursor: pointer;
+  }
+
+  .wrap { max-width: 640px; margin: 0 auto; padding: 64px 16px 80px; }
+
+  .page-header { text-align: center; margin-bottom: 28px; }
+  .page-header .date { font-size: 12px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .page-header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.4px; margin-bottom: 6px; }
+  .page-header .ref-title { font-size: 15px; color: var(--sub); }
+
+  /* ---------- Segmented control ---------- */
+  .segmented {
+    display: flex; background: rgba(118,118,128,0.12); border-radius: 14px;
+    padding: 3px; margin-bottom: 16px; position: sticky; top: 12px; z-index: 100;
+    backdrop-filter: blur(20px);
+  }
+  .seg-btn {
+    flex: 1; border: none; background: transparent; padding: 10px 8px;
+    font-size: 14px; font-weight: 600; color: var(--sub); border-radius: 11px;
+    cursor: pointer; transition: all 0.2s ease;
+  }
+  .seg-btn.active { background: #fff; color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
+
+  /* ---------- Sub nav chips ---------- */
+  .subnav-scroll {
+    display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 18px;
+    scrollbar-width: none;
+  }
+  .subnav-scroll::-webkit-scrollbar { display: none; }
+  .chip {
+    flex: 0 0 auto; border: none; background: #fff; color: var(--sub);
+    font-size: 13.5px; font-weight: 600; padding: 9px 16px; border-radius: 100px;
+    cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.05); white-space: nowrap;
+    transition: all 0.15s ease;
+  }
+  .chip.active { background: var(--accent); color: #fff; }
+
+  /* ---------- Panels & cards ---------- */
+  .panel { display: none; animation: fadeIn 0.25s ease; }
+  .panel.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .card {
+    background: var(--card); border-radius: 18px; padding: 24px 22px;
+    margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .card.warn { background: var(--danger-bg); }
+  .card.tip { background: var(--accent-tint); }
+  .card.verse { background: var(--accent-tint); border-radius: 16px; padding: 20px 22px; }
+
+  .section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+  }
+  .card.warn .section-label { color: var(--danger); }
+  .tag {
+    font-size: 10.5px; font-weight: 600; background: rgba(110,76,30,0.1); color: var(--accent);
+    padding: 3px 8px; border-radius: 100px; text-transform: none; letter-spacing: 0;
+  }
+
+  .info-grid { display: flex; flex-direction: column; gap: 12px; }
+  .info-row { display: flex; gap: 14px; font-size: 14px; line-height: 1.6; }
+  .info-k { flex: 0 0 92px; color: var(--muted); font-weight: 600; }
+  .info-v { flex: 1; color: var(--text); }
+
+  .bullet-list { list-style: none; }
+  .bullet-list li {
+    position: relative; padding-left: 18px; font-size: 14.5px; line-height: 1.75;
+    color: var(--text); margin-bottom: 10px;
+  }
+  .bullet-list li:last-child { margin-bottom: 0; }
+  .bullet-list li::before {
+    content: ""; position: absolute; left: 2px; top: 9px;
+    width: 5px; height: 5px; border-radius: 50%; background: var(--accent);
+  }
+  .bullet-list.tight li { margin-bottom: 6px; }
+
+  h3.sub-h { font-size: 15.5px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.2px; }
+
+  /* schedule */
+  .day-badge {
+    display: inline-block; font-size: 13px; font-weight: 700; color: #fff;
+    background: var(--accent); padding: 5px 14px; border-radius: 100px; margin-bottom: 16px;
+  }
+  .timeline { display: flex; flex-direction: column; }
+  .t-row {
+    display: flex; gap: 16px; padding: 9px 0; border-bottom: 0.5px solid var(--border);
+    font-size: 14px;
+  }
+  .t-row:last-child { border-bottom: none; }
+  .t-time { flex: 0 0 52px; font-weight: 700; color: var(--accent); }
+  .t-desc { flex: 1; color: var(--text); }
+  .note-text { font-size: 12.5px; color: var(--muted); line-height: 1.7; margin-top: 4px; }
+
+  /* accordion (details/summary) */
+  details.acc {
+    background: var(--card); border-radius: 16px; margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04); overflow: hidden;
+  }
+  details.acc summary {
+    list-style: none; cursor: pointer; padding: 18px 20px;
+    font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: space-between;
+  }
+  details.acc summary::-webkit-details-marker { display: none; }
+  details.acc summary::after {
+    content: "+"; font-size: 20px; font-weight: 400; color: var(--muted); transition: transform 0.2s ease;
+    margin-left: 12px;
+  }
+  details.acc[open] summary::after { transform: rotate(45deg); }
+  details.acc .acc-body { padding: 0 20px 20px; }
+  details.acc .acc-body .bullet-list li { font-size: 14px; }
+
+  .faq-q { font-size: 14.5px; font-weight: 600; }
+  .faq-a { font-size: 13.5px; color: var(--sub); line-height: 1.75; margin-top: 10px; }
+
+  /* checklist */
+  .check-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; font-size: 14px; }
+  .check-item input[type="checkbox"] {
+    width: 19px; height: 19px; margin-top: 1px; accent-color: var(--accent); flex-shrink: 0;
+  }
+  .check-item label { line-height: 1.6; }
+
+  /* materials */
+  .round-header { text-align: center; margin-bottom: 18px; }
+  .round-header .r-eyebrow { font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+  .round-header h2 { font-size: 21px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 6px; }
+  .round-header .r-sub { font-size: 13.5px; color: var(--muted); font-style: italic; }
+
+  .verse-ref { font-size: 12.5px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+  .verse-text { font-size: 14.5px; font-style: italic; color: var(--text); line-height: 1.75; }
+
+  .activity { margin-bottom: 20px; }
+  .activity:last-child { margin-bottom: 0; }
+  .activity-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; display: flex; gap: 8px; }
+  .activity-num {
+    flex: 0 0 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff;
+    font-size: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700;
+  }
+  .activity-body { font-size: 14px; line-height: 1.75; color: var(--text); margin-bottom: 8px; padding-left: 30px; }
+  .activity .bullet-list { padding-left: 30px; }
+  .example-box {
+    margin-left: 30px; background: #fafafa; border-radius: 12px; padding: 12px 14px;
+    font-size: 13px; color: var(--sub); line-height: 1.7; margin-top: 6px;
+  }
+  .fill-box {
+    margin: 10px 0 0 30px; background: #fafafa; border: 1px dashed #d2d2d7; border-radius: 12px;
+    padding: 14px 16px; font-size: 13.5px; line-height: 2; color: var(--text);
+  }
+
+  .q-block { font-size: 14.5px; font-weight: 600; margin: 16px 0 10px; line-height: 1.65; }
+  .q-block .q-num {
+    display: inline-flex; width: 20px; height: 20px; border-radius: 50%; background: var(--accent-tint);
+    color: var(--accent); font-size: 11.5px; font-weight: 700; align-items: center; justify-content: center;
+    margin-right: 8px; vertical-align: middle;
+  }
+  .p-block { font-size: 14px; line-height: 1.8; color: var(--text); margin-bottom: 10px; }
+  .p-block:last-child { margin-bottom: 0; }
+
+  .divider { height: 1px; background: var(--border); margin: 18px 0; }
+  .closing-note { text-align: center; font-size: 13px; color: var(--muted); font-style: italic; margin-top: 6px; padding: 0 8px; }
+
+  .footer { text-align: center; font-size: 12px; color: #aeaeb2; margin-top: 32px; line-height: 1.8; }
+</style>
+</head>
+<body>
+
+<div class="fab-group"><button onclick="location.href='/'" aria-label="홈으로">‹</button></div>
+<div class="top-fab" id="toTopWrap"><button id="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button></div>
+
+<!-- ===================== Lock screen ===================== -->
+<div class="lock-overlay" id="lockOverlay">
+  <div class="lock-card">
+    <div class="lock-icon">🔒</div>
+    <h2>소그룹 리더 전용 자료</h2>
+    <p>비밀번호를 입력해 주세요</p>
+    <form id="lockForm" autocomplete="off">
+      <input type="password" id="pwInput" inputmode="numeric" maxlength="12" placeholder="••••••" autocomplete="off">
+      <div class="lock-err" id="lockErr" style="display:none;">비밀번호가 올바르지 않습니다</div>
+      <button type="submit" id="unlockBtn">확인</button>
+    </form>
+    <div class="lock-foot">CREW ECYA · WINSOUL</div>
+  </div>
+</div>
+
+<!-- ===================== App ===================== -->
+<div class="wrap" id="app" style="display:none;">
+
+  <div class="page-header">
+    <div class="date">2026.08 · CREW ECYA</div>
+    <h1>청소년 아카데미 FOUND</h1>
+    <div class="ref-title">소그룹 리더 참고 자료</div>
+  </div>
+
+  <div class="segmented" id="topTabs">
+    <button class="seg-btn active" data-top="guide">리더 안내서</button>
+    <button class="seg-btn" data-top="material">소그룹 교재</button>
+  </div>
+
+  <div class="subnav-scroll" id="subnavGuide">
+    <button class="chip active" data-target="overview">개요</button>
+    <button class="chip" data-target="schedule">전체 일정표</button>
+    <button class="chip" data-target="rnr">리더 R&amp;R</button>
+    <button class="chip" data-target="rules">운영 원칙</button>
+    <button class="chip" data-target="sessions">세션별 가이드</button>
+    <button class="chip" data-target="rolling">칭찬 롤링페이퍼</button>
+    <button class="chip" data-target="aftercare">청아 이후 케어</button>
+    <button class="chip" data-target="faq">FAQ</button>
+    <button class="chip" data-target="checklist">준비 체크리스트</button>
+  </div>
+  <div class="subnav-scroll" id="subnavMaterial" style="display:none;">
+    <button class="chip active" data-target="round1">Round 1</button>
+    <button class="chip" data-target="round2">Round 2</button>
+    <button class="chip" data-target="round3">Round 3</button>
+  </div>
+
+  <div id="content">
+
+    <!-- ===== 개요 ===== -->
+    <section id="overview" class="panel active">
+      <div class="card">
+        <div class="section-label">기간 · 주제</div>
+        <div class="info-grid">
+          <div class="info-row"><span class="info-k">기간</span><span class="info-v">2026년 8월 3일(월) 14:00 ~ 8월 6일(목) 14:30</span></div>
+          <div class="info-row"><span class="info-k">주제</span><span class="info-v">Found, 복음 안에서 발견되다</span></div>
+          <div class="info-row"><span class="info-k">입단 말씀</span><span class="info-v">빌립보서 3:8-9</span></div>
+          <div class="info-row"><span class="info-k">담당 교역자</span><span class="info-v">김치민 목사님</span></div>
+          <div class="info-row"><span class="info-k">담당</span><span class="info-v">소그룹팀장, 소그룹 리더 (모든 조 한국어로 진행)</span></div>
+        </div>
+      </div>
+      <div class="card tip">
+        <div class="section-label">이번 청아, 이렇게 달라졌어요 <span class="tag">봄 청아 피드백 반영</span></div>
+        <ul class="bullet-list">
+          <li>사전 체크 항목 간소화 — 알러지·기도 시간 터치 확인 항목 삭제, 큐티 완주·부재 상황·귀가 방법 중심으로 확인</li>
+          <li>60일 큐티 완주 선물은 미리 조별로 분류·포장하여 3일차 아침에 배부</li>
+          <li>롤링페이퍼 작성 시간을 공식 일정(3일차 오후~)에 반영</li>
+          <li>무더운 날(32도 이상)에는 사전에 정해진 대로 전원 실내로 이동 — 부채나 물만 주고 더위를 견디게 하지 않기</li>
+          <li>게임즈 규칙·가이드는 정해진 방식으로만 부착 — 임의로 떼어가지 않도록 사전 안내</li>
+          <li>마지막 날 사진 공유 시 태그·공개 범위 관련 유의사항 사전 안내</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== 전체 일정표 ===== -->
+    <section id="schedule" class="panel">
+      <div class="card">
+        <span class="day-badge">8/3 (월)</span>
+        <div class="timeline">
+          <div class="t-row"><span class="t-time">14:00</span><span class="t-desc">등록</span></div>
+          <div class="t-row"><span class="t-time">15:00</span><span class="t-desc">여는 예배</span></div>
+          <div class="t-row"><span class="t-time">16:00</span><span class="t-desc">입단식</span></div>
+          <div class="t-row"><span class="t-time">16:30</span><span class="t-desc">Small Group Opening (첫 모임)</span></div>
+          <div class="t-row"><span class="t-time">18:00</span><span class="t-desc">저녁식사</span></div>
+          <div class="t-row"><span class="t-time">19:00</span><span class="t-desc">저녁 집회 #1 (~22:00)</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <span class="day-badge">8/4 (화)</span>
+        <div class="timeline">
+          <div class="t-row"><span class="t-time">09:00</span><span class="t-desc">Switch On</span></div>
+          <div class="t-row"><span class="t-time">09:30</span><span class="t-desc">Gospel Talk #1</span></div>
+          <div class="t-row"><span class="t-time">11:00</span><span class="t-desc">Small Group Round 1</span></div>
+          <div class="t-row"><span class="t-time">12:30</span><span class="t-desc">점심식사</span></div>
+          <div class="t-row"><span class="t-time">13:30</span><span class="t-desc">Special Talk</span></div>
+          <div class="t-row"><span class="t-time">14:30</span><span class="t-desc">Games (~18:00)</span></div>
+          <div class="t-row"><span class="t-time">18:00</span><span class="t-desc">저녁식사</span></div>
+          <div class="t-row"><span class="t-time">19:00</span><span class="t-desc">저녁 집회 #2 (~22:00)</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <span class="day-badge">8/5 (수)</span>
+        <div class="timeline">
+          <div class="t-row"><span class="t-time">09:00</span><span class="t-desc">Switch On</span></div>
+          <div class="t-row"><span class="t-time">09:30</span><span class="t-desc">Gospel Talk #2</span></div>
+          <div class="t-row"><span class="t-time">11:00</span><span class="t-desc">Small Group Round 2</span></div>
+          <div class="t-row"><span class="t-time">12:30</span><span class="t-desc">점심식사</span></div>
+          <div class="t-row"><span class="t-time">13:30</span><span class="t-desc">Mentoring Talk</span></div>
+          <div class="t-row"><span class="t-time">14:30</span><span class="t-desc">멘토링 Round Talk (~16:30)</span></div>
+          <div class="t-row"><span class="t-time">16:30</span><span class="t-desc">Small Group Round 3</span></div>
+          <div class="t-row"><span class="t-time">18:00</span><span class="t-desc">저녁식사</span></div>
+          <div class="t-row"><span class="t-time">19:00</span><span class="t-desc">저녁 집회 #3 (~22:00)</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <span class="day-badge">8/6 (목)</span>
+        <div class="timeline">
+          <div class="t-row"><span class="t-time">09:00</span><span class="t-desc">Switch On</span></div>
+          <div class="t-row"><span class="t-time">09:30</span><span class="t-desc">발표 (~12:00)</span></div>
+          <div class="t-row"><span class="t-time">12:00</span><span class="t-desc">수료 &amp; 졸업</span></div>
+          <div class="t-row"><span class="t-time">12:30</span><span class="t-desc">점심식사</span></div>
+          <div class="t-row"><span class="t-time">13:30</span><span class="t-desc">닫는 예배 (~14:30, 전체 일정 종료)</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <p class="note-text">※ 매일 아침 본당 입구(왼편, 가운데)에 당일 좌석 배치표가 부착됩니다. 조별 모임 장소도 요일에 따라 바뀌므로(월·화 ↔ 수·목) 현장 안내를 꼭 확인하세요.</p>
+      </div>
+    </section>
+
+    <!-- ===== 리더 R&R ===== -->
+    <section id="rnr" class="panel">
+      <div class="card">
+        <div class="section-label">소그룹 리더</div>
+        <ul class="bullet-list">
+          <li>밝고 긍정적인 그리스도인의 모델이 되어주세요 — 판단·비판·훈계·지적은 금지, 강의가 아닌 '나눔'으로 함께해 주세요.</li>
+          <li>본당 모임 시에는 가급적 조의 뒷줄에 앉아 졸거나 핸드폰을 하거나 잡담하는 크루를 자연스럽게 케어해 주세요.</li>
+          <li>Stay in the team — 청아 기간 중에는 자신의 조를 끝까지 책임져 주세요.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="section-label">조장 · 부조장</div>
+        <ul class="bullet-list">
+          <li>하나님을 뜨겁게 만나 삶의 변화를 경험한 간증이 있는 크루를 선출해 주세요 (최고학년 및 그다음 학년이면 더욱 좋음).</li>
+          <li>인원 체크, 간식 및 반에 필요한 것 챙기기, 조 명칭·구호·게임즈·마지막 발표 준비 등 조별 미션을 주도해 주세요.</li>
+          <li>나눔을 먼저 나누는 등 리더를 도와 분위기를 조성해 주세요.</li>
+        </ul>
+      </div>
+      <div class="card warn">
+        <div class="section-label">⚠ 필수 안전 · 비밀유지 수칙</div>
+        <ul class="bullet-list">
+          <li>어떤 경우에도 리더와 Crew가 밀폐된 공간에 단둘이 있어서는 안 됩니다. 개인 면담은 반드시 개방된 공간에서 진행해 주세요.</li>
+          <li>청아에서 알게 된 모든 내용(상담 내용 등)과 사진은 외부로 유출하지 않습니다. 특히 개인정보는 민감한 부분이므로 SNS(인스타그램 등)에 공개하지 않습니다.</li>
+          <li>청아 시작 전 조편성과 관련된 정보는 반드시 비밀을 지켜주세요.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== 운영 원칙 ===== -->
+    <section id="rules" class="panel">
+      <div class="card">
+        <div class="section-label">공통 운영 원칙</div>
+        <ul class="bullet-list">
+          <li>단복 착용: 청아의 기본 원칙입니다. 덥더라도 임의로 완전히 벗지 않도록 지도하고, 부득이한 예외 상황은 리더가 부드럽게 권면해 주세요 (집요하게 강제하지 않기).</li>
+          <li>핸드폰 사용: 게임즈 시간에만 사용 가능하며, 그 외 시간에는 리더·크루 모두 사용하지 않습니다.</li>
+          <li>본당 2층: 기획팀과 강사 외 출입 금지입니다. 부득이한 경우 김치민 목사님께 사전 신청해 주세요.</li>
+          <li>이성 간 스킨십: 손잡고 기도하는 것 이상의 신체 접촉(껴안기 등)은 불가합니다. 기도·축복 시간에는 어깨에 가볍게 손 올리기, 원형으로 손잡고 기도하기 등 정제된 방식을 권장합니다.</li>
+          <li>식사·간식: 특별한 제약이 없습니다. 알러지가 있는 크루는 사전에 확인해 케어해 주세요.</li>
+          <li>개인 카톡: 긴급·위급 상황이 아니면 개인적인 연락은 자제해 주세요.</li>
+          <li>책자·물통 이름 작성: 크루가 스스로 직접 작성하도록 지도해 주세요 (리더가 대신 써주지 않기). 조별로 네임펜을 비치해 자율적으로 작성하게 하고, 리더가 확인(사인/도장)해 주세요.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== 세션별 가이드 ===== -->
+    <section id="sessions" class="panel">
+      <details class="acc" open>
+        <summary>등록 · 입단</summary>
+        <div class="acc-body">
+          <ul class="bullet-list">
+            <li>조원을 1:1로 만나 인사하고 사전 체크표를 작성합니다 (큐티 완주 여부, 새벽예배 참석, 부재 상황, 귀가 방법 등).</li>
+            <li>일정 중 부재가 예정된 크루는 외출 서약서에 서명을 받아 주세요.</li>
+            <li>입단 뱃지·에코백 수령을 안내해 주세요.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="acc">
+        <summary>Small Group Opening (첫 모임)</summary>
+        <div class="acc-body">
+          <ul class="bullet-list">
+            <li>리더가 먼저 자기소개를 합니다 — 하나님을 만난 간증 중심으로 3분 이내로 간단히.</li>
+            <li>자기소개(이름·나이·사는 곳·좋아하는 것)와 신앙 나눔, 입단 말씀 암송(저녁식사 전까지)을 진행합니다.</li>
+            <li>조 명칭·조 구호를 정하고, 조장·부조장을 선출합니다.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="acc">
+        <summary>Switch On (QT 나눔)</summary>
+        <div class="acc-body">
+          <ul class="bullet-list">
+            <li>나눔짝을 정해주고, 짝이 없는 친구는 리더가 함께 도와주세요.</li>
+            <li>컨디션이 좋지 않은 크루가 없는지 확인해 주세요.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="acc">
+        <summary>소그룹 라운드 1·2</summary>
+        <div class="acc-body">
+          <ul class="bullet-list">
+            <li>시작할 때와 끝날 때 기도합니다 (모든 크루가 한 번은 기도할 수 있도록 라운드 전체에 배분).</li>
+            <li>리더가 일방적으로 가르치기보다, 질문을 통해 크루들이 스스로 답을 찾아가도록 진행해 주세요 — 강의가 아닌 나눔입니다.</li>
+            <li>주제 말씀과 목표를 간단히 언급하고 소책자 내용을 따라가며 진행합니다.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="acc">
+        <summary>소그룹 라운드 3</summary>
+        <div class="acc-body">
+          <ul class="bullet-list">
+            <li>마지막 날 발표(길드) 준비를 진행합니다 — 조원들이 직접 무대에 나와서 발표합니다.</li>
+            <li>끝나면 롤링페이퍼를 작성합니다 (별도 시간이 없으니 3일차 오후부터 틈나는 대로 작성할 수 있도록 안내).</li>
+          </ul>
+        </div>
+      </details>
+      <details class="acc">
+        <summary>Games</summary>
+        <div class="acc-body">
+          <ul class="bullet-list">
+            <li>사전에 동선을 파악하고 타임 키퍼 역할을 함께 수행해 주세요.</li>
+            <li>잘 참여하지 못하거나 방해가 되는 친구들을 별도로 케어해 주세요.</li>
+            <li>결과와 상관없이 조를 격려해 주세요. 중간중간 사진을 찍어 소그룹 리더 단톡방과 조별 단톡방에 공유해 주세요.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="acc">
+        <summary>멘토링</summary>
+        <div class="acc-body">
+          <ul class="bullet-list">
+            <li>지정된 멘토링을 안내하고 이동 시 방황하는 크루를 안내해 주세요 (원하는 멘토링에 참석 가능, 장소 못 찾는 조원 우선 안내 후 본인 희망 멘토링 참여).</li>
+            <li>소그룹 리더도 크루들과 함께 참여합니다.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="acc">
+        <summary>저녁 집회</summary>
+        <div class="acc-body">
+          <ul class="bullet-list">
+            <li>Celebration 전까지는 조를 이탈하지 않도록 지도해 주세요.</li>
+            <li>찬양 시간에 앞으로 나갈 수 있으니 무대 앞쪽 공간을 확보해 주세요.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="acc">
+        <summary>마무리 · 귀가</summary>
+        <div class="acc-body">
+          <ul class="bullet-list">
+            <li>조원 모두 정해진 순서에 귀가하도록 지도해 주세요 (픽업 22시).</li>
+            <li>귀가 간식은 소그룹 리더를 통해 배부합니다.</li>
+            <li>새벽기도 픽업: 가능한 소그룹 리더들이 돌아가며 픽업을 지원합니다 (사전에 순번을 정해 두세요).</li>
+          </ul>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===== 칭찬 롤링페이퍼 ===== -->
+    <section id="rolling" class="panel">
+      <div class="card">
+        <div class="section-label">마니또 대안 — 칭찬 롤링페이퍼</div>
+        <p class="p-block">이번 청아에는 마니또 대신, 소그룹 내에서 자칫 소외될 수 있는 지체들을 적극적으로 세워주는 '칭찬 롤링페이퍼'를 진행합니다.</p>
+        <ul class="bullet-list">
+          <li>매일 밤 본당에서 시간을 배정합니다 (담당 목사님이 3분 정리 시간을 진행).</li>
+          <li>소그룹 모임에서 한 명씩 그날의 주인공을 정해, 모든 조원이 그 친구의 장점이나 고마운 점을 포스트잇에 적어 크루의 책자에 붙여줍니다.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== 청아 이후 케어 ===== -->
+    <section id="aftercare" class="panel">
+      <div class="card">
+        <div class="section-label">청아 이후 크루 케어</div>
+        <ul class="bullet-list">
+          <li>간증문: 청아 오기 전의 마음, 청아의 은혜·변화·간증, 청아 후 다짐 기도를 담아 주일까지 전원 제출합니다.</li>
+          <li>60일 큐티 챌린지: 자원하는 크루만 별도 단톡방을 만들어 매일 인증 및 체크합니다. 처음 3일은 개별 연락으로 독려해 주세요.</li>
+          <li>별도 만남은 자제해 주세요 (특히 다른 교회 출석 중인 크루).</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== FAQ ===== -->
+    <section id="faq" class="panel">
+      <details class="acc" open>
+        <summary class="faq-q">수료 기준이 궁금해요</summary>
+        <div class="acc-body faq-a">1일차부터 4일차 수료식까지 전 일정에 참석해야 합니다 (고의가 아닌 지각은 예외 인정). 입단 말씀 암송을 끝까지 못해 입단 뱃지를 받지 못한 경우 미수료로 처리될 수 있으니, 암송을 꼭 챙겨주세요.</div>
+      </details>
+      <details class="acc">
+        <summary class="faq-q">예배·강의 중 화장실/물은 어떻게 하나요?</summary>
+        <div class="acc-body faq-a">부득이한 경우 리더에게 이야기하고 다녀오기(최대 10분). 3회 이상 반복되면 소그룹팀장에게 공유해 주세요.</div>
+      </details>
+      <details class="acc">
+        <summary class="faq-q">찬양·반주 소리가 너무 크다는 크루가 있어요</summary>
+        <div class="acc-body faq-a">본당 앞 의료용 Kit에 준비된 귀마개를 전달해 주세요.</div>
+      </details>
+      <details class="acc">
+        <summary class="faq-q">조 적응이 힘든 크루(일탈, 단독 행동, 소통 어려움 등)는요?</summary>
+        <div class="acc-body faq-a">소그룹팀장에게 공유하고 별도 면담을 진행하며, 어려운 경우 담당 목사님과 상의합니다.</div>
+      </details>
+      <details class="acc">
+        <summary class="faq-q">조 모임 분위기를 해치는 크루가 있다면?</summary>
+        <div class="acc-body faq-a">리더 판단에 따라 소그룹팀장에게 인계하고 10분 이내로 면담을 진행합니다 (아카데미 취지와 크루의 어려움·기도제목을 듣고 함께 기도하는 시간으로 활용하고, 면담 내용은 당일 저녁 담당 교역자·리더와 공유해 주세요).</div>
+      </details>
+      <details class="acc">
+        <summary class="faq-q">응급 상황(아프거나 다치거나)이 발생하면?</summary>
+        <div class="acc-body faq-a">상주하는 의료 지원팀에 인도해 주세요.</div>
+      </details>
+      <details class="acc">
+        <summary class="faq-q">우천 시 호텔 픽업은 어떻게 하나요?</summary>
+        <div class="acc-body faq-a">오전에 소그룹 리더들이 왕복 픽업을 지원합니다.</div>
+      </details>
+      <details class="acc">
+        <summary class="faq-q">핸드북을 분실했어요</summary>
+        <div class="acc-body faq-a">소그룹팀장이 여분을 보유하고 있으니 필요 시 요청해 주세요.</div>
+      </details>
+      <details class="acc">
+        <summary class="faq-q">아침에 늦게 오는 크루는 어떻게 하나요?</summary>
+        <div class="acc-body faq-a">리더가 확인 후 예상 도착 시간을 소그룹팀장에게 전달해 주세요 (큐티 이후 가스펠 톡 시작 이후 참여 시 미수료 판정).</div>
+      </details>
+      <details class="acc">
+        <summary class="faq-q">조기 귀가가 가능한가요?</summary>
+        <div class="acc-body faq-a">인정되지 않으며, 조기 귀가로 표기된 경우 참석 불가로 처리됩니다.</div>
+      </details>
+      <details class="acc">
+        <summary class="faq-q">반 배정 불만(변경 요청 등)은 어떻게 처리하나요?</summary>
+        <div class="acc-body faq-a">원칙적으로 변경 불가이나, 예외 상황 발생 시 소그룹팀장이 교역자와 상의하여 조정합니다.</div>
+      </details>
+    </section>
+
+    <!-- ===== 준비 체크리스트 ===== -->
+    <section id="checklist" class="panel">
+      <div class="card">
+        <div class="section-label">청아 시작 전</div>
+        <div class="check-item"><input type="checkbox" id="c1"><label for="c1">리더 매뉴얼 및 이 안내서 숙지, 사역자 서약서 제출</label></div>
+        <div class="check-item"><input type="checkbox" id="c2"><label for="c2">조편성 결과 확인, 입단 말씀 암송 체크</label></div>
+        <div class="check-item"><input type="checkbox" id="c3"><label for="c3">소그룹 리더 물품 확보 (소품함, 가방, 소책자), 티셔츠 사이즈 확인</label></div>
+      </div>
+      <div class="card">
+        <div class="section-label">청아 시작 D-2 ~ D-1</div>
+        <div class="check-item"><input type="checkbox" id="c4"><label for="c4">조별 모임 장소 확인 및 책상·의자 배치</label></div>
+        <div class="check-item"><input type="checkbox" id="c5"><label for="c5">본당 의자 배치 세팅 — 세팅 전 현재 배치 상태를 사진으로 정확히 촬영해 두기 (종료 후 원복해야 함)</label></div>
+        <div class="check-item"><input type="checkbox" id="c6"><label for="c6">조별 깃발 고정, 조 번호표 부착</label></div>
+        <div class="check-item"><input type="checkbox" id="c7"><label for="c7">조별 연락처 저장 및 카톡 프로필 확인 (프로필이 뜨지 않는 크루는 첫날 QR 코드로 추가)</label></div>
+      </div>
+      <p class="closing-note">함께 준비하는 청아, 함께 발견하는 은혜가 되기를 기도합니다.</p>
+    </section>
+
+    <!-- ===== Round 1 ===== -->
+    <section id="round1" class="panel">
+      <div class="round-header">
+        <div class="r-eyebrow">Round 1</div>
+        <h2>우리의 첫 발걸음</h2>
+        <div class="r-sub">서로를 알아가고, 청아를 기대하며 기도하는 시간</div>
+      </div>
+      <div class="card">
+        <div class="info-grid">
+          <div class="info-row"><span class="info-k">목표</span><span class="info-v">조원들이 서로를 알아가며 청아에 대한 기대를 나누고, 서로를 위해 축복하며 기도한다</span></div>
+          <div class="info-row"><span class="info-k">시간</span><span class="info-v">약 20분</span></div>
+          <div class="info-row"><span class="info-k">준비물</span><span class="info-v">기대 카드(양식 참고), 필기구</span></div>
+        </div>
+      </div>
+      <div class="card verse">
+        <div class="verse-ref">시편 133:1</div>
+        <div class="verse-text">보라 형제가 연합하여 동거함이 어찌 그리 선하고 아름다운고</div>
+      </div>
+      <div class="card">
+        <div class="activity">
+          <div class="activity-title"><span class="activity-num">1</span>짝 인터뷰 — "당신을 알고 싶어요" (5분)</div>
+          <div class="activity-body">2인 1조로 짝을 짓고, 아래 세 질문을 서로 묻고 답합니다.</div>
+          <ul class="bullet-list">
+            <li>나를 한 문장으로 소개한다면?</li>
+            <li>요즘 내 마음 날씨는? (맑음 / 흐림 / 비 / 무지개 — 이유도 함께)</li>
+            <li>이번 청아에서 가장 기대되는 순간을 하나만 고른다면?</li>
+          </ul>
+        </div>
+        <div class="activity">
+          <div class="activity-title"><span class="activity-num">2</span>소개 릴레이 — "이 친구를 소개합니다" (7분)</div>
+          <div class="activity-body">조로 모여 앉아, 내가 아니라 짝이 나를 대신 소개해 줍니다.</div>
+          <div class="example-box">예: "이 친구는 OOO인데, 요즘 마음 날씨는 무지개래요. 왜냐하면…"<br>자기 이야기를 남이 대신 해 주면 훨씬 편안하게 마음이 열립니다.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-title"><span class="activity-num">3</span>기대 카드 쓰기 — "내가 기대하는 것" (5분)</div>
+          <div class="activity-body">이번 청아를 통해 만나고 싶은 하나님의 모습, 되고 싶은 나의 모습을 카드에 적어 봅니다.</div>
+          <div class="fill-box">
+            이번 청아에서 나는 하나님을 ( &nbsp; ) 분으로 만나고 싶어요.<br>
+            이번 청아가 끝날 때, 나는 ( &nbsp; ) 사람이 되어 있으면 좋겠어요.
+          </div>
+        </div>
+        <div class="activity">
+          <div class="activity-title"><span class="activity-num">4</span>축복 기도 릴레이 — "너를 위해 기도할게" (5분)</div>
+          <div class="activity-body">원으로 둘러앉습니다. 한 사람씩 이름이 불리면, 나머지 조원들이 그 사람을 위해 한 문장씩 짧게 축복 기도를 해 줍니다.</div>
+          <div class="example-box">예: "OOO야, 네가 이번 청아에서 하나님을 깊이 만나길 기도해."<br>리더가 먼저 시범을 보여주면 크루들이 훨씬 편하게 참여합니다.</div>
+        </div>
+      </div>
+      <div class="card tip">
+        <div class="section-label">리더 진행 Tip</div>
+        <ul class="bullet-list">
+          <li>기대 카드는 나중에 간증문이나 롤링페이퍼와 이어서 다시 꺼내볼 수 있으니 잘 보관하도록 안내해 주세요.</li>
+          <li>시간이 부족하면 기대 카드 쓰기를 생략하고 인터뷰 → 소개 → 축복 기도 순서로 진행해도 좋습니다.</li>
+        </ul>
+      </div>
+      <p class="closing-note">조원 모두의 이름을 넣어 함께 짧은 통성 기도로 마무리합니다.</p>
+    </section>
+
+    <!-- ===== Round 2 ===== -->
+    <section id="round2" class="panel">
+      <div class="round-header">
+        <div class="r-eyebrow">Round 2</div>
+        <h2>복음을 만나, 예수님을 닮아가다</h2>
+        <div class="r-sub">가스펠 톡 "복음을 따라 가는 두 여정" 1·2장 — 성화(예수님 닮아감)의 내적 여정</div>
+      </div>
+      <div class="card">
+        <div class="info-grid">
+          <div class="info-row"><span class="info-k">목표</span><span class="info-v">인생을 설계하는 진짜 방법이 복음을 만나는 것임을 깨닫고, 나의 영적 습관을 돌아본다</span></div>
+          <div class="info-row"><span class="info-k">시간</span><span class="info-v">약 90분</span></div>
+          <div class="info-row"><span class="info-k">준비물</span><span class="info-v">소책자, 필기구</span></div>
+        </div>
+      </div>
+      <div class="card verse">
+        <div class="verse-ref">빌립보서 3:13-14</div>
+        <div class="verse-text">형제들아 나는 아직 내가 잡은 줄로 여기지 아니하고 오직 한 일 즉 뒤에 있는 것은 잊어버리고 앞에 있는 것을 잡으려고 푯대를 향하여 그리스도 예수 안에서 하나님이 위에서 부르신 부름의 상을 위하여 달려가노라</div>
+      </div>
+      <div class="card">
+        <h3 class="sub-h">Opening</h3>
+        <div class="q-block"><span class="q-num">1</span>지금까지 살면서 '이렇게 살아야겠다'고 다짐했던 인생관이나 좌우명이 있었나요? 있다면 무엇인가요?</div>
+      </div>
+      <div class="card">
+        <h3 class="sub-h">1. 인생의 길, 어떻게 설계할까요?</h3>
+        <p class="p-block">사람들은 보통 두 가지 태도로 인생을 설계합니다.</p>
+        <ul class="bullet-list">
+          <li>까르페 디엠(현재를 즐겨라) — 오늘 이 순간을 마음껏 즐기자는 태도. 하지만 방향이 없으면 순간의 즐거움만 좇다 공허해질 수 있어요.</li>
+          <li>메멘토 모리(죽음을 기억하라) — 인생이 유한하다는 것을 기억하며 신중하게 살자는 태도. 하지만 여전히 '어디를 향해' 갈지는 알려주지 않아요.</li>
+          <li>복음을 만나라! — 예수님을 만나는 것이야말로 진짜 인생 설계의 시작점입니다. 방향(푯대)이 생기기 때문이에요.</li>
+        </ul>
+        <div class="q-block"><span class="q-num">2</span>나는 지금까지 어떤 태도로 살아왔나요? (까르페 디엠 / 메멘토 모리 / 아직 잘 모르겠음) 그 이유는 무엇인가요?</div>
+      </div>
+      <div class="card">
+        <h3 class="sub-h">2. 성화의 내적 여정 — 예수님을 닮아가는 나의 트랙</h3>
+        <p class="p-block">복음을 만난 뒤에는 예수님을 점점 닮아가는 여정이 시작됩니다. 이 여정에는 네 가지 요소가 있어요.</p>
+        <ul class="bullet-list">
+          <li>복음 DNA — 은혜(하나님이 거저 주시는 것)와 믿음(내가 그 은혜에 반응하는 것)의 조합이 나를 변화시킵니다.</li>
+          <li>온라인(트랙) 유지 — 큐티, 기도, 예배 같은 영적 습관이 나를 트랙 위에 있게 해 줍니다.</li>
+          <li>거룩함의 하이웨이 달리기 — 성령님이 보여주시는 비전을 수신하며 그 길을 달려가는 것입니다.</li>
+          <li>정상체험의 중요성 — 하나님을 강렬하게 만나는 특별한 순간(기름부으심)을 사모하는 것입니다.</li>
+        </ul>
+        <div class="q-block"><span class="q-num">3</span>요즘 나의 영적 습관(큐티, 기도, 예배 등)은 트랙 위에 잘 있나요, 트랙을 벗어나 있나요?</div>
+        <div class="q-block"><span class="q-num">4</span>지금까지 살면서 하나님을 강하게 만난 '정상체험'이 있었나요? 이번 청아 기간 중 사모하는 순간이 있다면 무엇인가요?</div>
+      </div>
+      <div class="card">
+        <h3 class="sub-h">적용</h3>
+        <p class="p-block">이번 청아 기간 동안 내가 회복하거나 새로 시작하고 싶은 영적 습관 한 가지를 적어보세요.</p>
+        <div class="fill-box">나의 적용 : ( &nbsp; )</div>
+      </div>
+      <div class="card tip">
+        <div class="section-label">리더 진행 Tip</div>
+        <ul class="bullet-list">
+          <li>'정상체험' 질문에는 정답이 없습니다. 아직 경험이 없다고 말하는 크루가 있다면 "이번 청아가 그 시작이 될 수도 있겠다"고 격려해 주세요.</li>
+          <li>라운드 시작과 끝에 기도하되, 모든 크루가 청아 기간 중 한 번은 기도할 수 있도록 순서를 배분해 주세요.</li>
+        </ul>
+      </div>
+      <p class="closing-note">함께 기도하며 마무리합니다: 각자 적은 '적용' 내용을 놓고 조별로 짧게 기도합니다.</p>
+    </section>
+
+    <!-- ===== Round 3 ===== -->
+    <section id="round3" class="panel">
+      <div class="round-header">
+        <div class="r-eyebrow">Round 3</div>
+        <h2>복음을 들고, 세상으로 나아가다</h2>
+        <div class="r-sub">가스펠 톡 "복음을 따라 가는 두 여정" 3·4장 — 복음 전파의 외적 여정 &amp; 두 여정의 통합</div>
+      </div>
+      <div class="card">
+        <div class="info-grid">
+          <div class="info-row"><span class="info-k">목표</span><span class="info-v">대위임령이 나에게 주신 사명임을 깨닫고, 내적·외적 여정을 함께 살아가기로 결단한다</span></div>
+          <div class="info-row"><span class="info-k">시간</span><span class="info-v">약 90분 (마무리 후 롤링페이퍼 작성으로 연결)</span></div>
+          <div class="info-row"><span class="info-k">준비물</span><span class="info-v">소책자, 필기구, 롤링페이퍼</span></div>
+        </div>
+      </div>
+      <div class="card verse">
+        <div class="verse-ref">마태복음 28:19-20</div>
+        <div class="verse-text">그러므로 너희는 가서 모든 민족을 제자로 삼아 아버지와 아들과 성령의 이름으로 세례를 베풀고 내가 너희에게 분부한 모든 것을 가르쳐 지키게 하라 볼지어다 내가 세상 끝날까지 너희와 항상 함께 있으리라</div>
+      </div>
+      <div class="card">
+        <h3 class="sub-h">Opening</h3>
+        <div class="q-block"><span class="q-num">1</span>누군가에게 예수님에 대해 이야기해 본 적 있나요? 그때 기분이 어땠나요? (아직 없다면, 왜 망설여졌는지 이야기해 봐도 좋아요)</div>
+      </div>
+      <div class="card">
+        <h3 class="sub-h">3. 복음 전파의 외적 여정</h3>
+        <p class="p-block">예수님은 우리에게 '대위임령'이라는 명령을 주셨습니다 (마 28:19-20).</p>
+        <ul class="bullet-list">
+          <li>의미와 권위 — 부활하신 예수님이 모든 권세로 주신 명령입니다.</li>
+          <li>목적과 범위 — 모든 민족을 제자로 삼는 것이 목표입니다.</li>
+          <li>능력과 현실 — 성령님의 능력으로, 오늘 나의 삶의 자리에서 이루어집니다.</li>
+          <li>복음만을 위한 교회 — 교회가 존재하는 가장 큰 이유는 복음을 전하기 위해서입니다.</li>
+        </ul>
+        <div class="q-block"><span class="q-num">2</span>대위임령이 '나'에게 주신 명령이라고 생각해 본 적 있나요? 나에게 부담스럽게 느껴지는 부분은 무엇인가요?</div>
+        <div class="q-block"><span class="q-num">3</span>내 주변에 복음을 전하고 싶은 사람이 있나요? (이름을 말하지 않아도 괜찮아요, 마음속으로 한 사람을 떠올려보세요)</div>
+      </div>
+      <div class="card">
+        <h3 class="sub-h">4. 두 여정은 함께 가야 합니다</h3>
+        <ul class="bullet-list">
+          <li>외적 여정을 가지 않으면 성장은 멈춥니다 — 안으로만 자라는 신앙은 결국 정체됩니다.</li>
+          <li>그리스도를 닮고 싶다면 대위임령을 따르세요 — 내적 여정과 외적 여정은 결국 하나입니다.</li>
+          <li>두 레이스의 메달리스트 — 두 여정을 함께 완주하는 사람이 진짜 성숙한 그리스도인입니다.</li>
+        </ul>
+        <div class="q-block"><span class="q-num">4</span>나는 지금 두 여정(내적/외적) 중 어느 쪽에 더 치우쳐 있나요? 균형을 맞추기 위해 무엇이 필요할까요?</div>
+      </div>
+      <div class="card">
+        <h3 class="sub-h">결단</h3>
+        <p class="p-block">청아를 마친 뒤 내가 시작하고 싶은 작은 실천 한 가지를 적어보세요 (기도, 전도, 습관 등). 이 내용은 이후 롤링페이퍼·간증문과 이어서 나눌 수 있습니다.</p>
+        <div class="fill-box">나의 결단 : ( &nbsp; )</div>
+      </div>
+      <div class="card tip">
+        <div class="section-label">리더 진행 Tip</div>
+        <ul class="bullet-list">
+          <li>이 라운드는 마지막 소그룹 라운드입니다. 나눔이 끝나면 자연스럽게 마지막 날 발표(길드) 준비와 롤링페이퍼 작성 시간으로 연결해 주세요.</li>
+          <li>전도 관련 질문에 부담을 느끼는 크루가 있을 수 있습니다. 정죄하는 분위기가 아니라 '같이 시작해보자'는 따뜻한 분위기로 이끌어 주세요.</li>
+        </ul>
+      </div>
+      <p class="closing-note">함께 기도하며 마무리합니다: 각자 적은 '결단' 내용을 놓고 조별로 축복하며 기도합니다.<br>두 여정을 함께 달려가는 우리 조가 되기를 기도합니다.</p>
+    </section>
+
+  </div>
+
+  <div class="footer">청소년 아카데미 FOUND · 소그룹 리더 전용 자료<br>ⓒ 2026 WINSOUL</div>
+</div>
+
+<script>
+  // ---------- Lock ----------
+  var PW = "260815";
+  var LOCK_KEY = "ecya_2026_unlocked";
+  var lockOverlay = document.getElementById("lockOverlay");
+  var app = document.getElementById("app");
+  var lockForm = document.getElementById("lockForm");
+  var pwInput = document.getElementById("pwInput");
+  var lockErr = document.getElementById("lockErr");
+
+  function tryUnlock() {
+    var entered = (pwInput.value || "").trim();
+    if (entered === PW) {
+      try { localStorage.setItem(LOCK_KEY, "1"); } catch (e) {}
+      lockOverlay.style.display = "none";
+      app.style.display = "block";
+    } else {
+      lockErr.style.display = "block";
+      pwInput.value = "";
+      pwInput.focus();
+    }
+  }
+
+  // Using a <form> + submit event (rather than just click/keydown) ensures this
+  // works consistently across desktop Enter key AND mobile keyboards' Go/Done key.
+  lockForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    tryUnlock();
+  });
+  pwInput.addEventListener("input", function () {
+    lockErr.style.display = "none";
+  });
+
+  (function initLock() {
+    var already = false;
+    try { already = localStorage.getItem(LOCK_KEY) === "1"; } catch (e) {}
+    if (already) {
+      lockOverlay.style.display = "none";
+      app.style.display = "block";
+    } else {
+      pwInput.focus();
+    }
+  })();
+
+  // ---------- Top-level tabs ----------
+  var topTabs = document.querySelectorAll("#topTabs .seg-btn");
+  var subnavGuide = document.getElementById("subnavGuide");
+  var subnavMaterial = document.getElementById("subnavMaterial");
+  var guidePanelIds = ["overview","schedule","rnr","rules","sessions","rolling","aftercare","faq","checklist"];
+  var materialPanelIds = ["round1","round2","round3"];
+
+  function showPanel(id) {
+    document.querySelectorAll(".panel").forEach(function (p) {
+      p.classList.toggle("active", p.id === id);
+    });
+    window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+  }
+
+  topTabs.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      topTabs.forEach(function (b) { b.classList.remove("active"); });
+      btn.classList.add("active");
+      if (btn.dataset.top === "guide") {
+        subnavGuide.style.display = "flex";
+        subnavMaterial.style.display = "none";
+        showPanel("overview");
+        setActiveChip(subnavGuide, "overview");
+      } else {
+        subnavGuide.style.display = "none";
+        subnavMaterial.style.display = "flex";
+        showPanel("round1");
+        setActiveChip(subnavMaterial, "round1");
+      }
+    });
+  });
+
+  function setActiveChip(container, target) {
+    container.querySelectorAll(".chip").forEach(function (c) {
+      c.classList.toggle("active", c.dataset.target === target);
+    });
+  }
+
+  [subnavGuide, subnavMaterial].forEach(function (nav) {
+    nav.querySelectorAll(".chip").forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        setActiveChip(nav, chip.dataset.target);
+        showPanel(chip.dataset.target);
+      });
+    });
+  });
+
+  // ---------- Checklist persistence ----------
+  document.querySelectorAll('.check-item input[type="checkbox"]').forEach(function (cb) {
+    var key = "ecya_check_" + cb.id;
+    try {
+      if (localStorage.getItem(key) === "1") cb.checked = true;
+    } catch (e) {}
+    cb.addEventListener("change", function () {
+      try { localStorage.setItem(key, cb.checked ? "1" : "0"); }
