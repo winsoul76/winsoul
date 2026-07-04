@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FOUND 캠프 사전 워크북</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="wrap" id="app">
+    <div class="center" style="padding:60px 0;">
+      <span class="spinner"></span>
+      <p style="color:#888;margin-top:12px;">불러오는 중...</p>
+    </div>
+  </div>
+
+  <button class="scroll-top-btn" id="scroll-top-btn" aria-label="맨 위로" title="맨 위로">▲</button>
+
+  <script>
+    // ⚠️ 배포한 Apps Script 웹앱 URL을 여기에 붙여넣으세요.
+    // Apps Script 편집기 > 배포 > 새 배포 > 웹 앱 으로 만든 뒤 나오는 주소입니다.
+    const API_URL = 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+
+    let CONFIG = null;
+    let step = 0; // 0 = 이름/교회, 1..N = 영상 단계, N+1 = 최종 확인
+    const profile = { name: '', church: '' };
+    const answers = {}; // key: videoNo_qNo -> value
+    let fontSize = 15; // 질문 글자 크기(px), 12~22 사이에서 조절
+
+    loadConfig();
+
+    async function loadConfig() {
+      try {
+        const res = await fetch(API_URL + '?action=formConfig');
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+        CONFIG = data;
+        render();
+      } catch (err) {
+        onError(err);
+      }
+    }
+
+    // 맨 위로 가기 버튼 (전 화면 공통, render()로 다시 그려지지 않도록 #app 바깥에 둠)
+    const scrollTopBtn = document.getElementById('scroll-top-btn');
+    scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 200) scrollTopBtn.classList.add('show');
+      else scrollTopBtn.classList.remove('show');
+    });
+
+    function onError(err) {
+      document.getElementById('app').innerHTML =
+        '<div class="card center"><h2>오류가 발생했습니다</h2><p class="desc">' + escapeHtml(err && err.message ? err.message : String(err)) + '</p></div>';
+    }
+
+    function render() {
+      const app = document.getElementById('app');
+      const totalDots = CONFIG.videos.length + 2; // 시작 + 영상들 + 완료
+      let dotsHtml = '';
+      for (let i = 0; i < totalDots; i++) {
+        dotsHtml += '<div class="dot' + (i <= step ? ' active' : '') + '"></div>';
+      }
+
+      let bodyHtml = '';
+      if (step === 0) {
+        bodyHtml = renderProfileStep();
+      } else if (step >= 1 && step <= CONFIG.videos.length) {
+        bodyHtml = renderVideoStep(CONFIG.videos[step - 1]);
+      } else {
+        bodyHtml = renderReviewStep();
+      }
+
+      app.innerHTML =
+        '<h1>' + escapeHtml(CONFIG.campName) + '</h1>' +
+        '<p class="desc">' + escapeHtml(CONFIG.introText || '') + '</p>' +
+        '<div class="progress">' + dotsHtml + '</div>' +
+        bodyHtml;
+
+      bindStepEvents();
+    }
+
+    function renderProfileStep() {
+      return '' +
+        '<div class="card">' +
+        '  <h2>참가자 정보</h2>' +
+        '  <div class="field">' +
+        '    <label>이름</label>' +
+        '    <input type="text" id="f-name" placeholder="이름을 입력하세요" value="' + escapeAttr(profile.name) + '">' +
+        '  </div>' +
+        '  <div class="field">' +
+        '    <label>교회 이름</label>' +
+        '    <input type="text" id="f-church" placeholder="다니는 교회 이름을 입력하세요" value="' + escapeAttr(profile.church) + '">' +
+        '  </div>' +
+        '  <p id="profile-error" style="color:#e0483f;font-size:13px;display:none;"></p>' +
+        '  <div class="btn-row"><span></span><button class="primary" id="btn-next">다음</button></div>' +
+        '</div>';
+    }
+
+    function qTypeLabel(qType) {
+      if (qType === 'MC') return '객관식';
+      if (qType === 'BLANK') return '빈칸';
+      return '주관식';
+    }
+
+    function renderVideoStep(video) {
+      const videoId = extractYoutubeId(video.videoURL);
+      let qHtml = '';
+      video.questions.forEach((q, idx) => {
+        const key = video.videoNo + '_' + q.qNo;
+        const savedVal = answers[key] || '';
+        qHtml += '<div class="qblock">';
+        qHtml += '<div class="qtitle"><span class="qtag">' + qTypeLabel(q.qType) + '</span>Q' + q.qNo + '. ' + escapeHtml(q.qText) + '</div>';
+        if (q.qType === 'MC') {
+          qHtml += '<div class="options">';
+          q.options.forEach((opt, oi) => {
+            const checked = savedVal === opt ? 'checked' : '';
+            qHtml += '<label><input type="radio" name="q_' + key + '" value="' + escapeAttr(opt) + '" ' + checked + '> ' + escapeHtml(opt) + '</label>';
+          });
+          qHtml += '</div>';
+        } else if (q.qType === 'BLANK') {
+          qHtml += '<input type="text" id="q_' + key + '" placeholder="빈칸에 들어갈 말을 적어보세요" value="' + escapeAttr(savedVal) + '">';
+        } else {
+          qHtml += '<textarea id="q_' + key + '" placeholder="답변을 입력하세요">' + escapeHtml(savedVal) + '</textarea>';
+        }
+        qHtml += '</div>';
+      });
+
+      return '' +
+        '<div class="video-sticky-wrap">' +
+        '  <div class="video-toolbar">' +
+        '    <div class="vtitle">' + escapeHtml(video.videoTitle) + '</div>' +
+        '    <div class="font-ctrl">' +
+        '      <span>글자크기</span>' +
+        '      <button type="button" id="btn-font-dec">가-</button>' +
+        '      <button type="button" id="btn-font-inc">가+</button>' +
+        '    </div>' +
+        '  </div>' +
+        (videoId
+          ? '<div class="video-embed"><iframe src="https://www.youtube.com/embed/' + videoId + '" allowfullscreen></iframe></div>'
+          : '<p class="desc" style="margin:0;">영상 링크가 아직 등록되지 않았습니다.</p>') +
+        '</div>' +
+        '<div class="card">' +
+        qHtml +
+        '  <p id="video-error" style="color:#e0483f;font-size:13px;display:none;margin-top:10px;"></p>' +
+        '  <div class="btn-row"><button class="secondary" id="btn-prev">이전</button><button class="primary" id="btn-next">다음</button></div>' +
+        '</div>';
+    }
+
+    function renderReviewStep() {
+      return '' +
+        '<div class="card">' +
+        '  <h2>제출 전 확인</h2>' +
+        '  <p class="desc"><b>' + escapeHtml(profile.name) + '</b> (' + escapeHtml(profile.church) + ')님, 모든 답변을 작성하셨습니다. 제출하시겠습니까?</p>' +
+        '  <p id="submit-error" style="color:#e0483f;font-size:13px;display:none;"></p>' +
+        '  <div class="btn-row"><button class="secondary" id="btn-prev">이전</button><button class="primary" id="btn-submit">제출하기</button></div>' +
+        '</div>';
+    }
+
+    function bindStepEvents() {
+      const nextBtn = document.getElementById('btn-next');
+      const prevBtn = document.getElementById('btn-prev');
+      const submitBtn = document.getElementById('btn-submit');
+      const fontIncBtn = document.getElementById('btn-font-inc');
+      const fontDecBtn = document.getElementById('btn-font-dec');
+
+      if (nextBtn) nextBtn.addEventListener('click', onNext);
+      if (prevBtn) prevBtn.addEventListener('click', () => { step--; render(); window.scrollTo({ top: 0 }); });
+      if (submitBtn) submitBtn.addEventListener('click', onSubmit);
+      if (fontIncBtn) fontIncBtn.addEventListener('click', () => changeFontSize(1));
+      if (fontDecBtn) fontDecBtn.addEventListener('click', () => changeFontSize(-1));
+
+      applyFontSize();
+    }
+
+    function changeFontSize(delta) {
+      fontSize = Math.max(12, Math.min(22, fontSize + delta));
+      applyFontSize();
+    }
+
+    function applyFontSize() {
+      document.documentElement.style.setProperty('--qfont-size', fontSize + 'px');
+    }
+
+    function onNext() {
+      if (step === 0) {
+        const name = document.getElementById('f-name').value.trim();
+        const church = document.getElementById('f-church').value.trim();
+        if (!name || !church) {
+          showError('profile-error', '이름과 교회 이름을 모두 입력해주세요.');
+          return;
+        }
+        profile.name = name;
+        profile.church = church;
+        step++;
+        render();
+        window.scrollTo({ top: 0 });
+        return;
+      }
+
+      const video = CONFIG.videos[step - 1];
+      let allAnswered = true;
+      video.questions.forEach(q => {
+        const key = video.videoNo + '_' + q.qNo;
+        let val = '';
+        if (q.qType === 'MC') {
+          const checked = document.querySelector('input[name="q_' + key + '"]:checked');
+          val = checked ? checked.value : '';
+        } else {
+          val = document.getElementById('q_' + key).value.trim();
+        }
+        if (!val) allAnswered = false;
+        answers[key] = val;
+      });
+
+      if (!allAnswered) {
+        showError('video-error', '모든 질문에 답변해주세요.');
+        return;
+      }
+      step++;
+      render();
+      window.scrollTo({ top: 0 });
+    }
+
+    async function onSubmit() {
+      const submitBtn = document.getElementById('btn-submit');
+      submitBtn.disabled = true;
+      submitBtn.textContent = '제출 중...';
+
+      const answerList = [];
+      CONFIG.videos.forEach(video => {
+        video.questions.forEach(q => {
+          const key = video.videoNo + '_' + q.qNo;
+          answerList.push({
+            videoNo: video.videoNo,
+            videoTitle: video.videoTitle,
+            qNo: q.qNo,
+            questionText: q.qText,
+            qType: q.qType,
+            answer: answers[key] || ''
+          });
+        });
+      });
+
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'submit',
+            payload: { name: profile.name, church: profile.church, answers: answerList }
+          })
+        });
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+        onSubmitSuccess();
+      } catch (err) {
+        showError('submit-error', err && err.message ? err.message : String(err));
+        submitBtn.disabled = false;
+        submitBtn.textContent = '제출하기';
+      }
+    }
+
+    function onSubmitSuccess() {
+      document.getElementById('app').innerHTML =
+        '<div class="card success-box">' +
+        '  <h2>제출이 완료되었습니다</h2>' +
+        '  <p class="desc">' + escapeHtml(profile.name) + '님, 참여해주셔서 감사합니다.</p>' +
+        '</div>';
+    }
+
+    function showError(id, msg) {
+      const el = document.getElementById(id);
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+
+    function extractYoutubeId(url) {
+      if (!url) return '';
+      const m = String(url).match(/(?:youtu\.be\/|v=|embed\/)([A-Za-z0-9_-]{6,})/);
+      return m ? m[1] : '';
+    }
+
+    function escapeHtml(str) {
+      return String(str == null ? '' : str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+    function escapeAttr(str) {
+      return escapeHtml(str).replace(/"/g, '&quot;');
+    }
+  </script>
+</body>
+</html>

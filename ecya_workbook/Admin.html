@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FOUND 캠프 관리자 대시보드</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="wrap wide" id="app">
+    <div class="center" style="padding:60px 0;">
+      <span class="spinner"></span>
+      <p style="color:#888;margin-top:12px;">불러오는 중...</p>
+    </div>
+  </div>
+
+  <div class="modal-bg" id="modal-bg">
+    <div class="modal" id="modal-content"></div>
+  </div>
+
+  <script>
+    // ⚠️ 배포한 Apps Script 웹앱 URL을 여기에 붙여넣으세요. (index.html과 동일한 주소)
+    const API_URL = 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+
+    let DATA = null;
+    let adminPassword = sessionStorage.getItem('found_admin_pw') || '';
+
+    if (adminPassword) {
+      verifyAndLoad(adminPassword);
+    } else {
+      renderLogin();
+    }
+
+    function renderLogin(errorMsg) {
+      document.getElementById('app').innerHTML =
+        '<div class="card" style="max-width:360px;margin:60px auto;">' +
+        '  <h2>관리자 로그인</h2>' +
+        '  <div class="field">' +
+        '    <label>관리자 비밀번호</label>' +
+        '    <input type="password" id="pw-input" placeholder="비밀번호를 입력하세요">' +
+        '  </div>' +
+        (errorMsg ? '<p style="color:#e0483f;font-size:13px;">' + escapeHtml(errorMsg) + '</p>' : '') +
+        '  <div class="btn-row"><span></span><button class="primary" id="btn-login">로그인</button></div>' +
+        '</div>';
+      document.getElementById('btn-login').addEventListener('click', onLogin);
+      document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') onLogin(); });
+      document.getElementById('pw-input').focus();
+    }
+
+    function onLogin() {
+      const pw = document.getElementById('pw-input').value.trim();
+      if (!pw) return;
+      verifyAndLoad(pw);
+    }
+
+    async function verifyAndLoad(pw) {
+      document.getElementById('app').innerHTML = '<div class="center" style="padding:60px 0;"><span class="spinner"></span></div>';
+      try {
+        const res = await fetch(API_URL + '?action=checkAdmin&password=' + encodeURIComponent(pw));
+        const data = await res.json();
+        if (data.error) {
+          sessionStorage.removeItem('found_admin_pw');
+          renderLogin(data.error);
+          return;
+        }
+        adminPassword = pw;
+        sessionStorage.setItem('found_admin_pw', pw);
+        loadDashboard();
+      } catch (err) {
+        renderLogin(err.message || String(err));
+      }
+    }
+
+    async function loadDashboard() {
+      try {
+        const res = await fetch(API_URL + '?action=dashboard&password=' + encodeURIComponent(adminPassword));
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+        DATA = data;
+        render();
+      } catch (err) {
+        onError(err);
+      }
+    }
+
+    function onError(err) {
+      document.getElementById('app').innerHTML =
+        '<div class="card center"><h2>오류</h2><p class="desc">' + escapeHtml(err && err.message ? err.message : String(err)) + '</p></div>';
+    }
+
+    function render() {
+      const app = document.getElementById('app');
+
+      const statHtml =
+        '<div class="stat-grid">' +
+        '  <div class="stat"><div class="num">' + DATA.totalApplicants + '</div><div class="label">신청자 수</div></div>' +
+        '  <div class="stat"><div class="num">' + DATA.totalSubmitted + '</div><div class="label">제출 완료</div></div>' +
+        '  <div class="stat"><div class="num">' + DATA.missing.length + '</div><div class="label">미제출</div></div>' +
+        '  <div class="stat"><div class="num">' + (DATA.avgPercent === null ? '-' : DATA.avgPercent + '%') + '</div><div class="label">평균 점수</div></div>' +
+        '</div>';
+
+      let videoStatHtml = '<div class="card"><h3>영상별 응답률</h3><table><thead><tr><th>영상</th><th>응답 인원</th><th>응답률</th></tr></thead><tbody>';
+      DATA.videoStats.forEach(v => {
+        videoStatHtml += '<tr><td>' + escapeHtml(v.videoTitle) + '</td><td>' + v.count + '명</td><td>' + v.rate + '%</td></tr>';
+      });
+      if (DATA.videoStats.length === 0) videoStatHtml += '<tr><td colspan="3" style="color:#999;">아직 응답이 없습니다.</td></tr>';
+      videoStatHtml += '</tbody></table></div>';
+
+      let missingHtml = '<div class="card"><h3>미제출자 명단 <span class="badge danger">' + DATA.missing.length + '명</span></h3>';
+      if (DATA.missing.length === 0) {
+        missingHtml += '<p class="desc">전원 제출 완료했습니다.</p>';
+      } else {
+        missingHtml += '<table><thead><tr><th>이름</th><th>교회</th></tr></thead><tbody>';
+        DATA.missing.forEach(m => {
+          missingHtml += '<tr><td>' + escapeHtml(m.name) + '</td><td>' + escapeHtml(m.church) + '</td></tr>';
+        });
+        missingHtml += '</tbody></table>';
+      }
+      missingHtml += '</div>';
+
+      let subHtml = '<div class="card"><h3>제출 명단 (클릭 시 상세 답변)</h3>';
+      if (DATA.submissions.length === 0) {
+        subHtml += '<p class="desc">아직 제출된 응답이 없습니다.</p>';
+      } else {
+        subHtml += '<table><thead><tr><th>이름</th><th>교회</th><th>제출시각</th><th>점수</th></tr></thead><tbody>';
+        DATA.submissions.slice().sort((a, b) => (b.percent || 0) - (a.percent || 0)).forEach(s => {
+          const scoreCell = s.gradedCount > 0
+            ? '<span class="badge ' + (s.percent >= 60 ? 'ok' : 'danger') + '">' + s.correctCount + '/' + s.gradedCount + ' (' + s.percent + '%)</span>'
+            : '<span style="color:var(--muted);">-</span>';
+          subHtml += '<tr class="clickable" onclick="openDetail(\'' + s.submissionId + '\')"><td>' + escapeHtml(s.name) + '</td><td>' + escapeHtml(s.church) + '</td><td>' + formatDate(s.timestamp) + '</td><td>' + scoreCell + '</td></tr>';
+        });
+        subHtml += '</tbody></table>';
+      }
+      subHtml += '</div>';
+
+      app.innerHTML =
+        '<div class="toolbar">' +
+        '  <h1 style="margin:0;">관리자 대시보드</h1>' +
+        '  <div style="display:flex;gap:8px;">' +
+        '    <button class="secondary" id="btn-logout">로그아웃</button>' +
+        '    <button class="primary" id="btn-export">엑셀(.xlsx) 전체 다운로드</button>' +
+        '  </div>' +
+        '</div>' +
+        statHtml + videoStatHtml + missingHtml + subHtml;
+
+      document.getElementById('btn-export').addEventListener('click', onExport);
+      document.getElementById('btn-logout').addEventListener('click', () => {
+        sessionStorage.removeItem('found_admin_pw');
+        adminPassword = '';
+        renderLogin();
+      });
+    }
+
+    function openDetail(submissionId) {
+      document.getElementById('modal-content').innerHTML = '<div class="center"><span class="spinner"></span></div>';
+      document.getElementById('modal-bg').classList.add('show');
+      fetch(API_URL + '?action=detail&submissionId=' + encodeURIComponent(submissionId) + '&password=' + encodeURIComponent(adminPassword))
+        .then(r => r.json())
+        .then(data => {
+          if (data.error) throw new Error(data.error);
+          renderDetail(data);
+        })
+        .catch(err => {
+          document.getElementById('modal-content').innerHTML = '<p style="color:#e0483f;">' + escapeHtml(err.message || String(err)) + '</p>';
+        });
+    }
+
+    function qTypeLabel(qType) {
+      if (qType === 'MC') return '객관식';
+      if (qType === 'BLANK') return '빈칸';
+      return '주관식';
+    }
+
+    function renderDetail(detail) {
+      if (!detail) {
+        document.getElementById('modal-content').innerHTML = '<p>데이터를 찾을 수 없습니다.</p>';
+        return;
+      }
+      let html = '<h2>' + escapeHtml(detail.name) + ' (' + escapeHtml(detail.church) + ')</h2>' +
+        '<p class="desc">제출: ' + formatDate(detail.timestamp) +
+        (detail.gradedCount > 0
+          ? ' · 점수: <b>' + detail.correctCount + ' / ' + detail.gradedCount + '</b> (' + Math.round((detail.correctCount / detail.gradedCount) * 1000) / 10 + '%)'
+          : '') +
+        '</p>';
+      detail.videos.forEach(v => {
+        html += '<h3 style="margin-top:16px;">' + escapeHtml(v.videoTitle) + '</h3>';
+        v.items.forEach(it => {
+          let resultBadge = '';
+          if (it.isCorrect === true) resultBadge = '<span class="badge ok" style="margin-left:6px;">정답</span>';
+          else if (it.isCorrect === false) resultBadge = '<span class="badge danger" style="margin-left:6px;">오답</span>';
+          html += '<div class="qblock"><div class="qtitle"><span class="qtag">' + qTypeLabel(it.qType) + '</span>Q' + it.qNo + '. ' + escapeHtml(it.questionText) + resultBadge + '</div>' +
+            '<div style="font-size:14px;color:#333;">→ ' + escapeHtml(it.answer || '(답변 없음)') + '</div>' +
+            (it.isCorrect === false ? '<div style="font-size:13px;color:var(--ok);margin-top:2px;">정답: ' + escapeHtml(it.correctAnswer) + '</div>' : '') +
+            '</div>';
+        });
+      });
+      html += '<div class="btn-row"><span></span><button class="secondary" onclick="closeModal()">닫기</button></div>';
+      document.getElementById('modal-content').innerHTML = html;
+    }
+
+    function closeModal() {
+      document.getElementById('modal-bg').classList.remove('show');
+    }
+    document.getElementById('modal-bg').addEventListener('click', e => {
+      if (e.target.id === 'modal-bg') closeModal();
+    });
+
+    function onExport() {
+      const btn = document.getElementById('btn-export');
+      btn.disabled = true;
+      btn.textContent = '생성 중...';
+      fetch(API_URL + '?action=export&password=' + encodeURIComponent(adminPassword))
+        .then(r => r.json())
+        .then(res => {
+          if (res.error) throw new Error(res.error);
+          downloadBase64File(res.base64, res.filename, res.mimeType);
+          btn.disabled = false;
+          btn.textContent = '엑셀(.xlsx) 전체 다운로드';
+        })
+        .catch(err => {
+          alert('다운로드 실패: ' + (err.message || err));
+          btn.disabled = false;
+          btn.textContent = '엑셀(.xlsx) 전체 다운로드';
+        });
+    }
+
+    function downloadBase64File(base64, filename, mimeType) {
+      const byteChars = atob(base64);
+      const byteNumbers = new Array(byteChars.length);
+      for (let i = 0; i < byteChars.length; i++) byteNumbers[i] = byteChars.charCodeAt(i);
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: mimeType });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function formatDate(iso) {
+      try {
+        const d = new Date(iso);
+        return d.toLocaleString('ko-KR');
+      } catch (e) { return iso; }
+    }
+
+    function escapeHtml(str) {
+      return String(str == null ? '' : str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+  </script>
+</body>
+</html>
