@@ -48,13 +48,20 @@
   }
   .lock-card h2 { font-size: 19px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 6px; }
   .lock-card p { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+  .pw-wrap { position: relative; }
   .lock-card input {
     width: 100%; border: 1.5px solid #e5e5ea; border-radius: 14px;
-    padding: 14px 16px; font-size: 20px; text-align: center; letter-spacing: 6px;
+    padding: 14px 46px 14px 16px; font-size: 20px; text-align: center; letter-spacing: 6px;
     color: var(--text); outline: none; background: #fafafa;
     transition: border-color 0.15s ease;
   }
   .lock-card input:focus { border-color: var(--accent); background: #fff; }
+  .pw-wrap #pwToggle {
+    position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+    width: 36px; height: 36px; border: none; background: transparent;
+    font-size: 16px; cursor: pointer; opacity: 0.55; padding: 0;
+  }
+  .pw-wrap #pwToggle:active { opacity: 1; }
   .lock-err {
     color: var(--danger); font-size: 12.5px; margin-top: 10px; font-weight: 500;
   }
@@ -255,7 +262,10 @@
     <h2>소그룹 리더 전용 자료</h2>
     <p>비밀번호를 입력해 주세요</p>
     <form id="lockForm" autocomplete="off">
-      <input type="password" id="pwInput" inputmode="numeric" maxlength="12" placeholder="••••••" autocomplete="off">
+      <div class="pw-wrap">
+        <input type="password" id="pwInput" inputmode="numeric" maxlength="12" placeholder="••••••" autocomplete="off">
+        <button type="button" id="pwToggle" aria-label="비밀번호 표시">👁</button>
+      </div>
       <div class="lock-err" id="lockErr" style="display:none;">비밀번호가 올바르지 않습니다</div>
       <button type="submit" id="unlockBtn">확인</button>
     </form>
@@ -787,10 +797,28 @@
   var app = document.getElementById("app");
   var lockForm = document.getElementById("lockForm");
   var pwInput = document.getElementById("pwInput");
+  var pwToggle = document.getElementById("pwToggle");
   var lockErr = document.getElementById("lockErr");
 
+  pwToggle.addEventListener("click", function () {
+    var showing = pwInput.type === "text";
+    pwInput.type = showing ? "password" : "text";
+    pwToggle.textContent = showing ? "👁" : "🙈";
+    pwInput.focus();
+  });
+
+  // Normalizes input: strips whitespace/invisible chars and converts full-width
+  // digits (occasionally produced by some mobile Korean keyboards) to normal digits,
+  // so a visually-correct password never silently fails the comparison.
+  function normalize(str) {
+    str = (str || "").replace(/[０-９]/g, function (ch) {
+      return String.fromCharCode(ch.charCodeAt(0) - 0xFF10 + 0x30);
+    });
+    return str.replace(/[\s​‌‍﻿]/g, "");
+  }
+
   function tryUnlock() {
-    var entered = (pwInput.value || "").trim();
+    var entered = normalize(pwInput.value);
     if (entered === PW) {
       try { localStorage.setItem(LOCK_KEY, "1"); } catch (e) {}
       lockOverlay.style.display = "none";
@@ -877,4 +905,15 @@
       if (localStorage.getItem(key) === "1") cb.checked = true;
     } catch (e) {}
     cb.addEventListener("change", function () {
-      try { localStorage.setItem(key, cb.checked ? "1" : "0"); }
+      try { localStorage.setItem(key, cb.checked ? "1" : "0"); } catch (e) {}
+    });
+  });
+
+  // ---------- Scroll-to-top button ----------
+  var toTopWrap = document.getElementById("toTopWrap");
+  window.addEventListener("scroll", function () {
+    toTopWrap.style.display = window.scrollY > 400 ? "block" : "none";
+  });
+</script>
+</body>
+</html>
