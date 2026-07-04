@@ -51,20 +51,30 @@
         dotsHtml += '<div class="dot' + (i <= step ? ' active' : '') + '"></div>';
       }
 
+      const isVideoStep = step >= 1 && step <= CONFIG.videos.length;
+      app.classList.toggle('video-mode', isVideoStep);
+      document.body.classList.toggle('video-mode-body', isVideoStep);
+
       let bodyHtml = '';
       if (step === 0) {
         bodyHtml = renderProfileStep();
-      } else if (step >= 1 && step <= CONFIG.videos.length) {
+      } else if (isVideoStep) {
         bodyHtml = renderVideoStep(CONFIG.videos[step - 1]);
       } else {
         bodyHtml = renderReviewStep();
       }
 
-      app.innerHTML =
-        '<h1>' + escapeHtml(CONFIG.campName) + '</h1>' +
-        '<p class="desc">' + escapeHtml(CONFIG.introText || '') + '</p>' +
-        '<div class="progress">' + dotsHtml + '</div>' +
-        bodyHtml;
+      if (isVideoStep) {
+        // 영상 단계는 영상을 화면 상단에 고정하고 질문만 스크롤되도록
+        // 전체 화면을 차지하는 별도 레이아웃(video-mode)을 사용한다.
+        app.innerHTML = '<div class="progress">' + dotsHtml + '</div>' + bodyHtml;
+      } else {
+        app.innerHTML =
+          '<h1>' + escapeHtml(CONFIG.campName) + '</h1>' +
+          '<p class="desc">' + escapeHtml(CONFIG.introText || '') + '</p>' +
+          '<div class="progress">' + dotsHtml + '</div>' +
+          bodyHtml;
+      }
 
       bindStepEvents();
     }
@@ -127,12 +137,13 @@
           ? '<div class="video-embed"><iframe src="https://www.youtube.com/embed/' + videoId + '" allowfullscreen></iframe></div>'
           : '<p class="desc" style="margin:0;">영상 링크가 아직 등록되지 않았습니다.</p>') +
         '</div></div>' +
-        '<div id="video-spacer"></div>' +
+        '<div class="qscroll"><div class="qscroll-inner">' +
         '<div class="card">' +
         qHtml +
         '  <p id="video-error" style="color:#e0483f;font-size:13px;display:none;margin-top:10px;"></p>' +
         '  <div class="btn-row"><button class="secondary" id="btn-prev">이전</button><button class="primary" id="btn-next">다음</button></div>' +
-        '</div>';
+        '</div>' +
+        '</div></div>';
     }
 
     function renderReviewStep() {
@@ -159,22 +170,6 @@
       if (fontDecBtn) fontDecBtn.addEventListener('click', () => changeFontSize(-1));
 
       applyFontSize();
-      syncVideoSpacer();
-    }
-
-    // 영상이 position:fixed로 화면 상단에 고정되므로, 그 아래 질문 카드가 가려지지 않도록
-    // 고정된 영상 영역의 실제 높이만큼 빈 공간(spacer)을 확보한다.
-    // (position:sticky는 모바일에서 입력창 포커스 시 키보드가 뜨면서 풀리는 문제가 있어 fixed로 변경)
-    function syncVideoSpacer() {
-      const fixedWrap = document.querySelector('.video-fixed-wrap');
-      const spacer = document.getElementById('video-spacer');
-      if (fixedWrap && spacer) {
-        spacer.style.height = fixedWrap.offsetHeight + 'px';
-      }
-    }
-    window.addEventListener('resize', syncVideoSpacer);
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', syncVideoSpacer);
     }
 
     function changeFontSize(delta) {
