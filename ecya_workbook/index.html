@@ -14,11 +14,8 @@
     </div>
   </div>
 
-  <button class="scroll-top-btn" id="scroll-top-btn" aria-label="맨 위로" title="맨 위로">▲</button>
-
   <script>
-    // ⚠️ 배포한 Apps Script 웹앱 URL을 여기에 붙여넣으세요.
-    // Apps Script 편집기 > 배포 > 새 배포 > 웹 앱 으로 만든 뒤 나오는 주소입니다.
+    // 배포한 Apps Script 웹앱 URL
     const API_URL = 'https://script.google.com/macros/s/AKfycbxFo6BkTDIFUcPOR_jW297tenNCEIz-LqVDzD1_w4zyM0KJHUijHEGo4FK_OUQD_Cwi/exec';
 
     let CONFIG = null;
@@ -40,14 +37,6 @@
         onError(err);
       }
     }
-
-    // 맨 위로 가기 버튼 (전 화면 공통, render()로 다시 그려지지 않도록 #app 바깥에 둠)
-    const scrollTopBtn = document.getElementById('scroll-top-btn');
-    scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 200) scrollTopBtn.classList.add('show');
-      else scrollTopBtn.classList.remove('show');
-    });
 
     function onError(err) {
       document.getElementById('app').innerHTML =
@@ -82,6 +71,10 @@
 
     function renderProfileStep() {
       return '' +
+        '<div class="notice-warning">' +
+        '  <p class="notice-title">꼭 확인하세요</p>' +
+        '  <p>이번 청소년 아카데미 신규 신청자는 워크북의 영상을 모두 시청하고 답변을 작성한 뒤, <b>아카데미 시작 전까지 반드시 제출</b>해야 합니다. 제출하지 않으면 입단하실 수 없습니다.</p>' +
+        '</div>' +
         '<div class="card">' +
         '  <h2>참가자 정보</h2>' +
         '  <div class="field">' +
@@ -97,12 +90,6 @@
         '</div>';
     }
 
-    function qTypeLabel(qType) {
-      if (qType === 'MC') return '객관식';
-      if (qType === 'BLANK') return '빈칸';
-      return '주관식';
-    }
-
     function renderVideoStep(video) {
       const videoId = extractYoutubeId(video.videoURL);
       let qHtml = '';
@@ -110,7 +97,7 @@
         const key = video.videoNo + '_' + q.qNo;
         const savedVal = answers[key] || '';
         qHtml += '<div class="qblock">';
-        qHtml += '<div class="qtitle"><span class="qtag">' + qTypeLabel(q.qType) + '</span>Q' + q.qNo + '. ' + escapeHtml(q.qText) + '</div>';
+        qHtml += '<div class="qtitle">' + q.qNo + '. ' + escapeHtml(q.qText) + '</div>';
         if (q.qType === 'MC') {
           qHtml += '<div class="options">';
           q.options.forEach((opt, oi) => {
@@ -127,7 +114,7 @@
       });
 
       return '' +
-        '<div class="video-sticky-wrap">' +
+        '<div class="video-fixed-wrap"><div class="video-fixed-inner">' +
         '  <div class="video-toolbar">' +
         '    <div class="vtitle">' + escapeHtml(video.videoTitle) + '</div>' +
         '    <div class="font-ctrl">' +
@@ -139,7 +126,8 @@
         (videoId
           ? '<div class="video-embed"><iframe src="https://www.youtube.com/embed/' + videoId + '" allowfullscreen></iframe></div>'
           : '<p class="desc" style="margin:0;">영상 링크가 아직 등록되지 않았습니다.</p>') +
-        '</div>' +
+        '</div></div>' +
+        '<div id="video-spacer"></div>' +
         '<div class="card">' +
         qHtml +
         '  <p id="video-error" style="color:#e0483f;font-size:13px;display:none;margin-top:10px;"></p>' +
@@ -171,6 +159,22 @@
       if (fontDecBtn) fontDecBtn.addEventListener('click', () => changeFontSize(-1));
 
       applyFontSize();
+      syncVideoSpacer();
+    }
+
+    // 영상이 position:fixed로 화면 상단에 고정되므로, 그 아래 질문 카드가 가려지지 않도록
+    // 고정된 영상 영역의 실제 높이만큼 빈 공간(spacer)을 확보한다.
+    // (position:sticky는 모바일에서 입력창 포커스 시 키보드가 뜨면서 풀리는 문제가 있어 fixed로 변경)
+    function syncVideoSpacer() {
+      const fixedWrap = document.querySelector('.video-fixed-wrap');
+      const spacer = document.getElementById('video-spacer');
+      if (fixedWrap && spacer) {
+        spacer.style.height = fixedWrap.offsetHeight + 'px';
+      }
+    }
+    window.addEventListener('resize', syncVideoSpacer);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', syncVideoSpacer);
     }
 
     function changeFontSize(delta) {
