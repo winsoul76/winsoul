@@ -26,6 +26,17 @@
 
     loadConfig();
 
+    // 모바일 키보드가 뜰 때 브라우저가 포커스된 입력창을 보여주려고
+    // 바깥 페이지(window)를 강제로 스크롤시키는 경우가 있는데, 이게 영상이
+    // 고정되어 보이던 화면을 밀어버리는 원인이다. 영상 단계에서는 바깥
+    // 페이지가 절대 스크롤되면 안 되므로, 스크롤이 감지되면 즉시 0으로 되돌린다.
+    // (질문 영역은 별도의 .qscroll 안에서만 스크롤되므로 이 처리와 무관하게 정상 동작)
+    window.addEventListener('scroll', () => {
+      if (document.body.classList.contains('video-mode-body') && window.scrollY !== 0) {
+        window.scrollTo(0, 0);
+      }
+    });
+
     async function loadConfig() {
       try {
         const res = await fetch(API_URL + '?action=formConfig');
@@ -54,6 +65,7 @@
       const isVideoStep = step >= 1 && step <= CONFIG.videos.length;
       app.classList.toggle('video-mode', isVideoStep);
       document.body.classList.toggle('video-mode-body', isVideoStep);
+      document.documentElement.classList.toggle('video-mode-html', isVideoStep);
 
       let bodyHtml = '';
       if (step === 0) {
@@ -168,6 +180,19 @@
       if (submitBtn) submitBtn.addEventListener('click', onSubmit);
       if (fontIncBtn) fontIncBtn.addEventListener('click', () => changeFontSize(1));
       if (fontDecBtn) fontDecBtn.addEventListener('click', () => changeFontSize(-1));
+
+      // 질문 입력창에 포커스가 갈 때(키보드가 뜨는 시점) 바깥 페이지가 밀리지 않도록
+      // 여러 타이밍(즉시/한 박자 뒤/키보드 애니메이션 이후)에 걸쳐 스크롤을 0으로 고정한다.
+      const qscroll = document.querySelector('.qscroll');
+      if (qscroll) {
+        qscroll.querySelectorAll('input, textarea').forEach(el => {
+          el.addEventListener('focus', () => {
+            window.scrollTo(0, 0);
+            setTimeout(() => window.scrollTo(0, 0), 50);
+            setTimeout(() => window.scrollTo(0, 0), 300);
+          });
+        });
+      }
 
       applyFontSize();
     }

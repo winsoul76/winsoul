@@ -18,7 +18,8 @@ body{
   color:var(--text);
   line-height:1.55;
 }
-body.video-mode-body{overflow:hidden;}
+body.video-mode-body{overflow:hidden;position:fixed;width:100%;height:100%;}
+html.video-mode-html{overflow:hidden;}
 .wrap{max-width:720px;margin:0 auto;padding:24px 16px 80px;}
 .wrap.video-mode{
   max-width:none;padding:0;margin:0;
