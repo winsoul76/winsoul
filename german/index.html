@@ -105,10 +105,11 @@ th{ background:#f1ece0; }
 .pill{ display:inline-block; padding:.1rem .5rem; border-radius:6px; font-size:.72rem; font-weight:700; color:#fff; }
 footer{ text-align:center; color:var(--muted); font-size:.8rem; padding:2rem 1rem 1rem; }
 /* floating controls */
-.floating-controls{ position:fixed; right:1rem; bottom:1rem; display:flex; flex-direction:column; gap:.5rem; z-index:80; align-items:center; }
-.floating-controls button{ width:2.6rem; height:2.6rem; border-radius:50%; border:none; background:var(--ink); color:#fff; font-size:.95rem; font-weight:700; box-shadow:0 6px 16px rgba(0,0,0,.28); opacity:.55; transition:.2s; }
-.floating-controls button:hover{ opacity:1; transform:translateY(-2px); }
-.floating-controls button.dim{ opacity:.25; pointer-events:none; }
+.floating-controls{ position:fixed; right:1.1rem; bottom:1.3rem; display:flex; flex-direction:column; gap:.7rem; z-index:80; align-items:center; }
+.floating-controls button{ width:3.4rem; height:3.4rem; border-radius:50%; border:none; background:#1a1a1a; color:#fff; font-size:1rem; font-weight:800; box-shadow:0 6px 18px rgba(0,0,0,.3); opacity:1; transition:.2s; }
+.floating-controls button:hover{ transform:translateY(-2px) scale(1.05); }
+.floating-controls button.dim{ opacity:.35; pointer-events:none; }
+.floating-controls button#toTop{ background:var(--gold); font-size:1.3rem; }
 @media (max-width:560px){
   .header-row{ justify-content:center; } nav.mainnav{ justify-content:center; }
   th,td{ font-size:.82rem; padding:.3rem .4rem; }
@@ -129,10 +130,9 @@ footer{ text-align:center; color:var(--muted); font-size:.8rem; padding:2rem 1re
 <main id="content"></main>
 
 <div class="floating-controls">
+  <button id="fsUp" title="글자 크게">A+</button>
+  <button id="fsDown" title="글자 작게">A-</button>
   <button id="toTop" class="dim" title="맨 위로">↑</button>
-  <button id="fsUp" title="글자 크게">가+</button>
-  <button id="fsReset" title="기본 크기">가</button>
-  <button id="fsDown" title="글자 작게">가−</button>
 </div>
 
 <footer>윈솔캘리 독일어 · A1 → C1 · 발음은 브라우저 내장 음성합성(TTS)을 사용합니다 (기기에 독일어 음성이 있어야 재생됩니다)</footer>
@@ -177,11 +177,21 @@ DATA.A1.units = [
     quiz:[{q:"'너는 학생이니?' (sein, du, Student)", a:"Bist du Student?", note:"의문문은 동사가 맨 앞."},{q:"'우리는 시간이 있다.' (haben, wir, Zeit)", a:"Wir haben Zeit.", note:"haben 현재형 wir=haben."},{q:"'그녀는 함부르크에 산다.' (wohnen, sie, Hamburg)", a:"Sie wohnt in Hamburg.", note:"3인칭 단수 -t."}],
     video:{title:"에밀리 독일어 — 독일어 기초 문법", url:"https://www.youtube.com/channel/UCKIrWWrtQGTvFdsIRNVeMeA", desc:"한국어로 차근차근 설명하는 독일어 기초 문법 강의."}
   },
+  grammar2:{ tag:"A1", t:"인칭대명사와 W-의문사(wer/was/wo/wann/wie/warum)",
+    body:["독일어 인칭대명사는 ich(나)·du(너, 반말)·er/sie/es(그·그녀·그것)·wir(우리)·ihr(너희)·sie/Sie(그들/당신)입니다. 처음 만난 사람이나 존댓말 상황에서는 반드시 du가 아니라 Sie를 씁니다 — 대문자 Sie는 동사변화도 sie(그들)과 같습니다.",
+      "의문사 의문문(W-Frage)은 '의문사 + 동사 + 주어' 순서로, 동사가 항상 두 번째 자리를 지킵니다. wer(누가)·was(무엇)·wo(어디서)·wann(언제)·wie(어떻게)·warum(왜)을 먼저 외우면 실전 대화의 절반은 해결됩니다."],
+    examples:[["Wer bist du?","너는 누구니?"],["Was machst du beruflich?","직업이 뭐예요?"],["Wo arbeiten Sie?","어디서 일하세요?"],["Wann beginnt der Kurs?","수업이 언제 시작해요?"]],
+    mistakes:[["Du bist wer?","Wer bist du?","의문사는 문장 맨 앞"],["Sie bin aus Korea.","Ich komme aus Korea. / Sie kommen aus Korea?","Sie(당신)와 ich(나)를 혼동하지 않기"]],
+    quiz:[{q:"'당신은 어디서 오셨어요?' (Sie, herkommen)", a:"Woher kommen Sie?", note:"Woher = wo+her, 출신을 물을 때."},{q:"'그는 무엇을 공부하나요?' (er, studieren, was)", a:"Was studiert er?", note:"W-의문문: 의문사+동사+주어."}],
+    tip:"핵심 한 줄: 평서문·의문사문 모두 정동사는 2번째 자리 — 이 규칙이 독일어 어순의 전부입니다."
+  },
   vocabTheme:"인사·가족·숫자", convTheme:"자기소개",
-  idioms:[["Wie geht's?","어떻게 지내?","Wie geht's? — Danke, gut!"],["Alles klar.","다 좋아, 알겠어.","Alles klar, bis morgen!"],["Kein Problem.","문제없어.","Kein Problem, ich helfe dir."]],
-  vocab:[["der Name","이름","Wie ist dein Name?"],["die Familie","가족","Meine Familie ist groß."],["kommen aus","~출신이다","Ich komme aus Korea."],["die Zahl","숫자","eins, zwei, drei — die ersten Zahlen."],["der Tag","날, 하루","Schönen Tag noch!"],["sprechen","말하다","Ich spreche ein bisschen Deutsch."]],
+  idioms:[["Wie geht's?","어떻게 지내?","Wie geht's? — Danke, gut!"],["Alles klar.","다 좋아, 알겠어.","Alles klar, bis morgen!"],["Kein Problem.","문제없어.","Kein Problem, ich helfe dir."],["Macht nichts.","괜찮아, 상관없어.","Macht nichts, das kann passieren."],["Bis bald!","곧 또 보자!","Bis bald, Anna!"],["Ich auch.","나도 그래.","„Ich freue mich.“ — „Ich auch!“"],["Freut mich!","반가워요! (만나서)","Freut mich, Sie kennenzulernen!"],["Genau.","맞아요, 바로 그거예요.","Genau, das stimmt."]],
+  vocab:[["der Name","이름","Wie ist dein Name?"],["die Familie","가족","Meine Familie ist groß."],["kommen aus","~출신이다","Ich komme aus Korea."],["die Zahl","숫자","eins, zwei, drei — die ersten Zahlen."],["der Tag","날, 하루","Schönen Tag noch!"],["sprechen","말하다","Ich spreche ein bisschen Deutsch."],["der Freund / die Freundin","친구","Er ist mein Freund."],["die Mutter / der Vater","어머니 / 아버지","Meine Mutter heißt Sujin."],["die Schwester / der Bruder","자매 / 형제","Ich habe eine Schwester."],["das Kind","아이","Sie hat zwei Kinder."],["das Land","나라","Aus welchem Land kommst du?"],["heißen","이름이 ~이다","Wie heißen Sie?"],["alt sein","나이가 ~이다","Ich bin 30 Jahre alt."],["arbeiten","일하다","Ich arbeite bei einer Firma."],["studieren","(대학에서) 공부하다","Ich studiere Informatik."],["verheiratet","기혼의","Er ist verheiratet."],["ledig","미혼의","Ich bin noch ledig."],["die Adresse","주소","Wie ist deine Adresse?"]],
   conversation:{t:"처음 만나서 인사하기", lines:[["A","Hallo! Ich heiße Anna. Und du?","안녕! 나는 안나야. 너는?"],["B","Ich heiße Minsu. Ich komme aus Korea.","나는 민수야. 한국에서 왔어."],["A","Schön, dich kennenzulernen! Wo wohnst du?","만나서 반가워! 어디 사니?"],["B","Ich wohne jetzt in Berlin.","지금 베를린에 살아."]]},
+  conversation2:{t:"관공서에서 존댓말로 자기소개하기", lines:[["A","Guten Tag, wie ist Ihr Name, bitte?","안녕하세요, 성함이 어떻게 되세요?"],["B","Mein Name ist Kim Minsu.","제 이름은 김민수입니다."],["A","Woher kommen Sie und was machen Sie beruflich?","어디서 오셨고 직업이 무엇인가요?"],["B","Ich komme aus Südkorea und ich bin Ingenieur.","한국에서 왔고 엔지니어입니다."],["A","Sind Sie verheiratet?","기혼이신가요?"],["B","Nein, ich bin ledig.","아니요, 미혼입니다."]]},
   videoVocab:{title:"Nicos Weg — A1 전편 영화", url:"https://www.youtube.com/watch?v=4-eDoThe6qo", desc:"DW 공식 A1 학습 영화로 기초 단어를 자연스럽게 흡수하세요."},
+  videoVocab2:{title:"Easy German — Basic Phrases", url:"https://www.youtube.com/@EasyGerman", desc:"거리 인터뷰로 실제 원어민이 쓰는 인사 표현을 확인하세요."},
   videoConversation:{title:"DW Learn German", url:"https://learngerman.dw.com/en/overview", desc:"A1 회화 상황별 연습이 가능한 무료 인터랙티브 코스."}
 },
 {
@@ -195,11 +205,22 @@ DATA.A1.units = [
     quiz:[{q:"'나는 그 아이를 본다.' (sehen, das Kind)", a:"Ich sehe das Kind.", note:"중성은 1격=4격."},{q:"'나는 빵 하나를 산다.' (kaufen, ein Brot)", a:"Ich kaufe ein Brot.", note:"중성 부정관사는 변화 없음."}],
     video:{title:"에밀리 독일어 — 명사의 성", url:"https://www.youtube.com/channel/UCKIrWWrtQGTvFdsIRNVeMeA", desc:"명사 성과 관사를 한국어로 체계적으로 설명."}
   },
+  grammar2:{ tag:"A1", t:"복수형 만들기와 존재문 es gibt, 부정관사 ein/eine",
+    body:["독일어 명사의 복수형은 -e, -er, -(e)n, -s, 무변화 등 여러 패턴이 있어 규칙이 하나가 아닙니다. 그래서 단어를 외울 때 반드시 '단수 + 복수형'을 세트로 외우는 습관이 중요합니다 (예: das Kind, die Kinder).",
+      "'~이 있다'는 es gibt + 4격으로 표현합니다. es gibt는 뒤에 남성명사가 오면 4격(einen)으로 바뀌는 것에 주의하세요. 부정관사 ein(남성/중성)·eine(여성)도 4격에서 einen/eine/ein로 변화합니다."],
+    table:{caption:"명사 복수형 예시", headers:["단수","복수","패턴"], rows:[["das Kind","die Kinder","-er"],["der Tisch","die Tische","-e"],["die Tasche","die Taschen","-n"],["das Auto","die Autos","-s"],["der Lehrer","die Lehrer","무변화"]]},
+    examples:[["Es gibt einen Supermarkt in der Nähe.","근처에 슈퍼마켓이 하나 있다."],["Gibt es hier ein Café?","여기 카페가 있나요?"],["Ich brauche eine Tasche.","가방이 하나 필요해요."]],
+    mistakes:[["Es gibt ein Supermarkt.","Es gibt einen Supermarkt.","es gibt 뒤 남성명사는 4격 einen"]],
+    quiz:[{q:"'여기 은행이 있나요?' (es gibt, eine Bank)", a:"Gibt es hier eine Bank?", note:"여성명사는 4격도 eine 그대로."},{q:"'아이들'의 복수는?", a:"die Kinder", note:"Kind→Kinder, -er형 복수."}],
+    tip:"쇼핑·물건 단어는 처음부터 복수형까지 같이 외우면 나중에 숫자 표현에서 훨씬 편합니다."
+  },
   vocabTheme:"집·물건·쇼핑 기초", convTheme:"카페에서 주문하기",
-  idioms:[["Das macht … Euro.","(계산이) …유로 나옵니다.","Das macht drei Euro fünfzig."],["Nur einen Moment.","잠깐만요.","Nur einen Moment, bitte."]],
-  vocab:[["der Tisch","책상","Das Buch liegt auf dem Tisch."],["die Tasche","가방","Wo ist meine Tasche?"],["das Brot","빵","Ich kaufe ein Brot."],["der Kaffee","커피","Ich trinke gern Kaffee."],["kaufen","사다","Ich kaufe Milch."],["kosten","(값이) ~이다","Was kostet das?"]],
+  idioms:[["Das macht … Euro.","(계산이) …유로 나옵니다.","Das macht drei Euro fünfzig."],["Nur einen Moment.","잠깐만요.","Nur einen Moment, bitte."],["Sonst noch etwas?","더 필요하신 거 있으세요?","Sonst noch etwas? — Nein, danke."],["Das wär's.","그게 다예요(주문 끝).","Das wär's für heute, danke."],["Zum Mitnehmen, bitte.","포장이요.","Einen Kaffee zum Mitnehmen, bitte."],["Ich hätte gern …","~을 원해요(정중).","Ich hätte gern ein Stück Kuchen."],["Kein Ding.","별거 아니야.","Danke! — Kein Ding."],["Gerne.","천만에요, 기꺼이.","Danke schön! — Gerne!"]],
+  vocab:[["der Tisch","책상","Das Buch liegt auf dem Tisch."],["die Tasche","가방","Wo ist meine Tasche?"],["das Brot","빵","Ich kaufe ein Brot."],["der Kaffee","커피","Ich trinke gern Kaffee."],["kaufen","사다","Ich kaufe Milch."],["kosten","(값이) ~이다","Was kostet das?"],["der Supermarkt","슈퍼마켓","Der Supermarkt ist gleich um die Ecke."],["die Milch","우유","Ich brauche noch Milch."],["das Wasser","물","Ein Wasser, bitte."],["der Zucker","설탕","Ich nehme keinen Zucker."],["billig / teuer","싼 / 비싼","Das ist mir zu teuer."],["bezahlen","지불하다","Kann ich mit Karte bezahlen?"],["bar","현금으로","Ich zahle bar."],["die Rechnung","계산서","Die Rechnung, bitte."],["das Geschäft","가게","Das Geschäft schließt um 20 Uhr."],["die Öffnungszeiten","영업시간","Wie sind die Öffnungszeiten?"],["brauchen","필요하다","Ich brauche eine neue Tasche."],["die Kasse","계산대","Die Kasse ist vorne."]],
   conversation:{t:"카페에서", lines:[["A","Was möchten Sie trinken?","무엇을 마시겠어요?"],["B","Ich möchte einen Kaffee, bitte.","커피 한 잔 주세요."],["A","Das macht zwei Euro fünfzig.","2유로 50센트입니다."]]},
+  conversation2:{t:"슈퍼마켓 계산대에서", lines:[["A","Guten Tag, haben Sie eine Kundenkarte?","안녕하세요, 회원카드 있으세요?"],["B","Nein, habe ich nicht.","아니요, 없어요."],["A","Kein Problem. Das macht zusammen zwölf Euro.","괜찮습니다. 다 해서 12유로예요."],["B","Kann ich mit Karte bezahlen?","카드로 계산할 수 있나요?"],["A","Ja, natürlich. Möchten Sie eine Tüte?","네, 물론이죠. 봉투 필요하세요?"],["B","Ja, bitte. Eine Tüte, bitte.","네, 주세요."]]},
   videoVocab:{title:"Nicos Weg — A1 전편 영화", url:"https://www.youtube.com/watch?v=4-eDoThe6qo", desc:"쇼핑·카페 장면에서 실제 쓰이는 단어를 확인하세요."},
+  videoVocab2:{title:"lingoni GERMAN — A1 Vokabeln", url:"https://www.youtube.com/@lingoniGERMAN", desc:"쇼핑·음식 단어를 예문과 함께 반복 학습."},
   videoConversation:{title:"DW Learn German", url:"https://learngerman.dw.com/en/overview", desc:"쇼핑 상황 인터랙티브 연습."}
 },
 {
@@ -212,11 +233,21 @@ DATA.A1.units = [
     quiz:[{q:"'너는 오늘 장 보니?' (einkaufen, du, heute)", a:"Kaufst du heute ein?", note:"분리동사 의문문: 어간이 맨 앞, 전철은 끝."},{q:"'나는 시간이 없다.' (kein, Zeit)", a:"Ich habe keine Zeit.", note:"die Zeit는 여성, keine."}],
     video:{title:"에밀리 독일어 — 분리동사", url:"https://www.youtube.com/channel/UCKIrWWrtQGTvFdsIRNVeMeA", desc:"분리동사 어순을 그림으로 설명."}
   },
+  grammar2:{ tag:"A1", t:"요일·달과 화법조동사 맛보기 möchten/können",
+    body:["요일(Montag~Sonntag)과 달(Januar~Dezember)은 '~요일에/~월에'라고 할 때 전치사 am(요일)과 im(월)을 씁니다: am Montag, im Januar. 날짜는 서수로 말하며 der 1. (erste) Januar처럼 씁니다.",
+      "화법조동사 möchten(원하다)·können(할 수 있다)은 문장 두 번째 자리에 오고, 본동사는 원형 그대로 문장 맨 끝으로 갑니다. 이 '동사 두 개, 앞뒤로 나눠서' 구조는 앞으로 나올 모든 화법조동사·미래·완료 시제의 기본 틀입니다."],
+    examples:[["Ich habe am Montag einen Termin.","나는 월요일에 약속이 있다."],["Kannst du mir helfen?","나를 도와줄 수 있어?"],["Ich möchte einen Kaffee bestellen.","커피를 하나 주문하고 싶어요."]],
+    mistakes:[["Ich kann Deutsch sprechen gut.","Ich kann gut Deutsch sprechen.","본동사는 문장 맨 끝"],["Am Januar bin ich in Korea.","Im Januar bin ich in Korea.","달 앞에는 im, 요일 앞에는 am"]],
+    quiz:[{q:"'너는 금요일에 시간 있어?' (können, du, Zeit haben, Freitag)", a:"Kannst du am Freitag Zeit haben?", note:"화법조동사+본동사 원형, 문장 끝."},{q:"'저는 5월에 태어났어요.' (im Mai, geboren sein)", a:"Ich bin im Mai geboren.", note:"달 앞에는 im."}],
+    tip:"화법조동사 뼈대: [주어] + [조동사, 2번째 자리] + … + [본동사 원형, 맨 끝]. 이 틀은 독일어 전체에서 반복됩니다."
+  },
   vocabTheme:"하루 일과·시간", convTheme:"약속 잡기",
-  idioms:[["Wie spät ist es?","몇 시예요?","Wie spät ist es? — Es ist acht Uhr."],["Ich bin dabei.","나도 할래(참여할게).","Klar, ich bin dabei!"]],
-  vocab:[["aufstehen","일어나다","Ich stehe früh auf."],["die Uhr","시계, 시각","Wie viel Uhr ist es?"],["der Termin","약속","Ich habe einen Termin."],["früh / spät","이른 / 늦은","Ich komme heute spät."],["das Frühstück","아침식사","Ich esse Frühstück um 7."],["treffen","만나다","Wir treffen uns um 10."]],
+  idioms:[["Wie spät ist es?","몇 시예요?","Wie spät ist es? — Es ist acht Uhr."],["Ich bin dabei.","나도 할래(참여할게).","Klar, ich bin dabei!"],["Das passt mir gut.","저한테 잘 맞아요.","Montag passt mir gut."],["Auf jeden Fall.","꼭이요, 무조건.","Auf jeden Fall komme ich!"],["Ich habe keine Zeit.","시간이 없어요.","Sorry, ich habe heute keine Zeit."],["Machen wir!","그렇게 하자!","Treffen um 10? — Machen wir!"],["Es tut mir leid.","죄송해요.","Es tut mir leid, ich komme später."],["Kein Stress.","서두를 필요 없어, 괜찮아.","Kein Stress, wir haben Zeit."]],
+  vocab:[["aufstehen","일어나다","Ich stehe früh auf."],["die Uhr","시계, 시각","Wie viel Uhr ist es?"],["der Termin","약속","Ich habe einen Termin."],["früh / spät","이른 / 늦은","Ich komme heute spät."],["das Frühstück","아침식사","Ich esse Frühstück um 7."],["treffen","만나다","Wir treffen uns um 10."],["der Montag ... Sonntag","월요일~일요일","Am Montag arbeite ich."],["die Woche","주(週)","Diese Woche bin ich beschäftigt."],["der Monat","달(月)","Nächsten Monat fahre ich nach Köln."],["das Datum","날짜","Welches Datum haben wir heute?"],["pünktlich","정시에","Bitte sei pünktlich."],["die Verspätung","지각, 연착","Der Zug hat Verspätung."],["das Mittagessen","점심식사","Wir essen um 12 Uhr Mittag."],["das Abendessen","저녁식사","Das Abendessen ist fertig."],["anfangen","시작하다","Der Kurs fängt um 9 Uhr an."],["enden","끝나다","Die Arbeit endet um 17 Uhr."],["die Pause","휴식(시간)","Wir machen eine Pause."],["heute / morgen / gestern","오늘 / 내일 / 어제","Morgen habe ich frei."]],
   conversation:{t:"약속 잡기", lines:[["A","Wann treffen wir uns?","우리 언제 만날까?"],["B","Geht es am Montag um 10 Uhr?","월요일 10시 괜찮아?"],["A","Ja, das passt gut.","응, 좋아."]]},
+  conversation2:{t:"일정 변경 전화", lines:[["A","Hallo, ich habe einen Termin am Mittwoch. Kann ich ihn verschieben?","안녕하세요, 수요일에 예약이 있는데 옮길 수 있을까요?"],["B","Klar, wann passt es Ihnen besser?","네, 언제가 더 편하세요?"],["A","Geht es am Freitagnachmittag?","금요일 오후 괜찮을까요?"],["B","Ja, um 15 Uhr ist noch frei.","네, 15시가 비어있어요."],["A","Perfekt, das passt mir gut. Danke!","완벽해요, 잘 맞네요. 감사합니다!"]]},
   videoVocab:{title:"Nicos Weg — A1 전편 영화", url:"https://www.youtube.com/watch?v=4-eDoThe6qo", desc:"하루 일과 표현을 영상으로 복습."},
+  videoVocab2:{title:"lingoni GERMAN — Uhrzeit & Wochentage", url:"https://www.youtube.com/@lingoniGERMAN", desc:"시각·요일 표현을 반복 연습."},
   videoConversation:{title:"DW Learn German", url:"https://learngerman.dw.com/en/overview", desc:"약속·시간 표현 인터랙티브 연습."}
 },
 {
@@ -229,11 +260,21 @@ DATA.A1.units = [
     quiz:[{q:"'문을 닫아주세요.' (Sie, die Tür, schließen)", a:"Schließen Sie bitte die Tür.", note:"Sie 명령문: 동사+Sie."},{q:"'이건 내 차야.' (mein, das Auto)", a:"Das ist mein Auto.", note:"중성 1격은 mein 그대로."}],
     video:{title:"에밀리 독일어 — 명령문", url:"https://www.youtube.com/channel/UCKIrWWrtQGTvFdsIRNVeMeA", desc:"명령문 세 가지 형태를 정리."}
   },
+  grammar2:{ tag:"A1", t:"자주 쓰는 전치사 in/an/auf 기초와 A1 핵심 총정리",
+    body:["장소를 나타내는 전치사 in(안에)·an(면에 접해)·auf(위에)는 3격(어디에 있는가, wo)과 함께 쓰면 위치를, 4격(어디로 가는가, wohin)과 함께 쓰면 방향을 나타냅니다. A1에서는 우선 '있다'는 뜻의 3격 위주로 익히세요: im(in dem) Büro, am(an dem) Fenster, auf dem Tisch.",
+      "A1을 마치며 지금까지 배운 것을 정리해보면: ① 동사는 인칭에 따라 어미가 바뀌고 문장 2번째 자리 ② 명사는 der/die/das 성이 있고 목적어(4격)에서 남성만 den으로 변화 ③ 화법조동사는 본동사를 문장 끝으로 보낸다 — 이 세 가지가 독일어 문장의 기본 뼈대입니다."],
+    examples:[["Ich bin im Büro.","저는 사무실에 있어요."],["Das Bild hängt an der Wand.","그림이 벽에 걸려 있다."],["Das Buch liegt auf dem Tisch.","책이 책상 위에 있다."]],
+    mistakes:[["Ich bin in Büro.","Ich bin im Büro.","in+dem은 축약형 im으로 쓰는 것이 자연스러움"]],
+    quiz:[{q:"'저는 학교에 있어요.' (in, die Schule)", a:"Ich bin in der Schule.", note:"die Schule은 여성, in der."},{q:"'열쇠가 책상 위에 있다.' (auf, der Tisch, der Schlüssel)", a:"Der Schlüssel liegt auf dem Tisch.", note:"3격 위치: auf dem."}],
+    tip:"A1 총정리: 동사 2번째 자리, 명사 der/die/das + 목적어 den, 화법조동사+본동사 끝. 이 세 가지만 자동으로 나오면 A2로 넘어갈 준비가 된 것입니다."
+  },
   vocabTheme:"감정·음식·취미", convTheme:"통합 실전 — 나를 소개하기",
-  idioms:[["Viel Spaß!","즐거운 시간 보내!","Viel Spaß im Urlaub!"],["Mir geht's gut.","나는 잘 지내.","Danke, mir geht's gut."]],
-  vocab:[["sich freuen","기뻐하다","Ich freue mich sehr."],["das Hobby","취미","Mein Hobby ist Lesen."],["das Essen","음식, 식사","Das Essen schmeckt gut."],["gern","기꺼이, 좋아해서","Ich lese gern."],["die Woche","주(週)","Nächste Woche fahre ich weg."],["das Wochenende","주말","Schönes Wochenende!"]],
+  idioms:[["Viel Spaß!","즐거운 시간 보내!","Viel Spaß im Urlaub!"],["Mir geht's gut.","나는 잘 지내.","Danke, mir geht's gut."],["Das ist mir egal.","난 상관없어.","Kaffee oder Tee? — Das ist mir egal."],["Keine Ahnung.","전혀 모르겠어.","Keine Ahnung, frag mal Anna."],["Na klar!","당연하지!","Kommst du mit? — Na klar!"],["Ich bin müde.","피곤해요.","Ich bin heute sehr müde."],["Guten Appetit!","맛있게 드세요!","Guten Appetit, das Essen ist fertig!"],["Zum Wohl!","건배!","Zum Wohl! Auf die Freundschaft!"]],
+  vocab:[["sich freuen","기뻐하다","Ich freue mich sehr."],["das Hobby","취미","Mein Hobby ist Lesen."],["das Essen","음식, 식사","Das Essen schmeckt gut."],["gern","기꺼이, 좋아해서","Ich lese gern."],["die Woche","주(週)","Nächste Woche fahre ich weg."],["das Wochenende","주말","Schönes Wochenende!"],["glücklich / traurig","행복한 / 슬픈","Ich bin heute sehr glücklich."],["müde","피곤한","Ich bin müde, ich gehe schlafen."],["hungrig / durstig","배고픈 / 목마른","Ich bin hungrig, lass uns essen."],["kochen","요리하다","Ich koche gern Pasta."],["lecker / schmecken","맛있는 / 맛이 나다","Das schmeckt sehr lecker."],["reisen","여행하다","Ich reise gern nach Italien."],["lesen","읽다","Ich lese jeden Abend."],["das Buch","책","Ich lese ein interessantes Buch."],["Musik hören","음악을 듣다","Ich höre gern Musik."],["Sport treiben","운동하다","Ich treibe dreimal pro Woche Sport."],["das Gefühl","감정, 느낌","Wie ist dein Gefühl dabei?"],["die Ecke","모퉁이, 구석","Der Laden ist um die Ecke."]],
   conversation:{t:"나를 소개하는 발표", lines:[["A","Hallo, ich heiße Jimin. Ich komme aus Korea und wohne in München.","안녕하세요, 저는 지민입니다. 한국에서 왔고 뮌헨에 살아요."],["A","Ich spreche Koreanisch und ein bisschen Deutsch. Mein Hobby ist Kochen.","한국어를 하고 독일어는 조금 해요. 제 취미는 요리예요."]]},
+  conversation2:{t:"기분과 취미에 대해 묻고 답하기", lines:[["A","Wie geht es dir heute?","오늘 기분이 어때?"],["B","Mir geht's super, danke! Ich bin sehr glücklich.","완전 좋아, 고마워! 정말 행복해."],["A","Was machst du gern in deiner Freizeit?","여가시간에 뭐 하는 걸 좋아해?"],["B","Ich koche gern und höre Musik. Und du?","요리하는 거랑 음악 듣는 걸 좋아해. 너는?"],["A","Ich lese gern und treibe Sport.","나는 독서랑 운동을 좋아해."]]},
   videoVocab:{title:"Nicos Weg — A1 전편 영화", url:"https://www.youtube.com/watch?v=4-eDoThe6qo", desc:"A1 전체 복습에 좋은 마무리 영상."},
+  videoVocab2:{title:"에밀리 독일어 — A1 필수 단어 총정리", url:"https://www.youtube.com/channel/UCKIrWWrtQGTvFdsIRNVeMeA", desc:"A1 전체 핵심 단어를 한국어 설명으로 복습."},
   videoConversation:{title:"DW Learn German", url:"https://learngerman.dw.com/en/overview", desc:"자기소개 발표 연습과 A1 배치테스트."}
 }
 ];
@@ -257,11 +298,21 @@ DATA.A2.units = [
     quiz:[{q:"'너는 여기서 사진 찍어도 돼.' (dürfen, fotografieren)", a:"Du darfst hier fotografieren."},{q:"'나는 그에게 감사한다.' (danken, ihm)", a:"Ich danke ihm.", note:"danken은 3격."},{q:"'우리는 지금 가야 한다.' (müssen, gehen)", a:"Wir müssen jetzt gehen."}],
     video:{title:"에밀리 독일어 — 화법조동사", url:"https://www.youtube.com/channel/UCKIrWWrtQGTvFdsIRNVeMeA", desc:"화법조동사와 어순을 한국어로 설명."}
   },
+  grammar2:{ tag:"A2", t:"3격 인칭대명사와 3격 지배동사(helfen·gefallen·gehören·danken)",
+    body:["3격 인칭대명사는 mir(나에게)·dir(너에게)·ihm/ihr(그에게/그녀에게)·uns(우리에게)·euch(너희에게)·ihnen/Ihnen(그들에게/당신에게)입니다. 한국어의 '~에게'에 해당합니다.",
+      "helfen(돕다)·gefallen(마음에 들다)·gehören(~의 것이다)·danken(감사하다)·antworten(대답하다)은 목적어를 3격으로 받는 대표 동사입니다. 이 동사들을 만나면 무조건 mir/dir/ihm 형태를 떠올리세요."],
+    examples:[["Das Kleid gefällt mir sehr.","그 원피스가 정말 맘에 든다."],["Ich danke dir für die Hilfe.","도와줘서 고마워."],["Das Auto gehört meinem Vater.","그 차는 내 아버지 것이다."]],
+    mistakes:[["Ich helfe ihn.","Ich helfe ihm.","helfen은 3격, ihm"],["Das gefällt ich.","Das gefällt mir.","gefallen 뒤에는 3격 mir"]],
+    quiz:[{q:"'그것이 우리 마음에 든다.' (gefallen, uns)", a:"Das gefällt uns.", note:"gefallen+3격."},{q:"'그 가방은 그녀의 것이다.' (gehören, sie)", a:"Die Tasche gehört ihr.", note:"gehören+3격, sie→ihr."}],
+    tip:"3격 동사 5총사: helfen · gefallen · gehören · danken · antworten — 이 다섯 개만 외워도 3격 실수의 대부분이 사라집니다."
+  },
   vocabTheme:"쇼핑·시장", convTheme:"가게에서 주문하기",
-  idioms:[["Was darf es sein?","무엇을 드릴까요? (점원)","Was darf es sein? — Ein Brot, bitte."],["Das reicht.","그거면 충분해요.","Danke, das reicht."],["Auf keinen Fall!","절대 안 돼!","Auf keinen Fall zu teuer!"]],
-  vocab:[["der Markt","시장","Der Markt ist am Samstag."],["brauchen","필요하다","Ich brauche Milch."],["die Rechnung","계산서","Die Rechnung, bitte."],["bezahlen","지불하다","Ich bezahle mit Karte."],["links / rechts","왼쪽/오른쪽","Gehen Sie links."],["geradeaus","직진으로","Gehen Sie geradeaus."]],
+  idioms:[["Was darf es sein?","무엇을 드릴까요? (점원)","Was darf es sein? — Ein Brot, bitte."],["Das reicht.","그거면 충분해요.","Danke, das reicht."],["Auf keinen Fall!","절대 안 돼!","Auf keinen Fall zu teuer!"],["Das kommt drauf an.","상황에 따라 다르죠.","Das kommt drauf an, wie viel es kostet."],["Ich schau mich nur um.","그냥 구경하는 거예요.","Brauchen Sie Hilfe? — Nein, ich schau mich nur um."],["Passt schon.","괜찮아요, 됐어요.","Passt schon, danke."],["Kein Wunder.","당연하지, 놀랍지 않아.","Kein Wunder, dass es so teuer ist."],["Das lohnt sich.","그럴 가치가 있어요.","Der Rabatt lohnt sich wirklich."]],
+  vocab:[["der Markt","시장","Der Markt ist am Samstag."],["brauchen","필요하다","Ich brauche Milch."],["die Rechnung","계산서","Die Rechnung, bitte."],["bezahlen","지불하다","Ich bezahle mit Karte."],["links / rechts","왼쪽/오른쪽","Gehen Sie links."],["geradeaus","직진으로","Gehen Sie geradeaus."],["der Rabatt","할인","Gibt es einen Rabatt?"],["umtauschen","교환하다","Kann ich das umtauschen?"],["zurückgeben","환불하다, 돌려주다","Ich möchte das zurückgeben."],["die Größe","사이즈","Welche Größe brauchen Sie?"],["anprobieren","입어보다","Kann ich das anprobieren?"],["die Qualität","품질","Die Qualität ist sehr gut."],["passen","(치수가) 맞다","Die Hose passt mir nicht."],["die Farbe","색깔","Welche Farbe gefällt dir?"],["das Angebot","특가, 제안","Das ist ein gutes Angebot."],["die Kundin / der Kunde","고객","Die Kundin ist zufrieden."],["empfehlen","추천하다","Können Sie mir etwas empfehlen?"],["der Beleg","영수증","Brauchen Sie einen Beleg?"]],
   conversation:{t:"빵집에서", lines:[["A","Guten Tag, was möchten Sie?","무엇을 원하세요?"],["B","Ich möchte ein Brot und einen Kaffee, bitte.","빵 하나랑 커피 한 잔 주세요."],["A","Das macht zusammen vier Euro fünfzig.","다 해서 4유로 50센트예요."],["B","Kann ich mit Karte bezahlen?","카드로 계산해도 되나요?"]]},
+  conversation2:{t:"옷가게에서 교환하기", lines:[["A","Guten Tag, ich möchte diese Jacke umtauschen.","안녕하세요, 이 재킷을 교환하고 싶어요."],["B","Kein Problem. Was gefällt Ihnen nicht daran?","문제없습니다. 뭐가 마음에 안 드세요?"],["A","Die Größe passt mir nicht, sie ist zu klein.","사이즈가 안 맞아요, 너무 작아요."],["B","Haben Sie den Beleg dabei?","영수증 가지고 계세요?"],["A","Ja, hier bitte. Haben Sie eine größere Größe?","네, 여기요. 더 큰 사이즈 있나요?"],["B","Ja, einen Moment bitte.","네, 잠시만요."]]},
   videoVocab:{title:"Nicos Weg — A2 전편 영화", url:"https://www.youtube.com/watch?v=Lg5P2w_Ro1c", desc:"쇼핑 어휘를 실제 상황으로 복습."},
+  videoVocab2:{title:"lingoni GERMAN — Einkaufen", url:"https://www.youtube.com/@lingoniGERMAN", desc:"쇼핑·교환·환불 표현을 반복 학습."},
   videoConversation:{title:"DW Learn German", url:"https://learngerman.dw.com/en/overview", desc:"쇼핑 회화 인터랙티브 연습."}
 },
 {
@@ -275,11 +326,22 @@ DATA.A2.units = [
     quiz:[{q:"'1년 전부터' (seit, ein Jahr)", a:"seit einem Jahr", note:"seit는 3격."},{q:"'내 상사 없이' (ohne, mein Chef)", a:"ohne meinen Chef", note:"ohne는 4격."}],
     video:{title:"에밀리 독일어 — 전치사와 격", url:"https://www.youtube.com/channel/UCKIrWWrtQGTvFdsIRNVeMeA", desc:"전치사 그룹을 표로 정리."}
   },
+  grammar2:{ tag:"A2", t:"전치사 축약형과 대중교통 표현",
+    body:["zu+dem=zum, zu+der=zur, bei+dem=beim, in+das=ins, an+dem=am처럼 전치사와 정관사가 자주 합쳐지는 축약형은 실생활 독일어에서 훨씬 자연스럽게 들립니다. 축약하지 않으면 틀린 것은 아니지만 어색하게 들릴 수 있습니다.",
+      "대중교통에서는 mit + 3격(mit dem Bus, mit der Bahn)으로 수단을 나타내고, nach(도시/나라 이름)와 zu(건물/사람)를 구분해 목적지를 말합니다: nach Berlin(베를린으로) vs zum Bahnhof(역으로)."],
+    table:{caption:"자주 쓰는 전치사 축약형", headers:["원형","축약형","예문"], rows:[["zu dem","zum","Ich gehe zum Arzt."],["zu der","zur","Ich fahre zur Arbeit."],["bei dem","beim","Ich bin beim Friseur."],["in das","ins","Ich gehe ins Kino."],["an dem","am","Ich warte am Bahnhof."]]},
+    examples:[["Ich fahre mit der Bahn nach Hamburg.","나는 기차로 함부르크에 간다."],["Wir treffen uns beim Bäcker.","우리는 빵집에서 만난다."],["Ich gehe zum Supermarkt.","나는 슈퍼마켓에 간다."]],
+    mistakes:[["Ich fahre nach dem Bahnhof.","Ich fahre zum Bahnhof.","건물은 nach가 아니라 zu"]],
+    quiz:[{q:"'나는 병원에 간다(사람 아닌 건물).' (zu, das Krankenhaus)", a:"Ich gehe zum Krankenhaus.", note:"zu+das=zum."},{q:"'뮌헨으로 간다' (nach)", a:"Ich fahre nach München.", note:"도시명 앞에는 nach."}],
+    tip:"도시·나라는 nach, 건물·사람은 zu(zum/zur) — 이 구분 하나로 목적지 표현 실수를 대부분 없앨 수 있습니다."
+  },
   vocabTheme:"교통·길찾기", convTheme:"길 묻기",
-  idioms:[["Wie komme ich zu…?","~에 어떻게 가나요?","Wie komme ich zum Bahnhof?"],["Zu Fuß","걸어서","Nur fünf Minuten zu Fuß."]],
-  vocab:[["der Bahnhof","기차역","Wo ist der Bahnhof?"],["die U-Bahn","지하철","Ich fahre mit der U-Bahn."],["umsteigen","환승하다","Ich muss umsteigen."],["die Haltestelle","정류장","Die Haltestelle ist hier."],["ankommen","도착하다","Wann kommen wir an?"]],
+  idioms:[["Wie komme ich zu…?","~에 어떻게 가나요?","Wie komme ich zum Bahnhof?"],["Zu Fuß","걸어서","Nur fünf Minuten zu Fuß."],["Das ist auf dem Weg.","가는 길에 있어요.","Der Supermarkt ist auf dem Weg."],["Ich habe mich verlaufen.","길을 잃었어요.","Entschuldigung, ich habe mich verlaufen."],["Immer geradeaus.","계속 직진하세요.","Immer geradeaus, dann sehen Sie es."],["An der nächsten Ecke.","다음 모퉁이에서.","Biegen Sie an der nächsten Ecke ab."],["Das dauert nicht lange.","오래 안 걸려요.","Das dauert nicht lange, nur 10 Minuten."],["Verpasst!","놓쳤다!","Ich habe den Bus verpasst!"]],
+  vocab:[["der Bahnhof","기차역","Wo ist der Bahnhof?"],["die U-Bahn","지하철","Ich fahre mit der U-Bahn."],["umsteigen","환승하다","Ich muss umsteigen."],["die Haltestelle","정류장","Die Haltestelle ist hier."],["ankommen","도착하다","Wann kommen wir an?"],["abfahren","출발하다","Der Zug fährt um 8 Uhr ab."],["das Gleis","플랫폼","Der Zug fährt von Gleis 3."],["der Fahrplan","시간표","Ich schaue im Fahrplan nach."],["das Ticket / die Fahrkarte","승차권","Ich brauche eine Fahrkarte."],["die Ampel","신호등","An der Ampel rechts abbiegen."],["abbiegen","방향을 틀다","Biegen Sie links ab."],["die Kreuzung","교차로","An der Kreuzung geradeaus."],["die Straße","길, 거리","Die Straße ist sehr lang."],["verpassen","놓치다","Ich habe den Zug verpasst."],["pünktlich / verspätet","정시의 / 지연된","Der Bus ist heute verspätet."],["das Auto parken","주차하다","Wo kann ich das Auto parken?"]],
   conversation:{t:"길 묻기", lines:[["A","Entschuldigung, wie komme ich zum Bahnhof?","실례합니다, 역에 어떻게 가나요?"],["B","Gehen Sie geradeaus und dann links.","직진하다가 왼쪽으로 가세요."],["A","Ist es weit?","멀어요?"],["B","Nein, nur fünf Minuten zu Fuß.","아니요, 걸어서 5분이에요."]]},
+  conversation2:{t:"버스 정류장에서", lines:[["A","Entschuldigung, fährt dieser Bus zum Marktplatz?","실례합니다, 이 버스가 마르크트광장으로 가나요?"],["B","Nein, Sie müssen an der nächsten Haltestelle umsteigen.","아니요, 다음 정류장에서 갈아타셔야 해요."],["A","Welche Linie muss ich nehmen?","몇 번 노선을 타야 하나요?"],["B","Nehmen Sie die Linie 12, die fährt direkt dorthin.","12번 노선을 타세요, 바로 거기로 가요."],["A","Vielen Dank für die Hilfe!","도와주셔서 감사합니다!"]]},
   videoVocab:{title:"Nicos Weg — A2 전편 영화", url:"https://www.youtube.com/watch?v=Lg5P2w_Ro1c", desc:"교통·길찾기 표현을 확인하세요."},
+  videoVocab2:{title:"lingoni GERMAN — Verkehrsmittel", url:"https://www.youtube.com/@lingoniGERMAN", desc:"대중교통·길찾기 표현 집중 학습."},
   videoConversation:{title:"DW Learn German", url:"https://learngerman.dw.com/en/overview", desc:"길찾기 회화 연습."}
 },
 {
@@ -292,11 +354,22 @@ DATA.A2.units = [
     quiz:[{q:"'책이 책상 위에 있다.'(위치) auf ___ Tisch", a:"auf dem Tisch"},{q:"'gut'의 최상급은?", a:"am besten", note:"불규칙 최상급."}],
     video:{title:"에밀리 독일어 — 전치사 Wechsel", url:"https://www.youtube.com/channel/UCKIrWWrtQGTvFdsIRNVeMeA", desc:"혼합전치사 wo/wohin 구분법."}
   },
+  grammar2:{ tag:"A2", t:"비교급·최상급 심화와 날씨 표현",
+    body:["형용사 비교급은 -er, 최상급은 am -sten을 붙입니다. 1음절 단모음 형용사는 움라우트가 붙는 경우가 많습니다(alt-älter-am ältesten, groß-größer-am größten). gut-besser-am besten, viel-mehr-am meisten, gern-lieber-am liebsten은 완전 불규칙이니 통째로 외우세요.",
+      "동등 비교는 so...wie(~만큼 ~한)를 씁니다. 날씨를 말할 때는 비인칭 주어 es를 사용합니다: es regnet, es schneit, es ist warm/kalt."],
+    table:{caption:"불규칙 비교급·최상급", headers:["원급","비교급","최상급"], rows:[["gut","besser","am besten"],["viel","mehr","am meisten"],["gern","lieber","am liebsten"],["hoch","höher","am höchsten"]]},
+    examples:[["Ich mag Tee lieber als Kaffee.","나는 커피보다 차를 더 좋아한다."],["Das ist genauso schön wie letztes Jahr.","작년만큼 아름답다."],["Es ist heute wärmer als gestern.","오늘이 어제보다 따뜻하다."]],
+    mistakes:[["Ich mag Tee mehr gern als Kaffee.","Ich mag Tee lieber als Kaffee.","gern의 비교급은 lieber"]],
+    quiz:[{q:"'나는 여름을 제일 좋아해.' (mögen, der Sommer, am meisten)", a:"Ich mag den Sommer am meisten.", note:"최상급 부사는 am meisten."},{q:"'오늘은 어제만큼 춥다.' (so...wie)", a:"Heute ist es so kalt wie gestern.", note:"동등비교 so+형용사+wie."}],
+    tip:"비교 표현 3단계: 원급(so...wie) → 비교급(-er als) → 최상급(am -sten) — 순서대로 익히면 헷갈리지 않습니다."
+  },
   vocabTheme:"취미·날씨", convTheme:"취미 이야기하기",
-  idioms:[["Zeit haben","시간이 있다","Hast du heute Zeit?"],["Es kommt darauf an.","그건 상황에 따라 달라요.","Es kommt darauf an, wie das Wetter ist."]],
-  vocab:[["das Hobby","취미","Mein Hobby ist Schwimmen."],["das Wetter","날씨","Wie ist das Wetter?"],["es regnet","비가 온다","Es regnet den ganzen Tag."],["die Sonne scheint","해가 난다","Heute scheint die Sonne."]],
+  idioms:[["Zeit haben","시간이 있다","Hast du heute Zeit?"],["Es kommt darauf an.","그건 상황에 따라 달라요.","Es kommt darauf an, wie das Wetter ist."],["Bei jedem Wetter","날씨와 상관없이","Ich jogge bei jedem Wetter."],["Das macht Spaß.","그거 재밌어요.","Klettern macht mir Spaß."],["Ich bin ein Fan von…","나는 ~의 팬이야.","Ich bin ein großer Fan von Fußball."],["auf jeden Fall","무조건, 반드시","Auf jeden Fall gehen wir schwimmen."],["Wetter wie verhext","날씨가 변덕스럽다(관용구)","Heute ist das Wetter wie verhext."],["frische Luft schnappen","바람 좀 쐬다","Ich gehe raus, frische Luft schnappen."]],
+  vocab:[["das Hobby","취미","Mein Hobby ist Schwimmen."],["das Wetter","날씨","Wie ist das Wetter?"],["es regnet","비가 온다","Es regnet den ganzen Tag."],["die Sonne scheint","해가 난다","Heute scheint die Sonne."],["schneien","눈이 오다","Im Winter schneit es oft."],["windig","바람 부는","Es ist heute sehr windig."],["wolkig / bewölkt","흐린","Morgen ist es bewölkt."],["die Temperatur","기온","Die Temperatur steigt."],["der Sommer / Winter","여름 / 겨울","Ich mag den Sommer."],["der Frühling / Herbst","봄 / 가을","Im Herbst werden die Blätter bunt."],["wandern","등산하다, 도보여행하다","Wir wandern jedes Wochenende."],["klettern","암벽등반하다, 오르다","Er klettert gern in den Bergen."],["malen / zeichnen","그림그리다 / 스케치하다","Ich male gern Landschaften."],["angeln","낚시하다","Mein Opa angelt jedes Wochenende."],["das Instrument spielen","악기를 연주하다","Ich spiele Gitarre."],["die Mannschaft","팀","Unsere Mannschaft hat gewonnen."]],
   conversation:{t:"취미 이야기", lines:[["A","Was machst du in deiner Freizeit?","여가시간에 뭐 해?"],["B","Ich schwimme gern und lese viel.","수영을 좋아하고 책을 많이 읽어."],["A","Cool! Ich treibe gern Sport.","멋지다! 나는 운동을 좋아해."]]},
+  conversation2:{t:"날씨와 주말 계획", lines:[["A","Wie ist das Wetter am Wochenende?","주말 날씨가 어때?"],["B","Es soll sonnig und warm werden.","맑고 따뜻할 거래."],["A","Super, dann können wir wandern gehen!","좋다, 그럼 등산 갈 수 있겠다!"],["B","Ja, das macht bestimmt Spaß. Ich mag Wandern am liebsten.","응, 분명 재밌을 거야. 나는 등산을 제일 좋아해."],["A","Perfekt, treffen wir uns um 9 Uhr.","완벽해, 9시에 만나자."]]},
   videoVocab:{title:"Nicos Weg — A2 전편 영화", url:"https://www.youtube.com/watch?v=Lg5P2w_Ro1c", desc:"취미·날씨 표현을 확인."},
+  videoVocab2:{title:"lingoni GERMAN — Vergleiche & Wetter", url:"https://www.youtube.com/@lingoniGERMAN", desc:"비교급·날씨 표현 집중 연습."},
   videoConversation:{title:"DW Learn German", url:"https://learngerman.dw.com/en/overview", desc:"취미 이야기 회화 연습."}
 },
 {
@@ -310,11 +383,33 @@ DATA.A2.units = [
     quiz:[{q:"'나는 커피를 마셨다.'(Perfekt)", a:"Ich habe Kaffee getrunken."},{q:"'그녀는 집에 왔다.'(Perfekt, kommen)", a:"Sie ist nach Hause gekommen."}],
     video:{title:"에밀리 독일어 — Perfekt", url:"https://www.youtube.com/channel/UCKIrWWrtQGTvFdsIRNVeMeA", desc:"Perfekt 만드는 법을 예문으로 설명."}
   },
+  grammar2:{ tag:"A2", t:"꼭 외우는 불규칙동사 20 — Perfekt 완전 정리",
+    body:["Perfekt를 자유자재로 쓰려면 결국 자주 쓰는 불규칙동사의 과거분사를 통째로 외워야 합니다. 아래 20개는 일상 회화에서 가장 자주 등장하는 불규칙동사이니, 예문과 함께 소리 내어 반복하세요.",
+      "패턴을 보면 이동·상태변화 동사(bleiben, fahren, gehen, kommen, werden)는 sein을, 그 외 대부분은 haben을 쓴다는 규칙이 다시 확인됩니다. 표를 가리고 스스로 말해보는 연습이 가장 효과적입니다."],
+    table:{caption:"꼭 외우는 불규칙동사 20", headers:["원형","과거(Präteritum)","현재완료(Perfekt)","뜻"], rows:[
+      ["beginnen","begann","hat begonnen","시작하다"],["bleiben","blieb","ist geblieben","머무르다"],
+      ["bringen","brachte","hat gebracht","가져오다"],["denken","dachte","hat gedacht","생각하다"],
+      ["essen","aß","hat gegessen","먹다"],["fahren","fuhr","ist gefahren","(타고)가다"],
+      ["finden","fand","hat gefunden","찾다"],["geben","gab","hat gegeben","주다"],
+      ["gehen","ging","ist gegangen","가다"],["kommen","kam","ist gekommen","오다"],
+      ["lesen","las","hat gelesen","읽다"],["nehmen","nahm","hat genommen","잡다/타다"],
+      ["schreiben","schrieb","hat geschrieben","쓰다"],["sehen","sah","hat gesehen","보다"],
+      ["sprechen","sprach","hat gesprochen","말하다"],["stehen","stand","hat gestanden","서 있다"],
+      ["treffen","traf","hat getroffen","만나다"],["trinken","trank","hat getrunken","마시다"],
+      ["verstehen","verstand","hat verstanden","이해하다"],["werden","wurde","ist geworden","되다"]
+    ]},
+    examples:[["Ich habe den Schlüssel gefunden.","열쇠를 찾았다."],["Wir haben lange gesprochen.","우리는 오래 이야기했다."],["Er ist Lehrer geworden.","그는 선생님이 되었다."]],
+    mistakes:[["Er hat Lehrer geworden.","Er ist Lehrer geworden.","werden은 sein-Perfekt"]],
+    quiz:[{q:"'나는 그 편지를 썼다.'(Perfekt, schreiben)", a:"Ich habe den Brief geschrieben.", note:"schreiben-schrieb-geschrieben."},{q:"'우리는 친구를 만났다.'(Perfekt, treffen)", a:"Wir haben einen Freund getroffen.", note:"treffen-traf-getroffen."}],
+    tip:"이 20개 동사만 완벽히 외우면 A2~B1 회화의 80% 이상에서 등장하는 과거 표현을 커버할 수 있습니다."
+  },
   vocabTheme:"여행·휴가", convTheme:"주말 이야기",
-  idioms:[["Wie war's?","어땠어?","Wie war dein Urlaub? — Super!"],["Das war toll!","정말 좋았어!","Der Ausflug war toll!"]],
-  vocab:[["der Urlaub","휴가","Ich hatte zwei Wochen Urlaub."],["besuchen","방문하다","Ich habe meine Familie besucht."],["die Reise","여행","Die Reise war lang."],["gestern / letzte Woche","어제/지난주","Gestern war ich müde."]],
+  idioms:[["Wie war's?","어땠어?","Wie war dein Urlaub? — Super!"],["Das war toll!","정말 좋았어!","Der Ausflug war toll!"],["Zum ersten Mal","처음으로","Ich war zum ersten Mal in Paris."],["Es hat sich gelohnt.","그럴 만한 가치가 있었어.","Die lange Reise hat sich gelohnt."],["Im Nachhinein","돌이켜보니","Im Nachhinein war es die richtige Entscheidung."],["Ich kann's kaum erwarten.","기대돼서 못 기다리겠어.","Ich kann den Urlaub kaum erwarten."],["auf Reisen sein","여행 중이다","Ich bin gerade auf Reisen."],["Erinnerungen sammeln","추억을 쌓다","Wir haben viele Erinnerungen gesammelt."]],
+  vocab:[["der Urlaub","휴가","Ich hatte zwei Wochen Urlaub."],["besuchen","방문하다","Ich habe meine Familie besucht."],["die Reise","여행","Die Reise war lang."],["gestern / letzte Woche","어제/지난주","Gestern war ich müde."],["das Erlebnis","경험, 체험","Das war ein tolles Erlebnis."],["die Erinnerung","추억, 기억","Ich habe schöne Erinnerungen."],["übernachten","숙박하다","Wir haben im Hotel übernachtet."],["das Gepäck","짐, 수하물","Mein Gepäck ist noch nicht da."],["der Flug","비행(편)","Der Flug war pünktlich."],["die Sehenswürdigkeit","관광명소","Wir haben viele Sehenswürdigkeiten besichtigt."],["das Ausland","해외","Ich war noch nie im Ausland."],["planen","계획하다","Wir planen eine Reise nach Italien."],["buchen","예약하다","Ich habe ein Zimmer gebucht."],["die Verspätung","연착","Der Flug hatte Verspätung."],["entspannen","휴식을 취하다","Ich habe mich am Strand entspannt."]],
   conversation:{t:"주말 이야기", lines:[["A","Was hast du am Wochenende gemacht?","주말에 뭐 했어?"],["B","Ich habe meine Familie besucht und wir sind essen gegangen.","가족을 방문했고 외식하러 갔어."],["A","Klingt schön!","좋았겠다!"]]},
+  conversation2:{t:"휴가 경험 이야기하기", lines:[["A","Wo warst du letzten Sommer im Urlaub?","지난 여름에 어디로 휴가 갔었어?"],["B","Ich bin nach Italien gefahren und habe dort eine Woche verbracht.","이탈리아에 가서 일주일 보냈어."],["A","Wow, wie war's?","와, 어땠어?"],["B","Es war fantastisch! Wir haben viele Sehenswürdigkeiten besichtigt und tolles Essen gegessen.","환상적이었어! 관광명소도 많이 보고 맛있는 음식도 먹었어."],["A","Das hat sich bestimmt gelohnt!","분명 그럴 가치가 있었겠다!"]]},
   videoVocab:{title:"Nicos Weg — A2 전편 영화", url:"https://www.youtube.com/watch?v=Lg5P2w_Ro1c", desc:"여행·휴가 표현을 복습."},
+  videoVocab2:{title:"에밀리 독일어 — 불규칙동사 20 총정리", url:"https://www.youtube.com/channel/UCKIrWWrtQGTvFdsIRNVeMeA", desc:"불규칙동사 20개를 예문과 함께 반복."},
   videoConversation:{title:"DW Learn German", url:"https://learngerman.dw.com/en/overview", desc:"과거 이야기 회화 연습."}
 },
 {
@@ -327,11 +422,21 @@ DATA.A2.units = [
     quiz:[{q:"'나는 그게 기대돼.' (sich freuen auf, das)", a:"Ich freue mich darauf."},{q:"'시간이 없기 때문에 못 간다.' (weil)", a:"Ich kann nicht kommen, weil ich keine Zeit habe."}],
     video:{title:"에밀리 독일어 — weil·dass 어순", url:"https://www.youtube.com/channel/UCKIrWWrtQGTvFdsIRNVeMeA", desc:"A2에서 B1로 넘어가는 부문장 어순 입문."}
   },
+  grammar2:{ tag:"A2", t:"신체 부위·병원 표현과 A2 총정리",
+    body:["아플 때는 'Ich habe + 신체부위 + schmerzen'(~가 아프다) 또는 'Mir tut der/die/das + 신체부위 + weh'(~가 아프다, 3격 구문)를 씁니다. 두 표현 모두 매우 자주 쓰이니 함께 외우세요.",
+      "A2를 마치며 정리하면: ① 3격 인칭대명사와 3격 동사(helfen, gefallen) ② 전치사 그룹(3격/4격/혼합) ③ Perfekt와 20개 핵심 불규칙동사 ④ 재귀동사와 weil/dass 부문장 — 이 네 가지가 B1로 가는 다리입니다."],
+    examples:[["Mir tut der Kopf weh.","머리가 아파요."],["Ich habe Halsschmerzen.","목이 아파요."],["Ich fühle mich nicht wohl.","몸이 안 좋아요."]],
+    mistakes:[["Ich habe Schmerzen am Kopf.","Mir tut der Kopf weh. / Ich habe Kopfschmerzen.","관용 표현 그대로 외우기"]],
+    quiz:[{q:"'배가 아파요.' (Bauchschmerzen)", a:"Ich habe Bauchschmerzen.", note:"신체부위+schmerzen 복합명사."},{q:"'목이 아파요.'(weh tun 구문)", a:"Mir tut der Hals weh.", note:"3격 mir + weh tun."}],
+    tip:"A2 졸업 체크리스트: 3격 동사 5개, 전치사 그룹 3개, 불규칙동사 20개, weil/dass 어순 — 이 네 가지가 자동으로 나오면 B1 진입 준비 완료입니다."
+  },
   vocabTheme:"이유·감정·건강 초급", convTheme:"이유 설명하기",
-  idioms:[["Warum nicht?","왜 안 되겠어? (좋아!)","Warum nicht? Machen wir das!"],["Mir geht's nicht so gut.","별로 안 좋아.","Mir geht's nicht so gut heute."]],
-  vocab:[["sich interessieren für","~에 관심있다","Ich interessiere mich für Kunst."],["der Grund","이유","Was ist der Grund?"],["krank / gesund","아픈/건강한","Ich bin heute krank."],["müde","피곤한","Ich bin sehr müde."]],
+  idioms:[["Warum nicht?","왜 안 되겠어? (좋아!)","Warum nicht? Machen wir das!"],["Mir geht's nicht so gut.","별로 안 좋아.","Mir geht's nicht so gut heute."],["Gute Besserung!","얼른 나아!","Gute Besserung, ruh dich aus!"],["Das tut mir leid.","안됐다, 유감이야.","Das tut mir leid zu hören."],["Ich habe mich erkältet.","감기에 걸렸어.","Ich habe mich letzte Woche erkältet."],["auf dem Weg der Besserung","호전 중인","Ich bin schon auf dem Weg der Besserung."],["sich Sorgen machen","걱정하다","Mach dir keine Sorgen!"],["Es geht schon wieder.","이제 괜찮아졌어.","Danke, es geht schon wieder."]],
+  vocab:[["sich interessieren für","~에 관심있다","Ich interessiere mich für Kunst."],["der Grund","이유","Was ist der Grund?"],["krank / gesund","아픈/건강한","Ich bin heute krank."],["müde","피곤한","Ich bin sehr müde."],["der Kopf / der Bauch","머리 / 배","Mir tut der Kopf weh."],["der Hals / der Rücken","목 / 등","Ich habe Rückenschmerzen."],["die Erkältung","감기","Ich habe eine Erkältung."],["das Fieber","열","Ich habe Fieber."],["der Husten","기침","Ich habe starken Husten."],["die Apotheke","약국","Die Apotheke ist gegenüber."],["die Tablette","알약","Nimm diese Tablette."],["sich ausruhen","쉬다, 휴식하다","Du solltest dich ausruhen."],["der Arzttermin","병원 예약","Ich habe einen Arzttermin um 14 Uhr."],["die Versicherung","보험","Ich brauche meine Versicherungskarte."],["gesund werden","건강해지다, 낫다","Gute Besserung, werde schnell gesund!"]],
   conversation:{t:"이유 설명하기", lines:[["A","Warum kommst du heute später?","오늘 왜 늦게 와?"],["B","Weil ich einen Termin beim Arzt habe.","병원 예약이 있어서."],["A","Ah, verstehe. Gute Besserung!","아, 알겠어. 얼른 나아!"]]},
+  conversation2:{t:"병원에서 증상 설명하기", lines:[["A","Guten Tag, was fehlt Ihnen denn?","안녕하세요, 어디가 안 좋으세요?"],["B","Ich habe seit gestern Kopfschmerzen und Fieber.","어제부터 두통이랑 열이 있어요."],["A","Haben Sie auch Husten?","기침도 하세요?"],["B","Ja, ein bisschen. Und mir tut der Hals weh.","네, 조금요. 그리고 목도 아파요."],["A","Das klingt nach einer Erkältung. Ruhen Sie sich aus und trinken Sie viel Wasser.","감기 같네요. 푹 쉬시고 물을 많이 드세요."],["B","Vielen Dank, Herr Doktor.","감사합니다, 선생님."]]},
   videoVocab:{title:"Nicos Weg — A2 전편 영화", url:"https://www.youtube.com/watch?v=Lg5P2w_Ro1c", desc:"A2 전체 복습 마무리 영상."},
+  videoVocab2:{title:"lingoni GERMAN — Beim Arzt", url:"https://www.youtube.com/@lingoniGERMAN", desc:"신체 부위·병원 표현을 집중적으로 복습."},
   videoConversation:{title:"DW Learn German", url:"https://learngerman.dw.com/en/overview", desc:"이유 설명하기 회화 연습, A2 배치테스트."}
 }
 ];
@@ -356,11 +461,25 @@ DATA.B1.units = [
     quiz:[{q:"'그 새로운 동료'(주어, 남성)", a:"der neue Kollege"},{q:"'좋은 아이디어 하나를'(4격 여성)", a:"eine gute Idee"},{q:"'좋은 동료 한 명을'(4격 남성)", a:"einen guten Kollegen"}],
     video:{title:"lingoni GERMAN — 형용사 어미변화", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"B1 형용사 어미 체계적 강의."}
   },
+  grammar2:{ tag:"B1", t:"격(Kasus) 총정리 — 정관사·형용사 어미 한 장 표",
+    body:["B1부터는 A1~A2에서 배운 관사·격변화를 하나의 표로 통합해 자유자재로 꺼내 쓸 수 있어야 합니다. 아래 표는 정관사(der/die/das) 격변화와 형용사 어미를 한 번에 정리한 것으로, 막힐 때마다 돌아와 확인하는 '기준표'입니다.",
+      "핵심 규칙: 남성만 1격→4격에서 der→den으로 바뀌고, 여성·중성·복수는 1격=4격입니다. 형용사 어미는 '관사가 격을 이미 보여주면 형용사는 약변화(-e/-en), 관사가 없거나 약하면(ein류) 형용사가 강변화(-er/-es)'로 보완합니다."],
+    table:{caption:"정관사(der/die/das) 격변화", headers:["격","남성 m","여성 f","중성 n","복수 pl"], rows:[
+      ["1격 Nom.","der","die","das","die"],["4격 Akk.","den","die","das","die"],
+      ["3격 Dat.","dem","der","dem","den (+n)"],["2격 Gen.","des (+s)","der","des (+s)","der"]
+    ]},
+    examples:[["Der Chef lobt den Mitarbeiter.","상사가 그 직원을 칭찬한다."],["Das ist die Meinung des Teams.","그것은 팀의 의견이다."],["Ich gebe dem Kollegen die Unterlagen.","나는 그 동료에게 서류를 준다."]],
+    mistakes:[["Ich gebe den Kollegen die Unterlagen. (의도: 3격)","Ich gebe dem Kollegen die Unterlagen.","간접목적어는 3격 dem"]],
+    quiz:[{q:"'그 팀의 목표'(2격, das Team)", a:"das Ziel des Teams", note:"중성 2격은 des+s."},{q:"'그 상사에게'(3격, der Chef)", a:"dem Chef", note:"남성 3격은 dem."}],
+    tip:"격 표는 외우는 게 아니라 '남성만 1↔4격에서 변한다'는 원리 하나로 재구성할 수 있어야 합니다."
+  },
   vocabTheme:"직장·회의", convTheme:"회의 조율하기",
-  idioms:[["Das kommt mir bekannt vor.","낯익네요/그런 것 같아요.","Das Problem kommt mir bekannt vor."],["Ich bin dafür zuständig.","제가 담당입니다.","Dafür bin ich zuständig."]],
-  vocab:[["die Besprechung","회의","Wir haben eine Besprechung."],["der Vorschlag","제안","Guter Vorschlag!"],["die Frist","마감기한","Die Frist ist Freitag."],["vereinbaren","합의하다","Wir vereinbaren einen Termin."],["dringend","긴급한","Das ist dringend."],["die Rückmeldung","피드백","Danke für die Rückmeldung."]],
+  idioms:[["Das kommt mir bekannt vor.","낯익네요/그런 것 같아요.","Das Problem kommt mir bekannt vor."],["Ich bin dafür zuständig.","제가 담당입니다.","Dafür bin ich zuständig."],["Auf den Punkt bringen","핵심을 짚다","Können Sie das auf den Punkt bringen?"],["Das steht noch offen.","그건 아직 미정이에요.","Der Termin steht noch offen."],["Im Großen und Ganzen","대체로","Im Großen und Ganzen läuft es gut."],["Sich abstimmen","조율하다, 합의하다","Wir müssen uns noch abstimmen."],["Am Ball bleiben","계속 신경쓰다, 놓치지 않다","Bleiben Sie bitte am Ball."],["Unter der Lupe","자세히 살펴보다(관용구)","Wir nehmen das Projekt unter die Lupe."]],
+  vocab:[["die Besprechung","회의","Wir haben eine Besprechung."],["der Vorschlag","제안","Guter Vorschlag!"],["die Frist","마감기한","Die Frist ist Freitag."],["vereinbaren","합의하다","Wir vereinbaren einen Termin."],["dringend","긴급한","Das ist dringend."],["die Rückmeldung","피드백","Danke für die Rückmeldung."],["die Abteilung","부서","Ich arbeite in der Marketingabteilung."],["die Aufgabe","과제, 업무","Das ist meine Aufgabe."],["verantwortlich sein","책임이 있다","Wer ist dafür verantwortlich?"],["die Kollegin / der Kollege","동료","Meine Kollegin hilft mir."],["die Entscheidung treffen","결정을 내리다","Wir müssen eine Entscheidung treffen."],["die Priorität","우선순위","Das hat höchste Priorität."],["umsetzen","실행하다","Wir setzen den Plan um."],["die Sitzung leiten","회의를 주재하다","Wer leitet die Sitzung?"],["das Protokoll","회의록","Wer schreibt das Protokoll?"],["die Verantwortung übernehmen","책임을 지다","Ich übernehme die Verantwortung."],["effizient","효율적인","Wir arbeiten sehr effizient."]],
   conversation:{t:"회의 일정 조율", lines:[["A","Können wir die Besprechung verschieben?","회의를 옮길 수 있을까요?"],["B","Ja, ich schlage Donnerstag vor.","네, 목요일을 제안할게요."],["A","Donnerstag passt gut.","목요일 좋아요."]]},
+  conversation2:{t:"업무 우선순위 조율", lines:[["A","Wir müssen die Prioritäten für diese Woche klären.","이번 주 우선순위를 명확히 해야 해요."],["B","Ich denke, das neue Projekt hat höchste Priorität.","제 생각엔 새 프로젝트가 최우선순위예요."],["A","Einverstanden. Wer übernimmt die Verantwortung dafür?","동의해요. 누가 그것을 책임지죠?"],["B","Ich kann das übernehmen, wenn das für alle passt.","모두 괜찮으시면 제가 맡을 수 있어요."],["A","Perfekt, dann ist das geklärt.","완벽해요, 그럼 정리됐네요."]]},
   videoVocab:{title:"lingoni GERMAN", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"직장·이메일 어휘 플레이리스트."},
+  videoVocab2:{title:"Easy German — Im Büro", url:"https://www.youtube.com/@EasyGerman", desc:"직장 어휘를 실제 인터뷰로 확인."},
   videoConversation:{title:"Easy German", url:"https://www.youtube.com/@EasyGerman", desc:"실제 독일어 회의·업무 표현을 자연스럽게."}
 },
 {
@@ -373,11 +492,25 @@ DATA.B1.units = [
     quiz:[{q:"'그 프로젝트는 다음 주에 시작될 것이다.'(werden)", a:"Das Projekt wird nächste Woche beginnen."},{q:"'우리는 시간이 있었다.'(Präteritum, haben)", a:"Wir hatten Zeit."}],
     video:{title:"lingoni GERMAN — Präteritum·Futur", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"과거·미래 시제 정리."}
   },
+  grammar2:{ tag:"B1", t:"형용사 어미 심화 — 관사 없음(무관사) 형태",
+    body:["관사 없이 형용사가 바로 명사 앞에 오면(복수형, 물질명사, 무관사 명사) 형용사가 정관사의 어미를 그대로 가져와 가장 강하게 변화합니다. 이는 형용사가 관사를 대신해 성·격 정보를 모두 떠맡기 때문입니다.",
+      "예를 들어 gute Freunde(좋은 친구들, 복수 1/4격), mit frischem Brot(신선한 빵과 함께, 중성 3격)처럼, 관사가 사라진 자리를 형용사 어미가 채웁니다."],
+    table:{caption:"관사 없는 형용사 어미(강변화)", headers:["격","남성 m","여성 f","중성 n","복수 pl"], rows:[
+      ["1격","guter","gute","gutes","gute"],["4격","guten","gute","gutes","gute"],
+      ["3격","gutem","guter","gutem","guten"],["2격","guten","guter","guten","guter"]
+    ]},
+    examples:[["Ich trinke gern kalten Kaffee.","나는 차가운 커피를 좋아한다."],["Gute Freunde sind wichtig.","좋은 친구들은 중요하다."],["Mit frischem Brot schmeckt es besser.","신선한 빵과 함께면 더 맛있다."]],
+    mistakes:[["Ich trinke gern kalte Kaffee. (남성 4격 의도)","Ich trinke gern kalten Kaffee.","무관사 남성 4격은 -en"]],
+    quiz:[{q:"'차가운 물과 함께' (mit, kalt, das Wasser)", a:"mit kaltem Wasser", note:"무관사 중성 3격은 -em."},{q:"'좋은 친구들이 왔다' (gut, Freunde, kommen)", a:"Gute Freunde sind gekommen.", note:"무관사 복수 1격은 -e."}],
+    tip:"관사 없는 형용사 어미는 정관사(der/die/das/die)의 어미와 거의 똑같습니다 — 이렇게 연결하면 외우기 훨씬 쉽습니다."
+  },
   vocabTheme:"목표·계획", convTheme:"목표 말하기",
-  idioms:[["Ich habe vor, …","~할 계획이다","Ich habe vor, B2 zu erreichen."],["Auf lange Sicht","장기적으로","Auf lange Sicht lohnt es sich."]],
-  vocab:[["das Ziel","목표","Mein Ziel ist B2."],["erreichen","달성하다","Ich werde mein Ziel erreichen."],["sich verbessern","향상되다","Mein Deutsch verbessert sich."],["vorbereiten","준비하다","Ich bereite mich vor."]],
+  idioms:[["Ich habe vor, …","~할 계획이다","Ich habe vor, B2 zu erreichen."],["Auf lange Sicht","장기적으로","Auf lange Sicht lohnt es sich."],["Schritt für Schritt","한 걸음씩","Schritt für Schritt komme ich näher ans Ziel."],["Sich etwas vornehmen","무언가를 결심하다","Ich habe mir vorgenommen, mehr zu lesen."],["Am Ball bleiben","꾸준히 하다","Bleib am Ball, dann klappt's!"],["Es lohnt sich.","그럴만한 가치가 있다.","Deutsch zu lernen lohnt sich wirklich."],["Dranbleiben!","계속 해!","Du machst Fortschritte, bleib dran!"],["Die Ärmel hochkrempeln","팔을 걷어붙이다(각오하다)","Jetzt heißt es: Ärmel hochkrempeln!"]],
+  vocab:[["das Ziel","목표","Mein Ziel ist B2."],["erreichen","달성하다","Ich werde mein Ziel erreichen."],["sich verbessern","향상되다","Mein Deutsch verbessert sich."],["vorbereiten","준비하다","Ich bereite mich vor."],["der Fortschritt","발전, 진전","Ich mache große Fortschritte."],["die Herausforderung","도전(과제)","Das ist eine große Herausforderung."],["sich vornehmen","결심하다","Ich habe mir vorgenommen zu üben."],["konsequent","일관된, 꾸준한","Ich bleibe konsequent dabei."],["der Plan","계획","Ich habe einen genauen Plan."],["motiviert","동기부여된","Ich bin sehr motiviert."],["scheitern","실패하다","Ich habe keine Angst zu scheitern."],["durchhalten","견디다, 버티다","Ich muss einfach durchhalten."],["die Geduld","인내심","Sprachenlernen braucht Geduld."],["langfristig / kurzfristig","장기적인 / 단기적인","Das ist ein langfristiges Ziel."]],
   conversation:{t:"목표에 대해 이야기하기", lines:[["A","Was ist dein Ziel für dieses Jahr?","올해 목표가 뭐야?"],["B","Ich werde mein Deutsch auf B2 bringen.","독일어를 B2로 끌어올릴 거야."],["A","Ein gutes Ziel!","좋은 목표네!"]]},
+  conversation2:{t:"공부 계획에 대해 이야기하기", lines:[["A","Wie bereitest du dich auf die Prüfung vor?","시험 준비를 어떻게 하고 있어?"],["B","Ich lerne jeden Tag eine Stunde und mache viele Übungen.","매일 한 시간씩 공부하고 연습문제를 많이 풀어."],["A","Das klingt sehr konsequent!","정말 꾸준하네!"],["B","Ja, ich will unbedingt am Ball bleiben, auch wenn es manchmal schwer ist.","응, 가끔 힘들어도 꼭 꾸준히 하고 싶어."],["A","Ich bin sicher, du schaffst das!","분명 해낼 거야!"]]},
   videoVocab:{title:"lingoni GERMAN", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"목표·계획 관련 어휘."},
+  videoVocab2:{title:"에밀리 독일어 — 형용사 어미 심화", url:"https://www.youtube.com/channel/UCKIrWWrtQGTvFdsIRNVeMeA", desc:"무관사 형용사 어미를 한국어로 정리."},
   videoConversation:{title:"Easy German", url:"https://www.youtube.com/@EasyGerman", desc:"목표·꿈에 대해 이야기하는 실제 인터뷰."}
 },
 {
@@ -390,11 +523,27 @@ DATA.B1.units = [
     quiz:[{q:"'그 이메일은 오늘 보내질 것이다.'", a:"Die E-Mail wird heute gesendet."},{q:"'그 집은 1990년에 지어졌다.'(과거수동)", a:"Das Haus wurde 1990 gebaut."}],
     video:{title:"lingoni GERMAN — Passiv", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"동작수동·상태수동 비교."}
   },
+  grammar2:{ tag:"B1", t:"수동태의 시제 변화 — 현재/과거/완료/화법조동사 수동",
+    body:["수동태는 모든 시제에 적용됩니다: 현재수동(wird geprüft), 과거수동(wurde geprüft), 현재완료수동(ist geprüft worden — 이때 werden의 과거분사는 예외적으로 geworden이 아니라 worden), 화법조동사수동(muss geprüft werden).",
+      "이메일·공문서에서는 '누가 했는지'를 감추고 절차 자체를 강조하기 위해 수동태를 습관적으로 씁니다. B1부터는 현재/과거뿐 아니라 완료수동까지 자유롭게 구사해야 합니다."],
+    table:{caption:"수동태 시제 변화", headers:["시제","형태","예문"], rows:[
+      ["현재","wird + 과거분사","Der Bericht wird geprüft."],
+      ["과거","wurde + 과거분사","Der Bericht wurde geprüft."],
+      ["현재완료","ist + 과거분사 + worden","Der Bericht ist geprüft worden."],
+      ["화법조동사","muss/kann + 과거분사 + werden","Der Bericht muss geprüft werden."]
+    ]},
+    examples:[["Die Verträge wurden letzte Woche unterschrieben.","계약서는 지난주에 서명되었다."],["Das Problem ist bereits gelöst worden.","그 문제는 이미 해결되었다."],["Die Anfrage muss noch beantwortet werden.","그 문의는 아직 답변되어야 한다."]],
+    mistakes:[["Der Bericht ist geprüft geworden.","Der Bericht ist geprüft worden.","완료수동은 geworden이 아니라 worden"]],
+    quiz:[{q:"'그 이메일은 이미 발송되었다.'(완료수동)", a:"Die E-Mail ist schon gesendet worden.", note:"완료수동은 worden."},{q:"'그 문제는 해결될 수 있다.'(화법조동사 수동)", a:"Das Problem kann gelöst werden.", note:"화법조동사+과거분사+werden."}],
+    tip:"완료수동에서 worden(과거분사 아님, 고정형)을 쓰는 것은 예외이니 통째로 외우세요: ist/sind + 과거분사 + worden."
+  },
   vocabTheme:"전화·이메일", convTheme:"업무 전화",
-  idioms:[["Es geht um…","~에 관한 것이다","Es geht um die Anfrage von gestern."],["Zur Verfügung stehen","응대 가능하다","Ich stehe Ihnen gern zur Verfügung."]],
-  vocab:[["die Anfrage","문의","Danke für Ihre Anfrage."],["die Unterlagen","서류","Anbei die Unterlagen."],["zusenden","송부하다","Ich sende es Ihnen zu."],["klären","명확히 하다","Wir müssen das klären."]],
+  idioms:[["Es geht um…","~에 관한 것이다","Es geht um die Anfrage von gestern."],["Zur Verfügung stehen","응대 가능하다","Ich stehe Ihnen gern zur Verfügung."],["Sich in Verbindung setzen","연락을 취하다","Ich setze mich mit Ihnen in Verbindung."],["Auf dem Laufenden halten","계속 알려주다","Ich halte Sie auf dem Laufenden."],["Bescheid geben","알려주다","Geben Sie mir bitte Bescheid."],["In Kopie setzen","참조로 넣다","Setzen Sie mich bitte in Kopie."],["Anbei finden Sie…","첨부해 드립니다.","Anbei finden Sie die Unterlagen."],["Mit freundlichen Grüßen","(이메일 맺음말) 감사합니다.","Mit freundlichen Grüßen, Kim Minsu"]],
+  vocab:[["die Anfrage","문의","Danke für Ihre Anfrage."],["die Unterlagen","서류","Anbei die Unterlagen."],["zusenden","송부하다","Ich sende es Ihnen zu."],["klären","명확히 하다","Wir müssen das klären."],["der Anhang","첨부파일","Bitte finden Sie den Anhang."],["weiterleiten","전달하다","Ich leite die E-Mail weiter."],["die Rücksprache","상의","Ich halte Rücksprache mit meinem Chef."],["verbindlich","확정적인, 구속력 있는","Das ist ein verbindliches Angebot."],["die Vereinbarung","합의사항","Wir halten uns an die Vereinbarung."],["erledigen","처리하다","Ich erledige das sofort."],["die Rückfrage","재문의","Bei Rückfragen melden Sie sich."],["fristgerecht","기한 내에","Bitte antworten Sie fristgerecht."],["das Anliegen","용건, 요청사항","Was ist Ihr Anliegen?"],["die Durchwahl","내선번호","Meine Durchwahl ist 234."]],
   conversation:{t:"업무 전화", lines:[["A","Kann ich bitte Herrn Weber sprechen?","베버 씨와 통화할 수 있을까요?"],["B","Einen Moment, ich verbinde Sie.","잠시만요, 연결해드릴게요."],["A","Die Unterlagen werden gerade geprüft.","서류는 지금 검토 중입니다."]]},
+  conversation2:{t:"이메일 후속 확인 전화", lines:[["A","Guten Tag, ich rufe wegen meiner E-Mail von letzter Woche an.","안녕하세요, 지난주 보낸 이메일 때문에 전화드려요."],["B","Einen Moment, ich schaue nach. Ah ja, die Anfrage ist schon bearbeitet worden.","잠시만요, 확인해볼게요. 아, 그 문의는 이미 처리되었어요."],["A","Super, wann bekomme ich die Rückmeldung?","좋네요, 답변은 언제 받을 수 있을까요?"],["B","Sie sollte bis morgen fristgerecht gesendet werden.","내일까지 기한 내에 발송될 예정이에요."],["A","Vielen Dank, ich halte mich auf dem Laufenden.","감사합니다, 계속 확인해 볼게요."]]},
   videoVocab:{title:"lingoni GERMAN", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"업무 이메일·전화 표현."},
+  videoVocab2:{title:"Easy German — Business Deutsch", url:"https://www.youtube.com/@EasyGerman", desc:"이메일·전화 격식체 표현 확장."},
   videoConversation:{title:"Easy German", url:"https://www.youtube.com/@EasyGerman", desc:"실생활 전화 대화 듣기."}
 },
 {
@@ -408,11 +557,26 @@ DATA.B1.units = [
     quiz:[{q:"'비쌌다. 그럼에도 나는 그것을 샀다.'(trotzdem)", a:"Es war teuer. Trotzdem habe ich es gekauft."},{q:"'내가 어렸을 때 우리는 베를린에 살았다.'(als)", a:"Als ich klein war, wohnten wir in Berlin."}],
     video:{title:"lingoni GERMAN — 접속사와 어순", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"연결어 3법칙 총정리."}
   },
+  grammar2:{ tag:"B1", t:"연결어 총정리표 — 동사 위치로 분류하는 법",
+    body:["독일어의 모든 연결어(접속사·부사)는 동사가 어디로 가는지에 따라 딱 세 부류로 나뉩니다. 이 분류표 하나만 확실히 익히면 어떤 연결어를 만나도 동사 위치를 헷갈리지 않습니다.",
+      "등위접속사(und, aber, oder, denn, sondern)는 단순히 두 문장을 연결할 뿐 어순에 영향을 주지 않습니다. 부사형 연결어(deshalb, trotzdem, dann, dennoch)는 그 자체가 문장 첫자리를 차지하므로 바로 뒤에서 동사가 도치됩니다. 종속접속사(weil, dass, wenn, obwohl, ob, da)는 동사를 통째로 문장 맨 끝으로 보냅니다."],
+    table:{caption:"연결어 — 동사 위치로 분류", headers:["유형","연결어","동사 위치","예시"], rows:[
+      ["등위(어순 그대로)","und, aber, oder, denn, sondern","2번째 자리 유지","Ich bleibe, denn es regnet."],
+      ["부사형(도치)","deshalb, trotzdem, dann, dennoch","바로 뒤 동사 도치","Es regnet, deshalb bleibe ich."],
+      ["종속(동사 끝)","weil, dass, wenn, obwohl, ob, da","동사 맨 뒤로","…, weil es regnet."]
+    ]},
+    examples:[["Ich habe keine Zeit, aber ich komme trotzdem.","시간은 없지만 그래도 갈게."],["Es regnet, deshalb nehme ich einen Schirm.","비가 와서 우산을 챙긴다."],["Ich weiß, dass er Recht hat.","그가 옳다는 걸 안다."]],
+    mistakes:[["Es regnet, deshalb ich nehme einen Schirm.","Es regnet, deshalb nehme ich einen Schirm.","deshalb 뒤에는 동사가 먼저, 도치"]],
+    quiz:[{q:"'나는 피곤하다. 그래서 나는 집에 간다.'(deshalb)", a:"Ich bin müde, deshalb gehe ich nach Hause.", note:"부사형 연결어는 도치."},{q:"'그가 올지 안 올지 모르겠다.'(ob)", a:"Ich weiß nicht, ob er kommt.", note:"종속접속사 ob, 동사 끝."}],
+    tip:"연결어를 만나면 먼저 '이게 등위·부사형·종속 중 어디에 속하는지' 분류부터 하세요 — 분류만 맞으면 어순은 자동으로 따라옵니다."
+  },
   vocabTheme:"감정·부탁 표현", convTheme:"사과하기",
-  idioms:[["Es tut mir leid.","미안합니다.","Es tut mir leid, ich komme später."],["Mach dir keine Sorgen.","걱정하지 마.","Mach dir keine Sorgen, alles gut."]],
-  vocab:[["sich entschuldigen","사과하다","Ich möchte mich entschuldigen."],["sich Sorgen machen","걱정하다","Mach dir keine Sorgen."],["dankbar","감사한","Ich bin sehr dankbar."]],
+  idioms:[["Es tut mir leid.","미안합니다.","Es tut mir leid, ich komme später."],["Mach dir keine Sorgen.","걱정하지 마.","Mach dir keine Sorgen, alles gut."],["Das war nicht meine Absicht.","그럴 의도는 아니었어요.","Das war wirklich nicht meine Absicht."],["Ich verspreche es dir.","약속할게.","Ich verspreche es dir, das passiert nicht wieder."],["Alles wieder gut?","다 괜찮아졌어?","Alles wieder gut zwischen uns?"],["Ich hätte das nicht tun sollen.","그러지 말았어야 했어.","Ich hätte das nicht tun sollen, tut mir leid."],["Ich verstehe deinen Ärger.","네 화를 이해해.","Ich verstehe deinen Ärger vollkommen."],["Lass uns das klären.","이거 정리하자.","Lass uns das in Ruhe klären."]],
+  vocab:[["sich entschuldigen","사과하다","Ich möchte mich entschuldigen."],["sich Sorgen machen","걱정하다","Mach dir keine Sorgen."],["dankbar","감사한","Ich bin sehr dankbar."],["der Fehler","실수","Das war mein Fehler."],["die Absicht","의도","Das war keine Absicht."],["verzeihen","용서하다","Kannst du mir verzeihen?"],["das Missverständnis","오해","Das war ein Missverständnis."],["wütend / verärgert","화난","Er ist sehr wütend."],["beruhigen","진정시키다","Ich versuche, ihn zu beruhigen."],["die Ausrede","변명","Das ist keine Ausrede."],["nachvollziehen","이해하다, 납득하다","Ich kann das gut nachvollziehen."],["wiedergutmachen","만회하다, 보상하다","Ich möchte das wiedergutmachen."]],
   conversation:{t:"전화로 사과하기", lines:[["A","Entschuldigung, ich komme heute später, weil der Zug Verspätung hat.","죄송해요, 기차가 연착돼서 늦게 갑니다."],["B","Kein Problem, danke für die Info.","괜찮아요, 알려줘서 고마워요."]]},
+  conversation2:{t:"오해를 풀며 사과하기", lines:[["A","Ich glaube, das war ein Missverständnis zwischen uns.","우리 사이에 오해가 있었던 것 같아요."],["B","Ja, ich war ziemlich verärgert, aber jetzt verstehe ich es besser.","네, 꽤 화가 났었는데 이제 좀 더 이해가 돼요."],["A","Es tut mir wirklich leid, das war keine Absicht.","정말 죄송해요, 그럴 의도는 아니었어요."],["B","Kein Problem, ich verstehe deinen Standpunkt.","괜찮아요, 당신 입장을 이해해요."],["A","Danke, dass du das nachvollziehen kannst.","이해해줘서 고마워요."]]},
   videoVocab:{title:"lingoni GERMAN", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"감정·사과 표현 정리."},
+  videoVocab2:{title:"에밀리 독일어 — 연결어 총정리", url:"https://www.youtube.com/channel/UCKIrWWrtQGTvFdsIRNVeMeA", desc:"연결어 3분류를 한국어로 체계적으로 정리."},
   videoConversation:{title:"Easy German", url:"https://www.youtube.com/@EasyGerman", desc:"사과·양해 표현을 실제 대화로."}
 },
 {
@@ -426,11 +590,21 @@ DATA.B1.units = [
     quiz:[{q:"'내가 사는 그 도시'(wohnen in)", a:"die Stadt, in der ich wohne"},{q:"'내가 어제 만난 그 여자'(treffen)", a:"die Frau, die ich gestern getroffen habe"}],
     video:{title:"lingoni GERMAN — 관계문", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"관계대명사 격변화 총정리."}
   },
+  grammar2:{ tag:"B1", t:"전치사+관계대명사 심화와 was/wo(r)-관계문 맛보기",
+    body:["전치사가 관계문에 들어가면 전치사가 요구하는 격을 관계대명사가 그대로 받습니다: die Firma, bei der ich arbeite(내가 일하는 회사, bei는 3격 요구). 전치사를 먼저 보고 격을 정하는 습관을 들이세요.",
+      "선행사가 alles·etwas·nichts처럼 불특정하거나, 앞 문장 전체를 받을 때는 관계대명사 대신 was를 씁니다: Er kommt zu spät, was mich ärgert(그가 늦는데, 그게 나를 화나게 한다). 이것이 B2에서 배울 wo(r)-관계문의 기초입니다."],
+    examples:[["Das ist die Firma, bei der ich arbeite.","이곳이 내가 일하는 회사다."],["Er hat mir geholfen, was ich sehr schätze.","그는 나를 도와줬는데, 그것을 정말 감사하게 여긴다."],["Alles, was ich brauche, ist hier.","내가 필요한 모든 것이 여기 있다."]],
+    mistakes:[["Er kommt zu spät, das mich ärgert.","Er kommt zu spät, was mich ärgert.","앞 문장 전체를 받을 땐 was"]],
+    quiz:[{q:"'내가 함께 사는 그 친구'(mit, der Freund)", a:"der Freund, mit dem ich wohne", note:"mit은 3격 요구."},{q:"'내가 좋아하는 모든 것'(alles, mögen)", a:"alles, was ich mag", note:"alles 뒤에는 was."}],
+    tip:"관계문 순서: ① 선행사의 성·수 확인 ② 관계문 안 동사/전치사가 요구하는 격 확인 ③ 두 정보를 조합해 관계대명사 선택."
+  },
   vocabTheme:"건강·병원", convTheme:"병원에서",
-  idioms:[["Mir tut … weh.","~이 아파요.","Mir tut der Kopf weh."],["Gute Besserung!","얼른 나아요!","Gute Besserung, ruh dich aus!"]],
-  vocab:[["die Schmerzen","통증","Ich habe Schmerzen."],["sich fühlen","느껴지다","Ich fühle mich nicht wohl."],["untersuchen","진찰하다","Der Arzt untersucht mich."],["verschreiben","처방하다","Können Sie mir etwas verschreiben?"]],
+  idioms:[["Mir tut … weh.","~이 아파요.","Mir tut der Kopf weh."],["Gute Besserung!","얼른 나아요!","Gute Besserung, ruh dich aus!"],["Auf Nummer sicher gehen","확실히 하다, 안전하게 가다","Ich gehe lieber auf Nummer sicher und lasse es checken."],["Einen Termin vereinbaren","예약을 잡다","Ich möchte einen Termin vereinbaren."],["Es geht mir den Umständen entsprechend gut.","그럭저럭 괜찮아요.","Danke, es geht mir den Umständen entsprechend gut."],["Auf dem Weg der Besserung sein","호전 중이다","Ich bin auf dem Weg der Besserung."],["Sich schonen","몸을 아끼다, 무리하지 않다","Sie sollten sich noch etwas schonen."],["Nichts Ernstes.","심각한 건 아니에요.","Zum Glück ist es nichts Ernstes."]],
+  vocab:[["die Schmerzen","통증","Ich habe Schmerzen."],["sich fühlen","느껴지다","Ich fühle mich nicht wohl."],["untersuchen","진찰하다","Der Arzt untersucht mich."],["verschreiben","처방하다","Können Sie mir etwas verschreiben?"],["die Überweisung","진료의뢰서","Ich brauche eine Überweisung zum Facharzt."],["der Facharzt","전문의","Sie sollten zu einem Facharzt gehen."],["die Diagnose","진단","Die Diagnose war nicht so schlimm."],["die Nebenwirkung","부작용","Hat das Medikament Nebenwirkungen?"],["die Krankenkasse","건강보험","Meine Krankenkasse übernimmt die Kosten."],["die Behandlung","치료","Die Behandlung dauert zwei Wochen."],["akut / chronisch","급성의 / 만성의","Das ist ein chronisches Problem."],["die Impfung","예방접종","Ich brauche noch eine Impfung."],["das Rezept","처방전","Hier ist Ihr Rezept."]],
   conversation:{t:"병원 예약", lines:[["A","Ich möchte einen Termin. Ich fühle mich seit gestern nicht gut.","진료 예약하고 싶어요. 어제부터 몸이 안 좋아요."],["B","Was fehlt Ihnen denn?","어디가 아프세요?"],["A","Ich habe Fieber und Kopfschmerzen.","열과 두통이 있어요."]]},
+  conversation2:{t:"진료 결과 상담", lines:[["A","Die Untersuchung, die wir gemacht haben, zeigt nichts Ernstes.","저희가 진행한 검사에서 심각한 건 없었어요."],["B","Das ist eine Erleichterung! Was empfehlen Sie mir?","다행이네요! 어떻게 하는 게 좋을까요?"],["A","Ich verschreibe Ihnen ein Medikament, das die Schmerzen lindert.","통증을 완화시켜주는 약을 처방해 드릴게요."],["B","Hat es Nebenwirkungen, auf die ich achten sollte?","제가 주의해야 할 부작용이 있나요?"],["A","Nein, aber Sie sollten sich noch etwas schonen.","아니요, 하지만 좀 더 몸을 아끼셔야 해요."]]},
   videoVocab:{title:"lingoni GERMAN", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"건강·병원 어휘 정리."},
+  videoVocab2:{title:"Easy German — Beim Arzt", url:"https://www.youtube.com/@EasyGerman", desc:"실제 병원 상황 인터뷰로 어휘 확장."},
   videoConversation:{title:"Easy German", url:"https://www.youtube.com/@EasyGerman", desc:"병원·약국 실제 대화."}
 },
 {
@@ -443,11 +617,27 @@ DATA.B1.units = [
     quiz:[{q:"'무엇으로 지불하니?' (womit, bezahlen)", a:"Womit bezahlst du?"},{q:"'나는 그것에 관심 있어.' (sich interessieren für, dafür)", a:"Ich interessiere mich dafür."}],
     video:{title:"lingoni GERMAN — B1 총정리", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"da-/wo- 합성어와 B1 핵심 복습."}
   },
+  grammar2:{ tag:"B1", t:"B1 핵심 총정리 — 격·형용사어미·과거·관계문 한 장 정리",
+    body:["B1을 마치며 지금까지의 핵심을 한 장으로 정리합니다. 어순은 정동사 2번째 자리 고정, 격은 남성만 1격→4격에서 der→den으로 변화, 형용사 어미는 관사가 격을 보여주면 약변화, 못 보여주면 강변화입니다.",
+      "과거는 회화에서 Perfekt, sein/haben/화법조동사는 Präteritum이 자연스럽습니다. 관계문은 성·수는 선행사, 격은 관계문 속 역할을 따르고 동사는 맨 끝으로 갑니다. 이 다섯 가지가 B2로 가는 발판입니다."],
+    table:{caption:"B1 핵심 한 장 정리", headers:["주제","한 줄 핵심"], rows:[
+      ["어순(평서문)","정동사는 2번째 자리. 앞에 뭐가 와도 동사 위치 고정."],
+      ["격(핵심)","남성만 1격 der→4격 den. 여·중·복은 1격=4격."],
+      ["형용사 어미","정관사 뒤 -e/-en, 부정관사 뒤 남성 -er·중성 -es, 무관사는 정관사 어미 그대로."],
+      ["과거","회화=Perfekt. 이동·변화 동사는 sein(bin gegangen)."],
+      ["관계문","성·수=앞 명사, 격=관계문 속 역할, 동사 맨 뒤."]
+    ]},
+    examples:[["Die Wohnung, die ich gemietet habe, ist sehr schön.","내가 임대한 집은 매우 예쁘다."],["Ich habe die Anmeldung gemacht, weil ich es musste.","해야 했기 때문에 신고를 했다."]],
+    quiz:[{q:"'그 신청서를 제출한 사람'(관계문, den Antrag stellen)", a:"die Person, die den Antrag gestellt hat", note:"관계문+Perfekt 결합."},{q:"'좋은 집 하나를 찾았다.'(형용사 어미, eine gute Wohnung)", a:"Ich habe eine gute Wohnung gefunden.", note:"부정관사+형용사 여성 4격 -e."}],
+    tip:"B1 졸업 체크: 이 다섯 항목이 별도의 생각 없이 자동으로 나온다면 B2 진입 준비가 된 것입니다."
+  },
   vocabTheme:"주거·관청", convTheme:"관청에서",
-  idioms:[["Das ist mir egal.","나는 상관없어.","Ehrlich gesagt, das ist mir egal."],["Es kommt drauf an.","상황에 따라 달라.","Es kommt drauf an, wie viel Zeit wir haben."]],
-  vocab:[["die Anmeldung","거주신고","Ich mache die Anmeldung."],["kündigen","해지하다","Ich kündige meinen Vertrag."],["beantragen","신청하다","Ich beantrage ein Visum."],["die Frist","기한","Bis wann ist die Frist?"]],
+  idioms:[["Das ist mir egal.","나는 상관없어.","Ehrlich gesagt, das ist mir egal."],["Es kommt drauf an.","상황에 따라 달라.","Es kommt drauf an, wie viel Zeit wir haben."],["Es hakt noch irgendwo.","어딘가 막혀있다(문제가 있다).","Bei der Anmeldung hakt es noch irgendwo."],["Von A bis Z","처음부터 끝까지","Ich habe alles von A bis Z erledigt."],["In trockenen Tüchern sein","다 마무리되다(관용구)","Der Mietvertrag ist endlich in trockenen Tüchern."],["Bürokratie pur","순전히 관료주의(불평)","Das ist Bürokratie pur!"],["Sich durchbeißen","꿋꿋이 헤쳐나가다","Ich musste mich durch den Papierkram durchbeißen."],["Auf Nummer sicher","확실하게, 안전하게","Frag lieber auf Nummer sicher nach."]],
+  vocab:[["die Anmeldung","거주신고","Ich mache die Anmeldung."],["kündigen","해지하다","Ich kündige meinen Vertrag."],["beantragen","신청하다","Ich beantrage ein Visum."],["die Frist","기한","Bis wann ist die Frist?"],["der Mietvertrag","임대계약서","Ich unterschreibe den Mietvertrag."],["die Kaution","보증금","Die Kaution beträgt zwei Monatsmieten."],["die Nebenkosten","관리비, 부대비용","Die Nebenkosten sind hoch."],["das Einwohnermeldeamt","주민등록사무소","Ich gehe zum Einwohnermeldeamt."],["die Aufenthaltserlaubnis","체류허가","Ich brauche eine Aufenthaltserlaubnis."],["der Antrag","신청서","Ich stelle einen Antrag."],["das Formular","양식, 서류","Bitte füllen Sie das Formular aus."],["der Nachweis","증빙서류","Ich brauche einen Einkommensnachweis."],["die Bescheinigung","증명서","Ich brauche eine Bescheinigung."],["zuständig sein","담당이다","Wer ist dafür zuständig?"]],
   conversation:{t:"관청에서", lines:[["A","Ich möchte mich anmelden. Welche Unterlagen brauche ich?","거주신고를 하고 싶어요. 어떤 서류가 필요한가요?"],["B","Ihren Pass und den Mietvertrag.","여권과 임대계약서요."]]},
+  conversation2:{t:"체류허가 신청 문의", lines:[["A","Ich möchte einen Antrag auf Aufenthaltserlaubnis stellen. Was brauche ich dafür?","체류허가를 신청하고 싶은데, 무엇이 필요한가요?"],["B","Sie brauchen einen Einkommensnachweis, den Mietvertrag und ein biometrisches Foto.","소득증명서, 임대계약서, 그리고 여권사진이 필요해요."],["A","Bis wann muss ich den Antrag einreichen?","언제까지 신청서를 제출해야 하나요?"],["B","Am besten vor Ablauf Ihres aktuellen Visums.","현재 비자 만료 전에 하시는 게 가장 좋아요."],["A","Verstanden, vielen Dank für die Auskunft.","알겠습니다, 안내해주셔서 감사합니다."]]},
   videoVocab:{title:"lingoni GERMAN", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"관청·주거 어휘."},
+  videoVocab2:{title:"에밀리 독일어 — 독일 관공서 서류 총정리", url:"https://www.youtube.com/channel/UCKIrWWrtQGTvFdsIRNVeMeA", desc:"독일 이주 후 관공서 절차를 한국어로 안내."},
   videoConversation:{title:"Easy German", url:"https://www.youtube.com/@EasyGerman", desc:"독일 관청 경험담 인터뷰."}
 }
 ];
@@ -471,11 +661,22 @@ DATA.B2.units = [
     quiz:[{q:"'주문을 취소하고 싶습니다.'(정중, stornieren)", a:"Ich würde gern meine Bestellung stornieren."},{q:"'그는 내일 온다고 말했다.'(간접)", a:"Er sagte, er komme morgen."}],
     video:{title:"lingoni GERMAN — Konjunktiv II·I", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"정중함과 간접화법을 예문으로."}
   },
+  grammar2:{ tag:"B2", t:"간접화법 심화 — 접속법 I 전체 활용과 보도문체",
+    body:["접속법 I(sei, habe, könne, werde)은 뉴스·인터뷰 인용·학술 보고서에서 '이것은 내 의견이 아니라 남의 말을 전달하는 것'임을 표시합니다. 형태가 직설법과 같아 구분이 안 될 때(예: ich-형, wir-형)는 접속법 II로 대체합니다.",
+      "시제는 그대로 전달됩니다: 직접화법의 현재는 접속법 I 현재로, 과거는 '접속법 I sein/haben + 과거분사'로 바뀝니다: Er sagte, er habe es getan(그가 그것을 했다고 말했다)."],
+    table:{caption:"접속법 I 인칭변화(sein 기준)", headers:["인칭","접속법 I"], rows:[["er/sie/es","sei"],["sie(그들)","seien"],["habe(현재)","er habe"],["werde(미래)","er werde"]]},
+    examples:[["Der Minister sagte, die Lage sei ernst.","장관은 상황이 심각하다고 말했다."],["Sie erklärte, sie habe den Vertrag unterschrieben.","그녀는 계약서에 서명했다고 밝혔다."],["Experten zufolge werde sich die Situation verbessern.","전문가들에 따르면 상황이 나아질 것이다."]],
+    mistakes:[["Er sagte, er habe gestern kommen.","Er sagte, er sei gestern gekommen.","이동동사 과거 인용은 접속법 I sein+과거분사"]],
+    quiz:[{q:"'그녀는 시간이 없다고 말했다.'(간접화법)", a:"Sie sagte, sie habe keine Zeit.", note:"habe는 접속법 I."},{q:"'그들은 그것이 사실이라고 주장한다.'(behaupten)", a:"Sie behaupten, das sei wahr.", note:"sei는 접속법 I."}],
+    tip:"보도문체를 읽을 때 sei/habe/könne/werde 같은 단어를 보면 '이건 기자의 의견이 아니라 인용'이라는 신호로 읽으세요."
+  },
   vocabTheme:"정중함·협업", convTheme:"회의에서 의견 내기",
-  idioms:[["Ich würde sagen, …","제 생각엔 …","Ich würde sagen, wir sollten es testen."],["Das kann ich nachvollziehen.","이해가 갑니다.","Das kann ich gut nachvollziehen."]],
-  vocab:[["die Zusammenarbeit","협업","Danke für die gute Zusammenarbeit."],["zuverlässig","신뢰할 수 있는","Er ist sehr zuverlässig."],["die Lösung","해결책","Wir haben eine Lösung gefunden."]],
+  idioms:[["Ich würde sagen, …","제 생각엔 …","Ich würde sagen, wir sollten es testen."],["Das kann ich nachvollziehen.","이해가 갑니다.","Das kann ich gut nachvollziehen."],["Es wäre sinnvoll, …","~하는 게 합리적일 것 같아요.","Es wäre sinnvoll, das nochmal zu prüfen."],["Wenn ich das richtig verstehe, …","제가 제대로 이해했다면...","Wenn ich das richtig verstehe, meinen Sie..."],["Das steht außer Frage.","그건 의심의 여지가 없어요.","Seine Kompetenz steht außer Frage."],["Ich bin geteilter Meinung.","의견이 반반이에요.","Bei diesem Thema bin ich geteilter Meinung."],["Auf einen Nenner kommen","합의점을 찾다","Wir sind auf einen Nenner gekommen."],["Den Nagel auf den Kopf treffen","정곡을 찌르다","Ihre Analyse trifft den Nagel auf den Kopf."]],
+  vocab:[["die Zusammenarbeit","협업","Danke für die gute Zusammenarbeit."],["zuverlässig","신뢰할 수 있는","Er ist sehr zuverlässig."],["die Lösung","해결책","Wir haben eine Lösung gefunden."],["der Kompromiss","타협","Wir sollten einen Kompromiss finden."],["die Perspektive","관점","Das ist eine interessante Perspektive."],["der Standpunkt","입장, 견해","Ich verstehe Ihren Standpunkt."],["berücksichtigen","고려하다","Wir müssen alle Faktoren berücksichtigen."],["die Voraussetzung","전제조건","Das ist eine wichtige Voraussetzung."],["überzeugend","설득력 있는","Ihr Argument ist sehr überzeugend."],["das Gegenargument","반론","Haben Sie ein Gegenargument?"],["einwenden","반박하다, 이의를 제기하다","Dagegen könnte man einwenden, dass..."],["die Konsequenz","결과, 결론","Das hat weitreichende Konsequenzen."]],
   conversation:{t:"회의에서 의견 내기", lines:[["A","Wie ist Ihre Meinung zu diesem Vorschlag?","이 제안에 대한 의견은요?"],["B","Meiner Meinung nach hat er klare Vorteile.","제 생각엔 명확한 장점이 있어요."],["A","Ich würde sagen, wir sollten es testen.","제 생각엔 테스트해봐야 할 것 같아요."]]},
+  conversation2:{t:"신문 기사 인용하며 토론하기", lines:[["A","Laut dem Artikel sei die Wirtschaft im Aufschwung.","기사에 따르면 경제가 회복세라고 해요."],["B","Interessant, aber ich bin da geteilter Meinung.","흥미롭네요, 하지만 저는 의견이 좀 달라요."],["A","Wie meinen Sie das?","어떤 의미인가요?"],["B","Nun, die Zahlen mögen positiv sein, aber viele Menschen spüren das im Alltag nicht.","숫자는 긍정적일 수 있지만, 많은 사람들이 일상에서 그걸 못 느껴요."],["A","Das trifft den Nagel auf den Kopf.","정곡을 찌르는 말씀이네요."]]},
   videoVocab:{title:"lingoni GERMAN", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"협업·의견 어휘."},
+  videoVocab2:{title:"nachrichtenleicht.de", url:"https://www.nachrichtenleicht.de/", desc:"쉬운 독일어 뉴스에서 접속법 I 인용을 확인."},
   videoConversation:{title:"Easy German", url:"https://www.youtube.com/@EasyGerman", desc:"의견 표현을 실제 인터뷰로."}
 },
 {
@@ -488,12 +689,22 @@ DATA.B2.units = [
     quiz:[{q:"'빠른 결정'(명사화, entscheiden)", a:"die schnelle Entscheidung"},{q:"'오르고 있는 비용'(현재분사, die Kosten)", a:"die steigenden Kosten"}],
     video:{title:"lingoni GERMAN — Nominalisierung", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"명사화·분사구문 B2 문체 강의."}
   },
+  grammar2:{ tag:"B2", t:"기능동사구(Funktionsverbgefüge)와 확장 분사구 입문",
+    body:["기능동사구는 'zur Verfügung stehen(이용 가능하다)'처럼 '동사+명사' 조합이 하나의 의미 단위로 굳어진 표현으로, 격식 문어체에서 매우 자주 씁니다. 동사 자체의 뜻보다 명사가 의미의 핵심입니다: eine Entscheidung treffen(결정을 내리다), in Kraft treten(발효되다), zum Ausdruck bringen(표현하다).",
+      "확장 분사구(erweitertes Partizipialattribut)는 분사 앞에 부가 정보를 넣어 관계문을 축약하는 B2~C1 고급 문어체 기법입니다: die von der Regierung geplante Reform(정부가 계획한 개혁) = die Reform, die von der Regierung geplant wird."],
+    examples:[["Die Regelung tritt nächsten Monat in Kraft.","그 규정은 다음 달에 발효된다."],["Wir müssen eine Entscheidung treffen.","우리는 결정을 내려야 한다."],["die von der Regierung geplante Reform","정부가 계획한 개혁"]],
+    mistakes:[["Wir müssen eine Entscheidung machen.","Wir müssen eine Entscheidung treffen.","기능동사구는 통째로 외워야 함(treffen, 아무 동사나 안 됨)"]],
+    quiz:[{q:"'그 법은 내년에 발효된다.'(in Kraft treten)", a:"Das Gesetz tritt nächstes Jahr in Kraft.", note:"기능동사구 통째로 암기."},{q:"'회사가 발표한 결과'(분사구, veröffentlichen)", a:"die von der Firma veröffentlichten Ergebnisse", note:"확장분사구: von+3격+과거분사."}],
+    tip:"기능동사구는 뜻으로 유추하지 말고 '동사+명사' 세트를 그대로 암기하세요. 독일어 원어민처럼 들리는 지름길입니다."
+  },
   vocabTheme:"문서작성", convTheme:"보고서 작성",
-  idioms:[["Es lässt sich sagen, dass…","~라고 말할 수 있다","Es lässt sich sagen, dass der Plan funktioniert."],["Im Großen und Ganzen","대체로","Im Großen und Ganzen war es erfolgreich."]],
-  vocab:[["die Umsetzung","실행","Die Umsetzung läuft gut."],["der Nachweis","증명","Wir brauchen einen Nachweis."],["die Grundlage","근거, 기반","Das ist die Grundlage unserer Entscheidung."]],
+  idioms:[["Es lässt sich sagen, dass…","~라고 말할 수 있다","Es lässt sich sagen, dass der Plan funktioniert."],["Im Großen und Ganzen","대체로","Im Großen und Ganzen war es erfolgreich."],["In Kraft treten","발효되다","Das Gesetz tritt im Januar in Kraft."],["Zum Ausdruck bringen","표현하다","Sie brachte ihre Zufriedenheit zum Ausdruck."],["Zur Verfügung stellen","제공하다","Wir stellen Ihnen alle Daten zur Verfügung."],["In Anspruch nehmen","이용하다","Wir nehmen den Service gern in Anspruch."],["Rücksicht nehmen auf","~을 배려하다, 고려하다","Bitte nehmen Sie Rücksicht auf die Kollegen."],["Eine Rolle spielen","역할을 하다","Das Budget spielt eine wichtige Rolle."]],
+  vocab:[["die Umsetzung","실행","Die Umsetzung läuft gut."],["der Nachweis","증명","Wir brauchen einen Nachweis."],["die Grundlage","근거, 기반","Das ist die Grundlage unserer Entscheidung."],["die Gliederung","구성, 개요","Die Gliederung des Berichts ist klar."],["zusammenfassen","요약하다","Können Sie das zusammenfassen?"],["die Erkenntnis","깨달음, 통찰","Das ist eine wichtige Erkenntnis."],["darstellen","서술하다, 나타내다","Der Bericht stellt die Lage dar."],["die Schlussfolgerung","결론","Zu welcher Schlussfolgerung kommen Sie?"],["die Auswertung","분석, 평가","Die Auswertung der Daten dauert lange."],["belegen","입증하다","Die Zahlen belegen den Trend."],["die Formulierung","표현, 문구","Die Formulierung ist zu vage."],["präzise","정확한, 명확한","Bitte formulieren Sie präziser."]],
   conversation:{t:"보고서 관련 대화", lines:[["A","Wie läuft die Umsetzung des Projekts?","프로젝트 실행은 어떻게 되어가나요?"],["B","Im Großen und Ganzen sehr gut.","대체로 아주 잘 되고 있어요."]]},
+  conversation2:{t:"보고서 검토 회의", lines:[["A","Die Gliederung ist gut, aber die Schlussfolgerung könnte präziser sein.","구성은 좋은데 결론이 좀 더 명확하면 좋겠어요."],["B","Verstanden, ich werde die Formulierung überarbeiten.","알겠습니다, 표현을 다시 다듬을게요."],["A","Außerdem sollten Sie die Auswertung der Daten stärker belegen.","그리고 데이터 분석 부분을 더 탄탄히 뒷받침하시면 좋겠어요."],["B","Gute Idee, ich nehme die zusätzlichen Quellen in Anspruch.","좋은 생각이네요, 추가 자료를 활용할게요."]]},
   videoVocab:{title:"lingoni GERMAN", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"문서·보고서 어휘."},
-  videoConversation:{title:"nachrichtenleicht.de", url:"https://www.nachrichtenleicht.de/", desc:"쉬운 독일어 뉴스로 명사화 표현을 확인."}
+  videoVocab2:{title:"nachrichtenleicht.de", url:"https://www.nachrichtenleicht.de/", desc:"쉬운 독일어 뉴스로 명사화 표현을 확인."},
+  videoConversation:{title:"Easy German", url:"https://www.youtube.com/@EasyGerman", desc:"업무 보고 표현을 실제 대화로."}
 },
 {
   weekLabel:"35~36주차",
@@ -505,11 +716,22 @@ DATA.B2.units = [
     quiz:[{q:"'가격이 높을수록 수요는 줄어든다.'(je…desto)", a:"Je höher die Preise sind, desto geringer wird die Nachfrage."},{q:"'우리는 빠르게 결정할 뿐 아니라 즉시 행동도 한다.'", a:"Wir entscheiden nicht nur schnell, sondern handeln auch sofort."}],
     video:{title:"lingoni GERMAN — 고급 연결어", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"je…desto 등 B2 연결어 강의."}
   },
+  grammar2:{ tag:"B2", t:"논증 텍스트 구조 표지 — zunächst·darüber hinaus·schließlich",
+    body:["설득력 있는 글이나 발표는 구조 표지어로 흐름을 명확히 보여줍니다: zunächst(우선)로 시작해, des Weiteren/darüber hinaus(게다가, 더 나아가)로 논거를 추가하고, allerdings/dennoch(그러나)로 반론을 언급한 뒤, schließlich/zusammenfassend(결론적으로)로 마무리합니다.",
+      "이런 표지어들은 청자·독자가 논증의 각 단계를 놓치지 않고 따라오게 해주는 '이정표' 역할을 합니다. B2 말하기·쓰기 시험에서 특히 높은 점수를 받는 핵심 기술입니다."],
+    table:{caption:"논증 구조 표지어", headers:["단계","표지어"], rows:[["도입","zunächst · zu Beginn · zuerst"],["추가","des Weiteren · darüber hinaus · außerdem"],["반론","allerdings · dennoch · jedoch"],["결론","schließlich · zusammenfassend · abschließend"]]},
+    examples:[["Zunächst möchte ich auf die Vorteile eingehen.","우선 장점부터 말씀드리고 싶습니다."],["Darüber hinaus sollte man die Kosten bedenken.","더 나아가 비용도 고려해야 한다."],["Zusammenfassend lässt sich sagen, dass sich die Investition lohnt.","요약하자면 투자할 가치가 있다고 할 수 있다."]],
+    mistakes:[["Zuerst..., zuerst..., zuerst...","zunächst..., außerdem..., schließlich...","같은 표지어를 반복하지 않고 단계별로 다양화"]],
+    quiz:[{q:"'게다가 우리는 시간도 절약할 수 있다.'(darüber hinaus)", a:"Darüber hinaus können wir auch Zeit sparen.", note:"추가 논거 표지어."},{q:"'요약하자면, 이 제안이 최선이다.'(zusammenfassend)", a:"Zusammenfassend ist dieser Vorschlag die beste Option.", note:"결론 표지어."}],
+    tip:"발표할 때 zunächst → darüber hinaus → allerdings → zusammenfassend, 이 네 단어만 순서대로 배치해도 논증 구조가 완성됩니다."
+  },
   vocabTheme:"사회 이슈", convTheme:"찬반 토론",
-  idioms:[["Einerseits…, andererseits…","한편으로는…, 다른 한편으로는…","Einerseits teuer, andererseits gut."],["Dafür spricht, dass…","~라는 점이 그것을 지지한다","Dafür spricht, dass es günstig ist."]],
-  vocab:[["der Klimawandel","기후변화","Der Klimawandel betrifft uns alle."],["die Auswirkung","영향","Die Auswirkungen sind groß."],["umstritten","논란이 있는","Diese Maßnahme ist umstritten."]],
+  idioms:[["Einerseits…, andererseits…","한편으로는…, 다른 한편으로는…","Einerseits teuer, andererseits gut."],["Dafür spricht, dass…","~라는 점이 그것을 지지한다","Dafür spricht, dass es günstig ist."],["Es steht außer Zweifel, dass…","~라는 것은 의심의 여지가 없다","Es steht außer Zweifel, dass wir handeln müssen."],["Zum einen…, zum anderen…","한편으로는..., 다른 한편으로는...","Zum einen ist es teuer, zum anderen effektiv."],["Im Gegensatz dazu","이와 반대로","Im Gegensatz dazu sinkt die Nachfrage."],["Das Für und Wider abwägen","장단점을 저울질하다","Wir sollten das Für und Wider abwägen."],["Auf lange Sicht gesehen","장기적으로 봤을 때","Auf lange Sicht gesehen lohnt sich das."],["Kritisch hinterfragen","비판적으로 따져묻다","Man sollte das kritisch hinterfragen."]],
+  vocab:[["der Klimawandel","기후변화","Der Klimawandel betrifft uns alle."],["die Auswirkung","영향","Die Auswirkungen sind groß."],["umstritten","논란이 있는","Diese Maßnahme ist umstritten."],["die Nachhaltigkeit","지속가능성","Nachhaltigkeit ist ein wichtiges Thema."],["die Ressource","자원","Wir müssen Ressourcen sparen."],["die Maßnahme","조치","Die Regierung plant neue Maßnahmen."],["die Debatte","논쟁, 토론","Die Debatte dauert schon lange an."],["befürworten / ablehnen","찬성하다 / 반대하다","Ich befürworte diesen Vorschlag."],["die Konsequenz","결과, 파장","Das hat ernste Konsequenzen."],["die Gesellschaft","사회","Das betrifft die ganze Gesellschaft."],["die Chancengleichheit","기회의 평등","Chancengleichheit ist wichtig für alle."],["nachhaltig","지속가능한","Wir brauchen nachhaltige Lösungen."]],
   conversation:{t:"찬반 토론하기", lines:[["A","Sollte man Inlandsflüge verbieten?","국내선 항공을 금지해야 할까요?"],["B","Meiner Meinung nach ja, denn sie schaden dem Klima.","제 생각엔 그래요, 기후에 해롭거든요."],["A","Einerseits ja, andererseits gibt es Alternativen wie die Bahn.","한편으론 그렇지만, 기차 같은 대안도 있죠."]]},
+  conversation2:{t:"구조화된 의견 발표 연습", lines:[["A","Was denken Sie über die Vier-Tage-Woche?","주4일제에 대해 어떻게 생각하세요?"],["B","Zunächst würde ich sagen, dass sie die Work-Life-Balance verbessert.","우선 워라밸을 개선한다고 말씀드리고 싶어요."],["A","Und was sind mögliche Nachteile?","가능한 단점은 무엇인가요?"],["B","Im Gegensatz dazu könnten manche Firmen mit dem Arbeitsvolumen Probleme haben. Zusammenfassend überwiegen für mich aber die Vorteile.","이와 반대로 어떤 회사들은 업무량 문제가 있을 수 있어요. 하지만 요약하자면 저는 장점이 더 크다고 봐요."]]},
   videoVocab:{title:"lingoni GERMAN", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"사회 이슈 어휘."},
+  videoVocab2:{title:"nachrichtenleicht.de", url:"https://www.nachrichtenleicht.de/", desc:"사회 이슈 관련 쉬운 독일어 뉴스."},
   videoConversation:{title:"Easy German", url:"https://www.youtube.com/@EasyGerman", desc:"실제 독일인들의 찬반 토론 인터뷰."}
 },
 {
@@ -522,12 +744,23 @@ DATA.B2.units = [
     quiz:[{q:"'보증금의 액수'(2격, die Kaution)", a:"die Höhe der Kaution"},{q:"'그 오류는 쉽게 고쳐질 수 있다.'(sich lassen, der Fehler)", a:"Der Fehler lässt sich leicht korrigieren."}],
     video:{title:"lingoni GERMAN — Genitiv·수동태 대안", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"2격과 수동태 대체표현 강의."}
   },
+  grammar2:{ tag:"B2", t:"2격 지배 전치사 심화 — trotz·während·wegen·statt",
+    body:["trotz(~에도 불구하고)·während(~하는 동안)·wegen(~때문에)·statt(~대신)는 원래 2격을 지배하지만, 구어체에서는 3격으로 쓰는 경우도 흔해지고 있습니다. 격식 있는 글에서는 2격을 지키는 것이 안전합니다.",
+      "innerhalb(~이내에)·außerhalb(~밖에)·aufgrund(~에 근거해)도 2격 전치사로, 공문서·학술 텍스트에서 자주 등장합니다."],
+    table:{caption:"2격 전치사 모음", headers:["전치사","뜻","예문"], rows:[["trotz","~에도 불구하고","trotz des Regens"],["während","~하는 동안","während der Sitzung"],["wegen","~때문에","wegen des Wetters"],["aufgrund","~에 근거하여","aufgrund der Ergebnisse"]]},
+    examples:[["Trotz der hohen Kosten haben wir investiert.","높은 비용에도 불구하고 우리는 투자했다."],["Während der Verhandlung gab es Spannungen.","협상 중에 긴장이 있었다."],["Aufgrund des Feedbacks haben wir den Plan geändert.","피드백에 근거해 계획을 바꿨다."]],
+    mistakes:[["wegen dem Wetter (격식체)","wegen des Wetters","격식체에서는 wegen도 2격이 원칙"]],
+    quiz:[{q:"'회의 중에'(während, die Sitzung)", a:"während der Sitzung", note:"während+2격."},{q:"'그 결정 때문에'(wegen, die Entscheidung)", a:"wegen der Entscheidung", note:"wegen+2격."}],
+    tip:"격식 있는 글을 쓸 때는 trotz/während/wegen/aufgrund 뒤에 2격(des/der -s)을 쓰는 습관을 들이면 훨씬 전문적으로 들립니다."
+  },
   vocabTheme:"법률·행정", convTheme:"공식 요청하기",
-  idioms:[["Im Rahmen von…","~의 범위 내에서","Im Rahmen von diesem Projekt…"],["Unter der Voraussetzung, dass…","~라는 전제 하에","Unter der Voraussetzung, dass alles klappt."]],
-  vocab:[["die Voraussetzung","전제조건","Das ist die Voraussetzung dafür."],["die Bescheinigung","증명서","Ich brauche eine Bescheinigung."],["zuständig","담당의","Wer ist dafür zuständig?"]],
+  idioms:[["Im Rahmen von…","~의 범위 내에서","Im Rahmen von diesem Projekt…"],["Unter der Voraussetzung, dass…","~라는 전제 하에","Unter der Voraussetzung, dass alles klappt."],["In Anbetracht dessen","이를 고려할 때","In Anbetracht dessen sollten wir vorsichtig sein."],["Nach geltendem Recht","현행법에 따르면","Nach geltendem Recht ist das nicht erlaubt."],["Im Einklang mit…","~와 일치하여","Das steht im Einklang mit den Vorschriften."],["Rechtlich gesehen","법적으로 볼 때","Rechtlich gesehen ist das ein Graubereich."],["Einen Antrag einreichen","신청서를 제출하다","Ich habe den Antrag rechtzeitig eingereicht."],["Etwas außer Kraft setzen","무효화하다, 효력을 정지시키다","Die Regel wurde außer Kraft gesetzt."]],
+  vocab:[["die Voraussetzung","전제조건","Das ist die Voraussetzung dafür."],["die Bescheinigung","증명서","Ich brauche eine Bescheinigung."],["zuständig","담당의","Wer ist dafür zuständig?"],["die Vorschrift","규정","Wir müssen die Vorschriften einhalten."],["das Gesetz","법률","Das neue Gesetz tritt bald in Kraft."],["die Genehmigung","허가","Wir brauchen eine Genehmigung."],["einhalten","준수하다","Wir halten die Frist ein."],["verpflichtet sein","의무가 있다","Sie sind dazu verpflichtet."],["die Verordnung","법령, 조례","Die neue Verordnung gilt ab Januar."],["die Haftung","책임(법적)","Wer übernimmt die Haftung?"],["rechtsgültig","법적 효력이 있는","Der Vertrag ist rechtsgültig."],["die Behörde","관청","Ich habe die Behörde kontaktiert."]],
   conversation:{t:"공식 요청하기", lines:[["A","Ich würde gern einen Antrag stellen.","신청서를 제출하고 싶습니다."],["B","Welche Unterlagen benötigen Sie dafür?","그것을 위해 어떤 서류가 필요하신가요?"]]},
+  conversation2:{t:"법적 절차 문의하기", lines:[["A","Ich habe eine Frage zu den Vorschriften bezüglich meines Antrags.","제 신청서와 관련된 규정에 대해 질문이 있습니다."],["B","Gerne, worum geht es konkret?","네, 구체적으로 무엇에 관한 건가요?"],["A","Aufgrund welcher Kriterien wird der Antrag genehmigt oder abgelehnt?","어떤 기준에 근거해 신청이 승인되거나 거부되나요?"],["B","Das hängt von mehreren Faktoren ab, unter anderem von Ihrem Einkommensnachweis.","여러 요소에 달려 있는데, 소득증명서도 그 중 하나입니다."],["A","Verstanden, vielen Dank für die Auskunft.","알겠습니다, 안내 감사합니다."]]},
   videoVocab:{title:"lingoni GERMAN", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"행정·법률 어휘."},
-  videoConversation:{title:"nachrichtenleicht.de", url:"https://www.nachrichtenleicht.de/", desc:"공식 문서체 독일어 뉴스로 확인."}
+  videoVocab2:{title:"nachrichtenleicht.de", url:"https://www.nachrichtenleicht.de/", desc:"공식 문서체 독일어 뉴스로 확인."},
+  videoConversation:{title:"Easy German", url:"https://www.youtube.com/@EasyGerman", desc:"관청·행정 실전 인터뷰."}
 },
 {
   weekLabel:"39~40주차",
@@ -539,12 +772,23 @@ DATA.B2.units = [
     quiz:[{q:"'그는 이미 떠난 게 틀림없다.'(müssen, 완료추측)", a:"Er muss schon gegangen sein."},{q:"'그것은 사실일 수도 있다.'(könnte)", a:"Das könnte wahr sein."}],
     video:{title:"lingoni GERMAN — 추측 표현", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"화법조동사 추측 용법과 의견글 구조."}
   },
+  grammar2:{ tag:"B2", t:"화법조동사+Perfekt(추측의 과거) 심화",
+    body:["과거 사건에 대한 추측은 화법조동사+haben/sein(원형)+과거분사로 표현합니다: müsste/dürfte/könnte/muss + 과거분사 + haben/sein. 확신 정도에 따라 조동사를 선택합니다: muss(거의 확실)>dürfte(꽤 확실)>könnte/kann(가능성)>könnte kaum(거의 아님).",
+      "이 구조는 뉴스 분석·추리·과거 사건 논평에서 자주 쓰이며, C1 시사토론으로 가는 핵심 다리입니다."],
+    table:{caption:"추측 강도별 화법조동사", headers:["강도","조동사","예문"], rows:[["거의 확실","muss + 과거분사 + haben/sein","Er muss es gewusst haben."],["꽤 확실","dürfte + 과거분사 + haben/sein","Sie dürfte schon gegangen sein."],["가능성","könnte + 과거분사 + haben/sein","Es könnte geregnet haben."]]},
+    examples:[["Er muss den Termin vergessen haben.","그는 약속을 잊은 게 틀림없다."],["Sie dürfte schon angekommen sein.","그녀는 이미 도착했을 것이다(거의 확실)."],["Es könnte ein Missverständnis gewesen sein.","오해였을 수도 있다."],["Das kann nicht wahr gewesen sein.","그게 사실이었을 리가 없다."]],
+    mistakes:[["Er muss es gewusst haben. → Er muss es gewusst hat.","Er muss es gewusst haben.","완료부정형은 항상 haben/sein 원형"]],
+    quiz:[{q:"'그녀는 이미 떠났을 것이다(거의 확실).' (dürfte, gehen)", a:"Sie dürfte schon gegangen sein.", note:"이동동사는 sein."},{q:"'그건 실수였을 수도 있다.'(könnte, ein Fehler)", a:"Das könnte ein Fehler gewesen sein.", note:"sein+과거분사(gewesen)."}],
+    tip:"추측의 확신도는 muss>dürfte>könnte 순서 — 뉴스나 인터뷰에서 이 뉘앙스 차이를 캐치하면 독해력이 확 늘어납니다."
+  },
   vocabTheme:"뉴스·시사", convTheme:"뉴스 이야기하기",
-  idioms:[["Laut…","~에 따르면","Laut der Studie steigt die Zahl."],["Es steht fest, dass…","~라는 것은 확실하다","Es steht fest, dass sich etwas ändern muss."]],
-  vocab:[["die Studie","연구","Laut einer Studie…"],["behaupten","주장하다","Experten behaupten, dass…"],["voraussichtlich","예상컨대","Voraussichtlich wird es besser."]],
+  idioms:[["Laut…","~에 따르면","Laut der Studie steigt die Zahl."],["Es steht fest, dass…","~라는 것은 확실하다","Es steht fest, dass sich etwas ändern muss."],["Es sieht danach aus, dass…","~인 것처럼 보인다","Es sieht danach aus, dass sich die Lage entspannt."],["Alles deutet darauf hin, dass…","모든 정황이 ~을 시사한다","Alles deutet darauf hin, dass er Recht hat."],["Der Studie zufolge","연구에 따르면","Der Studie zufolge sinkt die Arbeitslosigkeit."],["Vermutlich","아마도","Vermutlich wird sich das bald ändern."],["Im Nachhinein betrachtet","돌이켜 보면","Im Nachhinein betrachtet war die Entscheidung richtig."],["Es bleibt abzuwarten, ob…","~인지는 지켜봐야 한다","Es bleibt abzuwarten, ob sich das bestätigt."]],
+  vocab:[["die Studie","연구","Laut einer Studie…"],["behaupten","주장하다","Experten behaupten, dass…"],["voraussichtlich","예상컨대","Voraussichtlich wird es besser."],["die Prognose","예측, 전망","Die Prognose ist positiv."],["die Tendenz","경향, 추세","Es zeigt sich eine klare Tendenz."],["die Statistik","통계","Laut Statistik steigen die Zahlen."],["die Quelle","출처","Die Quelle ist zuverlässig."],["verlässlich / unzuverlässig","신뢰할 수 있는 / 신뢰할 수 없는","Diese Quelle ist verlässlich."],["die Schätzung","추정치","Nach Schätzungen der Experten..."],["sich bestätigen","확인되다, 입증되다","Die Vermutung hat sich bestätigt."],["widerlegen","반박하다","Diese These wurde widerlegt."],["die Berichterstattung","보도","Die Berichterstattung war ausführlich."]],
   conversation:{t:"뉴스에 대해 이야기하기", lines:[["A","Laut der Studie steigen die Mieten weiter.","연구에 따르면 임대료가 계속 오른대."],["B","Das könnte stimmen. Die Lage ist angespannt.","그럴 수도 있겠다. 상황이 긴박하니까."]]},
+  conversation2:{t:"과거 사건 추측하며 대화하기", lines:[["A","Hast du gehört? Die Firma hat plötzlich zugemacht.","들었어? 그 회사가 갑자기 문을 닫았대."],["B","Wirklich? Sie müssen finanzielle Probleme gehabt haben.","정말? 재정 문제가 있었던 게 틀림없어."],["A","Das dürfte auch mit der aktuellen Wirtschaftslage zusammenhängen.","그건 현재 경제 상황과도 관련이 있었을 거야."],["B","Möglich. Es bleibt abzuwarten, was mit den Mitarbeitern passiert.","그럴 수도. 직원들은 어떻게 될지 지켜봐야겠네."]]},
   videoVocab:{title:"lingoni GERMAN", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"시사 어휘 정리."},
-  videoConversation:{title:"nachrichtenleicht.de", url:"https://www.nachrichtenleicht.de/", desc:"쉬운 독일어로 된 실제 뉴스 듣기·읽기."}
+  videoVocab2:{title:"nachrichtenleicht.de", url:"https://www.nachrichtenleicht.de/", desc:"쉬운 독일어로 된 실제 뉴스 듣기·읽기."},
+  videoConversation:{title:"Easy German", url:"https://www.youtube.com/@EasyGerman", desc:"시사 이슈에 대한 실제 인터뷰."}
 },
 {
   weekLabel:"41~42주차",
@@ -556,11 +800,27 @@ DATA.B2.units = [
     quiz:[{q:"'문의해 주셔서 감사합니다.'", a:"Vielen Dank für Ihre Anfrage."},{q:"'질문이 있으시면 언제든 연락 주세요.'(zur Verfügung stehen)", a:"Bei Fragen stehe ich Ihnen gern zur Verfügung."}],
     video:{title:"lingoni GERMAN — 이메일 표현", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"격식 이메일 정형 표현 총정리."}
   },
+  grammar2:{ tag:"B2", t:"B2 핵심 총정리 — 접속법·명사화·연결어·정중함",
+    body:["B2를 마치며 정리하면: ① 접속법 II(würde/hätte/wäre/könnte)로 정중한 부탁과 가정을 표현 ② 접속법 I(sei/habe/werde)로 간접화법·보도문체 구사 ③ 명사화·분사구문·기능동사구로 격식 문어체 작성 ④ je…desto, zwar…aber 등 고급 연결어로 논증 ⑤ zunächst~schließlich 구조표지로 발표 흐름 구성.",
+      "이 다섯 가지를 종합하면 이메일·보고서·모의 인터뷰 등 B2 시험의 모든 파트를 충분히 커버할 수 있습니다. C1부터는 이 틀 위에 더 정교한 뉘앙스(양보, 강조, 조어법)를 얹게 됩니다."],
+    table:{caption:"B2 핵심 한 장 정리", headers:["주제","한 줄 핵심"], rows:[
+      ["정중·가정","würde/könnte/hätte로 부탁과 비현실 가정."],
+      ["간접화법","sei/habe/werde(접속법 I)로 인용, 헷갈리면 접속법 II 대체."],
+      ["B2 문체","명사화·분사·기능동사구로 격식체 완성."],
+      ["연결어","je…desto·zwar…aber·trotz+2격으로 논증."],
+      ["구조표지","zunächst→darüber hinaus→allerdings→zusammenfassend."]
+    ]},
+    examples:[["Ich würde vorschlagen, dass wir zunächst die Kosten prüfen.","우선 비용을 검토할 것을 제안하고 싶습니다."],["Der Bericht zufolge sei die Nachfrage gestiegen, was die Entscheidung rechtfertigt.","보고서에 따르면 수요가 증가했다고 하며, 그것이 결정을 정당화한다."]],
+    quiz:[{q:"'저라면 우선 대안들을 비교해보겠습니다.'(würde, zunächst)", a:"Ich würde zunächst die Alternativen vergleichen.", note:"접속법 II+구조표지 결합."},{q:"'그는 이미 결정했다고 말했다.'(간접화법)", a:"Er sagte, er habe sich schon entschieden.", note:"접속법 I habe."}],
+    tip:"B2 졸업 체크: 정중한 부탁, 간접화법 인용, 명사화 문장, 고급 연결어, 구조 표지 — 이 다섯 가지가 자연스럽게 섞여 나오면 C1 진입 준비 완료입니다."
+  },
   vocabTheme:"시험대비 표현", convTheme:"모의 발표",
-  idioms:[["Zusammenfassend lässt sich sagen, dass…","요약하자면 ~라고 할 수 있다","Zusammenfassend lässt sich sagen, dass der Plan gut ist."],["Aus diesen Gründen…","이러한 이유들로","Aus diesen Gründen bin ich dafür."]],
-  vocab:[["die Anfrage","문의","Vielen Dank für Ihre Anfrage."],["die Verfügung","처분, 이용(가능)","Ich stehe zur Verfügung."]],
+  idioms:[["Zusammenfassend lässt sich sagen, dass…","요약하자면 ~라고 할 수 있다","Zusammenfassend lässt sich sagen, dass der Plan gut ist."],["Aus diesen Gründen…","이러한 이유들로","Aus diesen Gründen bin ich dafür."],["Es ist davon auszugehen, dass…","~라고 볼 수 있다","Es ist davon auszugehen, dass sich der Trend fortsetzt."],["Nicht zuletzt","마지막으로 중요한 것은","Nicht zuletzt spielt auch das Budget eine Rolle."],["Alles in allem","전체적으로 볼 때","Alles in allem war das Projekt ein Erfolg."],["Vor diesem Hintergrund","이러한 배경에서","Vor diesem Hintergrund ist die Entscheidung nachvollziehbar."],["Es liegt auf der Hand, dass…","~라는 것은 명백하다","Es liegt auf der Hand, dass wir handeln müssen."],["Den Ausschlag geben","결정적 계기가 되다","Das gab den Ausschlag für unsere Entscheidung."]],
+  vocab:[["die Anfrage","문의","Vielen Dank für Ihre Anfrage."],["die Verfügung","처분, 이용(가능)","Ich stehe zur Verfügung."],["die Bewerbung","지원(서)","Ich reiche meine Bewerbung ein."],["der Lebenslauf","이력서","Bitte senden Sie Ihren Lebenslauf."],["die Qualifikation","자격, 역량","Er hat die nötigen Qualifikationen."],["überzeugen","설득하다, 납득시키다","Sie hat das Gremium überzeugt."],["das Vorstellungsgespräch","면접","Ich habe morgen ein Vorstellungsgespräch."],["die Stärke / Schwäche","강점 / 약점","Was ist Ihre größte Stärke?"],["kompetent","능숙한, 유능한","Er wirkt sehr kompetent."],["die Erfahrung","경험","Ich habe viel Erfahrung in diesem Bereich."]],
   conversation:{t:"모의 발표 마무리", lines:[["A","Ich möchte heute über das Thema Homeoffice sprechen.","오늘은 재택근무에 대해 이야기하고 싶습니다."],["A","Zusammenfassend würde ich sagen, die Vorteile überwiegen.","요약하자면 장점이 더 크다고 말씀드리고 싶습니다."]]},
+  conversation2:{t:"모의 면접 — B2 시험 대비", lines:[["A","Warum möchten Sie in diesem Unternehmen arbeiten?","왜 이 회사에서 일하고 싶으신가요?"],["B","Zunächst schätze ich die Unternehmenskultur, und darüber hinaus passt die Stelle sehr gut zu meiner Qualifikation.","우선 회사 문화를 높이 평가하고, 게다가 이 자리가 제 역량과 잘 맞습니다."],["A","Was sind Ihre größten Stärken?","가장 큰 강점은 무엇인가요?"],["B","Ich würde sagen, meine größte Stärke ist meine Zuverlässigkeit und Teamfähigkeit.","제 가장 큰 강점은 신뢰성과 팀워크 능력이라고 말씀드리고 싶습니다."],["A","Vielen Dank, das war ein überzeugendes Gespräch.","감사합니다, 설득력 있는 대화였습니다."]]},
   videoVocab:{title:"lingoni GERMAN", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"B2 시험 대비 어휘 총정리."},
+  videoVocab2:{title:"Goethe-Institut — Modellsatz B2", url:"https://www.goethe.de/de/spr/kup/prf/prf/gzb2.html", desc:"공식 B2 모의고사로 최종 실력 점검."},
   videoConversation:{title:"Easy German", url:"https://www.youtube.com/@EasyGerman", desc:"B2 말하기 감각을 위한 실전 인터뷰."}
 }
 ];
@@ -596,11 +856,22 @@ DATA.C1.units = [
     quiz:[{q:"'내가 검토한 문서'(확장분사구, prüfen)", a:"das von mir geprüfte Dokument"},{q:"'계속 증가하는 인구'(확장분사구, wachsen)", a:"die ständig wachsende Bevölkerung"}],
     video:{title:"lingoni GERMAN — 고급 문법", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"C1 수준 분사구·명사문체(상급 과정까지 다룸)."}
   },
+  grammar2:{ tag:"C1", t:"명사문체(Nominalstil) 심화와 학술 어휘",
+    body:["학술·논문체 독일어는 동사보다 명사를 중심으로 문장을 구성하는 경향이 강합니다: '결정하다(entscheiden)' 대신 '결정을 내리다(eine Entscheidung treffen)', '분석하다(analysieren)' 대신 '분석을 수행하다(eine Analyse durchführen)'처럼 동사를 가벼운 기능동사+명사로 바꿉니다.",
+      "전치사+2격 명사구(unter Berücksichtigung + 2격 = ~을 고려하여, im Hinblick auf + 4격 = ~에 비추어)는 종속절(weil, wenn) 전체를 명사구 하나로 압축하는 학술 문어체의 핵심 기법입니다."],
+    table:{caption:"동사문체 → 명사문체 전환", headers:["동사문체(구어)","명사문체(학술)"], rows:[["weil die Kosten steigen","aufgrund steigender Kosten"],["wenn man das berücksichtigt","unter Berücksichtigung dessen"],["um das Problem zu lösen","zur Lösung des Problems"]]},
+    examples:[["Unter Berücksichtigung aller Faktoren kommt die Studie zu folgendem Schluss.","모든 요소를 고려할 때, 그 연구는 다음과 같은 결론에 도달한다."],["Im Hinblick auf die demografische Entwicklung sind Reformen unumgänglich.","인구통계학적 발전에 비추어 개혁은 불가피하다."],["Zur Lösung dieses Problems bedarf es weiterer Forschung.","이 문제 해결을 위해서는 추가 연구가 필요하다."]],
+    mistakes:[["Weil wir die Kosten berücksichtigen, …(학술체 의도)","Unter Berücksichtigung der Kosten …","학술체에서는 종속절보다 전치사구 선호"]],
+    quiz:[{q:"'환경을 고려하여'(unter Berücksichtigung)", a:"unter Berücksichtigung der Umwelt", note:"unter Berücksichtigung+2격."},{q:"'이 문제를 해결하기 위해'(zur Lösung)", a:"zur Lösung dieses Problems", note:"zur+2격 명사구."}],
+    tip:"학술 어휘 3종 세트: eine Analyse durchführen(분석을 수행하다) · zu dem Schluss kommen(결론에 도달하다) · eine Rolle spielen(역할을 하다) — 논문·발표에서 반복적으로 쓰입니다."
+  },
   vocabTheme:"학술·전문용어", convTheme:"세미나 발표",
-  idioms:[["im Hinblick auf…","~을 고려하면","Im Hinblick auf die Kosten ist das sinnvoll."],["nicht zuletzt aufgrund…","특히 ~때문에","Nicht zuletzt aufgrund der Nachfrage."]],
-  vocab:[["die Erkenntnis","깨달음, 지견","Das ist eine wichtige Erkenntnis."],["zugrunde liegen","기저에 있다","Diese Annahme liegt der Studie zugrunde."],["die These","논제","Die These ist umstritten."]],
+  idioms:[["im Hinblick auf…","~을 고려하면","Im Hinblick auf die Kosten ist das sinnvoll."],["nicht zuletzt aufgrund…","특히 ~때문에","Nicht zuletzt aufgrund der Nachfrage."],["unter Berücksichtigung…","~을 고려하여","Unter Berücksichtigung aller Umstände…"],["zu dem Schluss kommen, dass…","~라는 결론에 도달하다","Wir kommen zu dem Schluss, dass es funktioniert."],["eine zentrale Rolle spielen","핵심적인 역할을 하다","Bildung spielt eine zentrale Rolle."],["sich einer Sache bewusst sein","~을 인식하고 있다","Wir sind uns dieser Herausforderung bewusst."],["im weiteren Sinne","넓은 의미에서","Im weiteren Sinne betrifft das uns alle."],["einen Beitrag leisten","기여하다","Das leistet einen wichtigen Beitrag."]],
+  vocab:[["die Erkenntnis","깨달음, 지견","Das ist eine wichtige Erkenntnis."],["zugrunde liegen","기저에 있다","Diese Annahme liegt der Studie zugrunde."],["die These","논제","Die These ist umstritten."],["die Hypothese","가설","Die Hypothese konnte bestätigt werden."],["empirisch","경험적인, 실증적인","Das basiert auf empirischen Daten."],["die Methodik","방법론","Die Methodik ist klar beschrieben."],["das Fachgebiet","전문 분야","Das ist nicht mein Fachgebiet."],["interdisziplinär","학제간의","Das Projekt ist interdisziplinär angelegt."],["die Relevanz","관련성, 중요성","Die Relevanz dieser Frage ist hoch."],["kritisch beleuchten","비판적으로 조명하다","Wir sollten das kritisch beleuchten."],["die Fragestellung","연구 문제, 질문 설정","Die Fragestellung ist klar formuliert."],["die Signifikanz","(통계적) 유의성","Die Ergebnisse zeigen hohe Signifikanz."]],
   conversation:{t:"세미나 발표", lines:[["A","Im Hinblick auf die aktuelle Lage möchte ich Folgendes vorschlagen.","현재 상황을 고려해 다음을 제안하고 싶습니다."],["B","Das ist eine nachvollziehbare These.","납득이 가는 논제네요."]]},
+  conversation2:{t:"학술 발표 질의응답", lines:[["A","Ihre Studie kommt zu einem interessanten Schluss. Wie sind Sie methodisch vorgegangen?","연구가 흥미로운 결론에 도달했네요. 방법론적으로 어떻게 진행하셨나요?"],["B","Wir haben eine empirische Analyse durchgeführt und dabei mehrere Fachgebiete berücksichtigt.","실증 분석을 수행했고 여러 전문 분야를 고려했습니다."],["A","Und welche Relevanz hat das für die Praxis?","그것이 실무에는 어떤 의의가 있나요?"],["B","Unter Berücksichtigung der aktuellen Entwicklungen leistet unsere Forschung einen wichtigen Beitrag zur Debatte.","현재의 발전상을 고려할 때, 저희 연구는 논의에 중요한 기여를 합니다."]]},
   videoVocab:{title:"nachrichtenleicht.de", url:"https://www.nachrichtenleicht.de/", desc:"학술·전문 어휘를 쉬운 독일어 뉴스에서 확인."},
+  videoVocab2:{title:"Goethe-Institut — C1 온라인 연습", url:"https://bfu.goethe.de/c1mod/", desc:"C1 학술 어휘를 공식 모의문제로 확인."},
   videoConversation:{title:"Easy German", url:"https://www.youtube.com/@EasyGerman", desc:"원어민 속도의 자연스러운 발화로 청취력 강화."}
 },
 {
@@ -613,11 +884,22 @@ DATA.C1.units = [
     quiz:[{q:"'그가 오지 않는 한 우리는 시작할 수 없다.'(außer wenn)", a:"Wir können nicht anfangen, außer wenn er kommt."},{q:"'혹시 질문이 있으시면, 연락 주세요.'(sollte)", a:"Sollten Sie Fragen haben, melden Sie sich."}],
     video:{title:"lingoni GERMAN — 고급 접속법", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"양보·조건 표현의 다양한 형태."}
   },
+  grammar2:{ tag:"C1", t:"가정법 반사실(Irrealis der Vergangenheit) 심화",
+    body:["과거에 대한 반사실 가정(실제로는 그러지 않았던 일)은 접속법 II 완료형(hätte/wäre + 과거분사)으로 표현합니다: Wenn ich das gewusst hätte, hätte ich anders gehandelt(내가 그걸 알았더라면, 다르게 행동했을 텐데 — 실제로는 몰랐고 다르게 행동하지 않았다).",
+      "C1에서는 wenn을 생략하고 도치하는 문어체 형태(Hätte ich das gewusst, …)와, beinahe/fast(하마터면)를 곁들인 표현(Er wäre beinahe gestürzt = 그는 하마터면 넘어질 뻔했다)까지 자유롭게 구사해야 합니다."],
+    table:{caption:"반사실 가정 시제별 형태", headers:["시제","형태","예문"], rows:[["현재 반사실","würde/hätte/wäre + 원형","Wenn ich Zeit hätte, würde ich kommen."],["과거 반사실","hätte/wäre + 과거분사","Wenn ich Zeit gehabt hätte, wäre ich gekommen."],["도치(wenn 생략)","Hätte/Wäre + 주어 + …, so/dann + 주절","Hätte ich das gewusst, hätte ich anders gehandelt."]]},
+    examples:[["Hätte ich das gewusst, wäre ich nicht gekommen.","그걸 알았더라면 오지 않았을 텐데."],["Er wäre beinahe vom Fahrrad gestürzt.","그는 하마터면 자전거에서 넘어질 뻔했다."],["Wäre die Warnung ernst genommen worden, hätte man den Unfall verhindern können.","경고가 진지하게 받아들여졌다면 사고를 막을 수 있었을 것이다."]],
+    mistakes:[["Wenn ich das gewusst habe, hätte ich anders gehandelt.","Wenn ich das gewusst hätte, hätte ich anders gehandelt.","과거 반사실은 두 절 모두 접속법 II 완료"]],
+    quiz:[{q:"'시간이 있었다면 나는 갔을 텐데.'(과거 반사실)", a:"Wenn ich Zeit gehabt hätte, wäre ich gegangen.", note:"두 절 모두 hätte/wäre+과거분사."},{q:"'그걸 알았더라면...'(wenn 생략 도치)", a:"Hätte ich das gewusst, …", note:"hätte+주어 도치."}],
+    tip:"반사실 가정은 '실제로 일어나지 않은 일'을 말한다는 것이 핵심입니다 — 뉘앙스상 후회·안타까움·아쉬운 가정에 자주 쓰입니다."
+  },
   vocabTheme:"정치·경제", convTheme:"시사 토론",
-  idioms:[["unter Vorbehalt","조건부로","Ich stimme unter Vorbehalt zu."],["es sei denn, dass…","~하지 않는 한","Wir kommen, es sei denn, dass es stürmt."]],
-  vocab:[["die Wirtschaft","경제","Die Wirtschaft wächst langsam."],["die Reform","개혁","Die Reform ist notwendig."],["die Auswirkung","파급효과","Die Auswirkungen sind spürbar."]],
+  idioms:[["unter Vorbehalt","조건부로","Ich stimme unter Vorbehalt zu."],["es sei denn, dass…","~하지 않는 한","Wir kommen, es sei denn, dass es stürmt."],["im Zuge dessen","그 과정에서, 그에 따라","Im Zuge dessen wurden neue Regeln eingeführt."],["nicht von der Hand zu weisen","무시할 수 없는","Das Risiko ist nicht von der Hand zu weisen."],["auf Kosten von…","~을 희생하여","Wachstum darf nicht auf Kosten der Umwelt gehen."],["ins Gewicht fallen","중요하게 작용하다, 영향을 미치다","Diese Kosten fallen kaum ins Gewicht."],["den Ausschlag geben","결정적 요인이 되다","Das gab letztlich den Ausschlag."],["die Weichen stellen","방향을 설정하다(관용구)","Die Regierung stellt die Weichen für die Zukunft."]],
+  vocab:[["die Wirtschaft","경제","Die Wirtschaft wächst langsam."],["die Reform","개혁","Die Reform ist notwendig."],["die Auswirkung","파급효과","Die Auswirkungen sind spürbar."],["die Inflation","인플레이션","Die Inflation belastet die Bürger."],["die Rezession","경기침체","Experten befürchten eine Rezession."],["das Wachstum","성장","Das Wachstum verlangsamt sich."],["die Steuerpolitik","조세 정책","Die Steuerpolitik wird diskutiert."],["die Ungleichheit","불평등","Soziale Ungleichheit nimmt zu."],["die Regierung","정부","Die Regierung plant Maßnahmen."],["die Opposition","야당, 반대세력","Die Opposition kritisiert den Plan."],["das Bündnis","동맹, 연합","Ein neues Bündnis wurde geschlossen."],["die Verhandlung","협상","Die Verhandlungen laufen zäh."]],
   conversation:{t:"시사 토론", lines:[["A","Wie beurteilen Sie die aktuelle Wirtschaftslage?","현재 경제 상황을 어떻게 평가하시나요?"],["B","Selbst wenn sich die Lage verbessert, bleiben Risiken bestehen.","상황이 나아지더라도 위험은 남아있습니다."]]},
+  conversation2:{t:"정책 결정 돌아보기(반사실 가정)", lines:[["A","Hätte die Regierung früher gehandelt, wäre die Krise vermeidbar gewesen, oder?","정부가 더 일찍 조치했다면 위기를 피할 수 있었겠죠?"],["B","Das mag stimmen, allerdings war die Lage damals nicht so eindeutig.","그럴 수도 있지만, 당시 상황이 그렇게 명확하지는 않았어요."],["A","Trotzdem hätte man die Warnsignale ernster nehmen können.","그래도 경고 신호를 더 진지하게 받아들일 수 있었을 텐데요."],["B","Im Nachhinein ist das leicht gesagt. Im Zuge der aktuellen Reformen wird zumindest gegengesteuert.","돌이켜보면 말하기는 쉽죠. 적어도 현재 개혁 과정에서 대응은 이루어지고 있어요."]]},
   videoVocab:{title:"nachrichtenleicht.de", url:"https://www.nachrichtenleicht.de/", desc:"정치·경제 어휘를 뉴스로 학습."},
+  videoVocab2:{title:"lingoni GERMAN — Konjunktiv II Vergangenheit", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"과거 반사실 가정 심화 강의."},
   videoConversation:{title:"Easy German", url:"https://www.youtube.com/@EasyGerman", desc:"시사 주제에 대한 실제 토론 인터뷰."}
 },
 {
@@ -630,11 +912,21 @@ DATA.C1.units = [
     quiz:[{q:"'여기서는 열심히 일한다.'(비인칭수동)", a:"Hier wird viel gearbeitet."},{q:"'그건 그냥 그런 거야.'(eben)", a:"Das ist eben so."}],
     video:{title:"lingoni GERMAN — Modalpartikeln", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"구어의 뉘앙스를 만드는 조사들."}
   },
+  grammar2:{ tag:"C1", t:"화용론 — 완곡어법과 강조구문(es sei denn, umso mehr als)",
+    body:["직접적으로 반대·거절하기보다 완곡하게 돌려 말하는 것이 독일어 격식 대화에서도 중요합니다: 'Nein'(안 돼) 대신 'Das dürfte schwierig werden'(그건 좀 어려울 것 같습니다), 'Das stimmt nicht'(틀렸어요) 대신 'Ich sehe das etwas anders'(저는 조금 다르게 봅니다).",
+      "강조 구문 es sei denn(~하지 않는 한, 예외 조건), umso mehr als(~라는 점에서 더더욱), geschweige denn(~은커녕, 하물며 ~도 아니고)은 C1 토론·글쓰기에서 논지를 정교하게 다듬는 표현입니다."],
+    examples:[["Das dürfte schwierig werden, es sei denn, wir finden eine andere Lösung.","다른 해결책을 찾지 못하는 한 그건 어려울 것 같습니다."],["Das Projekt ist wichtig, umso mehr als es viele Arbeitsplätze schafft.","그 프로젝트는 많은 일자리를 만든다는 점에서 더더욱 중요하다."],["Er hat nicht einmal angerufen, geschweige denn sich entschuldigt.","그는 전화도 안 했고, 사과는커녕이었다."]],
+    mistakes:[["Das ist falsch. (공식적 반박)","Ich sehe das etwas anders. / Das würde ich so nicht sagen.","격식체에서는 직접 부정보다 완곡 표현 선호"]],
+    quiz:[{q:"'다른 방법이 없는 한 우리는 계속한다.'(es sei denn)", a:"Wir machen weiter, es sei denn, es gibt keine andere Möglichkeit.", note:"예외조건 es sei denn."},{q:"'그는 도와주지 않았고, 고맙다는 말조차 없었다.'(geschweige denn)", a:"Er hat nicht geholfen, geschweige denn sich bedankt.", note:"geschweige denn = ~은커녕."}],
+    tip:"C1다운 화법의 핵심은 '더 정교하게 돌려 말하기'입니다 — 직설적 표현을 완곡 구문으로 바꾸는 연습을 꾸준히 하세요."
+  },
   vocabTheme:"문화·사회", convTheme:"캐주얼한 대화",
-  idioms:[["Na klar!","그럼 당연하지!","Kommst du mit? — Na klar!"],["Wie auch immer.","어쨌든간에.","Wie auch immer, wir machen weiter."]],
-  vocab:[["die Gesellschaft","사회","Die Gesellschaft verändert sich."],["die Identität","정체성","Kulturelle Identität ist wichtig."],["gelassen","여유로운, 침착한","Er bleibt immer gelassen."]],
+  idioms:[["Na klar!","그럼 당연하지!","Kommst du mit? — Na klar!"],["Wie auch immer.","어쨌든간에.","Wie auch immer, wir machen weiter."],["Ehrlich gesagt","솔직히 말하면","Ehrlich gesagt, das überzeugt mich nicht."],["Das ist so eine Sache.","그게 좀 애매해요.","Ob das klappt, das ist so eine Sache."],["Nichts für ungut.","기분 나쁘게 듣지 마.","Nichts für ungut, aber das stimmt nicht ganz."],["Da fragst du mich was!","그거 참 좋은 질문이네(잘 모르겠어)!","Wie geht das aus? — Da fragst du mich was!"],["Von daher","그런 이유에서, 그래서","Von daher verstehe ich deine Entscheidung."],["Auf gut Deutsch gesagt","쉽게 말하면(관용구)","Auf gut Deutsch gesagt: das funktioniert nicht."]],
+  vocab:[["die Gesellschaft","사회","Die Gesellschaft verändert sich."],["die Identität","정체성","Kulturelle Identität ist wichtig."],["gelassen","여유로운, 침착한","Er bleibt immer gelassen."],["die Wertvorstellung","가치관","Wertvorstellungen ändern sich mit der Zeit."],["die Toleranz","관용, 포용력","Toleranz ist eine wichtige Tugend."],["das Vorurteil","편견","Wir sollten Vorurteile abbauen."],["die Prägung","(성격·가치관 등의) 형성, 각인","Seine Kindheit hat ihn geprägt."],["der Zeitgeist","시대정신","Das entspricht dem heutigen Zeitgeist."],["die Generation","세대","Jede Generation hat eigene Werte."],["die Selbstverständlichkeit","당연한 것","Das ist für uns eine Selbstverständlichkeit."],["kontrovers","논란이 많은","Das Thema wird kontrovers diskutiert."],["die Weltanschauung","세계관","Seine Weltanschauung ist sehr offen."]],
   conversation:{t:"캐주얼한 대화", lines:[["A","Na, wie läuft's bei dir so?","그래, 요즘 어떻게 지내?"],["B","Ach, es geht halt so, wie immer.","아 뭐, 늘 그렇듯 그냥 그래."]]},
+  conversation2:{t:"완곡하게 의견 조율하기", lines:[["A","Was hältst du von dem neuen Vorschlag meines Chefs?","우리 상사의 새 제안에 대해 어떻게 생각해?"],["B","Ehrlich gesagt, ich sehe das etwas anders als er.","솔직히, 나는 그와는 좀 다르게 봐."],["A","Wie meinst du das?","어떤 의미야?"],["B","Na ja, das dürfte in der Praxis schwierig werden, es sei denn, wir bekommen mehr Budget.","음, 예산을 더 받지 못하는 한 실제로는 어려울 것 같아."],["A","Verstehe. Von daher wäre es gut, das nochmal anzusprechen.","이해했어. 그런 이유에서 다시 얘기해보는 게 좋겠다."]]},
   videoVocab:{title:"nachrichtenleicht.de", url:"https://www.nachrichtenleicht.de/", desc:"문화·사회 관련 쉬운 뉴스."},
+  videoVocab2:{title:"Easy German — Gesellschaft & Werte", url:"https://www.youtube.com/@EasyGerman", desc:"사회·가치관 주제의 실제 인터뷰."},
   videoConversation:{title:"Easy German", url:"https://www.youtube.com/@EasyGerman", desc:"Modalpartikeln이 살아있는 실제 캐주얼 대화."}
 },
 {
@@ -647,11 +939,25 @@ DATA.C1.units = [
     quiz:[{q:"'가능성'(möglich에서 명사화)", a:"die Möglichkeit"},{q:"'해결 가능한'(lösen+bar)", a:"lösbar"}],
     video:{title:"lingoni GERMAN — Wortbildung", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"접두사·접미사로 어휘 확장하기."}
   },
+  grammar2:{ tag:"C1", t:"격·형용사어미·연결어 최종 복습 — 레벨 간 통합 정리",
+    body:["C1 막바지에서는 A1~B2 전체의 문법을 하나의 눈으로 통합해 볼 수 있어야 합니다. 아래 표는 전 레벨의 핵심 규칙을 다시 한 번 압축한 것으로, 실전에서 막힐 때 가장 먼저 확인할 '최종 점검표'입니다.",
+      "정중·가정(würde/könnte/hätte)과 B2/C1 고급 문체(명사화·분사·je…desto·간접화법·확장분사구·Modalpartikeln)까지 자유자재로 오갈 수 있다면 C1 수준의 유연성을 갖춘 것입니다."],
+    table:{caption:"핵심 한 장 정리(전 레벨 통합)", headers:["주제","한 줄 핵심"], rows:[
+      ["정중·가정","würde/könnte/hätte로 부탁·가정, 과거는 hätte/wäre+과거분사."],
+      ["B2 문체","명사화·분사·je…desto·간접화법으로 격식체 완성."],
+      ["C1 문체","확장분사구·Nominalstil·Modalpartikeln(doch/ja/eben/halt)으로 자연스러움 완성."]
+    ]},
+    examples:[["Hätte man das früher erkannt, wäre die Reform schneller umgesetzt worden.","그것을 더 일찍 인식했더라면 개혁이 더 빨리 시행되었을 것이다."],["Das ist doch klar, oder?","그야 당연하지, 안 그래?"]],
+    quiz:[{q:"'그가 왔다는 것은 놀랍다.'(명사화, kommen)", a:"Sein Kommen ist überraschend.", note:"동사원형+명사화."},{q:"'그건 그냥 그런 거지, 뭐.'(halt)", a:"Das ist halt so.", note:"Modalpartikel halt = 체념/당연함."}],
+    tip:"C1 최종 점검: 정중·가정, B2 문체, C1 문체 세 층위를 상황에 맞게 자유롭게 넘나들 수 있으면 원어민에 가까운 유연성을 갖춘 것입니다."
+  },
   vocabTheme:"어원·조어", convTheme:"깊이 있는 대화",
-  idioms:[["ins Schwarze treffen","정곡을 찌르다","Deine Antwort trifft ins Schwarze."],["auf den Punkt bringen","핵심을 짚다","Sie hat es auf den Punkt gebracht."]],
-  vocab:[["die Herkunft","기원, 유래","Die Herkunft des Wortes ist interessant."],["ableiten","파생시키다","Das Wort ist davon abgeleitet."],["der Wortschatz","어휘","Mein Wortschatz wächst stetig."]],
+  idioms:[["ins Schwarze treffen","정곡을 찌르다","Deine Antwort trifft ins Schwarze."],["auf den Punkt bringen","핵심을 짚다","Sie hat es auf den Punkt gebracht."],["das Kind beim Namen nennen","있는 그대로 말하다(돌려말하지 않고)","Man sollte das Kind beim Namen nennen."],["etwas auf die lange Bank schieben","일을 미루다","Wir sollten das nicht auf die lange Bank schieben."],["den Nagel auf den Kopf treffen","정곡을 찌르다","Ihre Bemerkung trifft den Nagel auf den Kopf."],["sich etwas zu Herzen nehmen","마음에 새기다","Er hat sich die Kritik zu Herzen genommen."],["im Grunde genommen","근본적으로 보면","Im Grunde genommen hast du recht."],["die Katze aus dem Sack lassen","비밀을 밝히다","Jetzt lass endlich die Katze aus dem Sack!"]],
+  vocab:[["die Herkunft","기원, 유래","Die Herkunft des Wortes ist interessant."],["ableiten","파생시키다","Das Wort ist davon abgeleitet."],["der Wortschatz","어휘","Mein Wortschatz wächst stetig."],["das Kompositum","합성어","Deutsch liebt Komposita."],["das Präfix / Suffix","접두사 / 접미사","Das Präfix ver- verändert die Bedeutung."],["die Umgangssprache","구어체, 일상어","Das ist eher Umgangssprache."],["die Standardsprache","표준어","In der Standardsprache sagt man das anders."],["der Dialekt","방언","Bayrisch ist ein starker Dialekt."],["die Redewendung","관용구","Diese Redewendung kenne ich nicht."],["etymologisch","어원학적인","Etymologisch stammt das Wort aus dem Lateinischen."],["die Nuance","뉘앙스, 미묘한 차이","Diese Nuance ist wichtig."],["treffend","적절한, 정곡을 찌르는","Das ist eine treffende Beschreibung."]],
   conversation:{t:"깊이 있는 대화", lines:[["A","Deine Analyse bringt es wirklich auf den Punkt.","네 분석이 정말 핵심을 짚었어."],["B","Danke, ich habe lange darüber nachgedacht.","고마워, 오래 고민했거든."]]},
+  conversation2:{t:"언어와 표현에 대해 이야기하기", lines:[["A","Mir fällt auf, dass du immer so treffende Redewendungen benutzt.","네가 항상 정곡을 찌르는 관용구를 쓰는 게 인상적이야."],["B","Danke! Ich interessiere mich sehr für die Etymologie deutscher Wörter.","고마워! 나는 독일어 단어의 어원에 관심이 많아."],["A","Im Grunde genommen ist das eine tolle Art, eine Sprache zu meistern.","근본적으로 보면 그게 언어를 완전히 익히는 좋은 방법이네."],["B","Genau, man sollte das Kind beim Namen nennen: ohne Redewendungen klingt man nie wie ein Muttersprachler.","맞아, 있는 그대로 말하자면, 관용구 없이는 절대 원어민처럼 들리지 않아."]]},
   videoVocab:{title:"nachrichtenleicht.de", url:"https://www.nachrichtenleicht.de/", desc:"어휘 확장을 위한 뉴스 읽기."},
+  videoVocab2:{title:"에밀리 독일어 — C1 어휘·관용구 심화", url:"https://www.youtube.com/channel/UCKIrWWrtQGTvFdsIRNVeMeA", desc:"C1 수준 관용구를 한국어로 깊이 있게 설명."},
   videoConversation:{title:"Easy German", url:"https://www.youtube.com/@EasyGerman", desc:"깊이 있는 주제의 실제 대화."}
 },
 {
@@ -664,11 +970,20 @@ DATA.C1.units = [
     quiz:[{q:"'일찍 일어나는 새가 벌레를 잡는다' 독일어 속담은?", a:"Der frühe Vogel fängt den Wurm."},{q:"'그럴 수도 있지만, 다만…'(반박 시작)", a:"Das mag stimmen, allerdings…"}],
     video:{title:"lingoni GERMAN — 관용구·토론", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"C1 관용구와 토론 반박 표현 총정리."}
   },
+  grammar2:{ tag:"C1", t:"C1 졸업 총정리 — 52주 여정의 핵심 다섯 가지",
+    body:["52주 여정을 마무리하며 전체를 관통하는 다섯 가지 원칙을 정리합니다. ① 어순: 정동사는 항상 2번째 자리(부문장은 맨 끝) ② 격: 남성만 1↔4격에서 변하고 형용사 어미가 이를 보완 ③ 시제: 회화는 Perfekt, 문어는 Präteritum, 미래·추측은 werden/화법조동사 ④ 문체: 상황에 따라 동사문체(구어)와 명사문체(학술/문어)를 오가는 능력 ⑤ 뉘앙스: Modalpartikeln·관용구·완곡어법으로 원어민의 '느낌'을 낸다.",
+      "이 다섯 가지가 자동으로 나온다면 Goethe-Zertifikat C1이나 telc C1 시험에서 요구하는 유연성과 정확성을 모두 갖춘 것입니다. 시험은 끝이 아니라, 실제 독일 생활과 커리어에서 이 도구들을 자유롭게 쓰기 위한 확인 절차일 뿐입니다."],
+    examples:[["Hätte ich vor einem Jahr gewusst, wie weit ich heute komme, hätte ich mir weniger Sorgen gemacht.","1년 전에 오늘 이만큼 올 줄 알았더라면 덜 걱정했을 텐데."],["Zusammenfassend lässt sich sagen: Sprache lernt man nicht auswendig, sondern durch stetige Übung im echten Leben.","요약하자면, 언어는 암기가 아니라 실생활에서의 꾸준한 연습을 통해 배우는 것이다."]],
+    quiz:[{q:"'꾸준함이 결국 승리한다.'(관용구 활용, 자유 작문)", a:"Beispiel: Kontinuität siegt am Ende. / Steter Tropfen höhlt den Stein.", note:"자유 작문 — 정답은 예시입니다."},{q:"C1 다섯 원칙 중 '문체'에 해당하는 것은?", a:"동사문체(구어)와 명사문체(학술체)를 상황에 맞게 오가는 능력", note:"핵심 요약 확인 문제."}],
+    tip:"52주 전체를 관통하는 한 문장: '문법은 규칙이 아니라 패턴이고, 유창함은 반복에서 나온다.'"
+  },
   vocabTheme:"시험대비 표현", convTheme:"최종 모의면접",
-  idioms:[["Der frühe Vogel fängt den Wurm.","일찍 일어나는 새가 벌레를 잡는다.","Der frühe Vogel fängt den Wurm — steh früh auf!"],["Übung macht den Meister.","연습이 대가를 만든다.","Übung macht den Meister, bleib dran!"]],
-  vocab:[["widersprechen","반박하다","Ich möchte widersprechen."],["die Gegenargumentation","반박 논증","Ihre Gegenargumentation ist stark."],["überzeugen","설득하다","Das überzeugt mich nicht ganz."]],
+  idioms:[["Der frühe Vogel fängt den Wurm.","일찍 일어나는 새가 벌레를 잡는다.","Der frühe Vogel fängt den Wurm — steh früh auf!"],["Übung macht den Meister.","연습이 대가를 만든다.","Übung macht den Meister, bleib dran!"],["Steter Tropfen höhlt den Stein.","낙숫물이 바위를 뚫는다(꾸준함이 이긴다).","Steter Tropfen höhlt den Stein — bleib dran!"],["Aller Anfang ist schwer.","처음이 어렵다(시작이 반이다).","Aller Anfang ist schwer, aber du schaffst das."],["Man lernt nie aus.","배움에는 끝이 없다.","Man lernt nie aus, auch auf C1-Niveau."],["Wer A sagt, muss auch B sagen.","한 번 시작한 일은 끝까지 해야 한다.","Wer A sagt, muss auch B sagen — mach weiter!"],["Aus Fehlern lernt man.","실수를 통해 배운다.","Keine Sorge, aus Fehlern lernt man am meisten."],["Rom wurde auch nicht an einem Tag erbaut.","로마는 하루아침에 세워지지 않았다.","Geduld — Rom wurde auch nicht an einem Tag erbaut."]],
+  vocab:[["widersprechen","반박하다","Ich möchte widersprechen."],["die Gegenargumentation","반박 논증","Ihre Gegenargumentation ist stark."],["überzeugen","설득하다","Das überzeugt mich nicht ganz."],["die Errungenschaft","성취, 성과","Das ist eine große Errungenschaft."],["der Meilenstein","이정표, 중요한 단계","B2 war ein wichtiger Meilenstein."],["die Beharrlichkeit","끈기, 인내","Beharrlichkeit zahlt sich aus."],["die Fließend(igkeit)","유창함","Ich strebe nach Fließendigkeit."],["souverän","능숙한, 자신감 있는","Sie spricht sehr souverän Deutsch."],["die Muttersprache","모국어","Deutsch ist nicht meine Muttersprache, aber..."],["der Grundstein","초석, 토대","Das war der Grundstein für alles Weitere."]],
   conversation:{t:"최종 모의면접", lines:[["A","Warum möchten Sie in Deutschland arbeiten?","왜 독일에서 일하고 싶으신가요?"],["B","Ich schätze die Kultur und möchte beruflich wachsen.","이 문화를 소중히 여기고 직업적으로 성장하고 싶습니다."],["A","Das überzeugt mich. Viel Erfolg!","설득력 있네요. 성공을 빕니다!"]]},
+  conversation2:{t:"52주 여정을 돌아보며", lines:[["A","Du sprichst jetzt wirklich souverän Deutsch. Wie fühlt sich das an?","이제 정말 능숙하게 독일어를 하네. 어떤 기분이야?"],["B","Ehrlich gesagt, wenn ich vor einem Jahr gewusst hätte, wie weit ich komme, hätte ich mir weniger Sorgen gemacht.","솔직히, 1년 전에 이만큼 올 줄 알았더라면 덜 걱정했을 텐데."],["A","Aller Anfang ist schwer, aber du hast durchgehalten.","시작이 어렵지만 넌 끝까지 버텼어."],["B","Genau, und man lernt ja nie aus — ich mache trotzdem weiter.","맞아, 배움엔 끝이 없으니까 — 그래도 계속할 거야."]]},
   videoVocab:{title:"nachrichtenleicht.de", url:"https://www.nachrichtenleicht.de/", desc:"C1 시험 대비 최종 어휘 점검."},
+  videoVocab2:{title:"Goethe-Institut — C1 온라인 모의훈련", url:"https://bfu.goethe.de/c1mod/", desc:"실전 감각을 위한 최종 점검용 공식 자료."},
   videoConversation:{title:"Easy German", url:"https://www.youtube.com/@EasyGerman", desc:"자연스러운 반박·토론 표현 마무리."}
 }
 ];
@@ -695,51 +1010,12 @@ DATA.C1.exam = {
 };
 /* SCRIPT-DATA-MARKER */
 
-var APPENDIX = {
-  irregular:{caption:"꼭 외우는 불규칙동사 20", headers:["원형","과거(Präteritum)","현재완료(Perfekt)","뜻"], rows:[
-    ["beginnen","begann","hat begonnen","시작하다"],["bleiben","blieb","ist geblieben","머무르다"],
-    ["bringen","brachte","hat gebracht","가져오다"],["denken","dachte","hat gedacht","생각하다"],
-    ["essen","aß","hat gegessen","먹다"],["fahren","fuhr","ist gefahren","(타고)가다"],
-    ["finden","fand","hat gefunden","찾다"],["geben","gab","hat gegeben","주다"],
-    ["gehen","ging","ist gegangen","가다"],["kommen","kam","ist gekommen","오다"],
-    ["lesen","las","hat gelesen","읽다"],["nehmen","nahm","hat genommen","잡다/타다"],
-    ["schreiben","schrieb","hat geschrieben","쓰다"],["sehen","sah","hat gesehen","보다"],
-    ["sprechen","sprach","hat gesprochen","말하다"],["stehen","stand","hat gestanden","서 있다"],
-    ["treffen","traf","hat getroffen","만나다"],["trinken","trank","hat getrunken","마시다"],
-    ["verstehen","verstand","hat verstanden","이해하다"],["werden","wurde","ist geworden","되다"]
-  ]},
-  defArt:{caption:"정관사 (der/die/das) 격변화", headers:["격","남성 m","여성 f","중성 n","복수 pl"], rows:[
-    ["1격 Nom.","der","die","das","die"],["4격 Akk.","den","die","das","die"],
-    ["3격 Dat.","dem","der","dem","den (+n)"],["2격 Gen.","des (+s)","der","des (+s)","der"]
-  ]},
-  adjEnding:{caption:"형용사 어미 (1격 기준)", headers:["관사","남성 m","여성 f","중성 n","복수 pl"], rows:[
-    ["der + 형용사","der gute","die gute","das gute","die guten"],
-    ["ein + 형용사","ein guter","eine gute","ein gutes","— guten"],
-    ["관사 없음","guter","gute","gutes","gute"]
-  ]},
-  connectors:{caption:"연결어 — 동사 위치로 분류", headers:["유형","연결어","동사 위치","예시"], rows:[
-    ["등위(어순 그대로)","und, aber, oder, denn, sondern","2번째 자리 유지","Ich bleibe, denn es regnet."],
-    ["부사형(도치)","deshalb, trotzdem, dann, dennoch","바로 뒤 동사 도치","Es regnet, deshalb bleibe ich."],
-    ["종속(동사 끝)","weil, dass, wenn, obwohl, ob, da","동사 맨 뒤로","…, weil es regnet."]
-  ]},
-  summary:[
-    ["어순(평서문)","정동사는 2번째 자리. 앞에 뭐가 와도 동사 위치 고정."],
-    ["격(핵심)","남성만 1격 der→4격 den. 여·중·복은 1격=4격."],
-    ["형용사 어미","정관사 뒤 -e/-en, 부정관사 뒤 남성 -er·중성 -es."],
-    ["과거","회화=Perfekt. 이동·변화 동사는 sein(bin gegangen)."],
-    ["관계문","성·수=앞 명사, 격=관계문 속 역할, 동사 맨 뒤."],
-    ["정중·가정","würde/könnte/hätte."],
-    ["B2 문체","명사화·분사·je…desto·간접화법."],
-    ["C1 문체","확장분사구·Nominalstil·Modalpartikeln(doch/ja/eben/halt)."]
-  ]
-};
-
 /* ===================== 렌더링 엔진 ===================== */
 var state = { route:"home", subtab:"grammar" };
 function levelBadge(lv){ return '<span class="badge" style="background:'+LEVEL_COLOR[lv]+'">'+lv+'</span>'; }
 
 function renderNav(){
-  var items = [["home","홈"]].concat(LEVEL_ORDER.map(function(l){return [l,l];})).concat([["appendix","문법 요약표"]]);
+  var items = [["home","홈"]].concat(LEVEL_ORDER.map(function(l){return [l,l];}));
   document.getElementById("mainnav").innerHTML = items.map(function(it){
     var active = (state.route===it[0]) ? " active" : "";
     return '<button class="'+active.trim()+'" data-route="'+it[0]+'">'+it[1]+'</button>';
@@ -778,10 +1054,9 @@ function renderHome(){
   '</div><p style="color:var(--muted); font-size:.85rem;">하루 40~60분, 주 5일 기준. 각 유닛은 2주 분량이며 문법·단어·회화 각 섹션에 그 주에 맞는 학습 영상 링크가 함께 제공됩니다.</p></div>';
 }
 
-function renderUnit(u, idx, wk){
-  var g = u.grammar;
+function renderGrammarBox(g, weekLabel){
   var html = '<div class="unit-block">';
-  html += '<span class="unit-tag">'+esc(u.weekLabel)+' · '+esc(g.tag)+'</span><h3>'+esc(g.t)+'</h3>';
+  html += '<span class="unit-tag">'+esc(weekLabel)+' · '+esc(g.tag)+'</span><h3>'+esc(g.t)+'</h3>';
   g.body.forEach(function(p){ html += "<p>"+esc(p)+"</p>"; });
   if(g.table){ html += "<p><b>"+esc(g.table.caption)+"</b></p>"+tbl(g.table.headers, g.table.rows.map(function(r){return r.map(function(c){return esc(c);});})); }
   if(g.examples && g.examples.length){
@@ -790,6 +1065,7 @@ function renderUnit(u, idx, wk){
     html += '</div>';
   }
   if(g.why){ html += '<div class="why-box"><b>왜?</b> '+esc(g.why)+'</div>'; }
+  if(g.tip){ html += '<div class="why-box"><b>Tip</b> '+esc(g.tip)+'</div>'; }
   if(g.mistakes && g.mistakes.length){
     html += '<div class="mistake-list"><p><b>자주 하는 실수</b></p>';
     g.mistakes.forEach(function(m){ html += '<div class="mistake-item"><span class="wrong">✕ '+esc(m[0])+'</span> → <span class="right">✓ '+esc(m[1])+'</span><span class="mnote">'+esc(m[2])+'</span></div>'; });
@@ -800,6 +1076,11 @@ function renderUnit(u, idx, wk){
     html += '<div class="core-box"><b>확인 문제</b></div>'+renderQuizList(g.quiz, "gq");
   }
   html += '</div>';
+  return html;
+}
+function renderUnit(u, idx, wk){
+  var html = renderGrammarBox(u.grammar, u.weekLabel);
+  if(u.grammar2){ html += renderGrammarBox(u.grammar2, u.weekLabel); }
   return html;
 }
 
@@ -820,21 +1101,27 @@ function renderUnitVocab(u){
     html += '</div>';
   }
   if(u.videoVocab){ html += videoInline(u.videoVocab); }
+  if(u.videoVocab2){ html += videoInline(u.videoVocab2); }
   html += '</div>';
   return html;
 }
 
 var dialogCounter = 0;
+function renderOneDialog(d){
+  var html = '<div class="dialog"><h4>'+esc(d.t)+'</h4>';
+  d.lines.forEach(function(line){
+    html += '<div class="dline"><span class="sp">'+esc(line[0])+'</span><div class="dtext"><div class="de">'+ttsBtn(line[1])+' '+esc(line[1])+'</div>'+(line[2]?'<div class="ko">'+esc(line[2])+'</div>':'')+'</div></div>';
+  });
+  html += '</div>';
+  return html;
+}
 function renderUnitConversation(u){
   var html = '<div class="unit-block"><span class="unit-tag">'+esc(u.weekLabel)+'</span><h3>'+esc(u.convTheme||"회화")+'</h3>';
-  if(u.conversation){
-    html += '<div class="dialog"><h4>'+esc(u.conversation.t)+'</h4>';
-    u.conversation.lines.forEach(function(line){
-      html += '<div class="dline"><span class="sp">'+esc(line[0])+'</span><div class="dtext"><div class="de">'+ttsBtn(line[1])+' '+esc(line[1])+'</div>'+(line[2]?'<div class="ko">'+esc(line[2])+'</div>':'')+'</div></div>';
-    });
-    html += '</div>';
-  }
+  if(u.conversation){ html += renderOneDialog(u.conversation); }
+  if(u.conversation2){ html += renderOneDialog(u.conversation2); }
+  if(u.conversation3){ html += renderOneDialog(u.conversation3); }
   if(u.videoConversation){ html += videoInline(u.videoConversation); }
+  if(u.videoConversation2){ html += videoInline(u.videoConversation2); }
   html += '</div>';
   return html;
 }
@@ -853,15 +1140,6 @@ function renderQuizList(list, prefix){
   return html;
 }
 function normalizeAnswer(s){ return s.toLowerCase().replace(/[.,!?„“"'’()]/g,"").replace(/\s+/g," ").trim(); }
-
-function renderAppendix(){
-  var html = '<div class="hero"><h1>문법 요약표 · 부록</h1><p class="lead">막히면 여기부터 다시 보세요.</p></div>';
-  html += '<div class="card"><h2>'+APPENDIX.irregular.caption+'</h2>'+tbl(APPENDIX.irregular.headers, APPENDIX.irregular.rows)+'</div>';
-  html += '<div class="card"><h2>격(Kasus)과 형용사 어미</h2>'+tbl(APPENDIX.defArt.headers, APPENDIX.defArt.rows)+tbl(APPENDIX.adjEnding.headers, APPENDIX.adjEnding.rows)+'</div>';
-  html += '<div class="card"><h2>연결어 분류</h2>'+tbl(APPENDIX.connectors.headers, APPENDIX.connectors.rows)+'</div>';
-  html += '<div class="card"><h2>핵심 한 장 정리</h2>'+tbl(["주제","한 줄 핵심"], APPENDIX.summary)+'</div>';
-  return html;
-}
 
 function renderExam(ex){
   var html = '<div class="card"><h2>시험 한눈에 보기</h2><p>'+esc(ex.intro)+'</p>'+tbl(ex.table.headers, ex.table.rows)+
@@ -903,7 +1181,6 @@ function render(){
   renderNav();
   var el = document.getElementById("content");
   if(state.route==="home"){ el.innerHTML = renderHome(); }
-  else if(state.route==="appendix"){ el.innerHTML = renderAppendix(); }
   else if(DATA[state.route]){ el.innerHTML = renderLevelPage(state.route); }
   else { el.innerHTML = renderHome(); }
   window.scrollTo({top:0, behavior:"auto"});
@@ -959,7 +1236,6 @@ function speakDE(text){
 function applyFontSize(px){ document.documentElement.style.fontSize = px+"px"; try{ localStorage.setItem("de_fs", px); }catch(e){} }
 document.getElementById("fsUp").addEventListener("click", function(){ var cur = parseInt(getComputedStyle(document.documentElement).fontSize,10)||17; applyFontSize(Math.min(cur+1,24)); });
 document.getElementById("fsDown").addEventListener("click", function(){ var cur = parseInt(getComputedStyle(document.documentElement).fontSize,10)||17; applyFontSize(Math.max(cur-1,13)); });
-document.getElementById("fsReset").addEventListener("click", function(){ applyFontSize(17); });
 
 /* 맨 위로 (floating) */
 var toTopBtn = document.getElementById("toTop");
@@ -974,7 +1250,7 @@ function loadState(){
   try{
     var savedFs = localStorage.getItem("de_fs"); if(savedFs) document.documentElement.style.fontSize = savedFs+"px";
     var savedRoute = localStorage.getItem("de_route");
-    if(savedRoute && (DATA[savedRoute] || savedRoute==="home" || savedRoute==="appendix")){ state.route = savedRoute; }
+    if(savedRoute && (DATA[savedRoute] || savedRoute==="home")){ state.route = savedRoute; }
   }catch(e){}
 }
 loadState();
