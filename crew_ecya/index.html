@@ -130,6 +130,28 @@
   }
   .chip.active { background: var(--accent); color: #fff; }
 
+  /* ---------- Gospel Talk video panel ---------- */
+  .talk-panel {
+    position: sticky; top: 72px; z-index: 60; display: none;
+    background: var(--card); border-radius: 18px; overflow: hidden;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.10); margin-bottom: 16px;
+  }
+  .talk-video { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; }
+  .talk-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .talk-summary { max-height: 180px; overflow-y: auto; padding: 14px 18px 16px; border-top: 1px solid var(--border); }
+  .talk-summary-label {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 10px;
+  }
+  .talk-summary h4 { font-size: 12.5px; font-weight: 700; color: var(--accent); margin: 10px 0 4px; }
+  .talk-summary h4:first-of-type { margin-top: 0; }
+  .talk-summary ul { list-style: none; margin: 0; }
+  .talk-summary li {
+    position: relative; padding-left: 14px; font-size: 12.5px; line-height: 1.6;
+    color: var(--text); margin-bottom: 5px;
+  }
+  .talk-summary li::before { content: "·"; position: absolute; left: 2px; color: var(--accent); font-weight: 700; }
+
   /* ---------- Panels & cards ---------- */
   .panel { display: none; animation: fadeIn 0.25s ease; }
   .panel.active { display: block; }
@@ -312,6 +334,46 @@
     <button class="chip active" data-target="orientation">Orientation</button>
     <button class="chip" data-target="round1">Round 1</button>
     <button class="chip" data-target="round2">Round 2</button>
+  </div>
+
+  <div class="talk-panel" id="talkPanel">
+    <div class="talk-video">
+      <iframe src="https://www.youtube.com/embed/GkJuOnKoPDE?start=1620&amp;rel=0" title="가스펠 톡 1 · 복음을 따라가는 두 여정 — 이찬규 목사" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <div class="talk-summary">
+      <div class="talk-summary-label">가스펠 톡 요약 · 복음을 따라가는 두 여정 (이찬규 목사)</div>
+      <h4>인생을 어떻게 설계할까</h4>
+      <ul>
+        <li>까르페 디엠(오늘을 붙잡아라) — 내일의 불확실성을 오늘만 즐기는 것으로 답하려는 태도</li>
+        <li>메멘토 모리(죽음을 기억하라) — 로마 개선장군 옆 노예가 외치던 말. 겸손하게 하지만 비관적</li>
+        <li>복음을 만나라 — 예수님이 내 인생의 진짜 설계도(운명 지도)를 주심</li>
+      </ul>
+      <h4>내적 여정 — 복음 DNA</h4>
+      <ul>
+        <li>복음 DNA = 은혜(하나님이 거저 주심) + 믿음(그 은혜를 붙잡는 손)</li>
+        <li>은혜·믿음이 만나면 자동으로: 자녀 됨 · 의롭다 하심 · 거듭난 생활 · 예수님과 연합</li>
+        <li>복음의 속성: 자기완결적(스스로 진행) · 선택적("예"라고만 하면 됨)</li>
+        <li>복음의 효력: 죄의 "뇌관" 제거 — 유혹은 있어도 나를 지배하지는 못함</li>
+      </ul>
+      <h4>트랙 유지 — 영적 습관 &amp; 하이웨이</h4>
+      <ul>
+        <li>온라인 상태 유지: 생명예배 · 큐티 · 기도(말씀을 기도로, 삶의 문제를 기도로)</li>
+        <li>거룩함의 하이웨이 조건: 확실한 복음 체험 · 성령이 주시는 비전을 목적지로 · 은혜의 연료 채우기</li>
+        <li>정상체험(마운틴탑 경험): 갑절의 은혜 · 성령충만 · 부르심의 소명을 사모하기</li>
+      </ul>
+      <h4>외적 여정 — 대위임령</h4>
+      <ul>
+        <li>마태복음 28:19-20 "모든 민족을 제자로 삼으라" — 부활하신 예수님의 명령(대위임령)</li>
+        <li>사도행전 1:8, 에베소서 2:10 — 성령의 능력으로, 선한 일을 위해 우리를 지으심</li>
+        <li>아직 복음을 듣지 못한 약 3,100개의 미전도 종족이 있음</li>
+        <li>한국 복음 역사: 로스 선교사의 성경 번역 → 김청송의 회심 → 언더우드·아펜젤러(1885) → 노춘경의 첫 세례 고백 "이 목이 달아날지라도 예수의 주되심을 부인하지 않겠나이다"</li>
+      </ul>
+      <h4>결론</h4>
+      <ul>
+        <li>두 여정(내적·외적)은 함께 가야 함 — 하나만 있으면 성장이 멈춤</li>
+        <li>그리스도를 닮고 싶다면 대위임령을 따르라</li>
+      </ul>
+    </div>
   </div>
 
   <div id="content">
@@ -695,19 +757,51 @@
           <li>메멘토 모리(죽음을 기억하라) — 인생이 유한하다는 것을 기억하며 신중하게 살자는 태도. 하지만 여전히 '어디를 향해' 갈지는 알려주지 않아요.</li>
           <li>복음을 만나라! — 예수님을 만나는 것이야말로 진짜 인생 설계의 시작점입니다. 방향(푯대)이 생기기 때문이에요.</li>
         </ul>
+        <div class="example-box">참고로 '까르페 디엠'은 로마 시인 호라티우스의 시에서, '메멘토 모리'는 로마의 개선장군 옆에서 노예가 "너의 죽음을 기억하라, 교만하지 말라"고 외치던 풍습에서 나온 말이에요.</div>
         <div class="q-block"><span class="q-num">2</span>나는 지금까지 어떤 태도로 살아왔나요? (까르페 디엠 / 메멘토 모리 / 아직 잘 모르겠음) 그 이유는 무엇인가요?</div>
       </div>
       <div class="card">
-        <h3 class="sub-h">2. 성화의 내적 여정 — 예수님을 닮아가는 나의 트랙</h3>
-        <p class="p-block">복음을 만난 뒤에는 예수님을 점점 닮아가는 여정이 시작됩니다. 이 여정에는 네 가지 요소가 있어요.</p>
+        <h3 class="sub-h">2. 복음 DNA — 은혜와 믿음</h3>
+        <p class="p-block">복음은 하나님이 나에게 꼭 맞게 준비하신 '운명의 설계도'와 같아요. 그 복음이 내 안에서 작동하려면 두 가지가 만나야 합니다.</p>
         <ul class="bullet-list">
-          <li>복음 DNA — 은혜(하나님이 거저 주시는 것)와 믿음(내가 그 은혜에 반응하는 것)의 조합이 나를 변화시킵니다.</li>
-          <li>온라인(트랙) 유지 — 큐티, 기도, 예배 같은 영적 습관이 나를 트랙 위에 있게 해 줍니다.</li>
-          <li>거룩함의 하이웨이 달리기 — 성령님이 보여주시는 비전을 수신하며 그 길을 달려가는 것입니다.</li>
-          <li>정상체험의 중요성 — 하나님을 강렬하게 만나는 특별한 순간(기름부으심)을 사모하는 것입니다.</li>
+          <li>은혜 — 하나님이 값없이, 조건 없이 내미시는 손</li>
+          <li>믿음 — 그 손을 붙잡는 나의 반응 (물에 빠진 사람이 구조의 손을 붙잡는 것과 같아요)</li>
         </ul>
-        <div class="q-block"><span class="q-num">3</span>요즘 나의 영적 습관(큐티, 기도, 예배 등)은 트랙 위에 잘 있나요, 트랙을 벗어나 있나요?</div>
-        <div class="q-block"><span class="q-num">4</span>지금까지 살면서 하나님을 강하게 만난 '정상체험'이 있었나요? 이번 청아 기간 중 사모하는 순간이 있다면 무엇인가요?</div>
+        <div class="example-box">은혜와 믿음이 만나면 내 안에서 저절로 네 가지가 바뀝니다 — ① 하나님의 자녀가 됨 ② 의롭다 하심을 받음 ③ 거듭난 새 삶을 삶 ④ 예수님과 한 팀이 됨(연합).</div>
+        <div class="q-block"><span class="q-num">3</span>이 네 가지 중에서 요즘 나에게 가장 실감 나게 느껴지는 것은 무엇인가요?</div>
+      </div>
+      <div class="card">
+        <h3 class="sub-h">3. 복음이 일하는 방식</h3>
+        <ul class="bullet-list">
+          <li>자기완결적 — 비행기를 타고 안전벨트를 채우면 알아서 목적지에 도착하듯, 복음도 내 안에서 스스로 일해요.</li>
+          <li>선택적 — 신앙은 50:50의 선택이 아니에요. 예수님이 이미 다 이루셨고, 나는 "예(아멘)"라고 응답하기만 하면 됩니다.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="sub-h">4. 트랙 위에 머무르기 — 영적 습관 &amp; 거룩함의 하이웨이</h3>
+        <p class="p-block">복음 DNA가 계속 살아 움직이려면, 하나님과 늘 '온라인 상태'를 유지하는 습관이 필요해요.</p>
+        <ul class="bullet-list">
+          <li>생명예배 — 예배를 통해 하나님의 생기를 공급받기</li>
+          <li>큐티 — 날마다 말씀 묵상하기</li>
+          <li>기도 — 오늘 받은 말씀을 그대로 기도로 바꾸기 / 내 삶의 문제를 기도 제목으로 바꾸기</li>
+        </ul>
+        <p class="p-block">이 습관 위에서 우리는 성령님이 안내하시는 '거룩함의 하이웨이'를 달릴 수 있어요. 이 길을 달리는 데 필요한 것 세 가지:</p>
+        <ul class="bullet-list">
+          <li>복음 체험에 대한 확신 (하이웨이 진입 자격)</li>
+          <li>성령이 주시는 비전을 목적지로 삼기</li>
+          <li>은혜의 연료를 계속 채우기 (은혜를 사모하는 사람을 하나님이 가장 기뻐하세요)</li>
+        </ul>
+        <div class="q-block"><span class="q-num">4</span>요즘 나의 영적 습관(큐티, 기도, 예배 등)은 트랙 위에 잘 있나요, 트랙을 벗어나 있나요?</div>
+      </div>
+      <div class="card">
+        <h3 class="sub-h">5. 정상체험의 중요성</h3>
+        <p class="p-block">산 정상에 오르면 특별한 풍경이 보이듯, 신앙에도 하나님을 강렬하게 만나는 '정상체험(마운틴탑 경험)'이 필요해요. 매일 일어나는 일은 아니지만, 1년에 몇 번은 꼭 필요합니다.</p>
+        <ul class="bullet-list">
+          <li>갑절의 은혜 — 평소보다 곱절로 부어지는 은혜</li>
+          <li>성령충만 — 마음 가득 채워지는 충만함의 체험</li>
+          <li>부르심의 소명 — 하나님이 나를 어떻게 쓰실지에 대한 사모함</li>
+        </ul>
+        <div class="q-block"><span class="q-num">5</span>지금까지 살면서 하나님을 강하게 만난 '정상체험'이 있었나요? 이번 청아 기간 중 사모하는 순간이 있다면 무엇인가요?</div>
       </div>
       <div class="card">
         <h3 class="sub-h">적용</h3>
@@ -717,6 +811,7 @@
       <div class="card tip">
         <div class="section-label">리더 진행 Tip</div>
         <ul class="bullet-list">
+          <li>내용이 많아졌으니, 시간이 부족하면 "복음 DNA"와 "트랙 위에 머무르기" 두 카드를 중심으로 진행하고 나머지는 간단히 짚고 넘어가도 좋습니다.</li>
           <li>'정상체험' 질문에는 정답이 없습니다. 아직 경험이 없다고 말하는 크루가 있다면 "이번 청아가 그 시작이 될 수도 있겠다"고 격려해 주세요.</li>
           <li>라운드 시작과 끝에 기도하되, 모든 크루가 청아 기간 중 한 번은 기도할 수 있도록 순서를 배분해 주세요.</li>
         </ul>
@@ -752,20 +847,35 @@
         <ul class="bullet-list">
           <li>의미와 권위 — 부활하신 예수님이 모든 권세로 주신 명령입니다.</li>
           <li>목적과 범위 — 모든 민족을 제자로 삼는 것이 목표입니다.</li>
-          <li>능력과 현실 — 성령님의 능력으로, 오늘 나의 삶의 자리에서 이루어집니다.</li>
-          <li>복음만을 위한 교회 — 교회가 존재하는 가장 큰 이유는 복음을 전하기 위해서입니다.</li>
+          <li>능력과 현실 — 성령님의 능력으로, 오늘 나의 삶의 자리에서 이루어집니다 (행 1:8).</li>
+          <li>복음만을 위한 교회 — 교회가 존재하는 가장 큰 이유는 복음을 전하기 위해서입니다 (엡 2:10).</li>
         </ul>
+        <div class="example-box">이사야 43:7 "내 이름으로 불려지는 모든 자 곧 내가 내 영광을 위하여 창조한 자를 오게 하라" / 골로새서 1:13 "그가 우리를 흑암의 권세에서 건져내어 그의 사랑의 아들의 나라로 옮기셨느니라"</div>
         <div class="q-block"><span class="q-num">2</span>대위임령이 '나'에게 주신 명령이라고 생각해 본 적 있나요? 나에게 부담스럽게 느껴지는 부분은 무엇인가요?</div>
         <div class="q-block"><span class="q-num">3</span>내 주변에 복음을 전하고 싶은 사람이 있나요? (이름을 말하지 않아도 괜찮아요, 마음속으로 한 사람을 떠올려보세요)</div>
       </div>
       <div class="card">
-        <h3 class="sub-h">4. 두 여정은 함께 가야 합니다</h3>
+        <h3 class="sub-h">4. 지금의 현실 — 아직 남은 사명</h3>
+        <p class="p-block">전 세계 인구 약 70억 명 중 복음적인 그리스도인은 약 7억 명, 교회는 약 450만 개로 알려져 있어요. 그런데 아직도 복음을 한 번도 듣지 못한 '미전도 종족'이 약 3,100개나 남아 있습니다.</p>
+        <div class="q-block"><span class="q-num">4</span>내 주변에도 아직 복음을 들어보지 못한 사람이 있을까요? (이름을 말하지 않아도 괜찮아요)</div>
+      </div>
+      <div class="card">
+        <h3 class="sub-h">5. 한국에 복음이 전해진 이야기</h3>
+        <p class="p-block">19세기 말, 조선은 점점 힘을 잃어가던 시절이었어요. 그때 스코틀랜드의 젊은 선교사 존 로스는 아내를 잃은 슬픔 속에서 "아내의 죽음이 헛되지 않도록 평생 복음을 전하겠다"고 결심하고, 조선말 선생님의 도움으로 요한복음을 평안도 사투리로 번역했어요. 그 글자를 한 자 한 자 인쇄하던 김청송은 그 과정에서 예수님을 영접하고 조선 땅의 다섯 번째 세례교인이 되었습니다.</p>
+        <p class="p-block">1885년 부활절, 언더우드와 아펜젤러 선교사가 인천 제물포항에 도착했어요. 3년간 열심히 복음을 전했지만 세례교인은 겨우 20명 — 그런데도 그들은 그것을 보고 하나님께 감사하며 기뻐했습니다. 서울에서 첫 세례를 받은 노춘경은 "예수 그리스도의 죽으심과 합하여 세례를 받는 것"이냐는 질문에 눈물을 흘리며 이렇게 고백했어요.</p>
+        <div class="example-box">"이 목이 달아날지라도 내가 예수의 주되심을 부인하지 않겠나이다."</div>
+        <p class="p-block">그렇게 시작된 복음이 오늘의 우리에게까지 이어졌습니다.</p>
+        <div class="q-block"><span class="q-num">5</span>노춘경처럼 신앙 때문에 무언가를 포기하거나 위험을 감수해야 한다면, 나는 어떻게 할 것 같나요?</div>
+      </div>
+      <div class="card">
+        <h3 class="sub-h">6. 두 여정은 함께 가야 합니다</h3>
         <ul class="bullet-list">
           <li>외적 여정을 가지 않으면 성장은 멈춥니다 — 안으로만 자라는 신앙은 결국 정체됩니다.</li>
+          <li>영국·프랑스·독일도 한때 복음을 받아 부흥했지만, 그것을 흘려보내지 않으면서 성장이 멈췄어요. 복음을 전하는 것을 멈추면 개인도, 교회도, 나라도 성장을 멈춥니다.</li>
           <li>그리스도를 닮고 싶다면 대위임령을 따르세요 — 내적 여정과 외적 여정은 결국 하나입니다.</li>
           <li>두 레이스의 메달리스트 — 두 여정을 함께 완주하는 사람이 진짜 성숙한 그리스도인입니다.</li>
         </ul>
-        <div class="q-block"><span class="q-num">4</span>나는 지금 두 여정(내적/외적) 중 어느 쪽에 더 치우쳐 있나요? 균형을 맞추기 위해 무엇이 필요할까요?</div>
+        <div class="q-block"><span class="q-num">6</span>나는 지금 두 여정(내적/외적) 중 어느 쪽에 더 치우쳐 있나요? 균형을 맞추기 위해 무엇이 필요할까요?</div>
       </div>
       <div class="card">
         <h3 class="sub-h">결단</h3>
@@ -775,6 +885,7 @@
       <div class="card tip">
         <div class="section-label">리더 진행 Tip</div>
         <ul class="bullet-list">
+          <li>내용이 많아졌으니, 시간이 부족하면 "한국에 복음이 전해진 이야기"를 리더가 짧게 요약해서 들려주는 방식으로 진행해도 좋습니다.</li>
           <li>이 라운드는 마지막 소그룹 라운드입니다. 나눔이 끝나면 자연스럽게 마지막 날 발표 준비와 롤링페이퍼 작성 시간으로 연결해 주세요.</li>
           <li>전도 관련 질문에 부담을 느끼는 크루가 있을 수 있습니다. 정죄하는 분위기가 아니라 '같이 시작해보자'는 따뜻한 분위기로 이끌어 주세요.</li>
         </ul>
@@ -848,6 +959,7 @@
   var topTabs = document.querySelectorAll("#topTabs .seg-btn");
   var subnavGuide = document.getElementById("subnavGuide");
   var subnavMaterial = document.getElementById("subnavMaterial");
+  var talkPanel = document.getElementById("talkPanel");
   var guidePanelIds = ["overview","schedule","rnr","rules","sessions","aftercare","faq","checklist"];
   var materialPanelIds = ["orientation","round1","round2"];
 
@@ -855,6 +967,7 @@
     document.querySelectorAll(".panel").forEach(function (p) {
       p.classList.toggle("active", p.id === id);
     });
+    talkPanel.style.display = (id === "round1" || id === "round2") ? "block" : "none";
     window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
   }
 
