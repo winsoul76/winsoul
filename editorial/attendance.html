@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>모임 출석 체크 | 청소년 1부 편집부</title>
+<title>출석 현황 | 청소년 1부 편집부</title>
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body data-page="attendance">
@@ -14,8 +14,8 @@
     <div class="nav-links">
       <a href="index.html" data-page="home">홈</a>
       <a href="ministry.html" data-page="ministry">사역 소개·서약</a>
-      <a href="attendance.html" data-page="attendance">출석 체크</a>
-      <a href="scripture-check.html" data-page="scripture">말씀 나눔</a>
+      <a href="attendance.html" data-page="attendance">출석 현황</a>
+      <a href="scripture-check.html" data-page="scripture">말씀 나눔 현황</a>
       <a href="schedule.html" data-page="schedule">담당·일정</a>
       <a href="lectures.html" data-page="lectures">오픈 강좌</a>
       <a href="bulletin-guide.html" data-page="bulletin">주보 가이드</a>
@@ -25,31 +25,27 @@
 
 <header class="page-header">
   <div class="wrap">
-    <div class="eyebrow">매달 첫주 · 둘째주 오후 4:30~5:20</div>
-    <h1>모임 출석 체크</h1>
-    <p>편집부 모임 날짜를 선택하고, 참석한 부원을 체크해 주세요. 저장하면 구글 시트에 기록되어 다른 선생님도 함께 확인할 수 있습니다.</p>
+    <div class="eyebrow">최근 30일 · 매달 첫주·둘째주 모임 기준</div>
+    <h1>출석 현황</h1>
+    <p>최근 한 달간 편집부 모임 출석 현황을 부원별로 보여줍니다. 개인정보 보호를 위해 이름 끝 글자는 * 로 표시됩니다. 체크 입력은 담당 선생님만 관리자 화면에서 진행합니다.</p>
   </div>
 </header>
 
-<section>
+<section id="content" style="display:none;">
   <div class="wrap">
-    <div class="field" style="max-width:360px;">
-      <label for="meetingDate">모임 날짜 선택</label>
-      <select id="meetingDate"></select>
-    </div>
-
     <div class="summary-bar">
-      <div class="summary-pill">👥 전체 <span id="sumTotal">-</span>명</div>
-      <div class="summary-pill">✅ 참석 <span id="sumPresent">-</span>명</div>
-      <div class="summary-pill">❌ 결석 <span id="sumAbsent">-</span>명</div>
+      <div class="summary-pill">🗓️ 최근 30일 기록된 모임 <span id="sumMeetings">-</span>회</div>
+      <div class="summary-pill">👥 편집부원 <span id="sumMembers">-</span>명</div>
     </div>
-
-    <div class="roster" id="roster"></div>
-
-    <div style="margin-top:22px; display:flex; gap:10px; align-items:center;">
-      <button class="btn btn-primary" id="saveBtn">저장하기</button>
-      <span class="muted" id="syncStatus" style="font-size: var(--fs-sm); color: var(--text-secondary);"></span>
+    <div class="table-scroll">
+      <table class="overview-table">
+        <thead>
+          <tr><th>이름</th><th>학년(생년)</th><th>담당</th><th>기록된 모임</th><th>참석</th><th>참석률</th></tr>
+        </thead>
+        <tbody id="overviewBody"></tbody>
+      </table>
     </div>
+    <p class="muted" style="margin-top:14px; font-size: var(--fs-sm);">※ "기록된 모임"은 담당 선생님이 관리자 화면에서 실제로 체크를 저장한 모임 수입니다. 아직 체크하지 않은 모임은 집계에서 제외됩니다.</p>
   </div>
 </section>
 
@@ -58,80 +54,52 @@
 </footer>
 
 <script src="assets/js/config.js"></script>
+<script src="assets/js/auth.js"></script>
 <script src="assets/js/sheets.js"></script>
 <script src="assets/js/main.js"></script>
 <script>
 (function(){
-  var members = EDITORIAL_CONFIG.members;
-  var meetingDates = EditorialUtils.meetingDates();
-  var select = document.getElementById('meetingDate');
-  var roster = document.getElementById('roster');
-  var today = EditorialUtils.todayISO();
+  function daysAgoISO(n){
+    var d = new Date();
+    d.setDate(d.getDate() - n);
+    var y = d.getFullYear(), m = ("0"+(d.getMonth()+1)).slice(-2), day = ("0"+d.getDate()).slice(-2);
+    return y + "-" + m + "-" + day;
+  }
 
-  select.innerHTML = meetingDates.map(function(m){
-    return '<option value="' + m.date + '">' + EditorialUtils.fmtKorean(m.date) + (m.date === today ? ' (오늘)' : '') + '</option>';
-  }).join('');
+  function render(){
+    var members = EDITORIAL_CONFIG.members;
+    var today = EditorialUtils.todayISO();
+    var from = daysAgoISO(30);
 
-  // 기본 선택: 다음 모임(없으면 가장 최근 모임)
-  var next = EditorialUtils.nextMeeting();
-  var defaultDate = next ? next.date : (meetingDates.length ? meetingDates[meetingDates.length-1].date : null);
-  if (defaultDate) select.value = defaultDate;
+    EditorialAPI.loadAttendanceAll().then(function(records){
+      var inWindow = records.filter(function(r){ return r.date >= from && r.date <= today; });
+      var recordedDates = Array.from(new Set(inWindow.map(function(r){ return r.date; })));
 
-  var state = {}; // name -> bool
+      document.getElementById('sumMeetings').textContent = recordedDates.length;
+      document.getElementById('sumMembers').textContent = members.length;
 
-  function renderRoster(){
-    roster.innerHTML = members.map(function(m){
-      var present = state[m.name] !== false; // 기본값 true
-      return '<div class="roster-item" data-name="' + m.name + '">' +
-        '<div class="who"><div class="avatar">' + m.name.charAt(0) + '</div>' +
-          '<div class="meta"><div class="name">' + m.name + '</div><div class="sub">' + m.birthYear + '년생 · ' + m.role + '</div></div></div>' +
-        '<button class="toggle ' + (present ? 'on' : 'off') + '" data-name="' + m.name + '">' +
-          '<span class="toggle-label"><span>참석</span><span>결석</span></span>' +
-          '<span class="knob">' + (present ? 'ON' : 'OFF') + '</span>' +
-        '</button>' +
-      '</div>';
-    }).join('');
+      var tbody = document.getElementById('overviewBody');
+      tbody.innerHTML = members.map(function(m){
+        var memberRecords = inWindow.filter(function(r){ return r.name === m.name; });
+        var total = memberRecords.length;
+        var present = memberRecords.filter(function(r){ return !!r.value; }).length;
+        var pct = total > 0 ? Math.round((present/total)*100) : null;
+        var pctCls = pct === null ? '' : (pct >= 80 ? 'pct-high' : (pct >= 50 ? 'pct-mid' : 'pct-low'));
+        return '<tr>' +
+          '<td>' + EditorialUtils.maskOne(m.name) + '</td>' +
+          '<td>' + m.birthYear + '년생</td>' +
+          '<td>' + m.role + '</td>' +
+          '<td>' + total + '회</td>' +
+          '<td>' + present + '회</td>' +
+          '<td class="' + pctCls + '">' + (pct === null ? '기록 없음' : pct + '%') + '</td>' +
+        '</tr>';
+      }).join('');
 
-    roster.querySelectorAll('.toggle').forEach(function(btn){
-      btn.addEventListener('click', function(){
-        var name = btn.getAttribute('data-name');
-        state[name] = !(state[name] !== false);
-        renderRoster();
-        updateSummary();
-      });
+      document.getElementById('content').style.display = '';
     });
   }
 
-  function updateSummary(){
-    var present = members.filter(function(m){ return state[m.name] !== false; }).length;
-    document.getElementById('sumTotal').textContent = members.length;
-    document.getElementById('sumPresent').textContent = present;
-    document.getElementById('sumAbsent').textContent = members.length - present;
-  }
-
-  function loadForDate(date){
-    document.getElementById('syncStatus').textContent = '불러오는 중...';
-    state = {};
-    members.forEach(function(m){ state[m.name] = true; });
-    EditorialAPI.loadAttendance(date).then(function(records){
-      records.forEach(function(r){ state[r.name] = !!r.value; });
-      renderRoster();
-      updateSummary();
-      document.getElementById('syncStatus').textContent = EditorialAPI.isLive() ? '구글 시트와 동기화됨' : '⚠️ 로컬 저장 모드 (구글 시트 미연결)';
-    });
-  }
-
-  select.addEventListener('change', function(){ loadForDate(select.value); });
-  document.getElementById('saveBtn').addEventListener('click', function(){
-    var records = members.map(function(m){ return { name: m.name, value: state[m.name] !== false }; });
-    document.getElementById('syncStatus').textContent = '저장 중...';
-    EditorialAPI.saveAttendance(select.value, records).then(function(){
-      document.getElementById('syncStatus').textContent = '저장 완료 ✓';
-      showToast('출석 체크가 저장되었습니다.');
-    });
-  });
-
-  if (defaultDate) loadForDate(defaultDate);
+  EditorialAuth.ready(render);
 })();
 </script>
 </body>

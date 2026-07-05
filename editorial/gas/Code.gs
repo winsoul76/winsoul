@@ -4,9 +4,15 @@
  * ============================================================
  * 사용법: /editorial/gas/설치가이드.md 참고
  *
- * 이 스크립트를 "이 스프레드시트에 연결된" Apps Script 프로젝트에 붙여넣고
- * 웹 앱으로 배포하면, 사이트의 출석체크/말씀나눔체크 데이터가
- * 이 구글 시트에 자동으로 저장됩니다.
+ * ⚠️ 보안 설정 (필수)
+ *  아래 SITE_KEY / ADMIN_KEY 를 사이트의 assets/js/config.js 에 설정한
+ *  비밀번호와 반드시 동일하게 맞춰주세요. (기본값은 예시이니 꼭 변경!)
+ *  - SITE_KEY  : 열람(조회) 비밀번호 — 편집부원·선생님용
+ *  - ADMIN_KEY : 체크 입력(저장) 비밀번호 — 담당 선생님(관리자)만
+ *
+ *  이 키가 없거나 틀리면 조회/저장 요청이 거부됩니다.
+ *  (반대로 이 파일은 구글 계정 안에서만 보이므로, 여기에 실제 비밀번호를
+ *   평문으로 적어도 외부에 노출되지 않습니다.)
  *
  * 시트 구성 (자동 생성됨):
  *  - attendance : date | name | value | updatedAt
@@ -14,7 +20,13 @@
  * ============================================================
  */
 
+var SITE_KEY = "hanmaeum2026";       // 사이트 비밀번호와 동일하게
+var ADMIN_KEY = "editor-admin-77";   // 관리자 비밀번호와 동일하게
+
 var SHEET_NAMES = ["attendance", "scripture"];
+
+function canRead_(key) { return key === SITE_KEY || key === ADMIN_KEY; }
+function canWrite_(key) { return key === ADMIN_KEY; }
 
 function getOrCreateSheet_(name) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -32,13 +44,16 @@ function jsonOut_(obj) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
-/** 조회: ?sheet=attendance&date=2026-07-05 */
+/** 조회: ?sheet=attendance&date=2026-07-05&key=... (date 생략 시 전체 조회) */
 function doGet(e) {
   try {
     var params = (e && e.parameter) || {};
     var sheetName = params.sheet;
     var date = params.date;
 
+    if (!canRead_(params.key)) {
+      return jsonOut_({ ok: false, error: "인증 실패: key가 올바르지 않습니다." });
+    }
     if (!sheetName || SHEET_NAMES.indexOf(sheetName) === -1) {
       return jsonOut_({ ok: false, error: "sheet 파라미터가 올바르지 않습니다." });
     }
@@ -59,7 +74,7 @@ function doGet(e) {
   }
 }
 
-/** 저장: POST body(JSON) = { sheet: "attendance", date: "2026-07-05", records: [{name, value}, ...] } */
+/** 저장(관리자 전용): POST body(JSON) = { sheet, date, records:[{name,value}], key } */
 function doPost(e) {
   try {
     var body = JSON.parse(e.postData.contents);
@@ -67,6 +82,9 @@ function doPost(e) {
     var date = body.date;
     var records = body.records || [];
 
+    if (!canWrite_(body.key)) {
+      return jsonOut_({ ok: false, error: "인증 실패: 관리자 key가 올바르지 않습니다." });
+    }
     if (!sheetName || SHEET_NAMES.indexOf(sheetName) === -1) {
       return jsonOut_({ ok: false, error: "sheet 파라미터가 올바르지 않습니다." });
     }
@@ -79,7 +97,7 @@ function doPost(e) {
       var found = -1;
       for (var i = 1; i < data.length; i++) {
         if (formatDate_(data[i][0]) === date && data[i][1] === rec.name) {
-          found = i + 1; // sheet row (1-indexed, +1 for header offset already in loop index)
+          found = i + 1; // 실제 시트 행 번호(1-indexed)
           break;
         }
       }
@@ -88,7 +106,6 @@ function doPost(e) {
         sheet.getRange(found, 4).setValue(now);
       } else {
         sheet.appendRow([date, rec.name, !!rec.value, now]);
-        // 새로 추가된 행도 다음 레코드 검색에 반영되도록 data 배열 갱신
         data.push([date, rec.name, !!rec.value, now]);
       }
     });

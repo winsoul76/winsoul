@@ -14,8 +14,8 @@
     <div class="nav-links">
       <a href="index.html" data-page="home">홈</a>
       <a href="ministry.html" data-page="ministry">사역 소개·서약</a>
-      <a href="attendance.html" data-page="attendance">출석 체크</a>
-      <a href="scripture-check.html" data-page="scripture">말씀 나눔</a>
+      <a href="attendance.html" data-page="attendance">출석 현황</a>
+      <a href="scripture-check.html" data-page="scripture">말씀 나눔 현황</a>
       <a href="schedule.html" data-page="schedule">담당·일정</a>
       <a href="lectures.html" data-page="lectures">오픈 강좌</a>
       <a href="bulletin-guide.html" data-page="bulletin">주보 가이드</a>
@@ -57,6 +57,7 @@
       </div>
       <div class="timeline-item">
         <div class="t-date">⑤ 마감</div>
+        <div class="t-line"><div class="t-dot"></div><div class="t-bar"></div></div>
         <div class="t-body"><h4>마감일(전주 주일) 제출</h4><p>담당 선생님께 전달 후 인쇄·배포합니다.</p></div>
       </div>
     </div>
@@ -157,7 +158,9 @@
 </footer>
 
 <script src="assets/js/config.js"></script>
+<script src="assets/js/auth.js"></script>
 <script src="assets/js/sheets.js"></script>
 <script src="assets/js/main.js"></script>
+<script>EditorialAuth.ready(function(){});</script>
 </body>
 </html>

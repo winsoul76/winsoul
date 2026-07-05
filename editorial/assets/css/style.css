@@ -574,3 +574,63 @@ footer{
   .hero{ padding: 44px 0 28px; }
   section{ padding: 26px 0; }
 }
+
+/* ---------------- Auth overlay (password gate) ---------------- */
+.auth-overlay{
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(245,245,247,0.94);
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 20px;
+}
+.auth-box{
+  width: 100%;
+  max-width: 360px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow-hover);
+  padding: 34px 28px;
+  text-align:center;
+}
+.auth-box.shake{ animation: authShake .35s ease; }
+@keyframes authShake{
+  0%,100%{ transform: translateX(0); }
+  25%{ transform: translateX(-6px); }
+  75%{ transform: translateX(6px); }
+}
+.auth-icon{ font-size: 34px; margin-bottom: 8px; }
+.auth-box h2{ font-size: var(--fs-lg); margin: 0 0 8px; font-weight:700; }
+.auth-box p{ font-size: var(--fs-sm); color: var(--text-secondary); margin: 0 0 20px; }
+.auth-form{ display:flex; flex-direction:column; gap:12px; }
+.auth-input{
+  width:100%;
+  padding: 13px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  font-size: var(--fs-base);
+  text-align:center;
+  font-family: inherit;
+}
+.auth-error{ min-height: 20px; margin-top: 12px; color: var(--red); font-size: var(--fs-sm); font-weight:600; }
+
+/* admin-only badge */
+.admin-badge{
+  display:inline-flex; align-items:center; gap:6px;
+  background: rgba(255,59,48,0.1); color: var(--red);
+  font-size: calc(12px * var(--fs-scale)); font-weight:700;
+  padding: 5px 12px; border-radius:100px; margin-bottom: 10px;
+}
+.tabbar{ display:flex; gap:8px; margin-bottom:22px; flex-wrap:wrap; }
+.tabbar button{
+  padding: 10px 18px; border-radius:100px; border:none; cursor:pointer;
+  background: rgba(0,0,0,0.06); color: var(--text); font-weight:600; font-size: var(--fs-sm);
+}
+.tabbar button.active{ background: var(--text); color:#fff; }
+.overview-table td.pct-high{ color: var(--green); font-weight:700; }
+.overview-table td.pct-mid{ color: #b06d00; font-weight:700; }
+.overview-table td.pct-low{ color: var(--red); font-weight:700; }

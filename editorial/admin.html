@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>관리자 | 청소년 1부 편집부</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="admin">
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-brand"><span class="dot"></span>청소년 1부 편집부 · 관리자</div>
+    <div class="nav-links">
+      <a href="index.html" data-page="home">← 사이트로</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-header">
+  <div class="wrap">
+    <span class="admin-badge">🛡️ 관리자 전용</span>
+    <h1>출석 · 말씀나눔 체크 입력</h1>
+    <p>이 화면은 담당 선생님만 접근합니다. 여기서 입력한 내용은 구글 시트에 저장되고, 편집부 사이트의 "출석 현황" / "말씀나눔 현황" 페이지(마스킹된 이름)에 요약으로 보여집니다.</p>
+  </div>
+</header>
+
+<section id="adminContent" style="display:none;">
+  <div class="wrap">
+    <div class="tabbar">
+      <button class="tab-btn active" data-tab="att">✅ 모임 출석 체크</button>
+      <button class="tab-btn" data-tab="scr">✍️ 주일 말씀 나눔 체크</button>
+    </div>
+
+    <div id="panelAtt">
+      <div class="field" style="max-width:360px;">
+        <label for="meetingDate">모임 날짜 선택</label>
+        <select id="meetingDate"></select>
+      </div>
+      <div class="summary-bar">
+        <div class="summary-pill">👥 전체 <span id="attTotal">-</span>명</div>
+        <div class="summary-pill">✅ 참석 <span id="attPresent">-</span>명</div>
+        <div class="summary-pill">❌ 결석 <span id="attAbsent">-</span>명</div>
+      </div>
+      <div class="roster" id="attRoster"></div>
+      <div style="margin-top:22px; display:flex; gap:10px; align-items:center;">
+        <button class="btn btn-primary" id="attSaveBtn">저장하기</button>
+        <span id="attStatus" style="font-size: var(--fs-sm); color: var(--text-secondary);"></span>
+      </div>
+    </div>
+
+    <div id="panelScr" style="display:none;">
+      <div class="field" style="max-width:360px;">
+        <label for="sundayDate">주일 날짜 선택</label>
+        <select id="sundayDate"></select>
+      </div>
+      <div class="summary-bar">
+        <div class="summary-pill">👥 전체 <span id="scrTotal">-</span>명</div>
+        <div class="summary-pill">✍️ 완료 <span id="scrDone">-</span>명</div>
+        <div class="summary-pill">⏳ 미완료 <span id="scrUndone">-</span>명</div>
+      </div>
+      <div class="roster" id="scrRoster"></div>
+      <div style="margin-top:22px; display:flex; gap:10px; align-items:center;">
+        <button class="btn btn-primary" id="scrSaveBtn">저장하기</button>
+        <span id="scrStatus" style="font-size: var(--fs-sm); color: var(--text-secondary);"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">한마음 교회 청소년 1부 편집부 · 관리자 화면</div>
+</footer>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/sheets.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+(function(){
+  var members = EDITORIAL_CONFIG.members;
+
+  function initTabs(){
+    var buttons = document.querySelectorAll('.tab-btn');
+    buttons.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        buttons.forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        var tab = btn.getAttribute('data-tab');
+        document.getElementById('panelAtt').style.display = tab === 'att' ? '' : 'none';
+        document.getElementById('panelScr').style.display = tab === 'scr' ? '' : 'none';
+      });
+    });
+  }
+
+  /* ---------- 출석 체크 ---------- */
+  function initAttendance(){
+    var meetingDates = EditorialUtils.meetingDates();
+    var select = document.getElementById('meetingDate');
+    var roster = document.getElementById('attRoster');
+    var today = EditorialUtils.todayISO();
+
+    select.innerHTML = meetingDates.map(function(m){
+      return '<option value="' + m.date + '">' + EditorialUtils.fmtKorean(m.date) + (m.date === today ? ' (오늘)' : '') + '</option>';
+    }).join('');
+
+    var next = EditorialUtils.nextMeeting();
+    var defaultDate = next ? next.date : (meetingDates.length ? meetingDates[meetingDates.length-1].date : null);
+    if (defaultDate) select.value = defaultDate;
+
+    var state = {};
+
+    function renderRoster(){
+      roster.innerHTML = members.map(function(m){
+        var present = state[m.name] !== false;
+        return '<div class="roster-item" data-name="' + m.name + '">' +
+          '<div class="who"><div class="avatar">' + m.name.charAt(0) + '</div>' +
+            '<div class="meta"><div class="name">' + m.name + '</div><div class="sub">' + m.birthYear + '년생 · ' + m.role + '</div></div></div>' +
+          '<button class="toggle ' + (present ? 'on' : 'off') + '" data-name="' + m.name + '">' +
+            '<span class="toggle-label"><span>참석</span><span>결석</span></span>' +
+            '<span class="knob">' + (present ? 'ON' : 'OFF') + '</span>' +
+          '</button>' +
+        '</div>';
+      }).join('');
+      roster.querySelectorAll('.toggle').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var name = btn.getAttribute('data-name');
+          state[name] = !(state[name] !== false);
+          renderRoster();
+          updateSummary();
+        });
+      });
+    }
+    function updateSummary(){
+      var present = members.filter(function(m){ return state[m.name] !== false; }).length;
+      document.getElementById('attTotal').textContent = members.length;
+      document.getElementById('attPresent').textContent = present;
+      document.getElementById('attAbsent').textContent = members.length - present;
+    }
+    function loadForDate(date){
+      document.getElementById('attStatus').textContent = '불러오는 중...';
+      state = {};
+      members.forEach(function(m){ state[m.name] = true; });
+      EditorialAPI.loadAttendanceAdmin(date).then(function(records){
+        records.forEach(function(r){ state[r.name] = !!r.value; });
+        renderRoster();
+        updateSummary();
+        document.getElementById('attStatus').textContent = EditorialAPI.isLive() ? '구글 시트와 동기화됨' : '⚠️ 로컬 저장 모드';
+      });
+    }
+    select.addEventListener('change', function(){ loadForDate(select.value); });
+    document.getElementById('attSaveBtn').addEventListener('click', function(){
+      var records = members.map(function(m){ return { name: m.name, value: state[m.name] !== false }; });
+      document.getElementById('attStatus').textContent = '저장 중...';
+      EditorialAPI.saveAttendance(select.value, records).then(function(res){
+        document.getElementById('attStatus').textContent = (res && res.ok === false) ? '저장 실패: ' + (res.error||'권한 확인 필요') : '저장 완료 ✓';
+        showToast('출석 체크가 저장되었습니다.');
+      });
+    });
+    if (defaultDate) loadForDate(defaultDate);
+  }
+
+  /* ---------- 말씀 나눔 체크 ---------- */
+  function initScripture(){
+    var sundays = EDITORIAL_CONFIG.schedule.map(function(s){ return s.date; });
+    var select = document.getElementById('sundayDate');
+    var roster = document.getElementById('scrRoster');
+    var today = EditorialUtils.todayISO();
+
+    select.innerHTML = sundays.map(function(d){
+      return '<option value="' + d + '">' + EditorialUtils.fmtKorean(d) + (d === today ? ' (오늘)' : '') + '</option>';
+    }).join('');
+
+    var upcomingSunday = sundays.find(function(d){ return d >= today; });
+    var defaultDate = upcomingSunday || sundays[sundays.length - 1];
+    if (defaultDate) select.value = defaultDate;
+
+    var state = {};
+
+    function renderRoster(){
+      roster.innerHTML = members.map(function(m){
+        var done = state[m.name] === true;
+        return '<div class="roster-item" data-name="' + m.name + '">' +
+          '<div class="who"><div class="avatar">' + m.name.charAt(0) + '</div>' +
+            '<div class="meta"><div class="name">' + m.name + '</div><div class="sub">' + m.birthYear + '년생 · ' + m.role + '</div></div></div>' +
+          '<button class="toggle ' + (done ? 'on' : 'off') + '" data-name="' + m.name + '">' +
+            '<span class="toggle-label"><span>완료</span><span>미완료</span></span>' +
+            '<span class="knob">' + (done ? 'ON' : 'OFF') + '</span>' +
+          '</button>' +
+        '</div>';
+      }).join('');
+      roster.querySelectorAll('.toggle').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var name = btn.getAttribute('data-name');
+          state[name] = !(state[name] === true);
+          renderRoster();
+          updateSummary();
+        });
+      });
+    }
+    function updateSummary(){
+      var done = members.filter(function(m){ return state[m.name] === true; }).length;
+      document.getElementById('scrTotal').textContent = members.length;
+      document.getElementById('scrDone').textContent = done;
+      document.getElementById('scrUndone').textContent = members.length - done;
+    }
+    function loadForDate(date){
+      document.getElementById('scrStatus').textContent = '불러오는 중...';
+      state = {};
+      members.forEach(function(m){ state[m.name] = false; });
+      EditorialAPI.loadScriptureAdmin(date).then(function(records){
+        records.forEach(function(r){ state[r.name] = !!r.value; });
+        renderRoster();
+        updateSummary();
+        document.getElementById('scrStatus').textContent = EditorialAPI.isLive() ? '구글 시트와 동기화됨' : '⚠️ 로컬 저장 모드';
+      });
+    }
+    select.addEventListener('change', function(){ loadForDate(select.value); });
+    document.getElementById('scrSaveBtn').addEventListener('click', function(){
+      var records = members.map(function(m){ return { name: m.name, value: state[m.name] === true }; });
+      document.getElementById('scrStatus').textContent = '저장 중...';
+      EditorialAPI.saveScripture(select.value, records).then(function(res){
+        document.getElementById('scrStatus').textContent = (res && res.ok === false) ? '저장 실패: ' + (res.error||'권한 확인 필요') : '저장 완료 ✓';
+        showToast('말씀 나눔 체크가 저장되었습니다.');
+      });
+    });
+    if (defaultDate) loadForDate(defaultDate);
+  }
+
+  function isSundayToday(){
+    return new Date().getDay() === 0; // 0 = 일요일
+  }
+
+  EditorialAuth.readyAdmin(function(){
+    var content = document.getElementById('adminContent');
+    if (!isSundayToday()) {
+      content.innerHTML = '<div class="wrap"><div class="card">' +
+        '<div class="icon">📅</div>' +
+        '<h3>오늘은 일요일이 아니에요</h3>' +
+        '<p>출석 체크와 말씀 나눔 체크는 일요일에만 할 수 있습니다. 일요일에 다시 접속해 주세요.</p>' +
+      '</div></div>';
+      content.style.display = '';
+      return;
+    }
+    content.style.display = '';
+    initTabs();
+    initAttendance();
+    initScripture();
+  });
+})();
+</script>
+</body>
+</html>

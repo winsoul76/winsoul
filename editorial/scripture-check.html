@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>주일 말씀 나눔 체크 | 청소년 1부 편집부</title>
+<title>말씀 나눔 현황 | 청소년 1부 편집부</title>
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body data-page="scripture">
@@ -14,8 +14,8 @@
     <div class="nav-links">
       <a href="index.html" data-page="home">홈</a>
       <a href="ministry.html" data-page="ministry">사역 소개·서약</a>
-      <a href="attendance.html" data-page="attendance">출석 체크</a>
-      <a href="scripture-check.html" data-page="scripture">말씀 나눔</a>
+      <a href="attendance.html" data-page="attendance">출석 현황</a>
+      <a href="scripture-check.html" data-page="scripture">말씀 나눔 현황</a>
       <a href="schedule.html" data-page="schedule">담당·일정</a>
       <a href="lectures.html" data-page="lectures">오픈 강좌</a>
       <a href="bulletin-guide.html" data-page="bulletin">주보 가이드</a>
@@ -25,31 +25,27 @@
 
 <header class="page-header">
   <div class="wrap">
-    <div class="eyebrow">매 주일 · 나눔방 인증 필수</div>
-    <h1>주일 말씀 나눔 체크</h1>
-    <p>주일 말씀 시간에 손글씨로 요약한 내용을 단톡방에 인증했는지 확인합니다. 손글씨 요약은 타이핑보다 뇌 연결 패턴이 정교해진다는 연구 결과(NTNU, 2024)가 있을 만큼 중요한 훈련입니다.</p>
+    <div class="eyebrow">최근 30일 · 매 주일 나눔방 인증 기준</div>
+    <h1>말씀 나눔 현황</h1>
+    <p>최근 한 달간 주일 말씀 손글씨 요약 나눔 현황을 부원별로 보여줍니다. 개인정보 보호를 위해 이름 끝 글자는 * 로 표시됩니다. 체크 입력은 담당 선생님만 관리자 화면에서 진행합니다.</p>
   </div>
 </header>
 
-<section>
+<section id="content" style="display:none;">
   <div class="wrap">
-    <div class="field" style="max-width:360px;">
-      <label for="sundayDate">주일 날짜 선택</label>
-      <select id="sundayDate"></select>
-    </div>
-
     <div class="summary-bar">
-      <div class="summary-pill">👥 전체 <span id="sumTotal">-</span>명</div>
-      <div class="summary-pill">✍️ 나눔 완료 <span id="sumDone">-</span>명</div>
-      <div class="summary-pill">⏳ 미완료 <span id="sumUndone">-</span>명</div>
+      <div class="summary-pill">🗓️ 최근 30일 기록된 주일 <span id="sumSundays">-</span>회</div>
+      <div class="summary-pill">👥 편집부원 <span id="sumMembers">-</span>명</div>
     </div>
-
-    <div class="roster" id="roster"></div>
-
-    <div style="margin-top:22px; display:flex; gap:10px; align-items:center;">
-      <button class="btn btn-primary" id="saveBtn">저장하기</button>
-      <span class="muted" id="syncStatus" style="font-size: var(--fs-sm); color: var(--text-secondary);"></span>
+    <div class="table-scroll">
+      <table class="overview-table">
+        <thead>
+          <tr><th>이름</th><th>학년(생년)</th><th>담당</th><th>기록된 주일</th><th>나눔 완료</th><th>완료율</th></tr>
+        </thead>
+        <tbody id="overviewBody"></tbody>
+      </table>
     </div>
+    <p class="muted" style="margin-top:14px; font-size: var(--fs-sm);">※ "기록된 주일"은 담당 선생님이 관리자 화면에서 실제로 체크를 저장한 주일 수입니다. 아직 체크하지 않은 주일은 집계에서 제외됩니다.</p>
   </div>
 </section>
 
@@ -58,80 +54,52 @@
 </footer>
 
 <script src="assets/js/config.js"></script>
+<script src="assets/js/auth.js"></script>
 <script src="assets/js/sheets.js"></script>
 <script src="assets/js/main.js"></script>
 <script>
 (function(){
-  var members = EDITORIAL_CONFIG.members;
-  var sundays = EDITORIAL_CONFIG.schedule.map(function(s){ return s.date; });
-  var select = document.getElementById('sundayDate');
-  var roster = document.getElementById('roster');
-  var today = EditorialUtils.todayISO();
+  function daysAgoISO(n){
+    var d = new Date();
+    d.setDate(d.getDate() - n);
+    var y = d.getFullYear(), m = ("0"+(d.getMonth()+1)).slice(-2), day = ("0"+d.getDate()).slice(-2);
+    return y + "-" + m + "-" + day;
+  }
 
-  select.innerHTML = sundays.map(function(d){
-    return '<option value="' + d + '">' + EditorialUtils.fmtKorean(d) + (d === today ? ' (오늘)' : '') + '</option>';
-  }).join('');
+  function render(){
+    var members = EDITORIAL_CONFIG.members;
+    var today = EditorialUtils.todayISO();
+    var from = daysAgoISO(30);
 
-  // 기본 선택: 오늘 이후 가장 가까운 주일 (없으면 오늘 이전 가장 최근 주일)
-  var upcomingSunday = sundays.find(function(d){ return d >= today; });
-  var defaultDate = upcomingSunday || sundays[sundays.length - 1];
-  if (defaultDate) select.value = defaultDate;
+    EditorialAPI.loadScriptureAll().then(function(records){
+      var inWindow = records.filter(function(r){ return r.date >= from && r.date <= today; });
+      var recordedDates = Array.from(new Set(inWindow.map(function(r){ return r.date; })));
 
-  var state = {};
+      document.getElementById('sumSundays').textContent = recordedDates.length;
+      document.getElementById('sumMembers').textContent = members.length;
 
-  function renderRoster(){
-    roster.innerHTML = members.map(function(m){
-      var done = state[m.name] === true;
-      return '<div class="roster-item" data-name="' + m.name + '">' +
-        '<div class="who"><div class="avatar">' + m.name.charAt(0) + '</div>' +
-          '<div class="meta"><div class="name">' + m.name + '</div><div class="sub">' + m.birthYear + '년생 · ' + m.role + '</div></div></div>' +
-        '<button class="toggle ' + (done ? 'on' : 'off') + '" data-name="' + m.name + '">' +
-          '<span class="toggle-label"><span>완료</span><span>미완료</span></span>' +
-          '<span class="knob">' + (done ? 'ON' : 'OFF') + '</span>' +
-        '</button>' +
-      '</div>';
-    }).join('');
+      var tbody = document.getElementById('overviewBody');
+      tbody.innerHTML = members.map(function(m){
+        var memberRecords = inWindow.filter(function(r){ return r.name === m.name; });
+        var total = memberRecords.length;
+        var done = memberRecords.filter(function(r){ return !!r.value; }).length;
+        var pct = total > 0 ? Math.round((done/total)*100) : null;
+        var pctCls = pct === null ? '' : (pct >= 80 ? 'pct-high' : (pct >= 50 ? 'pct-mid' : 'pct-low'));
+        return '<tr>' +
+          '<td>' + EditorialUtils.maskOne(m.name) + '</td>' +
+          '<td>' + m.birthYear + '년생</td>' +
+          '<td>' + m.role + '</td>' +
+          '<td>' + total + '회</td>' +
+          '<td>' + done + '회</td>' +
+          '<td class="' + pctCls + '">' + (pct === null ? '기록 없음' : pct + '%') + '</td>' +
+        '</tr>';
+      }).join('');
 
-    roster.querySelectorAll('.toggle').forEach(function(btn){
-      btn.addEventListener('click', function(){
-        var name = btn.getAttribute('data-name');
-        state[name] = !(state[name] === true);
-        renderRoster();
-        updateSummary();
-      });
+      document.getElementById('content').style.display = '';
     });
   }
 
-  function updateSummary(){
-    var done = members.filter(function(m){ return state[m.name] === true; }).length;
-    document.getElementById('sumTotal').textContent = members.length;
-    document.getElementById('sumDone').textContent = done;
-    document.getElementById('sumUndone').textContent = members.length - done;
-  }
-
-  function loadForDate(date){
-    document.getElementById('syncStatus').textContent = '불러오는 중...';
-    state = {};
-    members.forEach(function(m){ state[m.name] = false; });
-    EditorialAPI.loadScripture(date).then(function(records){
-      records.forEach(function(r){ state[r.name] = !!r.value; });
-      renderRoster();
-      updateSummary();
-      document.getElementById('syncStatus').textContent = EditorialAPI.isLive() ? '구글 시트와 동기화됨' : '⚠️ 로컬 저장 모드 (구글 시트 미연결)';
-    });
-  }
-
-  select.addEventListener('change', function(){ loadForDate(select.value); });
-  document.getElementById('saveBtn').addEventListener('click', function(){
-    var records = members.map(function(m){ return { name: m.name, value: state[m.name] === true }; });
-    document.getElementById('syncStatus').textContent = '저장 중...';
-    EditorialAPI.saveScripture(select.value, records).then(function(){
-      document.getElementById('syncStatus').textContent = '저장 완료 ✓';
-      showToast('말씀 나눔 체크가 저장되었습니다.');
-    });
-  });
-
-  if (defaultDate) loadForDate(defaultDate);
+  EditorialAuth.ready(render);
 })();
 </script>
 </body>

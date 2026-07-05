@@ -9,6 +9,12 @@ window.EDITORIAL_CONFIG = {
   // 예: "https://script.google.com/macros/s/AKfycb.../exec"
   GAS_URL: "https://script.google.com/macros/s/AKfycby7ahraeNMKWv_FdbbIKjZq2rwDNMpVClUC5vjbQWOOey2lmGS2kG_m-XkBZF5SD-Ji/exec",
 
+  // ⚠️ 기본 비밀번호입니다. 반드시 변경하세요! (변경 방법: gas/설치가이드.md 참고)
+  // 사이트 비밀번호(기본값 "hanmaeum2026") — 편집부원·선생님이 사이트 열람 시 사용
+  SITE_PASSWORD_HASH: "d72893ee7e514b9f8842b426062a4812bef8f4b3687a31a2fe4eec4c1351971f",
+  // 관리자 비밀번호(기본값 "editor-admin-77") — 담당 선생님이 체크 입력 시 사용
+  ADMIN_PASSWORD_HASH: "b51ca18594738512dc8516d9af4c0ea46239295bc6ef6294305308f8ff2d1ba1",
+
   churchName: "한마음 교회",
   teamName: "청소년 1부 편집부",
   meetingTime: "매달 첫째·둘째 주일 오후 4:30 ~ 5:20",
@@ -85,5 +91,26 @@ window.EditorialUtils = (function () {
     var m = meetingDates().filter(function (s) { return s.date >= t; });
     return m.length ? m[0] : null;
   }
-  return { todayISO: todayISO, fmtKorean: fmtKorean, fmtShort: fmtShort, upcoming: upcoming, meetingDates: meetingDates, nextMeeting: nextMeeting };
+
+  /* ---------------- 개인정보 보호: 이름 마스킹 ---------------- */
+  // 사람 이름(2~4자 한글)으로 보이는 토큰만 마지막 글자를 * 로 치환합니다.
+  // "2013년생", "편집부", "-" 같은 그룹/기호는 그대로 둡니다.
+  function maskOne(token) {
+    var t = (token || "").trim();
+    if (!t || t === "-") return t;
+    if (/^[0-9]{4}년생$/.test(t)) return t;
+    if (t === "편집부") return t;
+    if (/^[가-힣]{2,4}$/.test(t)) return t.slice(0, -1) + "*";
+    return t;
+  }
+  function maskList(str) {
+    if (!str) return str;
+    return str.split(",").map(function (s) { return maskOne(s); }).join(", ");
+  }
+
+  return {
+    todayISO: todayISO, fmtKorean: fmtKorean, fmtShort: fmtShort,
+    upcoming: upcoming, meetingDates: meetingDates, nextMeeting: nextMeeting,
+    maskOne: maskOne, maskList: maskList
+  };
 })();
