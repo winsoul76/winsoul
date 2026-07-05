@@ -10,10 +10,10 @@ window.EDITORIAL_CONFIG = {
   GAS_URL: "https://script.google.com/macros/s/AKfycby7ahraeNMKWv_FdbbIKjZq2rwDNMpVClUC5vjbQWOOey2lmGS2kG_m-XkBZF5SD-Ji/exec",
 
   // ⚠️ 기본 비밀번호입니다. 반드시 변경하세요! (변경 방법: gas/설치가이드.md 참고)
-  // 사이트 비밀번호(기본값 "1004hye") — 편집부원·선생님이 사이트 열람 시 사용
-  SITE_PASSWORD_HASH: "d72893ee7e514b9f8842b426062a4812bef8f4b3687a31a2fe4eec4c1351971f",
-  // 관리자 비밀번호(기본값 "Youthisno12#") — 담당 선생님이 체크 입력 시 사용
-  ADMIN_PASSWORD_HASH: "b51ca18594738512dc8516d9af4c0ea46239295bc6ef6294305308f8ff2d1ba1",
+  // 사이트 비밀번호(기본값 "") — 편집부원·선생님이 사이트 열람 시 사용
+  SITE_PASSWORD_HASH: "ad716383d325456fe93b8d940db0d1c747234b03d101c4cea6f40d7c87bf9e04",
+  // 관리자 비밀번호(기본값 "") — 담당 선생님이 체크 입력 시 사용
+  ADMIN_PASSWORD_HASH: "0a1f317b4c2fb0728dedf260e1f54b6a389e57685e42a8f9acc85f483e6934d5",
 
   churchName: "한마음 교회",
   teamName: "청소년 1부 편집부",
