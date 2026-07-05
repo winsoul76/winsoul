@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SY의 독일어 공부방 · A1 → B2</title>
+<style>
+:root{
+  --bg:#f7f4ee;
+  --card:#ffffff;
+  --ink:#20242b;
+  --muted:#6b7280;
+  --line:#e7e1d4;
+  --accent:#a91d3a;
+  --accent-ink:#ffffff;
+  --gold:#b8892b;
+  --good:#2f7d4f;
+  --bad:#b3401f;
+  --radius:16px;
+  --fs:17px;
+}
+*{box-sizing:border-box;}
+html{font-size:var(--fs); scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  line-height:1.65;
+  padding-bottom:60px;
+}
+h1,h2,h3,h4{ line-height:1.35; margin:0 0 .5em; }
+p{margin:.4em 0;}
+a{color:var(--accent);}
+button{font-family:inherit; cursor:pointer;}
+
+/* header */
+header{
+  position:sticky; top:0; z-index:50;
+  background:linear-gradient(135deg,#1c1e26,#2b2130);
+  color:#fdfaf3;
+  padding:.7rem 1rem;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+.header-row{ display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; max-width:1100px; margin:0 auto; }
+.brand{ display:flex; align-items:center; gap:.5rem; font-weight:800; font-size:1.05rem; white-space:nowrap; }
+.brand .flag{ display:inline-flex; width:1.4em; height:1em; border-radius:3px; overflow:hidden; flex-direction:column; box-shadow:0 0 0 1px rgba(255,255,255,.2);}
+.brand .flag div{flex:1;}
+nav.mainnav{ display:flex; gap:.3rem; flex-wrap:wrap; }
+nav.mainnav button{
+  background:rgba(255,255,255,.08); color:#fdfaf3; border:1px solid rgba(255,255,255,.15);
+  padding:.4rem .75rem; border-radius:999px; font-size:.85rem; font-weight:600; transition:.15s;
+}
+nav.mainnav button:hover{ background:rgba(255,255,255,.2); }
+nav.mainnav button.active{ background:var(--accent); border-color:var(--accent); }
+.tools{ display:flex; align-items:center; gap:.35rem; }
+.tools button{
+  background:rgba(255,255,255,.08); color:#fdfaf3; border:1px solid rgba(255,255,255,.2);
+  width:2.1rem; height:2.1rem; border-radius:50%; font-size:.85rem; font-weight:700;
+}
+.tools button:hover{ background:rgba(255,255,255,.22); }
+.tools .fs-label{ font-size:.72rem; color:#d8d2c4; padding:0 .2rem; }
+
+main{ max-width:900px; margin:0 auto; padding:1.4rem 1rem 3rem; }
+
+/* home */
+.hero{ text-align:center; padding:1.6rem 1rem 2rem; }
+.hero h1{ font-size:1.9rem; }
+.hero p.lead{ color:var(--muted); max-width:640px; margin:.6rem auto 0; }
+
+.level-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin:1.6rem 0; }
+.level-card{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+  padding:1.3rem 1.1rem; cursor:pointer; transition:.15s; text-align:left; position:relative; overflow:hidden;
+}
+.level-card:hover{ transform:translateY(-3px); box-shadow:0 10px 24px rgba(0,0,0,.08); }
+.level-card .badge{ display:inline-block; font-weight:800; font-size:1.3rem; padding:.15rem .6rem; border-radius:8px; color:#fff; margin-bottom:.5rem; }
+.level-card h3{ font-size:1.05rem; margin-bottom:.3rem; }
+.level-card p{ color:var(--muted); font-size:.88rem; }
+
+.card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem 1.2rem; margin-bottom:1.1rem; }
+.card h2{ font-size:1.15rem; }
+.card h3{ font-size:1rem; color:var(--accent); }
+
+.guide-box{ background:#fbf6e9; border:1px solid #ecd9a0; border-radius:var(--radius); padding:1rem 1.2rem; margin:1rem 0; }
+.guide-box h3{ margin-top:0; color:var(--gold); }
+
+/* level page */
+.level-header{ display:flex; align-items:center; gap:.8rem; margin-bottom:1rem; flex-wrap:wrap;}
+.level-header .badge{ font-weight:800; font-size:1.4rem; padding:.2rem .7rem; border-radius:10px; color:#fff; }
+.level-header .goal{ color:var(--muted); font-size:.92rem; }
+
+.subtabs{ display:flex; gap:.4rem; flex-wrap:wrap; margin-bottom:1.2rem; border-bottom:2px solid var(--line); padding-bottom:.6rem;}
+.subtabs button{
+  background:transparent; border:1px solid var(--line); padding:.45rem 1rem; border-radius:999px;
+  font-size:.88rem; font-weight:600; color:var(--ink);
+}
+.subtabs button.active{ background:var(--ink); color:#fff; border-color:var(--ink); }
+
+/* grammar */
+.gram-topic{ margin-bottom:1.6rem; }
+.gram-topic .tag{ display:inline-block; background:var(--gold); color:#fff; font-size:.72rem; font-weight:700; padding:.15rem .55rem; border-radius:6px; margin-bottom:.4rem;}
+.gram-topic h3{ font-size:1.15rem; margin-top:.1rem;}
+.core-box{ background:#fbf1ec; border-left:4px solid var(--accent); padding:.6rem .9rem; border-radius:8px; margin:.6rem 0; font-size:.94rem;}
+.why-box{ background:#eef3f6; border-left:4px solid #3a6ea5; padding:.6rem .9rem; border-radius:8px; margin:.6rem 0; font-size:.92rem; }
+.tip-box{ background:#eef7ee; border-left:4px solid var(--good); padding:.6rem .9rem; border-radius:8px; margin:.6rem 0; font-size:.92rem; }
+
+.tbl-wrap{ overflow-x:auto; margin:.7rem 0; }
+table{ border-collapse:collapse; width:100%; font-size:.9rem; }
+th,td{ border:1px solid var(--line); padding:.4rem .6rem; text-align:left; white-space:nowrap; }
+th{ background:#f1ece0; }
+
+.ex-list{ margin:.6rem 0; }
+.ex-item{ display:flex; align-items:flex-start; gap:.5rem; padding:.35rem 0; border-bottom:1px dashed var(--line); }
+.ex-item:last-child{ border-bottom:none; }
+.ex-de{ font-weight:700; }
+.ex-ko{ color:var(--muted); font-size:.88rem; }
+
+.mistake-list{ margin:.6rem 0; }
+.mistake-item{ padding:.4rem 0; border-bottom:1px dashed var(--line); font-size:.92rem;}
+.mistake-item:last-child{border-bottom:none;}
+.wrong{ color:var(--bad); font-weight:700; }
+.right{ color:var(--good); font-weight:700; }
+.mnote{ color:var(--muted); font-size:.85rem; display:block; margin-top:.15rem;}
+
+.tts{ border:none; background:#f1ece0; border-radius:50%; width:1.9rem; height:1.9rem; flex:none; font-size:.85rem; }
+.tts:hover{ background:var(--gold); }
+.tts:active{ transform:scale(.92); }
+
+/* vocab */
+.vocab-group{ margin-bottom:1.4rem; }
+.vocab-group h3{ font-size:1.05rem; }
+.vocab-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:.6rem; }
+.vword{ background:#fbfaf6; border:1px solid var(--line); border-radius:10px; padding:.6rem .7rem; }
+.vword .de{ font-weight:700; display:flex; align-items:center; gap:.4rem; }
+.vword .ko{ color:var(--muted); font-size:.88rem; margin:.15rem 0;}
+.vword .ex{ font-size:.82rem; color:#555; border-top:1px dashed var(--line); margin-top:.35rem; padding-top:.35rem; display:flex; gap:.35rem; align-items:flex-start;}
+
+/* conversation */
+.dialog{ background:#fbfaf6; border:1px solid var(--line); border-radius:12px; padding:1rem 1.1rem; margin-bottom:1.2rem; }
+.dialog h3{ margin-top:0; font-size:1.02rem; }
+.dialog .note{ color:var(--muted); font-size:.85rem; margin-bottom:.6rem;}
+.dline{ display:flex; gap:.6rem; align-items:flex-start; padding:.45rem 0; border-bottom:1px dashed var(--line); }
+.dline:last-child{ border-bottom:none; }
+.sp{ font-weight:800; color:var(--accent); width:1.4rem; flex:none; }
+.dtext{ flex:1; }
+.dtext .de{ font-weight:600; }
+.dtext .ko{ color:var(--muted); font-size:.85rem; }
+.reveal-btn{ background:none; border:1px solid var(--gold); color:var(--gold); border-radius:999px; padding:.1rem .6rem; font-size:.78rem; margin-left:.4rem;}
+.reveal-btn.done{ background:var(--gold); color:#fff; }
+
+/* quiz */
+.quiz-item{ background:#fbfaf6; border:1px solid var(--line); border-radius:12px; padding:.8rem 1rem; margin-bottom:.8rem; }
+.quiz-q{ font-weight:600; margin-bottom:.5rem; }
+.quiz-row{ display:flex; gap:.5rem; flex-wrap:wrap; }
+.quiz-row input{ flex:1; min-width:160px; padding:.5rem .6rem; border:1px solid var(--line); border-radius:8px; font-size:.95rem; }
+.quiz-row button{ background:var(--accent); color:#fff; border:none; border-radius:8px; padding:.5rem 1rem; font-weight:700; font-size:.88rem;}
+.quiz-feedback{ margin-top:.6rem; padding:.55rem .75rem; border-radius:8px; font-size:.9rem; display:none; }
+.quiz-feedback.show{ display:block; }
+.quiz-feedback.ok{ background:#e7f5ec; color:var(--good); }
+.quiz-feedback.no{ background:#fdece5; color:var(--bad); }
+.quiz-feedback b{ display:block; margin-bottom:.15rem;}
+
+/* videos */
+.video-card{ display:flex; gap:.8rem; align-items:flex-start; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:.9rem 1rem; margin-bottom:.7rem;}
+.video-card .yt{ font-size:1.4rem; }
+.video-card a{ font-weight:700; text-decoration:none; }
+.video-card p{ color:var(--muted); font-size:.87rem; margin:.2rem 0 0; }
+.video-level{ display:inline-block; font-size:.7rem; font-weight:700; color:#fff; padding:.05rem .5rem; border-radius:5px; margin-right:.4rem;}
+
+/* back to top */
+#toTop{
+  position:fixed; right:1.2rem; bottom:1.2rem; width:3rem; height:3rem; border-radius:50%;
+  background:var(--ink); color:#fff; border:none; font-size:1.2rem; box-shadow:0 6px 16px rgba(0,0,0,.25);
+  opacity:0; pointer-events:none; transition:.2s; z-index:60;
+}
+#toTop.show{ opacity:1; pointer-events:auto; }
+
+footer{ text-align:center; color:var(--muted); font-size:.8rem; padding:2rem 1rem 1rem; }
+
+.roadmap-wrap{ overflow-x:auto; }
+.pill{ display:inline-block; padding:.1rem .5rem; border-radius:6px; font-size:.72rem; font-weight:700; color:#fff; }
+
+@media (max-width:560px){
+  .header-row{ justify-content:center; }
+  nav.mainnav{ justify-content:center; }
+  th,td{ font-size:.82rem; padding:.3rem .4rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-row">
+    <div class="brand">
+      <span class="flag"><div style="background:#000"></div><div style="background:#dd0000"></div><div style="background:#ffce00"></div></span>
+      SY의 독일어 공부방
+    </div>
+    <nav class="mainnav" id="mainnav"></nav>
+    <div class="tools">
+      <span class="fs-label">글자크기</span>
+      <button id="fsDown" title="글자 작게">가−</button>
+      <button id="fsReset" title="기본 크기">가</button>
+      <button id="fsUp" title="글자 크게">가+</button>
+    </div>
+  </div>
+</header>
+
+<main id="content"></main>
+
+<button id="toTop" title="맨 위로">↑</button>
+
+<footer>
+  SY의 독일어 공부방 · A1 → B2 · 원본 강의노트/연습장을 바탕으로 재구성 · 발음은 브라우저 내장 음성합성(TTS)을 사용합니다 (기기에 독일어 음성이 있어야 재생됩니다)
+</footer>
+
+<script>
+/* ===================== 유틸 ===================== */
+function esc(s){
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+function escAttr(s){
+  return esc(s).replace(/"/g,"&quot;");
+}
+function tbl(headers, rows){
+  var h = headers.map(function(x){return "<th>"+esc(x)+"</th>";}).join("");
+  var b = rows.map(function(r){ return "<tr>"+r.map(function(c){return "<td>"+c+"</td>";}).join("")+"</tr>"; }).join("");
+  return '<div class="tbl-wrap"><table><thead><tr>'+h+'</tr></thead><tbody>'+b+'</tbody></table></div>';
+}
+function ttsBtn(text){
+  return '<button class="tts" data-tts="'+escAttr(text)+'" title="발음 듣기">🔊</button>';
+}
+
+/* ===================== 레벨 색상 ===================== */
+var LEVEL_COLOR = { A1:"#3f9142", A2:"#1f8a8c", B1:"#2b5fa8", B2:"#9c2b57" };
+
+/* ===================== 데이터 ===================== */
+var DATA = {
+A1: {
+  title:"A1 · 재활성화",
+  blurb:"독일어의 뼈대(어순·격·동사변화)를 손과 입으로 다시 깨우는 단계. 인사, 자기소개, 숫자, 하루 일과를 말할 수 있게 됩니다.",
+  g:[
+    {
+      t:"독일어 문장의 큰 그림",
+      tag:"0장 · A1",
+      body:[
+        "세부 문법을 외우기 전에, 아래 세 가지 '조립 원리'만 이해하면 이후 모든 문법이 제자리를 찾습니다. 한국어와 근본적으로 다른 지점이라 처음엔 낯설지만, 원리는 아주 단순합니다.",
+        "① 정동사(인칭에 맞게 변한 동사)는 평서문에서 항상 '두 번째 자리'에 옵니다. 문장 맨 앞에 무엇이 오든(주어든 부사든) 동사의 자리는 바뀌지 않아요. 한국어는 '주어 + … + 동사'로 동사가 맨 끝에 오지만, 독일어 평서문은 정반대로 동사가 앞쪽 2번 자리에 고정되어 있습니다.",
+        "② 한국어의 조사(은/는/을/를/에게/의)에 해당하는 역할을, 독일어는 관사와 형용사 어미의 모양 변화(격, Kasus)로 표시합니다. 그래서 어순이 비교적 자유로운 대신, 관사 모양을 정확히 익히는 것이 핵심입니다.",
+        "③ 모든 명사는 문법적 성(der/die/das)을 가지며, 이 성은 뜻과 무관한 경우가 많아 예외도 많지만, 어미로 대략적인 경향을 짐작할 수 있습니다. 단어는 반드시 관사와 함께 통째로 외우는 습관을 들이세요."
+      ],
+      tables:[
+        {caption:"명사 성(性) 경향 (예외 있음)", headers:["어미 경향","성","예"], rows:[
+          ["-ung, -heit, -keit, -tion, -ei","die (여성)","die Zeitung, die Freiheit, die Information"],
+          ["-er(사람), -ismus, -ling","der (남성)","der Lehrer, der Tourismus"],
+          ["-chen, -lein, -um, -ment","das (중성)","das Mädchen, das Zentrum, das Dokument"]
+        ]}
+      ],
+      examples:[
+        ["Ich trinke heute Kaffee.","나는 오늘 커피를 마신다."],
+        ["Heute trinke ich Kaffee.","오늘 나는 커피를 마신다. (Heute=1번, trinke=2번)"],
+        ["In Deutschland arbeite ich seit 2009.","독일에서 나는 2009년부터 일한다."],
+        ["Der Mann gibt dem Kind den Ball.","그 남자가 그 아이에게 그 공을 준다. (격이 역할을 표시)"]
+      ],
+      why:"한국인이 특히 자주 하는 실수는 '동사를 뒤로 미루는 것'입니다. 한국어 어순 습관 때문에 부사구가 앞에 오면 무의식적으로 동사를 문장 끝으로 보내게 되는데, 독일어에서는 절대 그렇지 않습니다. '무엇이 1번 자리에 오든, 동사는 항상 2번'이라는 문장을 소리 내어 여러 번 반복해 보세요.",
+      tip:"새 단어를 외울 때 뜻만 적지 말고 꼭 'der Tisch / die Tür / das Buch'처럼 관사까지 통째로 소리 내어 외우세요. 관사를 모르면 나중에 격변화를 만들 수 없습니다.",
+      mistakes:[
+        ["In Deutschland ich arbeite.","In Deutschland arbeite ich.","앞에 부사구가 오면 '동사+주어' 순서로 도치"],
+        ["Heute ich trinke Kaffee.","Heute trinke ich Kaffee.","Heute가 1번 자리 → 동사는 반드시 2번"]
+      ],
+      quiz:[
+        {q:"'In Frankfurt ___ ich.' (wohnen, 어순 주의)", a:"wohne", note:"In Frankfurt wohne ich. — Frankfurt가 1번이므로 동사가 바로 2번에 옵니다."},
+        {q:"'학교' die Schule를 3격(~에서)으로 바꾸면?", a:"der Schule", note:"여성 명사의 3격은 der. in der Schule (학교에서)"},
+        {q:"'오늘 나는 일한다.' (heute, arbeiten) — 어순에 맞게 쓰세요.", a:"Heute arbeite ich.", note:"Heute가 1번 자리 → arbeite가 바로 2번."},
+        {q:"'der Lehrer'(선생님)의 문법적 성은 무엇일까요? (der/die/das)", a:"der", note:"-er로 끝나는 사람 명사는 대부분 der(남성)입니다."}
+      ]
+    },
+    {
+      t:"동사 현재형 (Präsens)",
+      tag:"1장 · A1·A2",
+      body:[
+        "동사는 문장의 엔진입니다. 인칭에 따라 어간에 어미(-e/-st/-t/-en/-t/-en)가 붙습니다. 특히 sein(이다)과 haben(가지다)은 불규칙이지만 가장 많이 쓰이므로 통째로 외워야 합니다.",
+        "분리동사(전철+동사, 예: aufstehen)는 평서문에서 전철이 문장 맨 끝으로 떨어져 나갑니다. 재귀동사(sich 동반)는 sich가 인칭에 맞게 mich/dich/sich… 로 바뀝니다."
+      ],
+      tables:[
+        {caption:"규칙동사 + sein/haben", headers:["인칭","lernen","arbeiten*","sein","haben"], rows:[
+          ["ich","lerne","arbeite","bin","habe"],
+          ["du","lernst","arbeitest","bist","hast"],
+          ["er/sie/es","lernt","arbeitet","ist","hat"],
+          ["wir","lernen","arbeiten","sind","haben"],
+          ["ihr","lernt","arbeitet","seid","habt"],
+          ["sie/Sie","lernen","arbeiten","sind","haben"]
+        ]},
+        {caption:"모음이 바뀌는 불규칙 (du/er에서만)", headers:["원형","du","er/sie/es","뜻"], rows:[
+          ["fahren","fährst","fährt","타고 가다 (a→ä)"],
+          ["sprechen","sprichst","spricht","말하다 (e→i)"],
+          ["sehen","siehst","sieht","보다 (e→ie)"],
+          ["nehmen","nimmst","nimmt","잡다/타다 (불규칙)"]
+        ]}
+      ],
+      examples:[
+        ["Ich stehe um 6 Uhr auf.","나는 6시에 일어난다. (aufstehen — 전철 auf가 끝으로)"],
+        ["Kaufst du heute ein?","오늘 장 볼래? (einkaufen)"],
+        ["Ich rufe dich später an.","나중에 전화할게. (anrufen)"],
+        ["Ich freue mich.","나는 기쁘다. (재귀동사 sich freuen)"],
+        ["Ich freue mich auf das Wochenende.","주말이 기대된다. (앞으로 일어날 일 = auf)"],
+        ["Ich freue mich über das Geschenk.","선물이 기쁘다. (이미 일어난 일 = über)"]
+      ],
+      why:"분리동사는 사전에서는 aufstehen처럼 한 단어지만, 실제 문장에서는 두 조각(동사+전철)으로 찢어집니다. 전철은 항상 문장 맨 끝, 뜻을 완성하는 핵심 조각이니 절대 빠뜨리면 안 됩니다.",
+      tip:"동사를 외울 때 '나는 ~한다(ich ...)' 형태로 소리 내어 3번씩 말해보세요. 특히 du/er에서 모음이 바뀌는 동사(fahren, sprechen, sehen, nehmen, lesen, geben 등)는 따로 표로 정리해 반복하는 것이 효과적입니다.",
+      mistakes:[
+        ["Ich aufstehe um 6 Uhr.","Ich stehe um 6 Uhr auf.","전철(auf)은 문장 끝으로 분리"],
+        ["Ich anrufe dich.","Ich rufe dich an.","분리동사는 항상 두 조각으로"],
+        ["Er wohn in Berlin.","Er wohnt in Berlin.","3인칭 단수 -t 어미를 빠뜨리지 않기"]
+      ],
+      quiz:[
+        {q:"'그는 8시에 일어난다.' (aufstehen)", a:"Er steht um 8 Uhr auf.", note:"steht...auf — 분리동사, 전철 auf는 끝으로."},
+        {q:"'너는 빨리 말한다.' (sprechen, du)", a:"Du sprichst schnell.", note:"sprechen은 du에서 e→i, sprichst."},
+        {q:"'나는 저녁에 전화한다.' (anrufen, abends)", a:"Ich rufe abends an.", note:"rufe...an — 분리동사, abends는 동사와 전철 사이."},
+        {q:"'우리는 파티가 기대된다.' (sich freuen auf, die Party)", a:"Wir freuen uns auf die Party.", note:"sich freuen auf +4격 — 앞으로의 일에 대한 기대."}
+      ]
+    }
+  ],
+  v:[
+    {g:"인사와 안부 (보강)", items:[
+      ["Guten Morgen","좋은 아침이에요","Guten Morgen! Wie geht's?"],
+      ["Guten Tag","안녕하세요 (낮)","Guten Tag, Frau Müller!"],
+      ["Guten Abend","안녕하세요 (저녁)","Guten Abend, alle zusammen!"],
+      ["Gute Nacht","잘 자요","Gute Nacht und bis morgen!"],
+      ["Hallo","안녕 (편하게)","Hallo! Wie geht's dir?"],
+      ["Tschüss","안녕 (헤어질 때)","Tschüss, bis später!"],
+      ["Auf Wiedersehen","안녕히 가세요","Auf Wiedersehen und danke!"],
+      ["Wie geht es Ihnen?","어떻게 지내세요? (존칭)","Wie geht es Ihnen heute?"],
+      ["Danke, gut.","고마워요, 잘 지내요","Danke, gut. Und Ihnen?"],
+      ["bitte","부탁해요/천만에요","Ein Kaffee, bitte."],
+      ["die Entschuldigung","실례합니다, 사과","Entschuldigung, wo ist der Bahnhof?"]
+    ]},
+    {g:"자기소개·직업 (연습장 1단원)", items:[
+      ["der Name","이름","Wie ist Ihr Name?"],
+      ["der Beruf","직업","Was ist Ihr Beruf?"],
+      ["die Firma","회사","Ich arbeite bei einer Firma."],
+      ["wohnen","살다, 거주하다","Ich wohne in Frankfurt."],
+      ["arbeiten","일하다","Ich arbeite bei Samsung."],
+      ["kommen aus","~출신이다","Ich komme aus Korea."],
+      ["sprechen","말하다","Ich spreche Deutsch und Koreanisch."],
+      ["heißen","~라고 불리다","Ich heiße SY."],
+      ["verheiratet","기혼의","Ich bin verheiratet."],
+      ["seit","~이래로 (시간)","Ich wohne seit 17 Jahren hier."],
+      ["die Kollegin / der Kollege","(여/남) 동료","Das ist meine Kollegin."],
+      ["kennenlernen","알게 되다","Ich möchte Sie kennenlernen."]
+    ]},
+    {g:"숫자·요일·시간 (보강 + 연습장 2단원)", items:[
+      ["null, eins, zwei, drei","0, 1, 2, 3","Ich habe zwei Kinder."],
+      ["vier, fünf, sechs, sieben","4, 5, 6, 7","Es ist sieben Uhr."],
+      ["acht, neun, zehn","8, 9, 10","Ich komme um zehn Uhr."],
+      ["zwanzig, dreißig, hundert","20, 30, 100","Das kostet hundert Euro."],
+      ["der Montag … der Sonntag","월요일 … 일요일","Am Montag habe ich einen Termin."],
+      ["der Termin","약속, 일정","Ich habe einen Termin um 9 Uhr."],
+      ["die Uhr","시계, 시각","Wie viel Uhr ist es?"],
+      ["aufstehen","일어나다 (분리동사)","Ich stehe früh auf."],
+      ["das Frühstück","아침식사","Ich esse Frühstück um 7 Uhr."],
+      ["die Mittagspause","점심시간","Die Mittagspause beginnt um 12 Uhr."],
+      ["früh / spät","이른, 일찍 / 늦은, 늦게","Ich komme heute spät."]
+    ]},
+    {g:"가족과 일상 사물 (보강)", items:[
+      ["die Familie","가족","Meine Familie wohnt in Korea."],
+      ["der Mann / die Frau","남자·남편 / 여자·아내","Mein Mann arbeitet in Berlin."],
+      ["das Kind, die Kinder","아이, 아이들","Wir haben zwei Kinder."],
+      ["die Eltern","부모님","Meine Eltern wohnen in Seoul."],
+      ["der Bruder / die Schwester","형제 / 자매","Ich habe einen Bruder."],
+      ["das Haus","집","Wir haben ein kleines Haus."],
+      ["die Wohnung","아파트, 집","Meine Wohnung ist in der Stadt."],
+      ["das Auto","자동차","Ich fahre mit dem Auto."],
+      ["der Kaffee / das Wasser","커피 / 물","Ich trinke gern Kaffee."],
+      ["der Tisch / das Buch","책상 / 책","Das Buch liegt auf dem Tisch."]
+    ]}
+  ],
+  c:[
+    {t:"자기소개 (연습장 1단원)", note:"빈칸을 채우며 소리 내어 읽어보세요.", lines:[
+      ["A","Guten Tag! Wie ___ Sie? (이름이 어떻게 되세요?)","","Guten Tag! Wie heißen Sie?"],
+      ["B","Ich heiße SY. Und Sie?","",""],
+      ["A","Ich bin Frau Müller. Woher ___ Sie? (출신이 어디세요?)","","Ich bin Frau Müller. Woher kommen Sie?"],
+      ["B","Ich komme ___ Korea und arbeite ___ Samsung.","","Ich komme aus Korea und arbeite bei Samsung."]
+    ]},
+    {t:"안부 나누기 (보강)", note:"가장 기본적인 스몰토크입니다.", lines:[
+      ["A","Hallo! Wie geht es dir?","","Hallo! Wie geht es dir?"],
+      ["B","Danke, gut. Und dir?","",""],
+      ["A","Auch gut, danke. Was machst du gerade?","",""],
+      ["B","Ich lerne Deutsch.","",""]
+    ]},
+    {t:"카페에서 주문하기 (보강)", note:"음료 주문의 가장 기본 패턴입니다.", lines:[
+      ["A","Was möchten Sie trinken?","",""],
+      ["B","Ich möchte einen Kaffee, bitte.","",""],
+      ["A","Mit Milch und Zucker?","",""],
+      ["B","Nur Milch, danke.","",""],
+      ["A","Das macht zwei Euro fünfzig.","",""]
+    ]},
+    {t:"전화번호 묻기 (보강)", note:"숫자를 하나씩 끊어 읽는 것이 자연스럽습니다.", lines:[
+      ["A","Wie ist deine Telefonnummer?","",""],
+      ["B","Meine Nummer ist null eins fünf, zwei drei vier, fünf sechs sieben.","",""],
+      ["A","Danke, ich rufe dich an.","",""]
+    ]}
+  ],
+  quiz:[
+    {q:"'그녀는 회사에서 일한다.'를 독일어로 (arbeiten, bei der Firma)", a:"Sie arbeitet bei der Firma.", note:"3인칭 단수 -t 어미 확인."},
+    {q:"'좋은 아침이에요!'는 독일어로?", a:"Guten Morgen", note:"아침 인사의 기본 표현."},
+    {q:"'나는 6시에 일어난다.' (aufstehen)", a:"Ich stehe um 6 Uhr auf.", note:"분리동사: 전철 auf는 문장 끝으로."},
+    {q:"'너는 어디 출신이니?'를 독일어로 (kommen aus, du)", a:"Woher kommst du?", note:"Woher는 '어디로부터'를 뜻하는 의문사."},
+    {q:"'die Firma'(회사)의 복수형은?", a:"die Firmen", note:"-a로 끝나는 여성명사는 흔히 -en 복수."},
+    {q:"'나는 커피 한 잔을 원한다.' (möchten, ein Kaffee)", a:"Ich möchte einen Kaffee.", note:"남성 4격: ein → einen."},
+    {q:"sein 동사의 wir 형태는?", a:"sind", note:"wir sind — 불규칙 동사 sein 표를 참고하세요."},
+    {q:"'우리는 17년째 독일에 산다.' (wohnen, seit 17 Jahren)", a:"Wir wohnen seit 17 Jahren in Deutschland.", note:"seit + 3격 시간표현, 현재형으로 '~해오고 있다'를 표현."}
+  ],
+  vid:[
+    {title:"Nicos Weg · A1 전편 영화", url:"https://www.youtube.com/watch?v=4-eDoThe6qo", desc:"DW 공식 A1 학습 영화. 쉬운 독일어로 감을 되살리기 좋습니다. 자막은 'C' 키로 켜세요."},
+    {title:"DW Learn German (배치테스트 포함)", url:"https://learngerman.dw.com/en/overview", desc:"내 레벨을 10분 만에 진단하는 Einstufungstest와 A1~B1 전 과정 무료 코스."}
+  ]
+},
+
+A2: {
+  title:"A2 · 실전 감각",
+  blurb:"화법조동사, 4격/3격, 명사의 성과 복수를 다지며 쇼핑·길찾기·일상 약속 잡기 같은 실전 상황을 말합니다.",
+  g:[
+    {
+      t:"화법조동사 (Modalverben)",
+      tag:"2장 · A2",
+      body:[
+        "'~할 수 있다 / 해야 한다 / 하고 싶다'처럼 태도를 더하는 조동사입니다. 회화에서 정말 자주 쓰이니 표를 통째로 외우는 것이 좋습니다.",
+        "핵심 어순: 조동사가 2번 자리에 오고, 본동사는 변화하지 않은 원형 그대로 문장 맨 끝에 옵니다. [조동사 … 원형] 틀을 몸에 익히세요."
+      ],
+      tables:[
+        {caption:"화법조동사 (ich/er 형)", headers:["조동사","뜻","ich","er/sie"], rows:[
+          ["können","가능, ~할 수 있다","kann","kann"],
+          ["müssen","의무, ~해야 한다","muss","muss"],
+          ["wollen","의지, ~하려 한다","will","will"],
+          ["sollen","당위, ~해야(권유/지시)","soll","soll"],
+          ["dürfen","허가, ~해도 된다","darf","darf"],
+          ["möchten","소망, ~하고 싶다","möchte","möchte"]
+        ]}
+      ],
+      examples:[
+        ["Ich muss heute lange arbeiten.","나는 오늘 오래 일해야 한다."],
+        ["Kannst du mir helfen?","나 좀 도와줄 수 있어?"],
+        ["Ich möchte einen Termin vereinbaren.","약속을 잡고 싶습니다."],
+        ["Du darfst hier fotografieren.","여기서 사진 찍어도 돼."]
+      ],
+      why:"조동사 문장에서 가장 흔한 실수는 본동사를 원형으로 두지 않거나, 원형을 문장 끝이 아닌 다른 자리에 두는 것입니다. '조동사는 인칭에 맞게, 본동사는 무조건 원형+맨 끝'이라는 두 규칙만 지키면 됩니다.",
+      tip:"möchten은 사실 mögen(좋아하다)의 접속법 형태지만, 실전에서는 그냥 '~하고 싶다'는 뜻의 정중한 표현으로 통째로 외우는 것이 효율적입니다.",
+      mistakes:[
+        ["Ich muss arbeiten heute lange.","Ich muss heute lange arbeiten.","원형(arbeiten)은 맨 끝으로"],
+        ["Ich will gehe nach Hause.","Ich will nach Hause gehen.","조동사 뒤는 반드시 원형(gehen)"]
+      ],
+      quiz:[
+        {q:"'너는 여기서 사진 찍어도 돼.' (dürfen, fotografieren)", a:"Du darfst hier fotografieren.", note:"dürfen(허가)+원형 fotografieren 문장 끝."},
+        {q:"'우리는 지금 가야 한다.' (müssen, gehen)", a:"Wir müssen jetzt gehen.", note:"müssen(의무)+gehen 끝."},
+        {q:"'나는 그 서류를 봐도 된다.' (dürfen, das Dokument, sehen)", a:"Ich darf das Dokument sehen.", note:"dürfen 2번 자리, sehen 원형 끝."},
+        {q:"'그녀는 오늘 일찍 가고 싶어 한다.' (möchten, früh, gehen)", a:"Sie möchte heute früh gehen.", note:"möchte 2번, gehen 끝."}
+      ]
+    },
+    {
+      t:"명사의 성·복수 + 분리동사 정리",
+      tag:"연습장 2단원 · A1→A2",
+      body:[
+        "독일어 명사는 반드시 der(남성)/die(여성)/das(중성) 중 하나의 성을 갖습니다. 복수형은 규칙이 여러 갈래라 예외가 많지만, 대표적인 패턴만 알아도 절반은 예측할 수 있습니다.",
+        "복수 3격(Dativ)에서는 명사 끝에 추가로 -n이 붙는다는 점(-n이 이미 있으면 생략)도 꼭 기억하세요. 이건 나중에 3격 전치사(mit, bei 등)를 쓸 때 자주 틀리는 지점입니다."
+      ],
+      tables:[
+        {caption:"대표적인 복수형 패턴 (예외 많음)", headers:["단수","복수","패턴"], rows:[
+          ["der Tisch","die Tische","+e"],
+          ["das Kind","die Kinder","+er (모음변화 동반 가능)"],
+          ["die Frau","die Frauen","+en"],
+          ["das Auto","die Autos","+s (외래어 다수)"],
+          ["der Lehrer","die Lehrer","무변화 (-er/-en/-el로 끝나면 대개 무변화)"]
+        ]}
+      ],
+      examples:[
+        ["Der Termin beginnt am Montag um neun Uhr.","그 일정은 월요일 9시에 시작합니다."],
+        ["Ich spreche mit den Kindern.","나는 그 아이들과 이야기한다. (복수 3격 +n)"],
+        ["Die Bücher liegen auf dem Tisch.","그 책들은 책상 위에 있다. (das Buch → die Bücher)"]
+      ],
+      why:"성을 몰라도 복수형까지는 어느 정도 규칙을 알면 짐작이 가능하지만, 3격에서 명사에 -n을 붙이는 규칙은 규칙성이 있는데도 자주 잊습니다. 'mit den Kindern'처럼 복수 3격을 쓸 때마다 -n을 확인하는 습관을 들이세요.",
+      tip:"새 명사를 사전에서 찾을 때 항상 복수형까지 함께 확인하고, 관사+단어+복수형을 한 세트로 외우세요. (예: das Kind, die Kinder)",
+      mistakes:[
+        ["Ich spreche mit die Kinder.","Ich spreche mit den Kindern.","복수 3격은 den + 명사에 -n 추가"],
+        ["die Kind","das Kind","성을 반드시 관사와 함께 외우기"]
+      ],
+      quiz:[
+        {q:"'그 아이들과 함께' (mit + 복수 3격, die Kinder)", a:"mit den Kindern", note:"복수 3격: den + 명사-n."},
+        {q:"'das Buch'(책)의 복수형은?", a:"die Bücher", note:"모음변화(u→ü) + -er."},
+        {q:"'die Uhr'(시계)의 복수형은?", a:"die Uhren", note:"여성명사 다수는 +en."}
+      ]
+    },
+    {
+      t:"4격 관사 기초 + 3격 전치사",
+      tag:"연습장 3단원 · 5장 일부 · A2",
+      body:[
+        "본격적으로 격(Kasus)을 실전에 써봅니다. 4격(목적어)에서는 남성 관사만 der→den으로 바뀌고, 여성·중성·복수는 1격과 똑같습니다. 이 한 줄만 확실히 하면 목적어 실수가 크게 줄어듭니다.",
+        "전치사는 뒤에 오는 명사의 격을 '강제'합니다. mit·nach·aus·zu·von·bei·seit 일곱 개는 항상 3격을 요구합니다. 노래처럼 통째로 외우세요: '밋-나흐-아우스-쭈-폰-바이-자이트'."
+      ],
+      tables:[
+        {caption:"관사 변화 (1격→4격)", headers:["","1격(주어)","4격(목적어)"], rows:[
+          ["남성","der Mann","den Mann"],
+          ["여성","die Frau","die Frau"],
+          ["중성","das Kind","das Kind"],
+          ["복수","die Leute","die Leute"]
+        ]}
+      ],
+      examples:[
+        ["Ich fahre mit dem Bus zur Arbeit.","버스로 출근한다. (zu+dem=zum, zu+der=zur)"],
+        ["Seit einem Jahr lerne ich wieder.","1년 전부터 다시 배운다."],
+        ["Ich komme gerade von der Arbeit.","막 퇴근하는 길이다."],
+        ["Ich fahre mit dem Bus zur Schule.","나는 버스로 학교에 간다."]
+      ],
+      why:"'mit·nach·aus·zu·von·bei·seit'은 뜻은 서로 다르지만 문법적으로는 '무조건 3격'이라는 공통점 하나로 묶입니다. 뜻을 따로따로 외우기보다 이 일곱 단어를 한 묶음(그룹)으로 외우면 격 실수가 확 줄어듭니다.",
+      tip:"zu+dem=zum, zu+der=zur, bei+dem=beim, von+dem=vom 처럼 전치사와 관사가 합쳐지는 축약형도 실생활에서 아주 자주 쓰이니 함께 외워두세요.",
+      mistakes:[
+        ["Ich sehe der Mann.","Ich sehe den Mann.","남성 목적어는 4격 den"],
+        ["mit die Kinder.","mit den Kindern.","3격 전치사 mit 뒤는 무조건 3격"]
+      ],
+      quiz:[
+        {q:"'나는 그 여자를 본다.' (sehen, die Frau)", a:"Ich sehe die Frau.", note:"여성은 1격=4격, 변화 없음."},
+        {q:"'그것은 내 동료의 것이다.' (gehören, mein Kollege)", a:"Das gehört meinem Kollegen.", note:"gehören은 3격 요구, meinem Kollegen."},
+        {q:"'나는 버스로 학교에 간다.' (mit dem Bus, zur Schule)", a:"Ich fahre mit dem Bus zur Schule.", note:"mit는 3격, zu+der=zur."}
+      ]
+    }
+  ],
+  v:[
+    {g:"쇼핑·시장 (연습장 3단원)", items:[
+      ["kaufen","사다","Ich kaufe Brot."],
+      ["brauchen","필요하다","Ich brauche einen Kaffee."],
+      ["der Markt","시장","Der Markt ist am Samstag."],
+      ["die Straße","거리, 길","Die Straße ist lang."],
+      ["links / rechts","왼쪽 / 오른쪽","Gehen Sie links."],
+      ["geradeaus","직진으로","Gehen Sie geradeaus."],
+      ["können / müssen / möchten","~할 수 있다 / 해야 한다 / 하고 싶다","Ich möchte das kaufen."],
+      ["die Rechnung","계산서, 청구서","Die Rechnung, bitte."],
+      ["bezahlen","지불하다","Ich bezahle mit Karte."]
+    ]},
+    {g:"음식과 식당 (보강)", items:[
+      ["das Restaurant","식당","Wir gehen ins Restaurant."],
+      ["die Speisekarte","메뉴판","Die Speisekarte, bitte."],
+      ["bestellen","주문하다","Ich möchte bestellen."],
+      ["empfehlen","추천하다","Was empfehlen Sie?"],
+      ["lecker","맛있는","Das schmeckt lecker!"],
+      ["der Kellner / die Kellnerin","웨이터 / 웨이트리스","Der Kellner bringt die Rechnung."],
+      ["der Wein / das Bier","와인 / 맥주","Ich trinke gern Wein."],
+      ["vegetarisch","채식의","Haben Sie etwas Vegetarisches?"],
+      ["zahlen","계산하다","Können wir zahlen, bitte?"],
+      ["Zum Wohl!","건배!","Zum Wohl! Auf uns!"]
+    ]},
+    {g:"교통과 길찾기 (보강)", items:[
+      ["der Bahnhof","기차역","Wo ist der Bahnhof?"],
+      ["der Zug","기차","Der Zug kommt um 9 Uhr."],
+      ["die U-Bahn","지하철","Ich fahre mit der U-Bahn."],
+      ["das Ticket","표, 티켓","Ich brauche ein Ticket."],
+      ["umsteigen","환승하다","Ich muss in Berlin umsteigen."],
+      ["die Haltestelle","정류장","Die Haltestelle ist hier."],
+      ["einsteigen / aussteigen","승차하다 / 하차하다","Bitte hier aussteigen."],
+      ["ankommen","도착하다","Wann kommen wir an?"],
+      ["abfahren","출발하다","Der Bus fährt um acht ab."]
+    ]},
+    {g:"취미와 날씨 (보강)", items:[
+      ["das Hobby","취미","Mein Hobby ist Lesen."],
+      ["lesen","읽다","Ich lese gern Bücher."],
+      ["schwimmen","수영하다","Wir schwimmen im Sommer."],
+      ["Sport treiben","운동하다","Ich treibe jeden Tag Sport."],
+      ["das Wetter","날씨","Wie ist das Wetter heute?"],
+      ["Es regnet.","비가 온다.","Es regnet den ganzen Tag."],
+      ["Die Sonne scheint.","해가 난다.","Heute scheint die Sonne."],
+      ["kalt / warm / windig","추운 / 따뜻한 / 바람 부는","Es ist heute sehr kalt."]
+    ]}
+  ],
+  c:[
+    {t:"약속 잡기 (연습장 2단원)", note:"", lines:[
+      ["A","Wann ___ wir uns? (우리 언제 만날까요?)","","Wann treffen wir uns?"],
+      ["B","Geht es am Montag um 10 Uhr?","",""],
+      ["A","Um 10 ist gut. Wo ___ wir uns?","","Um 10 ist gut. Wo treffen wir uns?"],
+      ["B","Vor dem Büro. Ich ___ dich an. (전화할게요)","","Vor dem Büro. Ich rufe dich an."]
+    ]},
+    {t:"가게에서 (연습장 3단원)", note:"", lines:[
+      ["A","Guten Tag, was ___ Sie? (무엇을 원하세요?)","","Guten Tag, was möchten Sie?"],
+      ["B","Ich ___ ein Brot und einen Kaffee, bitte.","","Ich möchte ein Brot und einen Kaffee, bitte."],
+      ["A","Das ___ zusammen 4 Euro 50.","","Das macht zusammen 4 Euro 50."],
+      ["B","___ ich mit Karte bezahlen? (카드 돼요?)","","Kann ich mit Karte bezahlen?"]
+    ]},
+    {t:"식당에서 주문하기 (보강)", note:"", lines:[
+      ["A","Guten Tag! Haben Sie schon gewählt?","",""],
+      ["B","Ja, ich möchte die Suppe und ein Wasser, bitte.","",""],
+      ["A","Und zum Nachtisch?","",""],
+      ["B","Nein danke, das reicht.","",""]
+    ]},
+    {t:"길 묻기 (보강)", note:"", lines:[
+      ["A","Entschuldigung, wie komme ich zum Bahnhof?","",""],
+      ["B","Gehen Sie geradeaus und dann links.","",""],
+      ["A","Ist es weit?","",""],
+      ["B","Nein, nur fünf Minuten zu Fuß.","",""]
+    ]}
+  ],
+  quiz:[
+    {q:"'역으로 가는 길 좀 알려 주시겠어요?' (können, zeigen)", a:"Können Sie mir bitte den Weg zum Bahnhof zeigen?", note:"정중한 요청: Können Sie mir bitte ... zeigen?"},
+    {q:"'나는 카드로 지불해도 되나요?' (dürfen/können, mit Karte)", a:"Kann ich mit Karte bezahlen?", note:"허락을 구하는 표현."},
+    {q:"'그 버스는 8시에 출발한다.' (abfahren)", a:"Der Bus fährt um acht ab.", note:"분리동사 abfahren, ab는 끝으로."},
+    {q:"'너는 무엇을 추천하니?' (empfehlen, du)", a:"Was empfiehlst du?", note:"empfehlen은 du에서 e→ie: empfiehlst."},
+    {q:"'die Straße'(거리)와 함께 쓰는 방향 표현 '직진으로'는?", a:"geradeaus", note:"길찾기 필수 부사."},
+    {q:"'내일 비가 올 것이다.'를 간단한 현재형으로 (구어체 미래)", a:"Morgen regnet es.", note:"구어에서는 현재형+시간부사로 미래를 표현."},
+    {q:"'우리는 정류장에서 만난다.' (sich treffen, an der Haltestelle)", a:"Wir treffen uns an der Haltestelle.", note:"재귀동사 sich treffen + 위치 3격 an der."}
+  ],
+  vid:[
+    {title:"Nicos Weg · A2 전편 영화", url:"https://www.youtube.com/watch?v=Lg5P2w_Ro1c", desc:"A1을 마쳤다면 A2로. 일상 상황별 표현이 풍부합니다."},
+    {title:"DW Learn German (배치테스트 포함)", url:"https://learngerman.dw.com/en/overview", desc:"내 레벨이 헷갈리면 Einstufungstest로 진단하세요. A1~B1 전 과정 무료."}
+  ]
+},
+
+B1: {
+  title:"B1 · 정밀도 재건",
+  blurb:"격·형용사 어미·과거시제·수동태를 정밀하게 다지고, 직장·건강·주거 같은 실전 주제로 회화를 확장하는 단계입니다.",
+  g:[
+    {
+      t:"명사·관사·격 (Kasus) 전체 정리",
+      tag:"3장 · A1~B1",
+      body:[
+        "독일어 문법의 심장입니다. 네 개의 격(1격 주어, 4격 목적어, 3격 간접목적어, 2격 소유)이 각각 어떤 역할을 하는지 표로 완전히 정리합니다.",
+        "특히 3격을 요구하는 동사(helfen, danken, gefallen, gehören 등)는 예외처럼 보이지만 사실 정해진 목록이 있으므로, 통째로 외우면 평생 틀리지 않습니다."
+      ],
+      tables:[
+        {caption:"네 개의 격 = 네 개의 역할", headers:["격","한국어 조사","질문","예"], rows:[
+          ["1격 Nom.","~은/는/이/가","wer?","Der Mann kommt."],
+          ["4격 Akk.","~을/를","wen?","Ich sehe den Mann."],
+          ["3격 Dat.","~에게","wem?","Ich helfe dem Mann."],
+          ["2격 Gen.","~의","wessen?","das Auto des Mannes"]
+        ]},
+        {caption:"정관사 변화", headers:["격","남성","여성","중성","복수"], rows:[
+          ["1격","der","die","das","die"],
+          ["4격","den","die","das","die"],
+          ["3격","dem","der","dem","den (+n)"],
+          ["2격","des (+s)","der","des (+s)","der"]
+        ]},
+        {caption:"ein/kein/mein류 (부정관사·소유관사)", headers:["격","남성","여성","중성"], rows:[
+          ["1격","ein / mein","eine / meine","ein / mein"],
+          ["4격","einen / meinen","eine / meine","ein / mein"],
+          ["3격","einem / meinem","einer / meiner","einem / meinem"]
+        ]}
+      ],
+      examples:[
+        ["Ich habe einen Bruder.","나는 형제가 한 명 있다. (4격 남성 einen)"],
+        ["Das ist nicht mein Auto.","이건 내 차가 아니다. (중성 1격 mein)"],
+        ["Ich gebe meinem Kollegen das Dokument.","동료에게 문서를 준다. (3격 meinem)"],
+        ["Ich helfe dir.","나는 너를 돕는다. (helfen은 3격, dir)"],
+        ["Das Buch gefällt mir.","그 책이 내 맘에 든다. (gefallen은 3격)"]
+      ],
+      why:"실전의 80%는 딱 한 줄로 요약됩니다: '남성만 1격 der → 4격 den으로 바뀌고, 여성·중성·복수는 1격과 4격이 똑같다.' 이 한 줄을 반사적으로 떠올릴 수 있으면 목적어 실수가 거의 사라집니다.",
+      tip:"helfen·danken·gefallen·gehören 처럼 3격을 요구하는 동사는 한국어로 '~을 돕다/~에게 감사하다'처럼 번역되어 4격처럼 느껴지기 쉽습니다. 이 동사들은 따로 리스트를 만들어 예문과 함께 반복하세요.",
+      mistakes:[
+        ["Ich sehe der Mann.","Ich sehe den Mann.","남성 목적어는 4격 den"],
+        ["Ich gebe das Frau das Buch.","Ich gebe der Frau das Buch.","여성 3격은 der"],
+        ["Ich helfe dich.","Ich helfe dir.","helfen은 3격 (dir)"],
+        ["Das gefällt mich.","Das gefällt mir.","gefallen은 3격 (mir)"]
+      ],
+      quiz:[
+        {q:"'나는 그 여자를 본다.' (sehen, die Frau)", a:"Ich sehe die Frau.", note:"여성은 1격=4격."},
+        {q:"'그것은 내 동료의 것이다.' (gehören, mein Kollege)", a:"Das gehört meinem Kollegen.", note:"gehören 3격, meinem Kollegen."},
+        {q:"'나는 그에게 감사한다.' (danken, ihm)", a:"Ich danke ihm.", note:"danken은 3격, ihm."},
+        {q:"'그것은 사장님 마음에 든다.' (gefallen, meinem Chef)", a:"Das gefällt meinem Chef.", note:"gefallen 3격, meinem Chef."}
+      ]
+    },
+    {
+      t:"형용사 어미변화 (Adjektivdeklination)",
+      tag:"4장 · B1",
+      body:[
+        "B1과 B2를 가르는 최대 난관이지만 원리는 하나입니다. 성·격 정보를 '관사'가 이미 보여주면 형용사는 약하게(-e/-en) 어미를 붙이고, 관사가 정보를 못 보여주면(ein류) 형용사가 대신 강하게(-er/-es 등) 성을 드러냅니다. '둘 중 하나는 반드시 일한다'고 기억하세요."
+      ],
+      tables:[
+        {caption:"정관사 뒤 — 거의 -e 또는 -en", headers:["격","남성","여성","중성","복수"], rows:[
+          ["1격","der gute","die gute","das gute","die guten"],
+          ["4격","den guten","die gute","das gute","die guten"],
+          ["3격","dem guten","der guten","dem guten","den guten"]
+        ]},
+        {caption:"부정관사 뒤 — 남성1격 -er, 중성1·4격 -es", headers:["격","남성","여성","중성"], rows:[
+          ["1격","ein guter","eine gute","ein gutes"],
+          ["4격","einen guten","eine gute","ein gutes"],
+          ["3격","einem guten","einer guten","einem guten"]
+        ]}
+      ],
+      examples:[
+        ["Das ist ein guter Plan.","좋은 계획이다. (ein이 성을 못 보여줌 → guter)"],
+        ["Ich wünsche dir einen schönen Tag!","좋은 하루 보내! (4격 남성 einen…en)"],
+        ["Wir hatten ein erfolgreiches Jahr.","성공적인 한 해였다. (중성 -es)"],
+        ["Das ist das neue Projekt.","그것이 그 새로운 프로젝트다. (정관사 뒤 중성 -e)"],
+        ["Ich habe einen guten Kollegen.","나는 좋은 동료가 한 명 있다. (Kollege는 약변화 명사, 4격 -en)"]
+      ],
+      why:"형용사 어미가 헷갈릴 땐 스스로에게 물어보세요: '지금 관사가 이 명사의 성과 격을 분명히 보여주고 있나?' der/die/das처럼 분명히 보여주면 형용사는 -e/-en으로 쉬어도 되고, ein/eine/ein처럼 애매하면(특히 남성 1격, 중성 1·4격) 형용사가 그 정보를 대신 짊어져야 합니다.",
+      tip:"관사 없이 형용사만 오는 경우(예: guter Kaffee, 복수 앞 관사 없이)는 형용사가 정관사 어미를 그대로 가져와 가장 강하게 변화합니다. 이 세 번째 패턴까지 표로 함께 정리해두면 형용사 어미가 완전히 정리됩니다.",
+      mistakes:[
+        ["ein gut Plan","ein guter Plan","ein 뒤 남성1격은 -er"],
+        ["Ich sehe der schöne Garten.","Ich sehe den schönen Garten.","4격 남성 den + -en"],
+        ["die neu Kollegin","die neue Kollegin","정관사 뒤 여성 1격은 -e"]
+      ],
+      quiz:[
+        {q:"'그 새로운 동료'(주어, 남성): der ___ Kollege", a:"der neue Kollege", note:"정관사 뒤 남성 1격은 -e."},
+        {q:"'좋은 아이디어 하나를'(4격 여성): eine ___ Idee", a:"eine gute Idee", note:"여성은 1격=4격, -e 그대로."},
+        {q:"'그 새로운 프로젝트를'(4격 중성): das ___ Projekt", a:"das neue Projekt", note:"중성 4격은 1격과 동일, 정관사 뒤 -e."},
+        {q:"'좋은 동료 한 명을'(4격 남성): einen ___ Kollegen", a:"einen guten Kollegen", note:"ein 뒤 남성 4격은 -en, Kollege는 약변화 명사라 명사에도 -n."}
+      ]
+    },
+    {
+      t:"전치사와 격 — 4격·혼합 전치사",
+      tag:"5장 나머지 · A2·B1",
+      body:[
+        "3격 전치사(mit·nach·aus·zu·von·bei·seit)에 이어, 항상 4격을 요구하는 전치사(für·ohne·gegen·um·durch)와 상황에 따라 격이 바뀌는 '혼합(Wechsel)' 전치사(in·an·auf·über·unter·vor·hinter·neben·zwischen)를 정리합니다.",
+        "혼합 전치사의 규칙은 단순합니다: '경계를 넘어 들어가는 이동'이면 4격(wohin? 어디로), '그 안에서 일어나는 위치·상태'면 3격(wo? 어디)입니다."
+      ],
+      examples:[
+        ["Das ist für meinen Chef.","이건 내 상사를 위한 것이다. (4격 남성)"],
+        ["Ich bin gegen diesen Vorschlag.","나는 이 제안에 반대한다."],
+        ["Ich bin im Büro. (in dem)","사무실에 있다. — wo?=위치 → 3격"],
+        ["Ich gehe ins Büro. (in das)","사무실로 간다. — wohin?=이동 → 4격"],
+        ["Ich kann nicht ohne meinen Chef entscheiden.","나는 상사 없이 결정할 수 없다."],
+        ["Das Bild hängt neben der Tür.","그림이 문 옆에 걸려 있다. (위치=3격)"]
+      ],
+      why:"'hängen(걸려 있다/걸다)'처럼 위치와 이동 둘 다로 쓰이는 동사는 wo?/wohin?을 자문하는 훈련에 특히 좋은 예입니다. 걸려'있는' 상태는 3격, 거는 '동작'은 4격이라는 것을 이 동사 하나로 확실히 익혀두세요.",
+      tip:"도시 이름 앞에는 보통 전치사 없이 그대로 씁니다: 'in Frankfurt' (o), 'in den Frankfurt' (x). 도시는 대개 무관사로 취급된다는 점도 함께 기억하세요.",
+      mistakes:[
+        ["Ich gehe in dem Park.","Ich gehe in den Park.","이동(공원으로) → 4격 den"],
+        ["Ich wohne in den Frankfurt.","Ich wohne in Frankfurt.","도시 앞엔 보통 무관사"]
+      ],
+      quiz:[
+        {q:"'나는 책상 위에 책을 놓는다.'(이동) auf ___ Tisch", a:"auf den Tisch", note:"이동 → 4격."},
+        {q:"'책이 책상 위에 있다.'(위치) auf ___ Tisch", a:"auf dem Tisch", note:"위치 → 3격."},
+        {q:"'나는 상사 없이 결정할 수 없다.' (ohne, mein Chef)", a:"Ich kann nicht ohne meinen Chef entscheiden.", note:"ohne는 항상 4격."},
+        {q:"'그림이 문 옆에 걸려 있다.' (neben, die Tür, 위치)", a:"Das Bild hängt neben der Tür.", note:"위치이므로 3격 der."}
+      ]
+    },
+    {
+      t:"과거 시제 — Perfekt & Präteritum",
+      tag:"6장 · A2·B1",
+      body:[
+        "'어제 ~했다'를 말할 수 있어야 B1입니다. 회화에서는 Perfekt(haben/sein + 과거분사)를 쓰고, 글이나 격식 있는 서술에는 Präteritum을 씁니다. 단, sein·haben·화법조동사는 회화에서도 흔히 Präteritum(war, hatte, konnte 등)을 씁니다.",
+        "대부분의 동사는 haben을 조동사로 쓰지만, '한 곳에서 다른 곳으로의 이동'이나 '상태 변화'를 나타내는 동사(gehen, kommen, fahren, werden, aufstehen 등)는 sein을 씁니다. '움직였으면 sein'으로 기억하세요."
+      ],
+      tables:[
+        {caption:"자주 쓰는 불규칙 과거분사", headers:["원형","과거분사","조동사","뜻"], rows:[
+          ["essen","gegessen","haben","먹다"],
+          ["trinken","getrunken","haben","마시다"],
+          ["fahren","gefahren","sein","타고가다"],
+          ["kommen","gekommen","sein","오다"],
+          ["sprechen","gesprochen","haben","말하다"],
+          ["schreiben","geschrieben","haben","쓰다"],
+          ["bleiben","geblieben","sein","머물다"],
+          ["werden","geworden","sein","되다"]
+        ]}
+      ],
+      examples:[
+        ["Ich habe das gemacht.","나는 그걸 했다. (규칙: ge…t)"],
+        ["Ich habe einen Film gesehen.","영화를 봤다. (불규칙: ge…en)"],
+        ["Ich bin nach Hause gegangen.","집에 갔다. (이동동사 → sein)"],
+        ["Er hat einen Brief geschrieben.","그는 편지를 썼다."],
+        ["Wir sind dort geblieben.","우리는 그곳에 머물렀다. (bleiben도 sein)"],
+        ["Als ich jung war, hatte ich einen Hund.","어릴 때 개가 있었다. (Präteritum: war/hatte)"]
+      ],
+      why:"'움직였으면 sein'이라는 문장이 사실 100% 정확한 규칙은 아니지만(엄밀히는 '장소 이동' 또는 '상태 변화'), 실전에서는 이 한 문장만 기억해도 90% 이상 맞습니다. bleiben(머물다)처럼 움직이지 않는데도 sein을 쓰는 예외는 따로 통째로 외우세요.",
+      tip:"과거분사를 만드는 규칙동사는 'ge+어간+t', 불규칙동사는 'ge+어간(모음변화)+en' 패턴이 많습니다. 하지만 분리동사는 ge가 전철과 어간 사이에 끼어듭니다: aufstehen → aufgestanden.",
+      mistakes:[
+        ["Ich habe nach Berlin gefahren.","Ich bin nach Berlin gefahren.","이동 → sein"],
+        ["Ich habe gegangen.","Ich bin gegangen.","gehen은 sein"]
+      ],
+      quiz:[
+        {q:"'우리는 베를린에 갔다.'(Perfekt)", a:"Wir sind nach Berlin gefahren.", note:"이동 → sein."},
+        {q:"'나는 커피를 마셨다.'(Perfekt)", a:"Ich habe Kaffee getrunken.", note:"trinken → haben+getrunken."},
+        {q:"'그는 편지를 썼다.'(Perfekt, schreiben)", a:"Er hat einen Brief geschrieben.", note:"schreiben → haben+geschrieben."},
+        {q:"'우리는 그곳에 머물렀다.'(Perfekt, bleiben)", a:"Wir sind dort geblieben.", note:"bleiben은 예외적으로 sein."}
+      ]
+    },
+    {
+      t:"미래·수동태",
+      tag:"7장 · B1",
+      body:[
+        "미래(Futur I)는 werden + 원형으로 만들지만, 구어에서는 현재형+시간부사로 미래를 대신 말하는 경우가 더 많습니다(Morgen fahre ich…). 계획·예측·다짐을 강조할 때 werden을 씁니다.",
+        "수동태(Passiv)는 werden + 과거분사로 만들며, '누가 했는가'보다 '무엇이 행해지는가'가 중요할 때 씁니다. 업무 문서나 뉴스에 특히 많이 등장합니다. sein+과거분사(상태수동, Zustandspassiv)와는 뜻이 다르니 구분하세요: '검토가 끝난 상태'는 sein, '검토되고 있는 과정'은 werden."
+      ],
+      examples:[
+        ["Ich werde dieses Jahr B2 erreichen.","올해 B2에 도달할 것이다."],
+        ["Es wird morgen regnen.","내일 비가 올 것이다."],
+        ["Der Bericht wird (gerade) geprüft.","보고서가 (지금) 검토되고 있다."],
+        ["Die Unterlagen wurden gestern gesendet.","서류는 어제 발송되었다. (과거 수동)"],
+        ["Das Problem muss schnell gelöst werden.","문제가 빨리 해결되어야 한다. (조동사+수동)"],
+        ["Die Besprechung wird morgen verschoben.","회의는 내일로 연기될 것이다."]
+      ],
+      why:"'Der Bericht ist geprüft'와 'Der Bericht wird geprüft'는 얼핏 비슷해 보이지만 의미가 다릅니다. 전자는 '검토가 이미 끝난 결과 상태'(Zustandspassiv), 후자는 '지금 검토되고 있는 진행 중인 과정'(Vorgangspassiv)입니다. 이메일에서 진행 상황을 알릴 때는 werden 수동을 쓰는 게 자연스럽습니다.",
+      tip:"조동사가 있는 수동태는 [조동사 … 과거분사 + werden]으로 문장 끝에 두 단어가 겹쳐 옵니다: Das muss gelöst werden. 처음엔 어색하지만 패턴으로 반복하면 익숙해집니다.",
+      mistakes:[
+        ["Der Bericht ist geprüft. (의도: ~되는 중)","Der Bericht wird geprüft.","진행 수동은 werden"]
+      ],
+      quiz:[
+        {q:"'그 이메일은 오늘 보내질 것이다.'", a:"Die E-Mail wird heute gesendet.", note:"수동 현재: werden+과거분사."},
+        {q:"'그 집은 1990년에 지어졌다.'(과거 수동, bauen)", a:"Das Haus wurde 1990 gebaut.", note:"수동 과거: wurde+과거분사."},
+        {q:"'그 회의는 내일로 연기될 것이다.' (verschieben)", a:"Die Besprechung wird morgen verschoben.", note:"수동 현재, 미래 의미 포함."},
+        {q:"'문이 닫혀 있다'(상태) vs '문이 닫힌다'(과정) — 상태를 쓰세요. (die Tür, schließen)", a:"Die Tür ist geschlossen.", note:"상태수동(Zustandspassiv)은 sein+과거분사."}
+      ]
+    }
+  ],
+  v:[
+    {g:"직장·회의 (연습장 5단원)", items:[
+      ["die Besprechung","회의","Wir haben eine Besprechung."],
+      ["der Vorschlag","제안","Das ist ein guter Vorschlag."],
+      ["die Frist","마감기한","Die Frist ist Freitag."],
+      ["zuständig sein","담당이다","Ich bin dafür zuständig."],
+      ["vereinbaren","합의/약속하다","Wir vereinbaren einen Termin."],
+      ["erledigen","처리하다","Ich erledige das heute."],
+      ["die Abteilung","부서","Er arbeitet in einer anderen Abteilung."],
+      ["der Bericht","보고서","Der Bericht ist fertig."],
+      ["nachfragen","문의하다","Ich möchte kurz nachfragen."],
+      ["dringend","긴급한","Das ist sehr dringend."],
+      ["die Rückmeldung","회신, 피드백","Danke für die Rückmeldung."]
+    ]},
+    {g:"목표·계획 (연습장 6단원)", items:[
+      ["wichtig / möglich / nötig","중요한 / 가능한 / 필요한","Das ist sehr wichtig."],
+      ["erfolgreich","성공적인","Wir hatten ein erfolgreiches Jahr."],
+      ["die Zukunft","미래","Ich denke an die Zukunft."],
+      ["das Ziel","목표","Mein Ziel ist B2."],
+      ["planen","계획하다","Ich plane meinen Urlaub."],
+      ["erreichen","달성하다","Ich werde mein Ziel erreichen."],
+      ["sich verbessern","향상되다","Mein Deutsch verbessert sich."],
+      ["die Möglichkeit","가능성, 기회","Das ist eine gute Möglichkeit."],
+      ["entscheiden","결정하다","Ich muss mich entscheiden."],
+      ["vorbereiten","준비하다","Ich bereite mich vor."]
+    ]},
+    {g:"건강·병원 (연습장 9단원)", items:[
+      ["die Schmerzen","통증(복수)","Ich habe Schmerzen."],
+      ["die Erkältung","감기","Ich habe eine Erkältung."],
+      ["das Fieber / der Husten","열 / 기침","Ich habe Fieber und Husten."],
+      ["die Apotheke","약국","Die Apotheke ist gleich hier."],
+      ["das Rezept","처방전","Ich brauche ein Rezept."],
+      ["die Krankschreibung","병가확인서","Ich brauche eine Krankschreibung."],
+      ["sich fühlen","(몸이) ~하게 느껴지다","Ich fühle mich nicht wohl."],
+      ["untersuchen","진찰하다","Der Arzt untersucht mich."],
+      ["verschreiben","처방하다","Können Sie mir etwas verschreiben?"],
+      ["die Krankenkasse","건강보험(조합)","Meine Krankenkasse zahlt das."]
+    ]},
+    {g:"주거·관청 (연습장 10단원)", items:[
+      ["die Wohnung","집, 아파트","Meine Wohnung ist schön."],
+      ["der Mietvertrag","임대계약","Ich unterschreibe den Mietvertrag."],
+      ["die Kaution","보증금","Die Kaution ist drei Monatsmieten."],
+      ["die Nebenkosten","관리비","Die Nebenkosten sind hoch."],
+      ["die Anmeldung","거주신고","Ich mache die Anmeldung."],
+      ["das Amt","관청","Ich gehe zum Amt."],
+      ["der Antrag","신청서","Ich stelle einen Antrag."],
+      ["kündigen","해지하다","Ich kündige meinen Vertrag."],
+      ["beantragen","신청하다","Ich beantrage ein Visum."],
+      ["die Bescheinigung","증명서","Ich brauche eine Bescheinigung."]
+    ]},
+    {g:"감정과 부탁 표현 (보강)", items:[
+      ["sich freuen","기뻐하다","Ich freue mich sehr."],
+      ["traurig sein","슬프다","Sie ist heute traurig."],
+      ["überrascht sein","놀라다","Ich bin total überrascht."],
+      ["sich entschuldigen","사과하다","Ich möchte mich entschuldigen."],
+      ["Es tut mir leid.","미안합니다.","Es tut mir leid, ich komme später."],
+      ["Gern geschehen.","천만에요.","— Danke! — Gern geschehen."],
+      ["sich Sorgen machen","걱정하다","Mach dir keine Sorgen."],
+      ["sich ärgern","화나다","Ich ärgere mich über den Fehler."],
+      ["dankbar / enttäuscht / stolz","감사한 / 실망한 / 자랑스러운","Ich bin stolz auf dich."]
+    ]}
+  ],
+  c:[
+    {t:"주말 이야기 (연습장 4단원)", note:"", lines:[
+      ["A","Was ___ du am Wochenende ___? (뭐 했어?)","","Was hast du am Wochenende gemacht?"],
+      ["B","Ich ___ meine Familie ___ und wir ___ essen gegangen.","","Ich habe meine Familie besucht und wir sind essen gegangen."],
+      ["A","Schön! ___ ihr im Restaurant ___? (식당 갔어?)","","Schön! Seid ihr im Restaurant gewesen?"],
+      ["B","Ja, das Essen ___ super! (정말 좋았어)","","Ja, das Essen war super!"]
+    ]},
+    {t:"회의 일정 조율 (연습장 5단원, 격식체)", note:"", lines:[
+      ["A","Frau Kim, ___ wir die Besprechung verschieben? (옮길 수 있을까요?)","","Frau Kim, können wir die Besprechung verschieben?"],
+      ["B","Ja, geht das, ___ ich morgen einen anderen Termin habe? (weil)","","Ja, geht das, weil ich morgen einen anderen Termin habe?"],
+      ["A","Kein Problem. Ich schlage Donnerstag ___. (제안하다)","","Kein Problem. Ich schlage Donnerstag vor."],
+      ["B","Donnerstag passt. Ich ___ Ihnen eine Einladung. (보내드릴게요)","","Donnerstag passt. Ich sende Ihnen eine Einladung."]
+    ]},
+    {t:"목표에 대해 이야기하기 (연습장 6단원)", note:"", lines:[
+      ["A","Was ist dein ___ für dieses Jahr? (목표)","","Was ist dein Ziel für dieses Jahr?"],
+      ["B","Ich ___ mein Deutsch auf B2 bringen. (werden)","","Ich werde mein Deutsch auf B2 bringen."],
+      ["A","Ein gut__ Ziel! Wie willst du das ___? (달성하다)","","Ein gutes Ziel! Wie willst du das erreichen?"],
+      ["B","Ich lerne jeden Tag und ___ viel auf Deutsch. (말하다)","","Ich lerne jeden Tag und spreche viel auf Deutsch."]
+    ]},
+    {t:"병원 접수·진료 (연습장 9단원)", note:"", lines:[
+      ["A","Praxis Dr. Wagner, guten Tag. Was kann ich für Sie tun?","",""],
+      ["B","Ich ___ einen Termin. Ich fühle mich seit gestern nicht gut. (예약하고 싶어요)","","Ich möchte einen Termin. Ich fühle mich seit gestern nicht gut."],
+      ["A","Was ___ Ihnen denn? (어디가 아프세요?)","","Was fehlt Ihnen denn?"],
+      ["B","Ich ___ Fieber und Kopfschmerzen. (열과 두통이 있어요)","","Ich habe Fieber und Kopfschmerzen."]
+    ]},
+    {t:"전화로 사과하기 (보강)", note:"", lines:[
+      ["A","Entschuldigung, ich komme heute später, weil der Zug Verspätung hat.","",""],
+      ["B","Kein Problem, danke für die Info.","",""],
+      ["A","Ich bin in etwa 20 Minuten da.","",""],
+      ["B","Alles klar, bis gleich!","",""]
+    ]}
+  ],
+  quiz:[
+    {q:"'금요일까지 회신 주실 수 있을까요?' (könnten, bis Freitag)", a:"Könnten Sie mir bitte bis Freitag eine Rückmeldung geben?", note:"정중한 요청은 접속법 II Könnten을 씁니다."},
+    {q:"'그 서류는 이미 검토되었다.'(상태, sein+PII)", a:"Die Unterlagen sind geprüft.", note:"상태수동: 검토가 끝난 상태."},
+    {q:"'나는 회사에서 존중받는다고 느낀다.' (sich fühlen, respektiert)", a:"Ich fühle mich respektiert.", note:"sich fühlen + 형용사/분사."},
+    {q:"'그는 계약을 해지하고 싶어 한다.' (kündigen möchten, den Vertrag)", a:"Er möchte den Vertrag kündigen.", note:"möchte 2번, kündigen 원형 끝."},
+    {q:"'우리는 3일째 아프다.' (seit drei Tagen, krank sein)", a:"Wir sind seit drei Tagen krank.", note:"seit+3격 기간표현."},
+    {q:"'그 프로젝트는 다음 주에 시작될 것이다.' (beginnen, werden)", a:"Das Projekt wird nächste Woche beginnen.", note:"미래: werden+원형."},
+    {q:"'좋은 소식이 있어요.' (gute Nachrichten haben)", a:"Ich habe gute Nachrichten.", note:"형용사 어미: 복수 4격 -e."}
+  ],
+  vid:[
+    {title:"Nicos Weg · B1 전편 영화", url:"https://www.youtube.com/watch?v=LkufozluseI", desc:"B1 레벨 영화. 과거·접속사 표현이 자연스럽게 반복됩니다."},
+    {title:"lingoni GERMAN", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"A1~B2 체계적 강의. 직장·이메일·전화 표현 플레이리스트가 강점."},
+    {title:"DW Learn German", url:"https://learngerman.dw.com/en/overview", desc:"'Alltag in Deutschland' 주제로 행정·주거 어휘를 보강하세요."}
+  ]
+},
+
+B2: {
+  title:"B2 · 도전",
+  blurb:"접속사·어순의 집중 정리, 관계문, 접속법, 문어체 표현으로 B2 문법을 완성하고, 의견·토론·시사 회화까지 확장합니다.",
+  g:[
+    {
+      t:"★ 접속사와 어순 (집중, 대형 장)",
+      tag:"8장 · A2~B2",
+      body:[
+        "말할 때 가장 자주 무너지는 부분이라 가장 두텁게 다룹니다. 독일어 문장 연결의 전부는 '연결어가 뒤따르는 동사를 어디로 보내는가' 하나로 정리됩니다.",
+        "연결어를 보면 0.5초 안에 스스로 물어보세요: '이건 ①그대로? ②도치? ③맨뒤?' 이 반사신경이 생기면 어순 문제는 사실상 끝납니다."
+      ],
+      tables:[
+        {caption:"동사 위치의 세 가지 법칙", headers:["유형","연결어 예","동사 위치"], rows:[
+          ["① 그대로","und, aber, oder, denn, sondern","주어 동사(2번) … 그대로"],
+          ["② 도치","deshalb, trotzdem, dann, dennoch","연결어 바로 뒤 동사 도치"],
+          ["③ 맨 뒤","weil, dass, wenn, obwohl, ob, da","주어 … 동사(문장 끝)"]
+        ]}
+      ],
+      examples:[
+        ["Ich bleibe zu Hause, denn es regnet.","비가 와서 집에 있는다. (denn 뒤 정상 어순)"],
+        ["Es regnet. Deshalb bleibe ich zu Hause.","비가 온다. 그래서 집에 있는다. (Deshalb 다음 동사)"],
+        ["Ich lerne Deutsch, weil ich hier arbeite.","여기서 일하기 때문에 독일어를 배운다. (arbeite 맨 끝)"],
+        ["Ich glaube, dass das Projekt gut läuft.","그 프로젝트가 잘 된다고 생각한다. (läuft 맨 끝)"],
+        ["Weil es regnet, bleibe ich zu Hause.","비가 오기 때문에, 나는 집에 있는다. (부문장이 앞 → 동사+주어)"],
+        ["Ich werde warten, obwohl er spät kommt.","그가 늦게 오더라도 나는 기다릴 것이다."],
+        ["Ruf mich an, wenn du Zeit hast.","네가 시간 있을 때 전화해."]
+      ],
+      why:"조동사가 있는 종속절은 [원형+조동사]가 통째로 끝으로 이동합니다: …, weil ich arbeiten muss. 동사가 두 개 겹쳐 문장 끝에 온다는 점이 낯설지만, 부문장 전체가 '하나의 큰 덩어리(명사처럼)'로 취급된다고 생각하면 이해가 쉽습니다.",
+      tip:"헷갈리는 짝을 반드시 구별하세요. weil(종속, 동사 끝) vs denn(등위, 정상 어순) — 뜻은 같지만 어순이 다릅니다. deshalb(결과) vs weil(원인) — 인과의 방향이 반대입니다. wenn(현재·미래 조건/과거 반복) vs als(과거의 1회성 사건) vs wann(의문사 '언제'). dass(접속사) vs das(관사/관계대명사) — '그것(das)'으로 바꿔 말이 되면 das. ob(~인지) vs wenn(~하면).",
+      mistakes:[
+        ["Deshalb ich bleibe zu Hause.","Deshalb bleibe ich zu Hause.","deshalb 뒤는 '동사+주어'"],
+        ["…, weil ich bin müde.","…, weil ich müde bin.","weil 뒤 동사는 맨 끝 (bin)"],
+        ["…, dass er kann schwimmen.","…, dass er schwimmen kann.","조동사도 맨 끝으로"],
+        ["Wenn ich Kind war, …","Als ich Kind war, …","과거 1회성은 als"]
+      ],
+      quiz:[
+        {q:"'시간이 없기 때문에 못 간다.' (weil)", a:"Ich kann nicht kommen, weil ich keine Zeit habe.", note:"weil 뒤 동사(habe) 맨 끝."},
+        {q:"'비쌌다. 그럼에도 나는 그것을 샀다.' (trotzdem)", a:"Es war teuer. Trotzdem habe ich es gekauft.", note:"trotzdem 뒤 동사 도치."},
+        {q:"'내가 어렸을 때 우리는 베를린에 살았다.' (als)", a:"Als ich klein war, wohnten wir in Berlin.", note:"과거 1회성 사건은 als."},
+        {q:"'나는 그가 올지 모르겠다.' (ob)", a:"Ich weiß nicht, ob er kommt.", note:"ob='~인지', 동사 끝."},
+        {q:"'그가 늦게 오더라도 나는 기다릴 것이다.' (obwohl)", a:"Ich werde warten, obwohl er spät kommt.", note:"obwohl 뒤 동사(kommt) 끝."},
+        {q:"'네가 시간 있을 때 전화해.' (wenn)", a:"Ruf mich an, wenn du Zeit hast.", note:"wenn 뒤 동사(hast) 끝."}
+      ]
+    },
+    {
+      t:"관계문 (Relativsätze)",
+      tag:"9장 · B1·B2",
+      body:[
+        "명사를 뒤에서 꾸며 문장을 훨씬 풍부하게 만듭니다. 관계문도 부문장이므로 동사는 맨 뒤로 갑니다. 핵심은: 관계대명사의 성·수는 '꾸미는 명사'를 따르고, 격은 '관계문 안에서의 역할'을 따른다는 것입니다."
+      ],
+      tables:[
+        {caption:"관계대명사", headers:["격","남성","여성","중성","복수"], rows:[
+          ["1격","der","die","das","die"],
+          ["4격","den","die","das","die"],
+          ["3격","dem","der","dem","denen"],
+          ["2격","dessen","deren","dessen","deren"]
+        ]}
+      ],
+      examples:[
+        ["der Kollege, der in Berlin arbeitet","베를린에서 일하는 동료 (der=남성·1격)"],
+        ["der Bericht, den ich geschrieben habe","내가 쓴 보고서 (den=남성·4격)"],
+        ["die Firma, bei der ich arbeite","내가 일하는 회사 (bei+3격 → der)"],
+        ["der Mann, dessen Auto hier steht","차가 여기 있는 그 남자 (dessen=2격)"],
+        ["das Team, mit dem ich arbeite","내가 함께 일하는 그 팀 (중성 3격 dem)"],
+        ["das Projekt, dessen Budget groß ist","그 프로젝트, 그것의 예산이 큰 (중성 2격 dessen)"]
+      ],
+      why:"관계대명사를 고를 때 두 단계로 나눠 생각하세요. 1) 꾸미는 명사의 성·수는 무엇인가(der Kollege→남성) 2) 관계문 안에서 그 대명사가 하는 역할은 무엇인가(그를 '안다'→4격 den). 이 두 질문을 분리해서 던지면 훨씬 쉬워집니다.",
+      tip:"전치사+관계대명사(bei der, mit dem, für den 등)가 함께 나오면, 전치사가 요구하는 격을 먼저 확인하고 그 격에 맞는 관계대명사를 고르세요.",
+      mistakes:[
+        ["der Kollege, der ich kenne","der Kollege, den ich kenne","내가 그를 '안다' → 4격 den"]
+      ],
+      quiz:[
+        {q:"'내가 어제 만난 그 여자'(treffen, Perfekt)", a:"die Frau, die ich gestern getroffen habe", note:"여성 4격은 die."},
+        {q:"'내가 사는 그 도시'(wohnen in)", a:"die Stadt, in der ich wohne", note:"in+3격, 여성 3격 der."},
+        {q:"'내가 함께 일하는 그 팀'(mit, das Team)", a:"das Team, mit dem ich arbeite", note:"mit+3격, 중성 3격 dem."},
+        {q:"'그 프로젝트, 그것의 예산이 큰'(2격)", a:"das Projekt, dessen Budget groß ist", note:"중성 2격 관계대명사는 dessen."}
+      ]
+    },
+    {
+      t:"접속법 II · I (Konjunktiv II · I)",
+      tag:"10장 · B2",
+      body:[
+        "접속법 II(würde+원형, 또는 hätte/wäre/könnte)는 정중한 부탁이나 비현실적 가정을 만듭니다. 접속법 I(sei/habe/komme…)은 뉴스나 보고서에서 '누가 ~라고 말했다'를 객관적으로 인용하는 간접화법에 씁니다."
+      ],
+      tables:[
+        {caption:"접속법 II 자주 쓰는 형태", headers:["직설법","접속법 II"], rows:[
+          ["ich habe","ich hätte"],
+          ["ich bin","ich wäre"],
+          ["ich kann","ich könnte"],
+          ["ich mache","ich würde machen"]
+        ]}
+      ],
+      examples:[
+        ["Könnten Sie mir bitte helfen?","도와주시겠어요? (können보다 정중)"],
+        ["Ich würde gern einen Termin vereinbaren.","약속을 잡고 싶습니다."],
+        ["Wenn ich mehr Zeit hätte, würde ich reisen.","시간이 더 있다면 여행할 텐데. (비현실 가정)"],
+        ["Er sagt, er sei krank.","그는 자기가 아프다고 말한다. (간접화법)"],
+        ["Sie sagte, sie habe keine Zeit.","그녀는 시간이 없다고 말했다."],
+        ["Könnten Sie den Platz tauschen?","자리를 바꿔주실 수 있을까요?"],
+        ["Sie sagte, das Projekt sei fertig.","그녀는 프로젝트가 끝났다고 말했다."]
+      ],
+      why:"접속법 I의 형태가 직설법과 똑같아 구분이 안 될 때(예: 규칙동사 다수)는 접속법 II(würde+원형)로 대체하는 것이 일반적입니다. 즉 'Er sagt, er komme'(원래 komme는 접속법I)처럼 형태가 겹치지 않을 때만 접속법 I을 살려 쓰고, 애매하면 würde로 안전하게 표현하세요.",
+      tip:"직장에서 상사나 고객에게 요청할 때는 습관적으로 Kannst du…? 대신 Könnten Sie…? / Würden Sie…? 를 쓰는 것이 훨씬 정중하게 들립니다. B2에서는 이 정중함의 뉘앙스가 평가 포인트이기도 합니다.",
+      mistakes:[
+        ["Kannst du mir helfen? (상사에게)","Könnten Sie mir helfen?","격식·정중은 접속법 II"]
+      ],
+      quiz:[
+        {q:"'주문을 취소하고 싶습니다.'(정중, stornieren)", a:"Ich würde gern meine Bestellung stornieren.", note:"würde gern + 원형: 정중한 소망."},
+        {q:"'그는 내일 온다고 말했다.'(간접)", a:"Er sagte, er komme morgen.", note:"접속법 I: komme."},
+        {q:"'자리를 바꿔주실 수 있을까요?' (Könnten, den Platz tauschen)", a:"Könnten Sie den Platz tauschen?", note:"정중한 요청."},
+        {q:"'그녀는 프로젝트가 끝났다고 말했다.' (sagen, sei)", a:"Sie sagte, das Projekt sei fertig.", note:"접속법 I: sei (sein의 간접화법)."}
+      ]
+    },
+    {
+      t:"B2 문체 — 어른스러운 독일어",
+      tag:"11장 · B2",
+      body:[
+        "B1까지가 '정확히' 말하는 것이라면, B2는 '논리적이고 문어체로' 말하는 것입니다. 명사화, 분사의 형용사적 사용, 고급 연결어, 의견·토론 표현 네 가지가 인상을 크게 좌우합니다."
+      ],
+      tables:[
+        {caption:"고급 연결어 — 논증의 뼈대", headers:["기능","표현"], rows:[
+          ["조건 강화","je + 비교급…, desto + 비교급… (~할수록 더~)"],
+          ["양보","zwar…, aber… / trotz + 2격"],
+          ["병렬","nicht nur…, sondern auch… / sowohl… als auch…"],
+          ["대조","einerseits…, andererseits…"],
+          ["인과","aufgrund + 2격 / infolgedessen"]
+        ]}
+      ],
+      examples:[
+        ["Wir entscheiden schnell. → die schnelle Entscheidung","명사화: 동사를 명사로 바꿔 문어체로."],
+        ["Die Umsetzung des Projekts beginnt im Mai.","프로젝트의 실행이 5월에 시작된다."],
+        ["die steigenden Preise","오르고 있는 가격 (현재분사·능동)"],
+        ["das geprüfte Dokument","검토된 문서 (과거분사·수동/완료)"],
+        ["Je mehr man übt, desto sicherer wird man.","연습할수록 더 자신감이 생긴다."],
+        ["Trotz des schlechten Wetters kamen alle.","나쁜 날씨에도 모두 왔다."],
+        ["Wir entscheiden nicht nur schnell, sondern handeln auch sofort.","우리는 빠르게 결정할 뿐 아니라 즉시 행동도 한다."],
+        ["Je höher die Preise sind, desto geringer wird die Nachfrage.","가격이 높을수록 수요는 줄어든다."]
+      ],
+      why:"명사화(Nominalisierung)는 독일어 문어체의 핵심 기술입니다. 동사를 명사로 바꾸면(entscheiden→die Entscheidung, umsetzen→die Umsetzung) 문장이 더 간결하고 격식 있게 들립니다. 신문 기사, 보고서, 이메일에서 특히 자주 보입니다.",
+      tip:"의견을 말할 때 Meiner Meinung nach…(내 생각에는) / Ich bin der Ansicht, dass…(나는 ~라고 생각한다) / Einerseits…, andererseits…(한편…, 다른 한편…) 세 세트만 자유자재로 쓸 수 있어도 B2 토론이 훨씬 매끄러워집니다.",
+      mistakes:[],
+      quiz:[
+        {q:"'우리는 빠르게 결정할 뿐 아니라 즉시 행동도 한다.' (nicht nur…, sondern auch…)", a:"Wir entscheiden nicht nur schnell, sondern handeln auch sofort.", note:"nicht nur A, sondern auch B."},
+        {q:"'가격이 높을수록 수요는 줄어든다.' (je…desto…)", a:"Je höher die Preise sind, desto geringer wird die Nachfrage.", note:"je절은 동사 끝, desto절은 동사 도치."}
+      ]
+    }
+  ],
+  v:[
+    {g:"전화·이메일·업무 (연습장 7단원)", items:[
+      ["die Anfrage","문의, 요청","Vielen Dank für Ihre Anfrage."],
+      ["die Unterlage(n)","서류, 자료","Anbei die gewünschten Unterlagen."],
+      ["zusenden","송부하다","Ich werde es Ihnen zusenden."],
+      ["die Verzögerung","지연","Es gab eine Verzögerung."],
+      ["klären","명확히 하다","Wir müssen das klären."],
+      ["die Zusammenarbeit","협업","Danke für die gute Zusammenarbeit."],
+      ["zuverlässig","신뢰할 수 있는","Er ist sehr zuverlässig."],
+      ["die Lösung","해결책","Wir haben eine Lösung gefunden."],
+      ["umsetzen","실행하다","Wir setzen den Plan um."],
+      ["zur Verfügung stehen","도움을 줄 수 있다, 응대 가능하다","Ich stehe Ihnen gern zur Verfügung."]
+    ]},
+    {g:"의견·토론 (연습장 8단원)", items:[
+      ["meiner Meinung nach","내 생각에는","Meiner Meinung nach ist das richtig."],
+      ["einerseits … andererseits","한편으로는 … 다른 한편으로는","Einerseits teuer, andererseits gut."],
+      ["dennoch","그럼에도","Dennoch bin ich dagegen."],
+      ["vorausgesetzt","~을 전제로","Vorausgesetzt, es klappt."],
+      ["der Vorteil / der Nachteil","장점 / 단점","Das hat viele Vorteile."],
+      ["zweifellos","의심할 여지 없이","Das ist zweifellos wahr."],
+      ["nachvollziehbar","납득 가능한","Das ist gut nachvollziehbar."],
+      ["entscheidend","결정적인","Das ist der entscheidende Punkt."],
+      ["berücksichtigen","고려하다","Wir müssen das berücksichtigen."]
+    ]},
+    {g:"환경·사회 — 논증하기 (연습장 11단원)", items:[
+      ["der Klimawandel","기후변화","Der Klimawandel betrifft uns alle."],
+      ["die Nachhaltigkeit","지속가능성","Nachhaltigkeit ist wichtig."],
+      ["die Auswirkung","영향, 결과","Die Auswirkungen sind groß."],
+      ["fördern / verbieten","촉진하다 / 금지하다","Wir sollten das fördern."],
+      ["verringern","줄이다","Wir müssen den Verbrauch verringern."],
+      ["die Verantwortung","책임","Jeder trägt Verantwortung."],
+      ["notwendig","필요한","Das ist notwendig."],
+      ["umstritten","논란이 있는","Diese Maßnahme ist umstritten."],
+      ["die Maßnahme","조치, 대책","Wir brauchen neue Maßnahmen."]
+    ]},
+    {g:"시사·간접화법 (연습장 12단원)", items:[
+      ["die Studie","연구, 조사","Laut einer Studie steigt die Zahl."],
+      ["zunehmen / abnehmen","증가하다 / 감소하다","Die Nachfrage nimmt zu."],
+      ["behaupten","주장하다","Experten behaupten, dass…"],
+      ["betonen","강조하다","Er betonte die Wichtigkeit."],
+      ["die Entwicklung","발전, 동향","Das ist eine positive Entwicklung."],
+      ["voraussichtlich","예상컨대","Voraussichtlich wird es besser."],
+      ["der Anstieg / der Rückgang","상승 / 하락","Der Anstieg der Preise ist stark."],
+      ["laut","~에 따르면","Laut der Studie steigt die Zahl."]
+    ]}
+  ],
+  c:[
+    {t:"업무 전화 (연습장 7단원)", note:"", lines:[
+      ["A","Guten Tag, hier ist Kim von Samsung. ___ ich bitte Herrn Weber sprechen?","","Guten Tag, hier ist Kim von Samsung. Kann ich bitte Herrn Weber sprechen?"],
+      ["B","Einen Moment, ich ___ Sie. (연결해드릴게요)","","Einen Moment, ich verbinde Sie."],
+      ["A","Es geht um die Anfrage, ___ ich gestern gesendet habe.","","Es geht um die Anfrage, die ich gestern gesendet habe."],
+      ["B","Ja, die Unterlagen ___ gerade geprüft. (검토되고 있다)","","Ja, die Unterlagen werden gerade geprüft."]
+    ]},
+    {t:"회의에서 의견 내기 (연습장 8단원)", note:"", lines:[
+      ["A","Wie ist Ihre Meinung ___ diesem Vorschlag? (~에 대한)","","Wie ist Ihre Meinung zu diesem Vorschlag?"],
+      ["B","Meiner Meinung ___ hat er klare Vorteile. (~에 따르면)","","Meiner Meinung nach hat er klare Vorteile."],
+      ["A","Das ist nachvollziehbar. ___ gibt es auch Risiken. (그럼에도)","","Das ist nachvollziehbar. Dennoch gibt es auch Risiken."],
+      ["B","Ich ___ sagen, wir sollten es testen. (정중한 제안)","","Ich würde sagen, wir sollten es testen."]
+    ]},
+    {t:"찬반 토론하기 (연습장 11단원)", note:"", lines:[
+      ["A","Sollte man Inlandsflüge verbieten? Wie ist deine ___? (의견)","","Sollte man Inlandsflüge verbieten? Wie ist deine Meinung?"],
+      ["B","___ Meinung nach ja, denn sie schaden dem Klima. (내 생각에는)","","Meiner Meinung nach ja, denn sie schaden dem Klima."],
+      ["A","Das stimmt, ___ viele Menschen brauchen sie beruflich. (그러나)","","Das stimmt, aber viele Menschen brauchen sie beruflich."],
+      ["B","Einerseits ja, ___ gibt es auch Alternativen wie die Bahn. (다른 한편)","","Einerseits ja, andererseits gibt es auch Alternativen wie die Bahn."]
+    ]},
+    {t:"뉴스에 대해 이야기하기 (연습장 12단원)", note:"", lines:[
+      ["A","Hast du die Nachricht gelesen? ___ der Studie steigen die Mieten weiter. (~에 따르면)","","Hast du die Nachricht gelesen? Laut der Studie steigen die Mieten weiter."],
+      ["B","Ja, der Experte ___, das Problem werde sich verschärfen. (강조했다)","","Ja, der Experte betonte, das Problem werde sich verschärfen."],
+      ["A","Er sagte auch, die Regierung ___ neue Maßnahmen. (계획한다고)","","Er sagte auch, die Regierung plane neue Maßnahmen."],
+      ["B","Voraussichtlich ___ die Lage erst nächstes Jahr besser. (될 것이다)","","Voraussichtlich wird die Lage erst nächstes Jahr besser."]
+    ]}
+  ],
+  quiz:[
+    {q:"'서류는 내일까지 검토되어 귀하께 송부될 것입니다.' (werden, prüfen, zusenden)", a:"Die Unterlagen werden bis morgen geprüft und Ihnen zugesendet.", note:"수동태 두 동사를 and로 연결."},
+    {q:"'제 생각에는 이 계획이 우리의 협업을 크게 개선할 것입니다.' (meiner Meinung nach, würde)", a:"Meiner Meinung nach würde dieser Plan unsere Zusammenarbeit deutlich verbessern.", note:"접속법 II würde로 정중하게 예측."},
+    {q:"'최근 한 연구에 따르면, AI의 중요성이 뚜렷이 증가하고 있다고 합니다.' (laut, zunehmen 간접화법)", a:"Laut einer aktuellen Studie nehme die Bedeutung von KI deutlich zu.", note:"간접화법 접속법 I: nehme."},
+    {q:"'한편으로 재택근무는 시간을 절약하지만, 다른 한편으로 대면 교류가 줄어든다.' (einerseits/andererseits)", a:"Einerseits spart Homeoffice Zeit, andererseits leidet oft der persönliche Austausch.", note:"대조 연결어 einerseits/andererseits."},
+    {q:"'내가 함께 일하는 동료' (der Kollege, mit dem)", a:"der Kollege, mit dem ich arbeite", note:"전치사+관계대명사: mit+3격 dem."}
+  ],
+  exam:{
+    intro:"독일에서 가장 널리 인정되는 두 시험은 Goethe-Zertifikat B2와 telc Deutsch B2입니다. 둘 다 네 영역(읽기·듣기·쓰기·말하기)을 평가하며, 모듈별로 따로 응시할 수 있습니다. 직장인에게는 한 번에 다 보기보다 약한 모듈부터 나눠 보는 전략이 유리합니다.",
+    goetheTable:{caption:"Goethe-Zertifikat B2 — 모듈 구조", headers:["모듈","시간","구성"], rows:[
+      ["Lesen 읽기","65분","5개 파트 · 30문항 (포럼·기사·논평·규정)"],
+      ["Hören 듣기","약 40분","4개 파트 · 30문항 (인터뷰·강연·라디오)"],
+      ["Schreiben 쓰기","75분","2개 과제 (① 포럼 토론글 ② 격식 메시지)"],
+      ["Sprechen 말하기","약 15분","2인 1조 · ① 발표(Vortrag) ② 토론(Diskussion)"]
+    ]},
+    goetheNote:"네 모듈은 한 번에 또는 따로 응시 가능. 모듈별 100점 중 60점 이상이면 합격. B2 도달에는 보통 600~800 수업시간(UE)이 필요하다고 봅니다(공식 기준).",
+    telcNote:"telc Deutsch B2는 공통 4영역 외에 Sprachbausteine(문법·어휘 빈칸 채우기) 파트가 따로 있어 문법 정밀도를 더 직접적으로 평가합니다. 문법에 자신이 있으면 telc, 자연스러운 의사소통이 강점이면 Goethe가 유리할 수 있습니다. 둘 다 대학·취업에서 널리 인정됩니다.",
+    writingTable:{caption:"쓰기 (Schreiben) — 꼭 외우는 표현", headers:["기능","표현"], rows:[
+      ["도입","In letzter Zeit wird viel darüber diskutiert, ob …"],
+      ["내 의견","Meiner Meinung nach … / Ich bin der Ansicht, dass …"],
+      ["근거","Ein wichtiger Grund dafür ist, dass … / Hinzu kommt, dass …"],
+      ["예시","Ein gutes Beispiel dafür ist … / So zeigt sich, dass …"],
+      ["반론·반박","Zwar …, aber … / Gegner argumentieren, dass …, jedoch …"],
+      ["결론","Zusammenfassend lässt sich sagen, dass … / Aus diesen Gründen …"]
+    ]},
+    writingTask:"실전 과제(약 150단어): 온라인 포럼에서 \"Sollten Unternehmen ihren Mitarbeitenden dauerhaft Homeoffice anbieten?\"(기업은 직원들에게 영구적인 재택근무를 제공해야 하는가?)라는 주제로 토론 중입니다. 위 5단 구조(도입‒내 의견‒근거‒반론·반박‒결론)와 표현을 활용해 의견글을 써 보세요.",
+    speakingTable:{caption:"말하기 (Sprechen) — 발표(Vortrag) 표현", headers:["단계","표현"], rows:[
+      ["① 도입","Ich möchte heute über das Thema … sprechen."],
+      ["② 장단점","Einerseits … / Ein Vorteil ist … / Ein Nachteil dabei ist …"],
+      ["③ 내 경험·의견","Aus meiner Erfahrung … / Ich persönlich finde, dass …"],
+      ["④ 마무리","Zusammenfassend würde ich sagen … / Vielen Dank für Ihre Aufmerksamkeit."],
+      ["토론(받기)","Das sehe ich auch so. / Da bin ich anderer Meinung, weil …"],
+      ["토론(제안)","Könnten wir uns darauf einigen, dass …? / Wie sehen Sie das?"]
+    ]},
+    speakingTask:"모의 발표 주제: \"Vor- und Nachteile von Smartphones im Alltag\" (일상 속 스마트폰의 장단점). 문장을 통째로 외우지 말고 키워드로 메모한 뒤, 도입 → 장점 → 단점 → 내 의견·마무리 순서로 소리 내어 2분간 발표해 보세요.",
+    planTable:{caption:"시험 직전 4주 플랜", headers:["주차","집중","할 일"], rows:[
+      ["1주","읽기·듣기","매일 기사 1개 정독 + DW/Easy German 듣기 1편, 모르는 단어 정리"],
+      ["2주","쓰기","토론글·격식 메시지 각 2편 작성, Redemittel 암기, Claude로 첨삭"],
+      ["3주","말하기","발표 주제 5개 2분 녹음·재생, 토론 표현 입에 붙이기"],
+      ["4주","실전 모의","공식 Modellsatz를 시간 재고 1회전, 약점 보완"]
+    ]},
+    tips:[
+      "모듈 분리 응시 — 한 번에 다 못 봐도 됩니다. 자신 있는 모듈부터 통과시키고 약점에 집중하세요.",
+      "쓰기·말하기가 점수 효율 최고 — 구조와 표현이 정해져 있어 단기간에 가장 많이 오릅니다.",
+      "시간 관리 — 읽기에서 한 문제에 막히면 넘어가고 표시 후 돌아오기. 답안 옮길 5분은 꼭 남기기.",
+      "Claude 활용 — '이 작문 B2 기준으로 채점하고 고쳐줘', '이 주제로 발표 키워드 만들어줘'처럼 바로 연습 상대로 활용하세요."
+    ],
+    links:[
+      {title:"Goethe-Zertifikat B2 공식 무료 모의시험 (Modellsatz PDF)", url:"https://www.goethe.de/pro/relaunch/prf/materialien/B2/b2_modellsatz_erwachsene.pdf", desc:"실제 시험과 동일한 형식의 전 영역 모의문제 + 정답. 시험 2~3주 전 시간 재고 풀어보세요."},
+      {title:"telc Deutsch B2 공식 페이지", url:"https://www.telc.net/en/language-examinations/certificate-exams/german/telc-german-b2/", desc:"시험 구조, 예시 문제, 준비 자료 안내."}
+    ]
+  },
+  vid:[
+    {title:"lingoni GERMAN · Konjunktiv & 문어체", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"Konjunktiv I/II와 간접화법 강의로 뉴스·시험 문어체를 정복하세요."},
+    {title:"Easy German", url:"https://www.youtube.com/@EasyGerman", desc:"거리 인터뷰로 듣는 '진짜 독일어'. 독·영 자막. B1~B2 듣기·토론 감각에 최고."},
+    {title:"Goethe B2 공식 모의시험 (Modellsatz PDF)", url:"https://www.goethe.de/pro/relaunch/prf/materialien/B2/b2_modellsatz_erwachsene.pdf", desc:"시간 재고 실전처럼. 시험 4주 전 1회전 권장."}
+  ]
+}
+};
+
+/* 부록(Appendix) 데이터 */
+var APPENDIX = {
+  irregular:{caption:"꼭 외우는 불규칙동사 20", headers:["원형","과거(Präteritum)","현재완료(Perfekt)","뜻"], rows:[
+    ["beginnen","begann","hat begonnen","시작하다"],
+    ["bleiben","blieb","ist geblieben","머무르다"],
+    ["bringen","brachte","hat gebracht","가져오다"],
+    ["denken","dachte","hat gedacht","생각하다"],
+    ["essen","aß","hat gegessen","먹다"],
+    ["fahren","fuhr","ist gefahren","(타고)가다"],
+    ["finden","fand","hat gefunden","찾다"],
+    ["geben","gab","hat gegeben","주다"],
+    ["gehen","ging","ist gegangen","가다"],
+    ["kommen","kam","ist gekommen","오다"],
+    ["lesen","las","hat gelesen","읽다"],
+    ["nehmen","nahm","hat genommen","잡다/타다"],
+    ["schreiben","schrieb","hat geschrieben","쓰다"],
+    ["sehen","sah","hat gesehen","보다"],
+    ["sprechen","sprach","hat gesprochen","말하다"],
+    ["stehen","stand","hat gestanden","서 있다"],
+    ["treffen","traf","hat getroffen","만나다"],
+    ["trinken","trank","hat getrunken","마시다"],
+    ["verstehen","verstand","hat verstanden","이해하다"],
+    ["werden","wurde","ist geworden","되다"]
+  ]},
+  defArt:{caption:"정관사 (der/die/das) 격변화", headers:["격","남성 m","여성 f","중성 n","복수 pl"], rows:[
+    ["1격 Nom.","der","die","das","die"],
+    ["4격 Akk.","den","die","das","die"],
+    ["3격 Dat.","dem","der","dem","den (+n)"],
+    ["2격 Gen.","des (+s)","der","des (+s)","der"]
+  ]},
+  indefArt:{caption:"부정관사 (ein) — 4격에서 남성만 변함", headers:["격","남성 m","여성 f","중성 n"], rows:[
+    ["1격 Nom.","ein","eine","ein"],
+    ["4격 Akk.","einen","eine","ein"],
+    ["3격 Dat.","einem","einer","einem"]
+  ]},
+  prep:{caption:"전치사 + 격 (자주 틀리는 것)", headers:["구분","전치사","예"], rows:[
+    ["3격(Dativ)","mit, nach, aus, zu, von, bei, seit","mit dem Auto, bei der Firma"],
+    ["4격(Akk.)","für, ohne, gegen, um, durch","für den Kunden, ohne den Termin"],
+    ["3·4격 혼합(Wechsel)","in, an, auf, über, unter, vor, hinter, neben, zwischen","위치(wo?)=3격, 이동(wohin?)=4격. Ich bin im Büro / Ich gehe ins Büro."]
+  ]},
+  adjEnding:{caption:"형용사 어미 (1격 기준)", headers:["관사","남성 m","여성 f","중성 n","복수 pl"], rows:[
+    ["der + 형용사","der gute","die gute","das gute","die guten"],
+    ["ein + 형용사","ein guter","eine gute","ein gutes","— guten"],
+    ["관사 없음","guter","gute","gutes","gute"]
+  ]},
+  connectors:{caption:"주요 연결어 — 동사 위치로 분류", headers:["유형","연결어","동사 위치","예시"], rows:[
+    ["등위(어순 그대로)","und, aber, oder, denn, sondern","2번째 자리 유지","Ich bleibe, denn es regnet."],
+    ["부사형(도치)","deshalb, trotzdem, dann, dennoch","바로 뒤 동사 도치","Es regnet, deshalb bleibe ich."],
+    ["종속(동사 끝)","weil, dass, wenn, obwohl, ob, da","동사 맨 뒤로","…, weil es regnet."]
+  ]},
+  summary:[
+    ["어순(평서문)","정동사는 2번째 자리. 앞에 뭐가 와도 동사 위치 고정."],
+    ["★어순(연결)","등위=그대로 / deshalb=도치 / weil·dass=동사 맨 뒤."],
+    ["격(핵심)","남성만 1격 der→4격 den. 여·중·복은 1격=4격."],
+    ["3격 동사","helfen·danken·gefallen·gehören → 목적어 3격(dir/mir)."],
+    ["형용사 어미","정관사 뒤 -e/-en, 부정관사 뒤 남성 -er·중성 -es."],
+    ["과거","회화=Perfekt. 이동·변화 동사는 sein(bin gegangen)."],
+    ["전치사","mit·nach·aus·zu·von·bei·seit(3격) / für·ohne·gegen·um·durch(4격) / 혼합은 위치3·이동4."],
+    ["관계문","성·수=앞 명사, 격=관계문 속 역할, 동사 맨 뒤."],
+    ["정중·가정","würde/könnte/hätte (B2 기본 매너)."],
+    ["B2 문체","명사화·분사·je…desto·간접화법."]
+  ]
+};
+
+var ROADMAP = [
+  ["1주","A1","자기소개·직업·출신","현재형, sein/haben, 인칭대명사","나를 3문장으로 소개"],
+  ["2주","A1→A2","시간·요일·일상","명사 성·복수, 분리동사","약속 잡기"],
+  ["3주","A2","쇼핑·길찾기","4격/3격, 화법조동사","가게에서 주문"],
+  ["4주","A2→B1","과거·휴가·경험","Perfekt / Präteritum","주말 이야기"],
+  ["5~6주","B1","직장·회의·업무","weil/dass/wenn/obwohl 부문장","회의 조율·정중한 요청"],
+  ["7~8주","B1","계획·목표·미래","형용사 어미변화, werden","목표 말하기"],
+  ["9~10주","B1→B2","전화·이메일·협업","수동태, 관계문, 연결부사","업무 전화·격식 이메일"],
+  ["11~12주","B2","의견·토론·추상","Konjunktiv II, Genitiv, 고급 연결어","회의에서 의견 펼치기"]
+];
+
+var ALL_VIDEOS = [
+  {level:"전체", title:"DW Learn German (배치테스트 포함)", url:"https://learngerman.dw.com/en/overview", desc:"독일 공영방송 DW의 공식 코스. A1~B1 전 과정 + 배치테스트(Einstufungstest) + 문법·연습문제까지 무료. 가장 체계적입니다."},
+  {level:"A1", title:"Nicos Weg · A1 전편 영화", url:"https://www.youtube.com/watch?v=4-eDoThe6qo", desc:"쉬운 독일어 드라마로 감 되살리기. 자막은 'C'키."},
+  {level:"A2", title:"Nicos Weg · A2 전편 영화", url:"https://www.youtube.com/watch?v=Lg5P2w_Ro1c", desc:"일상 상황별 표현이 풍부."},
+  {level:"B1", title:"Nicos Weg · B1 전편 영화", url:"https://www.youtube.com/watch?v=LkufozluseI", desc:"과거·접속사 표현이 자연스럽게 반복."},
+  {level:"A1~B2", title:"lingoni GERMAN", url:"https://www.youtube.com/channel/UClBrbJXNh2sFxOuvH4o5H9g", desc:"A1~B2 체계적 문법·어휘 강의. 직장·이메일·전화 표현 플레이리스트가 특히 유용."},
+  {level:"B1~B2", title:"Easy German", url:"https://www.youtube.com/@EasyGerman", desc:"거리 인터뷰로 듣는 '진짜 독일어'. 독·영 자막. 듣기·회화 감각에 최고."},
+  {level:"B2", title:"Goethe-Zertifikat B2 공식 모의시험 (PDF)", url:"https://www.goethe.de/pro/relaunch/prf/materialien/B2/b2_modellsatz_erwachsene.pdf", desc:"실제 시험과 동일한 형식의 전 영역 모의문제."}
+];
+
+/* ===================== 렌더링 ===================== */
+var state = { route:"home", level:null, subtab:"grammar" };
+
+function levelBadge(lv){
+  return '<span class="badge" style="background:'+LEVEL_COLOR[lv]+'">'+lv+'</span>';
+}
+
+function renderNav(){
+  var items = [["home","홈"],["A1","A1"],["A2","A2"],["B1","B1"],["B2","B2"],["appendix","문법 요약표"],["videos","영상 모음"]];
+  var html = items.map(function(it){
+    var active = (state.route===it[0]) ? " active" : "";
+    return '<button class="'+active.trim()+'" data-route="'+it[0]+'">'+it[1]+'</button>';
+  }).join("");
+  document.getElementById("mainnav").innerHTML = html;
+}
+
+function renderHome(){
+  var cards = ["A1","A2","B1","B2"].map(function(lv){
+    var d = DATA[lv];
+    return '<div class="level-card" data-goto="'+lv+'">'+
+      '<span class="badge" style="background:'+LEVEL_COLOR[lv]+'">'+lv+'</span>'+
+      '<h3>'+esc(d.title)+'</h3><p>'+esc(d.blurb)+'</p></div>';
+  }).join("");
+
+  var roadmapRows = ROADMAP.map(function(r){
+    return [r[0], '<span class="pill" style="background:'+LEVEL_COLOR[r[1].split("→")[0].split("~")[0]]+'">'+r[1]+'</span>', r[2], r[3], r[4]];
+  });
+
+  return ''+
+  '<div class="hero"><h1>독일어, 다시 깨우기 — A1 → B2</h1>'+
+  '<p class="lead">16년 쉬었어도 사라진 게 아니라 잠들어 있을 뿐입니다. 레벨을 선택해 원하는 단계부터 시작하세요. 문법 · 단어 · 생활 회화 · 확인문제가 레벨마다 준비되어 있습니다.</p></div>'+
+  '<div class="level-grid">'+cards+'</div>'+
+  '<div class="guide-box"><h3>이 사이트 200% 활용법</h3>'+
+  '<p><b>읽는 법</b> ① 문법을 천천히 읽고 → ② 예문을 🔊 버튼으로 듣고 소리 내어 따라 읽고 → ③ 실수 박스에서 내가 틀리던 패턴을 확인 → ④ 퀴즈는 먼저 스스로 풀어본 뒤 정답을 확인하세요.</p>'+
+  '<p><b>왜 이렇게 공부하나요?</b> 문법은 암기가 아니라 패턴 인식입니다. 같은 패턴을 여러 예문으로 반복해서 보면, 규칙을 외우지 않아도 틀린 문장이 어색하게 느껴지는 감각이 생깁니다. 그 감각이 목표입니다.</p>'+
+  '<p><b>5가지 원칙</b> 매일 조금(하루 30분) · 소리 내어 · 실수 환영 · 단어는 항상 관사와 예문과 함께 · 배운 표현은 그날 바로 써먹기.</p></div>'+
+  '<div class="card"><h2>현실적인 12주 로드맵</h2><div class="roadmap-wrap">'+
+  tbl(["주차","레벨","단어 주제","문법 핵심","회화/실전"], roadmapRows)+
+  '</div><p style="color:var(--muted); font-size:.85rem;">하루 30~40분 기준. B2 시험까지 노린다면 12주 후 추가로 3~4개월의 집중 준비를 권합니다.</p></div>';
+}
+
+function renderGrammarTopic(topic){
+  var html = '<div class="gram-topic">';
+  html += '<span class="tag">'+esc(topic.tag)+'</span><h3>'+esc(topic.t)+'</h3>';
+  topic.body.forEach(function(p){ html += "<p>"+esc(p)+"</p>"; });
+  if(topic.tables){
+    topic.tables.forEach(function(tb){
+      html += "<p><b>"+esc(tb.caption)+"</b></p>"+tbl(tb.headers, tb.rows.map(function(r){return r.map(function(c){return esc(c);});}));
+    });
+  }
+  if(topic.examples && topic.examples.length){
+    html += '<div class="ex-list">';
+    topic.examples.forEach(function(ex){
+      html += '<div class="ex-item">'+ttsBtn(ex[0])+'<div><div class="ex-de">'+esc(ex[0])+'</div><div class="ex-ko">'+esc(ex[1])+'</div></div></div>';
+    });
+    html += '</div>';
+  }
+  if(topic.why){ html += '<div class="why-box"><b>왜?</b> '+esc(topic.why)+'</div>'; }
+  if(topic.tip){ html += '<div class="tip-box"><b>실전 팁</b> '+esc(topic.tip)+'</div>'; }
+  if(topic.mistakes && topic.mistakes.length){
+    html += '<div class="mistake-list"><p><b>한국인이 자주 하는 실수</b></p>';
+    topic.mistakes.forEach(function(m){
+      html += '<div class="mistake-item"><span class="wrong">✕ '+esc(m[0])+'</span> → <span class="right">✓ '+esc(m[1])+'</span><span class="mnote">'+esc(m[2])+'</span></div>';
+    });
+    html += '</div>';
+  }
+  if(topic.quiz && topic.quiz.length){
+    html += '<div class="core-box"><b>스스로 확인 (가리고 풀어보세요)</b></div>';
+    html += renderQuizList(topic.quiz, "gq");
+  }
+  html += '</div>';
+  return html;
+}
+
+var quizCounter = 0;
+function renderQuizList(list, prefix){
+  var html = "";
+  list.forEach(function(item){
+    quizCounter++;
+    var id = prefix+"_"+quizCounter;
+    html += '<div class="quiz-item">'+
+      '<div class="quiz-q">Q. '+esc(item.q)+'</div>'+
+      '<div class="quiz-row">'+
+      '<input type="text" id="in_'+id+'" placeholder="정답을 입력해보세요 (몰라도 확인 버튼을 눌러보세요)">'+
+      '<button data-check="'+id+'" data-answer="'+escAttr(item.a)+'" data-note="'+escAttr(item.note||"")+'">확인</button>'+
+      '</div>'+
+      '<div class="quiz-feedback" id="fb_'+id+'"></div>'+
+      '</div>';
+  });
+  return html;
+}
+
+function normalizeAnswer(s){
+  return s.toLowerCase()
+    .replace(/[.,!?„“"'’()]/g,"")
+    .replace(/\s+/g," ")
+    .trim();
+}
+
+function renderVocab(groups){
+  var html = "";
+  groups.forEach(function(grp){
+    html += '<div class="vocab-group"><h3>'+esc(grp.g)+'</h3><div class="vocab-grid">';
+    grp.items.forEach(function(it){
+      var de = it[0], ko = it[1], ex = it[2]||"";
+      html += '<div class="vword"><div class="de">'+ttsBtn(de)+' '+esc(de)+'</div><div class="ko">'+esc(ko)+'</div>';
+      if(ex){ html += '<div class="ex">'+ttsBtn(ex)+' <span>'+esc(ex)+'</span></div>'; }
+      html += '</div>';
+    });
+    html += '</div></div>';
+  });
+  return html;
+}
+
+var dialogCounter = 0;
+function renderConversation(list){
+  var html = "";
+  list.forEach(function(d){
+    html += '<div class="dialog"><h3>'+esc(d.t)+'</h3>';
+    if(d.note){ html += '<div class="note">'+esc(d.note)+'</div>'; }
+    d.lines.forEach(function(line){
+      var sp = line[0], de = line[1], ko = line[2], full = line[3] || de;
+      var hasBlank = de.indexOf("___") !== -1;
+      dialogCounter++;
+      var did = "dl_"+dialogCounter;
+      html += '<div class="dline"><span class="sp">'+esc(sp)+'</span><div class="dtext">';
+      html += '<div class="de" id="txt_'+did+'">'+ttsBtn(hasBlank ? full : de)+' '+esc(de)+
+        (hasBlank ? ' <button class="reveal-btn" data-reveal="'+did+'" data-full="'+escAttr(full)+'">정답</button>' : '')+
+        '</div>';
+      if(ko){ html += '<div class="ko">'+esc(ko)+'</div>'; }
+      html += '</div></div>';
+    });
+    html += '</div>';
+  });
+  return html;
+}
+
+function renderVideos(list, showLevel){
+  var html = "";
+  list.forEach(function(v){
+    html += '<div class="video-card"><div class="yt">▶️</div><div>';
+    if(showLevel && v.level){ html += '<span class="video-level" style="background:'+(LEVEL_COLOR[v.level]||"#555")+'">'+esc(v.level)+'</span>'; }
+    html += '<a href="'+escAttr(v.url)+'" target="_blank" rel="noopener">'+esc(v.title)+'</a>'+
+      '<p>'+esc(v.desc)+'</p></div></div>';
+  });
+  return html;
+}
+
+function renderAppendix(){
+  var html = '<div class="hero"><h1>문법 요약표 · 부록</h1><p class="lead">막히면 여기부터. 표를 눈에 익히고, 필요할 때 바로 다시 펼쳐보세요.</p></div>';
+  html += '<div class="card"><h2>'+APPENDIX.irregular.caption+'</h2>'+tbl(APPENDIX.irregular.headers, APPENDIX.irregular.rows)+'</div>';
+  html += '<div class="card"><h2>격(Kasus) 한 장 정리</h2>'+
+    tbl(APPENDIX.defArt.headers, APPENDIX.defArt.rows)+
+    tbl(APPENDIX.indefArt.headers, APPENDIX.indefArt.rows)+
+    tbl(APPENDIX.prep.headers, APPENDIX.prep.rows)+'</div>';
+  html += '<div class="card"><h2>형용사 어미 & 연결어</h2>'+
+    tbl(APPENDIX.adjEnding.headers, APPENDIX.adjEnding.rows)+
+    tbl(APPENDIX.connectors.headers, APPENDIX.connectors.rows)+'</div>';
+  html += '<div class="card"><h2>핵심 한 장 정리</h2>'+
+    tbl(["주제","한 줄 핵심"], APPENDIX.summary)+'</div>';
+  return html;
+}
+
+function renderVideosPage(){
+  var html = '<div class="hero"><h1>영상 자료실</h1><p class="lead">레벨별 추천 영상을 한곳에 모았습니다. 자막을 켜고 따라 말해보세요. 외부 플랫폼 자료라 링크·운영 상태는 변동될 수 있습니다.</p></div>';
+  html += '<div class="card">'+renderVideos(ALL_VIDEOS, true)+'</div>';
+  return html;
+}
+
+function renderLevelPage(lv){
+  var d = DATA[lv];
+  var subtabs = [["grammar","문법"],["vocab","단어"],["conversation","회화"],["quiz","퀴즈"]];
+  if(lv==="B2") subtabs.push(["exam","B2 시험대비"]);
+  subtabs.push(["videos","영상"]);
+
+  var html = '<div class="level-header">'+levelBadge(lv)+'<div><h2 style="margin:0">'+esc(d.title)+'</h2><div class="goal">'+esc(d.blurb)+'</div></div></div>';
+
+  html += '<div class="subtabs">';
+  subtabs.forEach(function(st){
+    var active = (state.subtab===st[0]) ? " active" : "";
+    html += '<button class="'+active.trim()+'" data-subtab="'+st[0]+'">'+st[1]+'</button>';
+  });
+  html += '</div>';
+
+  html += '<div id="subcontent">';
+  if(state.subtab==="grammar"){
+    d.g.forEach(function(topic){ html += renderGrammarTopic(topic); });
+  } else if(state.subtab==="vocab"){
+    html += renderVocab(d.v);
+  } else if(state.subtab==="conversation"){
+    html += renderConversation(d.c);
+  } else if(state.subtab==="quiz"){
+    html += '<div class="card"><h2>'+lv+' 총정리 퀴즈</h2>'+renderQuizList(d.quiz, "lq_"+lv)+'</div>';
+  } else if(state.subtab==="exam" && d.exam){
+    var ex = d.exam;
+    html += '<div class="card"><h2>B2 시험 한눈에 보기</h2><p>'+esc(ex.intro)+'</p>'+
+      tbl(ex.goetheTable.headers, ex.goetheTable.rows)+
+      '<p style="color:var(--muted); font-size:.88rem;">'+esc(ex.goetheNote)+'</p>'+
+      '<p>'+esc(ex.telcNote)+'</p></div>';
+    html += '<div class="card"><h2>쓰기 (Schreiben) 전략</h2>'+
+      tbl(ex.writingTable.headers, ex.writingTable.rows)+
+      '<div class="core-box">'+esc(ex.writingTask)+'</div></div>';
+    html += '<div class="card"><h2>말하기 (Sprechen) 전략</h2>'+
+      tbl(ex.speakingTable.headers, ex.speakingTable.rows)+
+      '<div class="core-box">'+esc(ex.speakingTask)+'</div></div>';
+    html += '<div class="card"><h2>시험 직전 4주 플랜</h2>'+tbl(ex.planTable.headers, ex.planTable.rows)+
+      '<p><b>시험 꿀팁</b></p><ul>'+ex.tips.map(function(t){return "<li>"+esc(t)+"</li>";}).join("")+'</ul></div>';
+    html += '<div class="card"><h2>공식 자료</h2>'+renderVideos(ex.links, false)+'</div>';
+  } else if(state.subtab==="videos"){
+    html += '<div class="card">'+renderVideos(d.vid, false)+'</div>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function render(){
+  renderNav();
+  var el = document.getElementById("content");
+  quizCounter = 0; dialogCounter = 0;
+  if(state.route==="home"){ el.innerHTML = renderHome(); }
+  else if(state.route==="appendix"){ el.innerHTML = renderAppendix(); }
+  else if(state.route==="videos"){ el.innerHTML = renderVideosPage(); }
+  else if(DATA[state.route]){ el.innerHTML = renderLevelPage(state.route); }
+  else { el.innerHTML = renderHome(); }
+  window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
+}
+
+/* ===================== 이벤트 ===================== */
+document.addEventListener("click", function(e){
+  var navBtn = e.target.closest("[data-route]");
+  if(navBtn){
+    state.route = navBtn.getAttribute("data-route");
+    if(DATA[state.route]) state.subtab = "grammar";
+    saveState();
+    render();
+    return;
+  }
+  var goCard = e.target.closest("[data-goto]");
+  if(goCard){
+    state.route = goCard.getAttribute("data-goto");
+    state.subtab = "grammar";
+    saveState();
+    render();
+    return;
+  }
+  var subBtn = e.target.closest("[data-subtab]");
+  if(subBtn){
+    state.subtab = subBtn.getAttribute("data-subtab");
+    render();
+    return;
+  }
+  var ttsBtnEl = e.target.closest(".tts");
+  if(ttsBtnEl){
+    speakDE(ttsBtnEl.getAttribute("data-tts"));
+    return;
+  }
+  var checkBtn = e.target.closest("[data-check]");
+  if(checkBtn){
+    var id = checkBtn.getAttribute("data-check");
+    var answer = checkBtn.getAttribute("data-answer");
+    var note = checkBtn.getAttribute("data-note");
+    var input = document.getElementById("in_"+id);
+    var fb = document.getElementById("fb_"+id);
+    var userVal = input ? input.value : "";
+    var accepted = answer.split("|").map(normalizeAnswer);
+    var norm = normalizeAnswer(userVal);
+    var isCorrect = norm.length>0 && accepted.indexOf(norm) !== -1;
+    fb.className = "quiz-feedback show " + (isCorrect ? "ok" : "no");
+    fb.innerHTML = "<b>"+(isCorrect ? "✓ 정답입니다!" : (norm.length>0 ? "✗ 다시 확인해보세요" : "정답 확인"))+"</b>"+
+      '<div style="margin-top:.3rem;">정답: <b>'+esc(answer.replace(/\|/g," / "))+'</b> '+ttsBtn(answer.split("|")[0])+'</div>'+
+      (note ? '<div style="margin-top:.2rem; color:var(--muted);">'+esc(note)+'</div>' : "");
+    return;
+  }
+  var revealBtn = e.target.closest("[data-reveal]");
+  if(revealBtn){
+    var did = revealBtn.getAttribute("data-reveal");
+    var full = revealBtn.getAttribute("data-full");
+    var txt = document.getElementById("txt_"+did);
+    txt.innerHTML = ttsBtn(full)+' '+esc(full)+' <button class="reveal-btn done">✓ 정답 확인됨</button>';
+    return;
+  }
+});
+
+document.addEventListener("keydown", function(e){
+  if(e.key==="Enter" && e.target.tagName==="INPUT" && e.target.id.indexOf("in_")===0){
+    var row = e.target.closest(".quiz-row");
+    if(row){ var btn = row.querySelector("[data-check]"); if(btn) btn.click(); }
+  }
+});
+
+/* ===================== TTS ===================== */
+var germanVoice = null;
+function pickVoice(){
+  if(!window.speechSynthesis) return;
+  var voices = speechSynthesis.getVoices();
+  germanVoice = voices.find(function(v){ return v.lang && v.lang.toLowerCase().indexOf("de")===0; }) || null;
+}
+if(window.speechSynthesis){
+  pickVoice();
+  speechSynthesis.onvoiceschanged = pickVoice;
+}
+function speakDE(text){
+  if(!window.speechSynthesis){ alert("이 브라우저는 음성 합성을 지원하지 않습니다."); return; }
+  speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text);
+  u.lang = "de-DE";
+  u.rate = 0.92;
+  if(germanVoice) u.voice = germanVoice;
+  speechSynthesis.speak(u);
+}
+
+/* ===================== 글자 크기 ===================== */
+function applyFontSize(px){
+  document.documentElement.style.fontSize = px+"px";
+  try{ localStorage.setItem("de_fs", px); }catch(e){}
+}
+document.getElementById("fsUp").addEventListener("click", function(){
+  var cur = parseInt(getComputedStyle(document.documentElement).fontSize,10) || 17;
+  applyFontSize(Math.min(cur+1, 24));
+});
+document.getElementById("fsDown").addEventListener("click", function(){
+  var cur = parseInt(getComputedStyle(document.documentElement).fontSize,10) || 17;
+  applyFontSize(Math.max(cur-1, 13));
+});
+document.getElementById("fsReset").addEventListener("click", function(){ applyFontSize(17); });
+
+/* ===================== 맨 위로 ===================== */
+var toTopBtn = document.getElementById("toTop");
+window.addEventListener("scroll", function(){
+  if(window.scrollY > 350) toTopBtn.classList.add("show");
+  else toTopBtn.classList.remove("show");
+});
+toTopBtn.addEventListener("click", function(){
+  window.scrollTo({top:0, behavior:"smooth"});
+});
+
+/* ===================== 상태 저장 ===================== */
+function saveState(){
+  try{ localStorage.setItem("de_route", state.route); }catch(e){}
+}
+function loadState(){
+  try{
+    var savedFs = localStorage.getItem("de_fs");
+    if(savedFs) document.documentElement.style.fontSize = savedFs+"px";
+    var savedRoute = localStorage.getItem("de_route");
+    if(savedRoute && (DATA[savedRoute] || savedRoute==="home" || savedRoute==="appendix" || savedRoute==="videos")){
+      state.route = savedRoute;
+    }
+  }catch(e){}
+}
+
+/* ===================== 시작 ===================== */
+loadState();
+render();
+</script>
+</body>
+</html>
