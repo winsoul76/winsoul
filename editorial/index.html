@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>청소년 1부 편집부 | 한마음 교회</title>
+<meta name="description" content="한마음 교회 청소년 1부 편집부 — 출석 체크, 말씀 나눔 체크, 사역 담당 일정, 오픈 강좌, 주보 가이드">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="home">
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-brand"><span class="dot"></span>청소년 1부 편집부</div>
+    <div class="nav-links">
+      <a href="index.html" data-page="home">홈</a>
+      <a href="ministry.html" data-page="ministry">사역 소개·서약</a>
+      <a href="attendance.html" data-page="attendance">출석 체크</a>
+      <a href="scripture-check.html" data-page="scripture">말씀 나눔</a>
+      <a href="schedule.html" data-page="schedule">담당·일정</a>
+      <a href="lectures.html" data-page="lectures">오픈 강좌</a>
+      <a href="bulletin-guide.html" data-page="bulletin">주보 가이드</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">한마음 교회 · 청소년 1부</div>
+    <h1>편집부</h1>
+    <p>글과 그림으로, 하나님의 이야기를 전하는 사람들.<br>출석·말씀나눔·사역 담당을 한눈에 확인하고 관리하세요.</p>
+    <div class="hero-verse">"하나님으로부터 위대한 일을 기대하라, 하나님을 위해 위대한 일을 시도하라" — 윌리엄 캐리</div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>다가오는 사역 담당</h2>
+      <span class="sub" id="upcomingSub"></span>
+    </div>
+    <div class="duty-list" id="dutyList"></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>바로가기</h2>
+    </div>
+    <div class="grid grid-3">
+      <a class="card" href="attendance.html" style="display:block;">
+        <div class="icon">✅</div>
+        <h3>모임 출석 체크</h3>
+        <p>매달 첫주·둘째주 편집부 모임 참석 여부를 체크합니다.</p>
+      </a>
+      <a class="card" href="scripture-check.html" style="display:block;">
+        <div class="icon">✍️</div>
+        <h3>주일 말씀 나눔 체크</h3>
+        <p>주일 말씀 손글씨 요약 나눔방 인증 여부를 확인합니다.</p>
+      </a>
+      <a class="card" href="schedule.html" style="display:block;">
+        <div class="icon">🗓️</div>
+        <h3>담당·전체 일정</h3>
+        <p>1면 그림, 2면 기사 담당과 마감일을 한눈에 봅니다.</p>
+      </a>
+      <a class="card" href="ministry.html" style="display:block;">
+        <div class="icon">📖</div>
+        <h3>사역 소개 &amp; 서약</h3>
+        <p>편집부가 하는 일과 우리의 약속(Commitment)을 소개합니다.</p>
+      </a>
+      <a class="card" href="lectures.html" style="display:block;">
+        <div class="icon">🖋️</div>
+        <h3>오픈 강좌</h3>
+        <p>캘리그라피 등, 둘째 주 오픈 강좌 자료 모음.</p>
+      </a>
+      <a class="card" href="bulletin-guide.html" style="display:block;">
+        <div class="icon">📰</div>
+        <h3>주보 만들기 가이드</h3>
+        <p>주보 제작 방법과 청소년 1부에 맞는 콘텐츠 아이디어.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head"><h2>이번 달 요약</h2></div>
+    <div class="grid grid-4" id="statCards">
+      <div class="card">
+        <div class="icon">👥</div>
+        <h3 id="statMembers">14명</h3>
+        <p>편집부원</p>
+      </div>
+      <div class="card">
+        <div class="icon">🗓️</div>
+        <h3 id="statNextMeeting">-</h3>
+        <p>다음 모임일</p>
+      </div>
+      <div class="card">
+        <div class="icon">⏰</div>
+        <h3 id="statNextDeadline">-</h3>
+        <p>다음 마감일</p>
+      </div>
+      <div class="card">
+        <div class="icon">🎨</div>
+        <h3>둘째 주</h3>
+        <p>오픈 강좌 있는 날</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    한마음 교회 청소년 1부 편집부 · winsoul.de/editorial<br>
+    "하나님으로부터 위대한 일을 기대하라, 하나님을 위해 위대한 일을 시도하라" (윌리엄 캐리)
+  </div>
+</footer>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/sheets.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+(function(){
+  var upcoming = EditorialUtils.upcoming(3);
+  var list = document.getElementById('dutyList');
+  var sub = document.getElementById('upcomingSub');
+  sub.textContent = '오늘: ' + EditorialUtils.fmtKorean(EditorialUtils.todayISO());
+
+  if (!upcoming.length) {
+    list.innerHTML = '<p class="muted">등록된 다가오는 일정이 없습니다.</p>';
+  } else {
+    var today = EditorialUtils.todayISO();
+    list.innerHTML = upcoming.map(function(s){
+      var isToday = s.date === today;
+      return '<div class="duty-item' + (isToday ? ' today' : '') + '">' +
+        '<div class="duty-date">' + EditorialUtils.fmtShort(s.date) +
+          '<small>' + EditorialUtils.fmtKorean(s.date).split(' ')[1] + (s.meeting ? ' · 모임' : '') + '</small></div>' +
+        '<div><div class="duty-col-label">1면 그림</div><div class="duty-col-topic">' + s.p1 + '</div><div class="duty-col-name">담당: ' + s.p1a + '</div></div>' +
+        '<div><div class="duty-col-label">2면 기사</div><div class="duty-col-topic">' + s.p2 + '</div><div class="duty-col-name">담당: ' + s.p2a + ' · 마감 ' + (s.deadline !== '-' ? EditorialUtils.fmtShort(s.deadline) : '-') + '</div></div>' +
+      '</div>';
+    }).join('');
+  }
+
+  var nextM = EditorialUtils.nextMeeting();
+  document.getElementById('statNextMeeting').textContent = nextM ? EditorialUtils.fmtKorean(nextM.date) : '-';
+  var nextDeadlineItem = upcoming.find(function(s){ return s.deadline !== '-'; });
+  document.getElementById('statNextDeadline').textContent = nextDeadlineItem ? EditorialUtils.fmtKorean(nextDeadlineItem.deadline) : '-';
+  document.getElementById('statMembers').textContent = EDITORIAL_CONFIG.members.length + '명';
+})();
+</script>
+</body>
+</html>

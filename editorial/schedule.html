@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>담당 & 전체 일정 | 청소년 1부 편집부</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="schedule">
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-brand"><span class="dot"></span>청소년 1부 편집부</div>
+    <div class="nav-links">
+      <a href="index.html" data-page="home">홈</a>
+      <a href="ministry.html" data-page="ministry">사역 소개·서약</a>
+      <a href="attendance.html" data-page="attendance">출석 체크</a>
+      <a href="scripture-check.html" data-page="scripture">말씀 나눔</a>
+      <a href="schedule.html" data-page="schedule">담당·일정</a>
+      <a href="lectures.html" data-page="lectures">오픈 강좌</a>
+      <a href="bulletin-guide.html" data-page="bulletin">주보 가이드</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-header">
+  <div class="wrap">
+    <div class="eyebrow">1면 그림 · 2면 기사 담당</div>
+    <h1>사역 담당 &amp; 전체 일정</h1>
+    <p>매주 주보의 1면 그림, 2면 기사 담당과 마감일입니다. 담당은 매번 조정되니, 이 페이지에서 최신 일정을 확인해 주세요.</p>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="field" style="max-width:320px;">
+      <label for="memberFilter">담당자로 필터</label>
+      <select id="memberFilter">
+        <option value="">전체 보기</option>
+      </select>
+    </div>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>날짜</th>
+            <th>모임</th>
+            <th>1면 그림 주제</th>
+            <th>1면 담당</th>
+            <th>2면 기사 주제</th>
+            <th>2면 담당</th>
+            <th>마감</th>
+          </tr>
+        </thead>
+        <tbody id="scheduleBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head"><h2>편집부원 명단</h2><span class="sub">총 <span id="memberCount"></span>명</span></div>
+    <div class="grid grid-3" id="memberGrid"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">한마음 교회 청소년 1부 편집부 · winsoul.de/editorial</div>
+</footer>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/sheets.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+(function(){
+  var schedule = EDITORIAL_CONFIG.schedule;
+  var members = EDITORIAL_CONFIG.members;
+  var today = EditorialUtils.todayISO();
+  var tbody = document.getElementById('scheduleBody');
+  var filterSel = document.getElementById('memberFilter');
+
+  // build member filter options (짧은 이름 포함 위해 이름 그대로 사용)
+  filterSel.innerHTML += members.map(function(m){ return '<option value="' + m.name + '">' + m.name + '</option>'; }).join('');
+
+  function rowMatches(s, name){
+    if (!name) return true;
+    return (s.p1a && s.p1a.indexOf(name) > -1) || (s.p2a && s.p2a.indexOf(name) > -1);
+  }
+
+  function render(filterName){
+    tbody.innerHTML = schedule.filter(function(s){ return rowMatches(s, filterName); }).map(function(s){
+      var cls = [];
+      if (s.meeting) cls.push('is-meeting');
+      if (s.date === today) cls.push('is-today');
+      else if (s.date < today) cls.push('is-past');
+      return '<tr class="' + cls.join(' ') + '">' +
+        '<td>' + EditorialUtils.fmtKorean(s.date) + '</td>' +
+        '<td>' + (s.meeting ? '<span class="badge badge-blue">모임</span>' : '') + '</td>' +
+        '<td>' + s.p1 + '</td>' +
+        '<td>' + s.p1a + '</td>' +
+        '<td>' + s.p2 + '</td>' +
+        '<td>' + s.p2a + '</td>' +
+        '<td>' + (s.deadline !== '-' ? EditorialUtils.fmtShort(s.deadline) : '-') + '</td>' +
+      '</tr>';
+    }).join('');
+  }
+
+  filterSel.addEventListener('change', function(){ render(filterSel.value); });
+  render('');
+
+  document.getElementById('memberCount').textContent = members.length;
+  document.getElementById('memberGrid').innerHTML = members.map(function(m){
+    return '<div class="card">' +
+      '<div class="icon">' + m.name.charAt(0) + '</div>' +
+      '<h3>' + m.name + '</h3>' +
+      '<p>' + m.birthYear + '년생 · 생일 ' + m.birthday.replace('-', '/') + ' · 담당 ' + m.role + '</p>' +
+    '</div>';
+  }).join('');
+})();
+</script>
+</body>
+</html>
