@@ -130,27 +130,13 @@
   }
   .chip.active { background: var(--accent); color: #fff; }
 
-  /* ---------- Gospel Talk video panel ---------- */
-  .talk-panel {
-    position: sticky; top: 72px; z-index: 60; display: none;
-    background: var(--card); border-radius: 18px; overflow: hidden;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.10); margin-bottom: 16px;
+  /* ---------- Gospel Talk video section ---------- */
+  .talk-video-card {
+    background: #000; border-radius: 18px; overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: 14px;
   }
   .talk-video { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; }
   .talk-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-  .talk-summary { max-height: 180px; overflow-y: auto; padding: 14px 18px 16px; border-top: 1px solid var(--border); }
-  .talk-summary-label {
-    font-size: 10.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
-    color: var(--muted); margin-bottom: 10px;
-  }
-  .talk-summary h4 { font-size: 12.5px; font-weight: 700; color: var(--accent); margin: 10px 0 4px; }
-  .talk-summary h4:first-of-type { margin-top: 0; }
-  .talk-summary ul { list-style: none; margin: 0; }
-  .talk-summary li {
-    position: relative; padding-left: 14px; font-size: 12.5px; line-height: 1.6;
-    color: var(--text); margin-bottom: 5px;
-  }
-  .talk-summary li::before { content: "·"; position: absolute; left: 2px; color: var(--accent); font-weight: 700; }
 
   /* ---------- Panels & cards ---------- */
   .panel { display: none; animation: fadeIn 0.25s ease; }
@@ -332,48 +318,9 @@
   </div>
   <div class="subnav-scroll" id="subnavMaterial" style="display:none;">
     <button class="chip active" data-target="orientation">Orientation</button>
+    <button class="chip" data-target="talk">가스펠 톡</button>
     <button class="chip" data-target="round1">Round 1</button>
     <button class="chip" data-target="round2">Round 2</button>
-  </div>
-
-  <div class="talk-panel" id="talkPanel">
-    <div class="talk-video">
-      <iframe src="https://www.youtube.com/embed/GkJuOnKoPDE?start=1620&amp;rel=0" title="가스펠 톡 1 · 복음을 따라가는 두 여정 — 이찬규 목사" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
-    </div>
-    <div class="talk-summary">
-      <div class="talk-summary-label">가스펠 톡 요약 · 복음을 따라가는 두 여정 (이찬규 목사)</div>
-      <h4>인생을 어떻게 설계할까</h4>
-      <ul>
-        <li>까르페 디엠(오늘을 붙잡아라) — 내일의 불확실성을 오늘만 즐기는 것으로 답하려는 태도</li>
-        <li>메멘토 모리(죽음을 기억하라) — 로마 개선장군 옆 노예가 외치던 말. 겸손하게 하지만 비관적</li>
-        <li>복음을 만나라 — 예수님이 내 인생의 진짜 설계도(운명 지도)를 주심</li>
-      </ul>
-      <h4>내적 여정 — 복음 DNA</h4>
-      <ul>
-        <li>복음 DNA = 은혜(하나님이 거저 주심) + 믿음(그 은혜를 붙잡는 손)</li>
-        <li>은혜·믿음이 만나면 자동으로: 자녀 됨 · 의롭다 하심 · 거듭난 생활 · 예수님과 연합</li>
-        <li>복음의 속성: 자기완결적(스스로 진행) · 선택적("예"라고만 하면 됨)</li>
-        <li>복음의 효력: 죄의 "뇌관" 제거 — 유혹은 있어도 나를 지배하지는 못함</li>
-      </ul>
-      <h4>트랙 유지 — 영적 습관 &amp; 하이웨이</h4>
-      <ul>
-        <li>온라인 상태 유지: 생명예배 · 큐티 · 기도(말씀을 기도로, 삶의 문제를 기도로)</li>
-        <li>거룩함의 하이웨이 조건: 확실한 복음 체험 · 성령이 주시는 비전을 목적지로 · 은혜의 연료 채우기</li>
-        <li>정상체험(마운틴탑 경험): 갑절의 은혜 · 성령충만 · 부르심의 소명을 사모하기</li>
-      </ul>
-      <h4>외적 여정 — 대위임령</h4>
-      <ul>
-        <li>마태복음 28:19-20 "모든 민족을 제자로 삼으라" — 부활하신 예수님의 명령(대위임령)</li>
-        <li>사도행전 1:8, 에베소서 2:10 — 성령의 능력으로, 선한 일을 위해 우리를 지으심</li>
-        <li>아직 복음을 듣지 못한 약 3,100개의 미전도 종족이 있음</li>
-        <li>한국 복음 역사: 로스 선교사의 성경 번역 → 김청송의 회심 → 언더우드·아펜젤러(1885) → 노춘경의 첫 세례 고백 "이 목이 달아날지라도 예수의 주되심을 부인하지 않겠나이다"</li>
-      </ul>
-      <h4>결론</h4>
-      <ul>
-        <li>두 여정(내적·외적)은 함께 가야 함 — 하나만 있으면 성장이 멈춤</li>
-        <li>그리스도를 닮고 싶다면 대위임령을 따르라</li>
-      </ul>
-    </div>
   </div>
 
   <div id="content">
@@ -727,6 +674,63 @@
       <p class="closing-note">조원 모두의 이름을 넣어 함께 짧은 통성 기도로 마무리합니다.</p>
     </section>
 
+    <!-- ===== Gospel Talk (Round 1·2 Base 영상) ===== -->
+    <section id="talk" class="panel">
+      <div class="round-header">
+        <div class="r-eyebrow">Gospel Talk</div>
+        <h2>복음을 따라가는 두 여정</h2>
+        <div class="r-sub">이찬규 목사 · Round 1·2의 Base 영상 (27:00부터 재생)</div>
+      </div>
+      <div class="talk-video-card">
+        <div class="talk-video">
+          <iframe src="https://www.youtube.com/embed/GkJuOnKoPDE?start=1620&amp;rel=0" title="가스펠 톡 1 · 복음을 따라가는 두 여정 — 이찬규 목사" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-label">영상 요약</div>
+        <h3 class="sub-h">인생을 어떻게 설계할까</h3>
+        <ul class="bullet-list">
+          <li>까르페 디엠(오늘을 붙잡아라) — 내일의 불확실성을 오늘만 즐기는 것으로 답하려는 태도</li>
+          <li>메멘토 모리(죽음을 기억하라) — 로마 개선장군 옆 노예가 외치던 말. 겸손하게 하지만 비관적</li>
+          <li>복음을 만나라 — 예수님이 내 인생의 진짜 설계도(운명 지도)를 주심</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="sub-h">내적 여정 — 복음 DNA</h3>
+        <ul class="bullet-list">
+          <li>복음 DNA = 은혜(하나님이 거저 주심) + 믿음(그 은혜를 붙잡는 손)</li>
+          <li>은혜·믿음이 만나면 자동으로: 자녀 됨 · 의롭다 하심 · 거듭난 생활 · 예수님과 연합</li>
+          <li>복음의 속성: 자기완결적(스스로 진행) · 선택적("예"라고만 하면 됨)</li>
+          <li>복음의 효력: 죄의 "뇌관" 제거 — 유혹은 있어도 나를 지배하지는 못함</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="sub-h">트랙 유지 — 영적 습관 &amp; 하이웨이</h3>
+        <ul class="bullet-list">
+          <li>온라인 상태 유지: 생명예배 · 큐티 · 기도(말씀을 기도로, 삶의 문제를 기도로)</li>
+          <li>거룩함의 하이웨이 조건: 확실한 복음 체험 · 성령이 주시는 비전을 목적지로 · 은혜의 연료 채우기</li>
+          <li>정상체험(마운틴탑 경험): 갑절의 은혜 · 성령충만 · 부르심의 소명을 사모하기</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="sub-h">외적 여정 — 대위임령</h3>
+        <ul class="bullet-list">
+          <li>마태복음 28:19-20 "모든 민족을 제자로 삼으라" — 부활하신 예수님의 명령(대위임령)</li>
+          <li>사도행전 1:8, 에베소서 2:10 — 성령의 능력으로, 선한 일을 위해 우리를 지으심</li>
+          <li>아직 복음을 듣지 못한 약 3,100개의 미전도 종족이 있음</li>
+          <li>한국 복음 역사: 로스 선교사의 성경 번역 → 김청송의 회심 → 언더우드·아펜젤러(1885) → 노춘경의 첫 세례 고백 "이 목이 달아날지라도 예수의 주되심을 부인하지 않겠나이다"</li>
+        </ul>
+      </div>
+      <div class="card tip">
+        <div class="section-label">결론</div>
+        <ul class="bullet-list">
+          <li>두 여정(내적·외적)은 함께 가야 함 — 하나만 있으면 성장이 멈춤</li>
+          <li>그리스도를 닮고 싶다면 대위임령을 따르라</li>
+        </ul>
+      </div>
+      <p class="closing-note">이 영상은 Round 1·2 나눔의 기반이 되는 내용입니다. 시간이 된다면 소그룹 시작 전 함께 시청해 주세요.</p>
+    </section>
+
     <!-- ===== Round 1 ===== -->
     <section id="round1" class="panel">
       <div class="round-header">
@@ -959,15 +963,13 @@
   var topTabs = document.querySelectorAll("#topTabs .seg-btn");
   var subnavGuide = document.getElementById("subnavGuide");
   var subnavMaterial = document.getElementById("subnavMaterial");
-  var talkPanel = document.getElementById("talkPanel");
   var guidePanelIds = ["overview","schedule","rnr","rules","sessions","aftercare","faq","checklist"];
-  var materialPanelIds = ["orientation","round1","round2"];
+  var materialPanelIds = ["orientation","talk","round1","round2"];
 
   function showPanel(id) {
     document.querySelectorAll(".panel").forEach(function (p) {
       p.classList.toggle("active", p.id === id);
     });
-    talkPanel.style.display = (id === "round1" || id === "round2") ? "block" : "none";
     window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
   }
 
