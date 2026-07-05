@@ -171,10 +171,11 @@ function doPost(e) {
 
 function formatDate_(v) {
   if (v instanceof Date) {
-    var y = v.getFullYear();
-    var m = ("0" + (v.getMonth() + 1)).slice(-2);
-    var d = ("0" + v.getDate()).slice(-2);
-    return y + "-" + m + "-" + d;
+    // 구글시트가 문자열 "2026-07-05"를 자동으로 날짜 셀로 변환해 저장하는 경우가 있어,
+    // Apps Script 실행 시간대가 아니라 "이 스프레드시트에 설정된 시간대" 기준으로 포맷해야
+    // 요일이 하루씩 밀리는 문제(그리고 그로 인한 중복 저장)를 막을 수 있습니다.
+    var tz = SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone();
+    return Utilities.formatDate(v, tz, "yyyy-MM-dd");
   }
   return String(v);
 }

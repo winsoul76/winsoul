@@ -283,15 +283,16 @@ section{ padding: 34px 0; }
   align-items:center;
 }
 .duty-item.today{ outline: 2px solid var(--accent); outline-offset: -2px; }
+.duty-item.meeting{ box-shadow: inset 3px 0 0 var(--accent), var(--card-shadow); }
 @media (max-width: 700px){
   .duty-item{ grid-template-columns: 1fr; gap:8px; }
 }
 .duty-date{
   font-weight: 700;
   font-size: var(--fs-base);
-  display:flex; flex-direction:column; gap:2px;
+  display:flex; flex-direction:column; align-items:flex-start; gap:6px;
 }
-.duty-date small{ color: var(--text-secondary); font-weight:500; font-size: var(--fs-sm); }
+.duty-date .badge{ font-weight:600; }
 .duty-col-label{ font-size: calc(11px * var(--fs-scale)); color: var(--text-secondary); font-weight:600; text-transform:uppercase; letter-spacing:.04em; margin-bottom:2px; }
 .duty-col-topic{ font-size: var(--fs-sm); font-weight:600; margin-bottom:2px; }
 .duty-col-name{ font-size: var(--fs-sm); color: var(--text-secondary); }

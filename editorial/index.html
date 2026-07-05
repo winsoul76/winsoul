@@ -50,32 +50,26 @@
     </div>
     <div class="grid grid-3">
       <a class="card" href="attendance.html" style="display:block;">
-        <div class="icon">✅</div>
         <h3>출석 현황</h3>
         <p>가장 최근 편집부 모임 주일 기준, 출석 현황을 확인합니다.</p>
       </a>
       <a class="card" href="scripture-check.html" style="display:block;">
-        <div class="icon">✍️</div>
         <h3>말씀 요약 현황</h3>
         <p>가장 최근 주일 기준, 손글씨 말씀 요약 제출 현황을 확인합니다.</p>
       </a>
       <a class="card" href="schedule.html" style="display:block;">
-        <div class="icon">🗓️</div>
         <h3>담당·전체 일정</h3>
         <p>1면 그림, 2면 기사 담당과 마감일을 한눈에 봅니다.</p>
       </a>
       <a class="card" href="ministry.html" style="display:block;">
-        <div class="icon">📖</div>
         <h3>사역 소개 &amp; 서약</h3>
-        <p>편집부가 하는 일과 우리의 약속(Commitment)을 소개합니다.</p>
+        <p>편집부가 하는 일과 우리의 약속을 소개합니다.</p>
       </a>
       <a class="card" href="lectures.html" style="display:block;">
-        <div class="icon">🖋️</div>
         <h3>오픈 강좌</h3>
         <p>캘리그라피 등, 둘째 주 오픈 강좌 자료 모음.</p>
       </a>
       <a class="card" href="bulletin-guide.html" style="display:block;">
-        <div class="icon">📰</div>
         <h3>주보 만들기 가이드</h3>
         <p>주보 제작 방법과 청소년 1부에 맞는 콘텐츠 아이디어.</p>
       </a>
@@ -84,10 +78,7 @@
 </section>
 
 <footer>
-  <div class="wrap">
-    한마음 교회 청소년 1부 편집부 · winsoul.de/editorial<br>
-    "하나님으로부터 위대한 일을 기대하라, 하나님을 위해 위대한 일을 시도하라" (윌리엄 캐리)
-  </div>
+  <div class="wrap">한마음 교회 청소년 1부 편집부 · winsoul.de/editorial</div>
 </footer>
 
 <script src="assets/js/config.js"></script>
@@ -108,11 +99,12 @@ EditorialAPI.hydrate().then(function(){
     var today = EditorialUtils.todayISO();
     list.innerHTML = upcoming.map(function(s){
       var isToday = s.date === today;
-      return '<div class="duty-item' + (isToday ? ' today' : '') + '">' +
+      var cls = 'duty-item' + (isToday ? ' today' : '') + (s.meeting ? ' meeting' : '');
+      return '<div class="' + cls + '">' +
         '<div class="duty-date">' + EditorialUtils.fmtShort(s.date) +
-          (s.meeting ? '<small> · 모임</small>' : '') + '</div>' +
-        '<div><div class="duty-col-label">1면 그림</div><div class="duty-col-topic">' + s.p1 + '</div><div class="duty-col-name">담당: ' + EditorialUtils.maskList(EditorialUtils.expandList(s.p1a)) + '</div></div>' +
-        '<div><div class="duty-col-label">2면 기사</div><div class="duty-col-topic">' + s.p2 + '</div><div class="duty-col-name">담당: ' + EditorialUtils.maskList(EditorialUtils.expandList(s.p2a)) + ' · 마감 ' + (s.deadline !== '-' ? EditorialUtils.fmtShort(s.deadline) : '-') + '</div></div>' +
+          (s.meeting ? '<span class="badge badge-blue">모임</span>' : '') + '</div>' +
+        '<div><div class="duty-col-label">1면 그림</div><div class="duty-col-topic">' + s.p1 + '</div><div class="duty-col-name">' + EditorialUtils.maskList(EditorialUtils.expandList(s.p1a)) + '</div></div>' +
+        '<div><div class="duty-col-label">2면 기사</div><div class="duty-col-topic">' + s.p2 + '</div><div class="duty-col-name">' + EditorialUtils.maskList(EditorialUtils.expandList(s.p2a)) + (s.deadline !== '-' ? ' · 마감 ' + EditorialUtils.fmtShort(s.deadline) : '') + '</div></div>' +
       '</div>';
     }).join('');
   }

@@ -71,7 +71,7 @@ window.EditorialUtils = (function () {
   }
   function fmtKorean(iso) {
     var d = new Date(iso + "T00:00:00");
-    return (d.getMonth() + 1) + "." + d.getDate();
+    return (d.getMonth() + 1) + "/" + d.getDate();
   }
   function fmtShort(iso) {
     var d = new Date(iso + "T00:00:00");
