@@ -17,13 +17,23 @@
  * 시트 구성 (자동 생성됨):
  *  - attendance : date | name | value | updatedAt
  *  - scripture  : date | name | value | updatedAt
+ *  - schedule   : date | meeting | p1 | p1a | p2 | p2a | deadline | updatedAt  (전체 표 저장)
+ *  - members    : name | birthYear | birthday | role | updatedAt              (전체 표 저장)
  * ============================================================
  */
 
 var SITE_KEY = "260815";       // 사이트 비밀번호와 동일하게
 var ADMIN_KEY = "Youthisno12#";   // 관리자 비밀번호와 동일하게
 
-var SHEET_NAMES = ["attendance", "scripture"];
+var SHEET_NAMES = ["attendance", "scripture", "schedule", "members"];
+// schedule/members 는 날짜+이름 단위 upsert 가 아니라 "전체 표" 를 통째로 교체 저장합니다.
+var TABLE_SHEETS = ["schedule", "members"];
+var SHEET_HEADERS = {
+  attendance: ["date", "name", "value", "updatedAt"],
+  scripture:  ["date", "name", "value", "updatedAt"],
+  schedule:   ["date", "meeting", "p1", "p1a", "p2", "p2a", "deadline", "updatedAt"],
+  members:    ["name", "birthYear", "birthday", "role", "updatedAt"]
+};
 
 function canRead_(key) { return key === SITE_KEY || key === ADMIN_KEY; }
 function canWrite_(key) { return key === ADMIN_KEY; }
@@ -33,7 +43,7 @@ function getOrCreateSheet_(name) {
   var sheet = ss.getSheetByName(name);
   if (!sheet) {
     sheet = ss.insertSheet(name);
-    sheet.appendRow(["date", "name", "value", "updatedAt"]);
+    sheet.appendRow(SHEET_HEADERS[name] || ["date", "name", "value", "updatedAt"]);
     sheet.setFrozenRows(1);
   }
   return sheet;
@@ -56,6 +66,26 @@ function doGet(e) {
     }
     if (!sheetName || SHEET_NAMES.indexOf(sheetName) === -1) {
       return jsonOut_({ ok: false, error: "sheet 파라미터가 올바르지 않습니다." });
+    }
+
+    // schedule / members : 전체 표 형태로 반환
+    if (TABLE_SHEETS.indexOf(sheetName) > -1) {
+      var tSheet = getOrCreateSheet_(sheetName);
+      var tData = tSheet.getDataRange().getValues();
+      var headers = tData[0];
+      var rows = [];
+      for (var r = 1; r < tData.length; r++) {
+        var raw = tData[r];
+        if (!raw[0]) continue; // 빈 행 스킵
+        var obj = {};
+        for (var c = 0; c < headers.length; c++) obj[headers[c]] = raw[c];
+        if (sheetName === "schedule") {
+          obj.date = formatDate_(obj.date);
+          obj.meeting = !!obj.meeting;
+        }
+        rows.push(obj);
+      }
+      return jsonOut_({ ok: true, rows: rows });
     }
 
     var sheet = getOrCreateSheet_(sheetName);
@@ -87,6 +117,29 @@ function doPost(e) {
     }
     if (!sheetName || SHEET_NAMES.indexOf(sheetName) === -1) {
       return jsonOut_({ ok: false, error: "sheet 파라미터가 올바르지 않습니다." });
+    }
+
+    // schedule / members : 보내온 rows 로 표 전체를 교체합니다.
+    if (TABLE_SHEETS.indexOf(sheetName) > -1) {
+      var tSheet = getOrCreateSheet_(sheetName);
+      var headers = SHEET_HEADERS[sheetName];
+      var rows = body.rows || [];
+      var now2 = new Date();
+      var lastRow = tSheet.getLastRow();
+      if (lastRow > 1) {
+        tSheet.getRange(2, 1, lastRow - 1, headers.length).clearContent();
+      }
+      var out = rows.map(function (r) {
+        return headers.map(function (h) {
+          if (h === "updatedAt") return now2;
+          var v = r[h];
+          return (v === undefined || v === null) ? "" : v;
+        });
+      });
+      if (out.length) {
+        tSheet.getRange(2, 1, out.length, headers.length).setValues(out);
+      }
+      return jsonOut_({ ok: true, saved: out.length });
     }
 
     var sheet = getOrCreateSheet_(sheetName);

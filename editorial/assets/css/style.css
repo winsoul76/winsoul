@@ -318,8 +318,10 @@ tbody td{
   white-space: nowrap;
 }
 tbody tr:last-child td{ border-bottom:none; }
-tbody tr.is-meeting{ background: rgba(0,113,227,0.04); }
-tbody tr.is-today{ background: rgba(255,159,10,0.10); }
+tbody tr.is-meeting{ background: rgba(0,113,227,0.10); box-shadow: inset 3px 0 0 var(--accent); }
+tbody tr.is-meeting td:first-child{ font-weight: 650; }
+tbody tr.is-today{ background: rgba(255,159,10,0.14); }
+tbody tr.is-meeting.is-today{ background: rgba(255,159,10,0.16); box-shadow: inset 3px 0 0 var(--accent); }
 tbody tr.is-past{ opacity: .55; }
 
 /* ---------------- Forms ---------------- */
@@ -335,6 +337,23 @@ select, input[type="date"]{
   color: var(--text);
   font-family: inherit;
 }
+table input[type="text"], table input[type="date"], table input[type="number"]{
+  width: 100%;
+  min-width: 88px;
+  padding: 7px 9px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--bg-elevated);
+  font-size: var(--fs-sm);
+  color: var(--text);
+  font-family: inherit;
+}
+table input[type="checkbox"]{ width:18px; height:18px; }
+.btn-icon-del{
+  border:none; background: rgba(255,59,48,0.1); color:#ff3b30;
+  width:28px; height:28px; border-radius:8px; cursor:pointer; font-size:14px; line-height:1;
+}
+.btn-icon-del:hover{ background: rgba(255,59,48,0.18); }
 
 .roster{ display:flex; flex-direction:column; gap:10px; }
 .roster-item{

@@ -15,7 +15,7 @@
       <a href="index.html" data-page="home">홈</a>
       <a href="ministry.html" data-page="ministry">사역 소개·서약</a>
       <a href="attendance.html" data-page="attendance">출석 현황</a>
-      <a href="scripture-check.html" data-page="scripture">말씀 나눔 현황</a>
+      <a href="scripture-check.html" data-page="scripture">말씀 요약 현황</a>
       <a href="schedule.html" data-page="schedule">담당·일정</a>
       <a href="lectures.html" data-page="lectures">오픈 강좌</a>
       <a href="bulletin-guide.html" data-page="bulletin">주보 가이드</a>
@@ -62,7 +62,12 @@
 <section>
   <div class="wrap">
     <div class="section-head"><h2>편집부원 명단</h2><span class="sub">총 <span id="memberCount"></span>명</span></div>
-    <div class="grid grid-3" id="memberGrid"></div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>이름</th><th>생일</th></tr></thead>
+        <tbody id="memberBody"></tbody>
+      </table>
+    </div>
   </div>
 </section>
 
@@ -76,6 +81,7 @@
 <script src="assets/js/main.js"></script>
 <script>
 EditorialAuth.ready(function(){
+EditorialAPI.hydrate().then(function(){
   var schedule = EDITORIAL_CONFIG.schedule;
   var members = EDITORIAL_CONFIG.members;
   var today = EditorialUtils.todayISO();
@@ -107,9 +113,9 @@ EditorialAuth.ready(function(){
         '<td>' + EditorialUtils.fmtKorean(s.date) + '</td>' +
         '<td>' + (s.meeting ? '<span class="badge badge-blue">모임</span>' : '') + '</td>' +
         '<td>' + s.p1 + '</td>' +
-        '<td>' + EditorialUtils.maskList(s.p1a) + '</td>' +
+        '<td>' + EditorialUtils.maskList(EditorialUtils.expandList(s.p1a)) + '</td>' +
         '<td>' + s.p2 + '</td>' +
-        '<td>' + EditorialUtils.maskList(s.p2a) + '</td>' +
+        '<td>' + EditorialUtils.maskList(EditorialUtils.expandList(s.p2a)) + '</td>' +
         '<td>' + (s.deadline !== '-' ? EditorialUtils.fmtShort(s.deadline) : '-') + '</td>' +
       '</tr>';
     }).join('');
@@ -119,14 +125,12 @@ EditorialAuth.ready(function(){
   render('');
 
   document.getElementById('memberCount').textContent = members.length;
-  document.getElementById('memberGrid').innerHTML = members.map(function(m){
+  document.getElementById('memberBody').innerHTML = members.map(function(m){
     var masked = EditorialUtils.maskOne(m.name);
-    return '<div class="card">' +
-      '<div class="icon">' + masked.charAt(0) + '</div>' +
-      '<h3>' + masked + '</h3>' +
-      '<p>' + m.birthYear + '년생 · 생일 ' + m.birthday.replace('-', '/') + ' · 담당 ' + m.role + '</p>' +
-    '</div>';
+    var bday = (m.birthday || '').replace('-', '.');
+    return '<tr><td>' + masked + '</td><td>' + (bday || '-') + '</td></tr>';
   }).join('');
+});
 });
 </script>
 </body>

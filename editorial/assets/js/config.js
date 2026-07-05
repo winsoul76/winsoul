@@ -71,8 +71,7 @@ window.EditorialUtils = (function () {
   }
   function fmtKorean(iso) {
     var d = new Date(iso + "T00:00:00");
-    var days = ["일", "월", "화", "수", "목", "금", "토"];
-    return (d.getMonth() + 1) + "." + d.getDate() + " (" + days[d.getDay()] + ")";
+    return (d.getMonth() + 1) + "." + d.getDate();
   }
   function fmtShort(iso) {
     var d = new Date(iso + "T00:00:00");
@@ -92,6 +91,20 @@ window.EditorialUtils = (function () {
     return m.length ? m[0] : null;
   }
 
+  // 오늘(주일이면 오늘 포함) 기준 가장 최근 "모임" 날짜(1·2주차 주일) 1개
+  function latestMeetingDate() {
+    var t = todayISO();
+    var past = meetingDates().filter(function (s) { return s.date <= t; });
+    return past.length ? past[past.length - 1] : null;
+  }
+  // 오늘(주일이면 오늘 포함) 기준 가장 최근 주일(매주) 1개
+  function latestSunday() {
+    var t = todayISO();
+    var sched = window.EDITORIAL_CONFIG.schedule;
+    var past = sched.filter(function (s) { return s.date <= t; });
+    return past.length ? past[past.length - 1] : null;
+  }
+
   /* ---------------- 개인정보 보호: 이름 마스킹 ---------------- */
   // 사람 이름(2~4자 한글)으로 보이는 토큰만 마지막 글자를 * 로 치환합니다.
   // "2013년생", "편집부", "-" 같은 그룹/기호는 그대로 둡니다.
@@ -108,9 +121,27 @@ window.EditorialUtils = (function () {
     return str.split(",").map(function (s) { return maskOne(s); }).join(", ");
   }
 
+  /* ---------------- 성 없는 이름을 전체 이름으로 확장 ---------------- */
+  // 부원 명단에서 "성을 뺀 이름"(예: "제인")이 발견되면 전체 이름("이제인")으로 바꿔줍니다.
+  function expandOne(token) {
+    var t = (token || "").trim();
+    if (!t) return t;
+    var members = window.EDITORIAL_CONFIG.members;
+    for (var i = 0; i < members.length; i++) {
+      if (members[i].name.slice(1) === t) return members[i].name;
+    }
+    return t;
+  }
+  function expandList(str) {
+    if (!str) return str;
+    return str.split(",").map(function (s) { return expandOne(s.trim()); }).join(", ");
+  }
+
   return {
     todayISO: todayISO, fmtKorean: fmtKorean, fmtShort: fmtShort,
     upcoming: upcoming, meetingDates: meetingDates, nextMeeting: nextMeeting,
-    maskOne: maskOne, maskList: maskList
+    latestMeetingDate: latestMeetingDate, latestSunday: latestSunday,
+    maskOne: maskOne, maskList: maskList,
+    expandOne: expandOne, expandList: expandList
   };
 })();

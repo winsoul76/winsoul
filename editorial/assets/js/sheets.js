@@ -90,8 +90,89 @@ window.EditorialAPI = (function () {
     return p;
   }
 
+  /* ---------------- 표 전체 조회/저장 (일정표 · 편집부원 명단) ----------------
+     Code.gs 의 schedule/members 는 date+name 단위가 아니라 표 전체를 통째로
+     저장/조회합니다. GAS 미배포·오류 시에는 localStorage 캐시 → config.js 기본값
+     순서로 대체합니다. */
+  function tableKey(sheet) { return "editorial_table_" + sheet; }
+  function localLoadTable(sheet, fallback) {
+    try {
+      var raw = localStorage.getItem(tableKey(sheet));
+      return Promise.resolve(raw ? JSON.parse(raw) : (fallback || []));
+    } catch (e) { return Promise.resolve(fallback || []); }
+  }
+  function localSaveTable(sheet, rows) {
+    try {
+      localStorage.setItem(tableKey(sheet), JSON.stringify(rows));
+      return Promise.resolve({ ok: true, mode: "local" });
+    } catch (e) { return Promise.reject(e); }
+  }
+  function remoteLoadTable(sheet, key, fallback) {
+    var url = gasUrl() + "?sheet=" + encodeURIComponent(sheet) + "&key=" + encodeURIComponent(key || "");
+    return fetch(url, { method: "GET" })
+      .then(function (r) { return r.json(); })
+      .then(function (json) {
+        if (!json.ok) { console.error("GAS 응답 오류:", json.error); return localLoadTable(sheet, fallback); }
+        return (json.rows && json.rows.length) ? json.rows : localLoadTable(sheet, fallback);
+      })
+      .catch(function (err) {
+        console.error("GAS 로드 실패, 로컬/기본 데이터로 대체합니다.", err);
+        return localLoadTable(sheet, fallback);
+      });
+  }
+  function remoteSaveTable(sheet, rows, key) {
+    return fetch(gasUrl(), {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ sheet: sheet, rows: rows, key: key || "" })
+    })
+      .then(function (r) { return r.json(); })
+      .catch(function (err) {
+        console.error("GAS 저장 실패, 로컬에도 백업 저장합니다.", err);
+        return localSaveTable(sheet, rows).then(function () { return { ok: false, mode: "local-fallback" }; });
+      });
+  }
+  function loadTable(sheet, key, fallback) {
+    return isLive() ? remoteLoadTable(sheet, key, fallback) : localLoadTable(sheet, fallback);
+  }
+  function saveTable(sheet, rows, key) {
+    var p = isLive() ? remoteSaveTable(sheet, rows, key) : localSaveTable(sheet, rows);
+    localSaveTable(sheet, rows);
+    return p;
+  }
+
+  // 스케줄/명단을 불러와 EDITORIAL_CONFIG 에 덮어씁니다. (모든 페이지가 EditorialUtils
+  // 를 그대로 쓸 수 있도록, 렌더링 전에 한 번 호출)
+  function hydrate() {
+    var cfg = window.EDITORIAL_CONFIG;
+    return Promise.all([
+      loadTable("schedule", siteKey(), cfg.schedule || []),
+      loadTable("members", siteKey(), cfg.members || [])
+    ]).then(function (res) {
+      if (res[0] && res[0].length) {
+        cfg.schedule = res[0].map(function (r) {
+          return {
+            date: r.date, meeting: !!r.meeting,
+            p1: r.p1 || "-", p1a: r.p1a || "-",
+            p2: r.p2 || "-", p2a: r.p2a || "-",
+            deadline: r.deadline || "-"
+          };
+        }).sort(function (a, b) { return a.date < b.date ? -1 : (a.date > b.date ? 1 : 0); });
+      }
+      if (res[1] && res[1].length) {
+        cfg.members = res[1].map(function (r) {
+          return {
+            name: r.name, birthYear: Number(r.birthYear) || r.birthYear,
+            birthday: r.birthday || "", role: r.role || ""
+          };
+        });
+      }
+    });
+  }
+
   return {
     isLive: isLive,
+    hydrate: hydrate,
     // 공개 열람용 (site key)
     loadAttendance: function (date) { return load("attendance", date); },
     loadScripture: function (date) { return load("scripture", date); },
@@ -101,6 +182,11 @@ window.EditorialAPI = (function () {
     loadAttendanceAdmin: function (date) { return loadAdmin("attendance", date); },
     loadScriptureAdmin: function (date) { return loadAdmin("scripture", date); },
     saveAttendance: function (date, records) { return save("attendance", date, records); },
-    saveScripture: function (date, records) { return save("scripture", date, records); }
+    saveScripture: function (date, records) { return save("scripture", date, records); },
+    // 일정표 · 명단 (전체 표)
+    loadScheduleAdmin: function () { return loadTable("schedule", adminKey(), window.EDITORIAL_CONFIG.schedule || []); },
+    loadMembersAdmin: function () { return loadTable("members", adminKey(), window.EDITORIAL_CONFIG.members || []); },
+    saveSchedule: function (rows) { return saveTable("schedule", rows, adminKey()); },
+    saveMembers: function (rows) { return saveTable("members", rows, adminKey()); }
   };
 })();

@@ -15,7 +15,7 @@
       <a href="index.html" data-page="home">홈</a>
       <a href="ministry.html" data-page="ministry">사역 소개·서약</a>
       <a href="attendance.html" data-page="attendance">출석 현황</a>
-      <a href="scripture-check.html" data-page="scripture">말씀 나눔 현황</a>
+      <a href="scripture-check.html" data-page="scripture">말씀 요약 현황</a>
       <a href="schedule.html" data-page="schedule">담당·일정</a>
       <a href="lectures.html" data-page="lectures">오픈 강좌</a>
       <a href="bulletin-guide.html" data-page="bulletin">주보 가이드</a>
@@ -25,27 +25,29 @@
 
 <header class="page-header">
   <div class="wrap">
-    <div class="eyebrow">최근 30일 · 매달 첫주·둘째주 모임 기준</div>
+    <div class="eyebrow">가장 최근 모임 주일 기준</div>
     <h1>출석 현황</h1>
-    <p>최근 한 달간 편집부 모임 출석 현황을 부원별로 보여줍니다. 개인정보 보호를 위해 이름 끝 글자는 * 로 표시됩니다. 체크 입력은 담당 선생님만 관리자 화면에서 진행합니다.</p>
+    <p>가장 최근 편집부 모임 주일(오늘이 모임 주일이면 오늘 포함)의 출석 현황을 보여줍니다. 개인정보 보호를 위해 이름 끝 글자는 * 로 표시됩니다. 체크 입력은 담당 선생님만 관리자 화면에서 진행합니다.</p>
   </div>
 </header>
 
 <section id="content" style="display:none;">
   <div class="wrap">
     <div class="summary-bar">
-      <div class="summary-pill">🗓️ 최근 30일 기록된 모임 <span id="sumMeetings">-</span>회</div>
+      <div class="summary-pill">🗓️ 모임 날짜 <span id="sumDate">-</span></div>
       <div class="summary-pill">👥 편집부원 <span id="sumMembers">-</span>명</div>
+      <div class="summary-pill">✅ 참석 <span id="sumPresent">-</span>명</div>
+      <div class="summary-pill">❌ 결석 <span id="sumAbsent">-</span>명</div>
     </div>
     <div class="table-scroll">
       <table class="overview-table">
         <thead>
-          <tr><th>이름</th><th>학년(생년)</th><th>담당</th><th>기록된 모임</th><th>참석</th><th>참석률</th></tr>
+          <tr><th>이름</th><th>출석</th></tr>
         </thead>
         <tbody id="overviewBody"></tbody>
       </table>
     </div>
-    <p class="muted" style="margin-top:14px; font-size: var(--fs-sm);">※ "기록된 모임"은 담당 선생님이 관리자 화면에서 실제로 체크를 저장한 모임 수입니다. 아직 체크하지 않은 모임은 집계에서 제외됩니다.</p>
+    <p class="muted" style="margin-top:14px; font-size: var(--fs-sm);">✅ 참석 · ❌ 결석 · – 담당 선생님이 아직 체크하지 않음</p>
   </div>
 </section>
 
@@ -59,47 +61,47 @@
 <script src="assets/js/main.js"></script>
 <script>
 (function(){
-  function daysAgoISO(n){
-    var d = new Date();
-    d.setDate(d.getDate() - n);
-    var y = d.getFullYear(), m = ("0"+(d.getMonth()+1)).slice(-2), day = ("0"+d.getDate()).slice(-2);
-    return y + "-" + m + "-" + day;
-  }
-
   function render(){
     var members = EDITORIAL_CONFIG.members;
-    var today = EditorialUtils.todayISO();
-    var from = daysAgoISO(30);
+    var m = EditorialUtils.latestMeetingDate();
+    var date = m ? m.date : null;
+
+    document.getElementById('sumDate').textContent = date ? EditorialUtils.fmtKorean(date) : '-';
+    document.getElementById('sumMembers').textContent = members.length;
+
+    if (!date) {
+      document.getElementById('overviewBody').innerHTML = '<tr><td colspan="2">등록된 모임 일정이 없습니다.</td></tr>';
+      document.getElementById('content').style.display = '';
+      return;
+    }
 
     EditorialAPI.loadAttendanceAll().then(function(records){
-      var inWindow = records.filter(function(r){ return r.date >= from && r.date <= today; });
-      var recordedDates = Array.from(new Set(inWindow.map(function(r){ return r.date; })));
+      var map = {};
+      records.forEach(function(r){ if (r.date === date) map[r.name] = r.value; });
 
-      document.getElementById('sumMeetings').textContent = recordedDates.length;
-      document.getElementById('sumMembers').textContent = members.length;
-
+      var present = 0, absent = 0;
       var tbody = document.getElementById('overviewBody');
-      tbody.innerHTML = members.map(function(m){
-        var memberRecords = inWindow.filter(function(r){ return r.name === m.name; });
-        var total = memberRecords.length;
-        var present = memberRecords.filter(function(r){ return !!r.value; }).length;
-        var pct = total > 0 ? Math.round((present/total)*100) : null;
-        var pctCls = pct === null ? '' : (pct >= 80 ? 'pct-high' : (pct >= 50 ? 'pct-mid' : 'pct-low'));
-        return '<tr>' +
-          '<td>' + EditorialUtils.maskOne(m.name) + '</td>' +
-          '<td>' + m.birthYear + '년생</td>' +
-          '<td>' + m.role + '</td>' +
-          '<td>' + total + '회</td>' +
-          '<td>' + present + '회</td>' +
-          '<td class="' + pctCls + '">' + (pct === null ? '기록 없음' : pct + '%') + '</td>' +
-        '</tr>';
+      tbody.innerHTML = members.map(function(mem){
+        var cell;
+        if (!(mem.name in map)) {
+          cell = '<span class="badge badge-gray">–</span>';
+        } else if (map[mem.name]) {
+          cell = '<span class="badge badge-green">참석</span>'; present++;
+        } else {
+          cell = '<span class="badge badge-red">결석</span>'; absent++;
+        }
+        return '<tr><td>' + EditorialUtils.maskOne(mem.name) + '</td><td>' + cell + '</td></tr>';
       }).join('');
+      document.getElementById('sumPresent').textContent = present;
+      document.getElementById('sumAbsent').textContent = absent;
 
       document.getElementById('content').style.display = '';
     });
   }
 
-  EditorialAuth.ready(render);
+  EditorialAuth.ready(function(){
+    EditorialAPI.hydrate().then(render);
+  });
 })();
 </script>
 </body>
