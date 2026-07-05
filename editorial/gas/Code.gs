@@ -20,8 +20,8 @@
  * ============================================================
  */
 
-var SITE_KEY = "hanmaeum2026";       // 사이트 비밀번호와 동일하게
-var ADMIN_KEY = "editor-admin-77";   // 관리자 비밀번호와 동일하게
+var SITE_KEY = "260815";       // 사이트 비밀번호와 동일하게
+var ADMIN_KEY = "Youthisno12#";   // 관리자 비밀번호와 동일하게
 
 var SHEET_NAMES = ["attendance", "scripture"];
 
