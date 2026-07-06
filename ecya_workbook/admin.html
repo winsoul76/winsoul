@@ -107,27 +107,44 @@
       videoStatHtml += '</tbody></table></div>';
 
       let missingHtml = '<div class="card"><h3>미제출자 명단 <span class="badge danger">' + DATA.missing.length + '명</span></h3>';
+      missingHtml += '<p class="desc">오프라인으로 제출했거나 사정이 있는 경우, 버튼으로 관리자가 직접 제출 여부를 조정할 수 있습니다.</p>';
       if (DATA.missing.length === 0) {
         missingHtml += '<p class="desc">전원 제출 완료했습니다.</p>';
       } else {
-        missingHtml += '<table><thead><tr><th>이름</th><th>교회</th></tr></thead><tbody>';
+        missingHtml += '<table><thead><tr><th>이름</th><th>교회</th><th>상태</th><th>조정</th></tr></thead><tbody>';
         DATA.missing.forEach(m => {
-          missingHtml += '<tr><td>' + escapeHtml(m.name) + '</td><td>' + escapeHtml(m.church) + '</td></tr>';
+          const isManual = m.manualStatus === '제출완료';
+          const statusBadge = isManual ? '<span class="badge ok">수동 처리됨</span>' : '<span class="badge danger">미제출</span>';
+          const btnLabel = isManual ? '되돌리기' : '제출완료 처리';
+          const newStatus = isManual ? '' : '제출완료';
+          missingHtml += '<tr><td>' + escapeHtml(m.name) + '</td><td>' + escapeHtml(m.church) + '</td><td>' + statusBadge + '</td><td>' +
+            '<button class="secondary btn-adjust" data-name="' + escapeHtml(m.name) + '" data-church="' + escapeHtml(m.church) + '" data-status="' + escapeHtml(newStatus) + '">' + btnLabel + '</button>' +
+            '</td></tr>';
         });
         missingHtml += '</tbody></table>';
       }
       missingHtml += '</div>';
 
-      let subHtml = '<div class="card"><h3>제출 명단 (클릭 시 상세 답변)</h3>';
+      let subHtml = '<div class="card"><h3>제출 명단 (이름/교회/시각/점수 클릭 시 상세 답변)</h3>';
       if (DATA.submissions.length === 0) {
         subHtml += '<p class="desc">아직 제출된 응답이 없습니다.</p>';
       } else {
-        subHtml += '<table><thead><tr><th>이름</th><th>교회</th><th>제출시각</th><th>점수</th></tr></thead><tbody>';
+        subHtml += '<table><thead><tr><th>이름</th><th>교회</th><th>제출시각</th><th>점수</th><th>조정</th></tr></thead><tbody>';
         DATA.submissions.slice().sort((a, b) => (b.percent || 0) - (a.percent || 0)).forEach(s => {
+          const isInvalid = s.manualStatus === '미제출';
           const scoreCell = s.gradedCount > 0
             ? '<span class="badge ' + (s.percent >= 60 ? 'ok' : 'danger') + '">' + s.correctCount + '/' + s.gradedCount + ' (' + s.percent + '%)</span>'
             : '<span style="color:var(--muted);">-</span>';
-          subHtml += '<tr class="clickable" onclick="openDetail(\'' + s.submissionId + '\')"><td>' + escapeHtml(s.name) + '</td><td>' + escapeHtml(s.church) + '</td><td>' + formatDate(s.timestamp) + '</td><td>' + scoreCell + '</td></tr>';
+          const scoreCellFinal = scoreCell + (isInvalid ? ' <span class="badge danger">무효 처리됨</span>' : '');
+          const btnLabel = isInvalid ? '되돌리기' : '무효 처리';
+          const newStatus = isInvalid ? '' : '미제출';
+          subHtml += '<tr>' +
+            '<td class="clickable" onclick="openDetail(\'' + s.submissionId + '\')">' + escapeHtml(s.name) + '</td>' +
+            '<td class="clickable" onclick="openDetail(\'' + s.submissionId + '\')">' + escapeHtml(s.church) + '</td>' +
+            '<td class="clickable" onclick="openDetail(\'' + s.submissionId + '\')">' + formatDate(s.timestamp) + '</td>' +
+            '<td class="clickable" onclick="openDetail(\'' + s.submissionId + '\')">' + scoreCellFinal + '</td>' +
+            '<td><button class="secondary btn-adjust" data-name="' + escapeHtml(s.name) + '" data-church="' + escapeHtml(s.church) + '" data-status="' + escapeHtml(newStatus) + '">' + btnLabel + '</button></td>' +
+            '</tr>';
         });
         subHtml += '</tbody></table>';
       }
@@ -149,6 +166,28 @@
         adminPassword = '';
         renderLogin();
       });
+      document.querySelectorAll('.btn-adjust').forEach(btn => {
+        btn.addEventListener('click', () => {
+          adjustStatus(btn.dataset.name, btn.dataset.church, btn.dataset.status, btn);
+        });
+      });
+    }
+
+    function adjustStatus(name, church, status, btn) {
+      if (btn) { btn.disabled = true; btn.textContent = '처리 중...'; }
+      fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'setStatus', payload: { password: adminPassword, name, church, status } })
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (data.error) throw new Error(data.error);
+          loadDashboard();
+        })
+        .catch(err => {
+          alert('처리 실패: ' + (err.message || err));
+          if (btn) { btn.disabled = false; }
+        });
     }
 
     function openDetail(submissionId) {
@@ -247,7 +286,8 @@
 
     function escapeHtml(str) {
       return String(str == null ? '' : str)
-        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
   </script>
 </body>
