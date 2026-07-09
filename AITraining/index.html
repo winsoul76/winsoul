@@ -92,10 +92,14 @@
   .usecase .prompt{background:#f6f6f8;border-radius:12px;padding:14px 16px;font-size:0.83rem;color:#333;margin-top:14px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre-wrap;}
   .usecase .label{font-weight:600;font-size:0.76rem;color:var(--sub);text-transform:uppercase;letter-spacing:0.04em;margin-top:16px;display:block;}
   .video-row{margin-top:6px;}
-  .video-card{display:block;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:transform .18s ease, box-shadow .18s ease;}
+  .video-card{display:block;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:transform .18s ease, box-shadow .18s ease;cursor:pointer;}
   .video-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,0.08);text-decoration:none;}
+  .video-card:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .video-card.playing{cursor:default;}
+  .video-card.playing:hover{transform:none;box-shadow:none;}
   .video-thumb{position:relative;width:100%;padding-top:56.25%;background:#111;overflow:hidden;}
   .video-thumb img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;}
+  .video-thumb iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;}
   .play-circle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:52px;height:52px;border-radius:50%;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.15rem;backdrop-filter:blur(2px);}
   .yt-tag{position:absolute;right:10px;bottom:10px;background:rgba(0,0,0,0.65);color:#fff;font-size:0.65rem;font-weight:700;padding:3px 8px;border-radius:6px;letter-spacing:0.02em;}
   .video-info{padding:16px 18px;}
@@ -186,14 +190,14 @@
     </div>
     <p class="subhead">관련 영상</p>
     <div class="grid cols-2 video-row">
-      <a class="video-card" href="https://www.youtube.com/watch?v=O6Lw_4Hh0mQ" target="_blank" rel="noopener">
+      <div class="video-card" data-yt="O6Lw_4Hh0mQ" tabindex="0" role="button" aria-label="영상 재생: 클로드 초보자 가이드 2026">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/O6Lw_4Hh0mQ/hqdefault.jpg" alt="클로드 초보자 가이드 2026" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>클로드 초보자 가이드 2026</h4><p>기본기부터 실무 세팅까지 한 번에 정리</p></div>
-      </a>
-      <a class="video-card" href="https://www.youtube.com/watch?v=dJQpL2fkcz0" target="_blank" rel="noopener">
+      </div>
+      <div class="video-card" data-yt="dJQpL2fkcz0" tabindex="0" role="button" aria-label="영상 재생: 5분 만에 이해하는 클로드 기능 완전정복">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/dJQpL2fkcz0/hqdefault.jpg" alt="5분만에 이해하는 클로드 기능 완전정복" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>5분 만에 이해하는 클로드 기능 완전정복</h4><p>왕초보 입문자를 위한 핵심 요약</p></div>
-      </a>
+      </div>
     </div>
   </div>
 
@@ -207,18 +211,18 @@
     </div>
     <p class="subhead">관련 영상</p>
     <div class="grid cols-3 video-row">
-      <a class="video-card" href="https://www.youtube.com/watch?v=VnMAgSd0BUg" target="_blank" rel="noopener">
+      <div class="video-card" data-yt="VnMAgSd0BUg" tabindex="0" role="button" aria-label="영상 재생: PPT·캔바, 이제 클로드가 다 합니다">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/VnMAgSd0BUg/hqdefault.jpg" alt="PPT 캔바 실전" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>PPT·캔바, 이제 클로드가 다 합니다</h4><p>실무 예제 7가지로 배우는 문서 자동화</p></div>
-      </a>
-      <a class="video-card" href="https://www.youtube.com/watch?v=1_bRmkUvjHA" target="_blank" rel="noopener">
+      </div>
+      <div class="video-card" data-yt="1_bRmkUvjHA" tabindex="0" role="button" aria-label="영상 재생: Claude Code 왕초보 입문 튜토리얼 23가지 팁">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/1_bRmkUvjHA/hqdefault.jpg" alt="Claude Code 왕초보 튜토리얼" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>Claude Code 왕초보 입문 튜토리얼 23가지 팁</h4><p>설치부터 실전까지 50분 완전정복</p></div>
-      </a>
-      <a class="video-card" href="https://www.youtube.com/watch?v=1B3Ffo8snfY" target="_blank" rel="noopener">
+      </div>
+      <div class="video-card" data-yt="1B3Ffo8snfY" tabindex="0" role="button" aria-label="영상 재생: Claude Code를 Google·Slack·Reddit에 연결하기">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/1B3Ffo8snfY/hqdefault.jpg" alt="Claude Code MCP 커넥터 연결" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>Claude Code를 Google·Slack·Reddit에 연결하기</h4><p>Skills + MCP 커넥터 40분 완전 튜토리얼</p></div>
-      </a>
+      </div>
     </div>
   </div>
 
@@ -232,18 +236,18 @@
     </div>
     <p class="subhead">관련 영상</p>
     <div class="grid cols-3 video-row">
-      <a class="video-card" href="https://www.youtube.com/watch?v=8o6qC5qw4r0" target="_blank" rel="noopener">
+      <div class="video-card" data-yt="8o6qC5qw4r0" tabindex="0" role="button" aria-label="영상 재생: AI 잘 쓰는 사람들이 클로드 스킬 먼저 세팅하는 이유">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/8o6qC5qw4r0/hqdefault.jpg" alt="클로드 스킬 세팅" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>AI 잘 쓰는 사람들이 클로드 스킬 먼저 세팅하는 이유</h4><p>Skills로 반복 업무를 워크플로우화하는 법</p></div>
-      </a>
-      <a class="video-card" href="https://www.youtube.com/watch?v=vMo-yRCN3QM" target="_blank" rel="noopener">
+      </div>
+      <div class="video-card" data-yt="vMo-yRCN3QM" tabindex="0" role="button" aria-label="영상 재생: Claude Cowork Full Tutorial">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/vMo-yRCN3QM/hqdefault.jpg" alt="Claude Cowork Full Tutorial" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>Claude Cowork Full Tutorial</h4><p>설정부터 실전 워크플로우까지 완전정복</p></div>
-      </a>
-      <a class="video-card" href="https://www.youtube.com/watch?v=uvs1Igr4u6g" target="_blank" rel="noopener">
+      </div>
+      <div class="video-card" data-yt="uvs1Igr4u6g" tabindex="0" role="button" aria-label="영상 재생: Claude Agent Teams 제대로 쓰는 법">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/uvs1Igr4u6g/hqdefault.jpg" alt="Claude Agent Teams Live Build" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>Claude Agent Teams 제대로 쓰는 법 (라이브 빌드)</h4><p>다중 에이전트 협업 워크플로우 실전 구성</p></div>
-      </a>
+      </div>
     </div>
   </div>
 </section>
@@ -273,14 +277,14 @@
     </div>
     <p class="subhead">관련 영상</p>
     <div class="grid cols-2 video-row">
-      <a class="video-card" href="https://www.youtube.com/watch?v=rtC5MG814x4" target="_blank" rel="noopener">
+      <div class="video-card" data-yt="rtC5MG814x4" tabindex="0" role="button" aria-label="영상 재생: GPTs 사용법 - 나만의 챗봇 5분 만에 완성">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/rtC5MG814x4/hqdefault.jpg" alt="GPTs 커스텀 챗봇 만들기" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>GPTs 사용법 - 나만의 챗봇 5분 만에 완성</h4><p>커스텀 GPT 만들기 상세 가이드</p></div>
-      </a>
-      <a class="video-card" href="https://www.youtube.com/watch?v=tPBWrHyu67s" target="_blank" rel="noopener">
+      </div>
+      <div class="video-card" data-yt="tPBWrHyu67s" tabindex="0" role="button" aria-label="영상 재생: GPTs Knowledge 기능 1000% 활용하기">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/tPBWrHyu67s/hqdefault.jpg" alt="GPTs Knowledge 기능 활용" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>GPTs Knowledge 기능 1000% 활용하기</h4><p>내 데이터로 진짜같은 챗봇 만드는 법</p></div>
-      </a>
+      </div>
     </div>
   </div>
 
@@ -294,14 +298,14 @@
     </div>
     <p class="subhead">관련 영상</p>
     <div class="grid cols-2 video-row">
-      <a class="video-card" href="https://www.youtube.com/watch?v=8qWtU51lxpM" target="_blank" rel="noopener">
+      <div class="video-card" data-yt="8qWtU51lxpM" tabindex="0" role="button" aria-label="영상 재생: ChatGPT for Data Analytics — Full Tutorial">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/8qWtU51lxpM/hqdefault.jpg" alt="ChatGPT Data Analytics Full Tutorial" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>ChatGPT for Data Analytics — Full Tutorial</h4><p>데이터 업로드부터 인사이트 도출까지</p></div>
-      </a>
-      <a class="video-card" href="https://www.youtube.com/watch?v=7lgFyCx2DCM" target="_blank" rel="noopener">
+      </div>
+      <div class="video-card" data-yt="7lgFyCx2DCM" tabindex="0" role="button" aria-label="영상 재생: GPT Canvas 완전정복 워크스루">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/7lgFyCx2DCM/hqdefault.jpg" alt="GPT Canvas Walkthrough" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>GPT Canvas 완전정복 워크스루</h4><p>문서 공동편집 기능 실전 활용</p></div>
-      </a>
+      </div>
     </div>
   </div>
 
@@ -314,14 +318,14 @@
     </div>
     <p class="subhead">관련 영상</p>
     <div class="grid cols-2 video-row">
-      <a class="video-card" href="https://www.youtube.com/watch?v=b4qu-XQXmLw" target="_blank" rel="noopener">
+      <div class="video-card" data-yt="b4qu-XQXmLw" tabindex="0" role="button" aria-label="영상 재생: How to Use ChatGPT Agent Mode">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/b4qu-XQXmLw/hqdefault.jpg" alt="ChatGPT Agent Mode Step by Step" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>How to Use ChatGPT Agent Mode (Step-by-Step)</h4><p>웹 자동조작 · RPA성 작업 실전 가이드</p></div>
-      </a>
-      <a class="video-card" href="https://www.youtube.com/watch?v=-QM-Z99YM5A" target="_blank" rel="noopener">
+      </div>
+      <div class="video-card" data-yt="-QM-Z99YM5A" tabindex="0" role="button" aria-label="영상 재생: ChatGPT와 PDF 파일만 있으면 보고서 작성 끝">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/-QM-Z99YM5A/hqdefault.jpg" alt="ChatGPT PDF 보고서 작성" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>ChatGPT와 PDF 파일만 있으면 보고서 작성 끝</h4><p>Deep Research 기반 보고서 자동화</p></div>
-      </a>
+      </div>
     </div>
   </div>
 </section>
@@ -350,14 +354,14 @@
     </div>
     <p class="subhead">관련 영상</p>
     <div class="grid cols-2 video-row">
-      <a class="video-card" href="https://www.youtube.com/watch?v=Qd42_ftixtI" target="_blank" rel="noopener">
+      <div class="video-card" data-yt="Qd42_ftixtI" tabindex="0" role="button" aria-label="영상 재생: 초보자를 위한 제미나이 사용법 강의">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/Qd42_ftixtI/hqdefault.jpg" alt="제미나이 초보자 사용법" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>[Full] 초보자를 위한 제미나이 사용법 강의</h4><p>기초 기능부터 활용까지 총정리</p></div>
-      </a>
-      <a class="video-card" href="https://www.youtube.com/watch?v=1-3FKbh7TEw" target="_blank" rel="noopener">
+      </div>
+      <div class="video-card" data-yt="1-3FKbh7TEw" tabindex="0" role="button" aria-label="영상 재생: 구글 제미나이의 Gems 기능">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/1-3FKbh7TEw/hqdefault.jpg" alt="구글 제미나이 gems 기능" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>구글 제미나이의 Gems 기능, 알아두면 유용한 나만의 비서</h4><p>Gems 기초 개념과 첫 설정</p></div>
-      </a>
+      </div>
     </div>
   </div>
 
@@ -370,14 +374,14 @@
     </div>
     <p class="subhead">관련 영상</p>
     <div class="grid cols-2 video-row">
-      <a class="video-card" href="https://www.youtube.com/watch?v=IBrxP7OH_Ao" target="_blank" rel="noopener">
+      <div class="video-card" data-yt="IBrxP7OH_Ao" tabindex="0" role="button" aria-label="영상 재생: Master Gemini x Google Workspace">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/IBrxP7OH_Ao/hqdefault.jpg" alt="Gemini Workspace 무료 강의" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>Master Gemini × Google Workspace (무료 1시간 코스)</h4><p>Gmail·Docs·Sheets 연동 자동화 실습</p></div>
-      </a>
-      <a class="video-card" href="https://www.youtube.com/watch?v=PkV5gpRA4I4" target="_blank" rel="noopener">
+      </div>
+      <div class="video-card" data-yt="PkV5gpRA4I4" tabindex="0" role="button" aria-label="영상 재생: 노트북LM x 제미나이 x 젬스 실전 조합 공개">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/PkV5gpRA4I4/hqdefault.jpg" alt="노트북LM 제미나이 젬스 실전 조합" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>노트북LM × 제미나이 × 젬스 실전 조합 공개</h4><p>커리어 대시보드부터 결과물 생성까지</p></div>
-      </a>
+      </div>
     </div>
   </div>
 
@@ -390,14 +394,14 @@
     </div>
     <p class="subhead">관련 영상</p>
     <div class="grid cols-2 video-row">
-      <a class="video-card" href="https://www.youtube.com/watch?v=-FMxK5BIE28" target="_blank" rel="noopener">
+      <div class="video-card" data-yt="-FMxK5BIE28" tabindex="0" role="button" aria-label="영상 재생: Gemini Gems + NotebookLM is INSANE">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/-FMxK5BIE28/hqdefault.jpg" alt="Gemini Gems NotebookLM 조합" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>Gemini Gems + NotebookLM is INSANE</h4><p>고급 조합으로 리서치·문서화 자동화하기</p></div>
-      </a>
-      <a class="video-card" href="https://www.youtube.com/watch?v=l5Hv9a42Qbs" target="_blank" rel="noopener">
+      </div>
+      <div class="video-card" data-yt="l5Hv9a42Qbs" tabindex="0" role="button" aria-label="영상 재생: 생성형 AI 데이터 분석 30분 무료강의">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/l5Hv9a42Qbs/hqdefault.jpg" alt="생성형 AI 데이터 분석 강의" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>생성형 AI 데이터 분석 30분 무료강의</h4><p>AI·Notion·Excel 플러그인 결합 활용법</p></div>
-      </a>
+      </div>
     </div>
   </div>
 </section>
@@ -508,14 +512,14 @@
   <h2>AI 3종 비교 &amp; 종합 추천 영상</h2>
   <p class="lead">어떤 툴을 언제 쓸지 감이 안 잡힐 때 보면 좋은 비교·종합 영상입니다.</p>
   <div class="grid cols-2 video-row">
-    <a class="video-card" href="https://www.youtube.com/watch?v=bSHLtglLbJA" target="_blank" rel="noopener">
+    <div class="video-card" data-yt="bSHLtglLbJA" tabindex="0" role="button" aria-label="영상 재생: 챗GPT vs 제미나이 vs 클로드, AI 승자는?">
       <div class="video-thumb"><img src="https://i.ytimg.com/vi/bSHLtglLbJA/hqdefault.jpg" alt="챗GPT 제미나이 클로드 비교" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
       <div class="video-info"><h4>챗GPT vs 제미나이 vs 클로드, AI 승자는? (전문가 특강)</h4><p>업무 성격별 툴 선택 기준 (서울시립대 김덕진 겸임교수)</p></div>
-    </a>
-    <a class="video-card" href="https://www.youtube.com/watch?v=x48cGIbnFwQ" target="_blank" rel="noopener">
+    </div>
+    <div class="video-card" data-yt="x48cGIbnFwQ" tabindex="0" role="button" aria-label="영상 재생: 업무 자동화 필수 AI 3종 비교 활용법">
       <div class="video-thumb"><img src="https://i.ytimg.com/vi/x48cGIbnFwQ/hqdefault.jpg" alt="업무별 AI 3종 비교 활용" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
       <div class="video-info"><h4>업무 자동화 필수 AI 3종 비교 활용법</h4><p>챗GPT·제미나이·클로드 실전 조합 사용법</p></div>
-    </a>
+    </div>
   </div>
 </section>
 
@@ -582,6 +586,21 @@
           panel.classList.toggle('active', panel.getAttribute('data-tier') === tier);
         });
       });
+    });
+  });
+
+  // Inline YouTube playback — no navigation away from the page
+  document.querySelectorAll('.video-card[data-yt]').forEach(function(card){
+    function playInline(){
+      if(card.classList.contains('playing')) return;
+      var id = card.getAttribute('data-yt');
+      var thumb = card.querySelector('.video-thumb');
+      thumb.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
+      card.classList.add('playing');
+    }
+    card.addEventListener('click', playInline);
+    card.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); playInline(); }
     });
   });
 })();
