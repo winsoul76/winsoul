@@ -231,6 +231,13 @@ function sliceVerses(all, vs, ve) {
   return all.filter(v => v.num >= vs && (ve == null || v.num <= ve));
 }
 
+// 받침 유무로 이/가 주격 조사를 판별해 붙임 — today.json·캐시·라이브 모든 경로 공통 적용
+function fixJosa(t) {
+  t = t.replace(/([가-힣]) 이(?=\s|$)/g, (_, p) => { const c = p.charCodeAt(0) - 0xAC00; return (c >= 0 && c % 28 !== 0) ? p + '이' : p + ' 이'; });
+  t = t.replace(/([가-힣]) 가(?=\s|$)/g, (_, p) => { const c = p.charCodeAt(0) - 0xAC00; return (c >= 0 && c % 28 === 0) ? p + '가' : p + ' 가'; });
+  return t;
+}
+
 function makeChatGPTLink(refRaw) {
   const q = refRaw + ' 성경 본문에 대해 아래 3가지를 존댓말로, 반드시 1. 2. 3. 형식으로 번호를 매겨 답변해 주세요.\n1. 역사적·문화적 배경\n2. 본문에 등장하는 생소하거나 어려운 단어·인물·지명의 의미\n3. 본문 내용 요약\n각 항목은 2~3문장으로 작성해 주세요.';
   return 'https://chatgpt.com/?q=' + encodeURIComponent(q);
@@ -254,7 +261,7 @@ function renderApp(today, ref, verses, weekly) {
     '<div class="card"><div class="section-label">본문 · 개역개정</div>' +
       '<div class="passage-text">' + verses.map(v => {
         const m = v.match(/^(\d+)\s+([\s\S]*)$/);
-        return m ? '<p><span class="v-num">' + m[1] + '</span><span class="v-text">' + m[2] + '</span></p>' : '<p>' + v + '</p>';
+        return m ? '<p><span class="v-num">' + m[1] + '</span><span class="v-text">' + fixJosa(m[2]) + '</span></p>' : '<p>' + fixJosa(v) + '</p>';
       }).join('') + '</div>' +
     '</div>' +
     (weekly && weekly.text ?
