@@ -408,13 +408,8 @@
       var content = document.getElementById('adminContent');
       content.style.display = '';
       initTabs();
-      if (isSundayToday()) {
-        initAttendance();
-        initScripture();
-      } else {
-        document.getElementById('panelAtt').innerHTML = notSundayCard();
-        document.getElementById('panelScr').innerHTML = notSundayCard();
-      }
+      initAttendance();
+      initScripture();
       initSchedule();
       initMembers();
     });
