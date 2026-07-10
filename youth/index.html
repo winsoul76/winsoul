@@ -6,86 +6,96 @@
 <title>2026 청소년1부 여름 수련회 준비 페이지</title>
 <style>
   :root{
-    --navy:#1F3864; --accent:#2E75B6; --light:#EAF1F8; --light2:#F5F7FA;
-    --red:#C00000; --green:#2E7D32; --gray:#6B7280; --border:#E1E6EC;
+    --ink:#1d1d1f; --sub:#86868b; --bg:#fbfbfd; --card:#ffffff;
+    --line:#e5e5e7; --accent:#0066cc; --red:#d70015; --green:#1f8a3b;
+    --amber:#b8860b; --chip:#f5f5f7;
   }
   *{box-sizing:border-box;}
+  html{-webkit-font-smoothing:antialiased;}
   body{
-    margin:0; font-family:"Malgun Gothic","맑은 고딕",-apple-system,sans-serif;
-    background:#F0F3F7; color:#1A1A1A; line-height:1.6;
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI","Malgun Gothic","맑은 고딕",Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.55; -webkit-font-smoothing:antialiased;
   }
   header{
-    background:linear-gradient(135deg,var(--navy),var(--accent));
-    color:#fff; padding:36px 24px 28px; text-align:center;
+    text-align:center; padding:64px 24px 40px; max-width:720px; margin:0 auto;
   }
-  header h1{margin:0 0 6px; font-size:26px; letter-spacing:.5px;}
-  header .theme{font-size:16px; opacity:.95; margin-bottom:4px;}
-  header .sub{font-size:13px; opacity:.8;}
+  header h1{margin:0 0 10px; font-size:34px; font-weight:600; letter-spacing:-0.015em;}
+  header .theme{font-size:17px; color:var(--sub); margin-bottom:6px; font-weight:400;}
+  header .sub{font-size:14px; color:var(--sub);}
   .dday{
-    display:inline-block; margin-top:14px; background:rgba(255,255,255,.15);
-    border:1px solid rgba(255,255,255,.4); border-radius:999px;
-    padding:8px 22px; font-size:15px; font-weight:700;
+    display:inline-block; margin-top:22px; background:var(--ink); color:#fff;
+    border-radius:980px; padding:9px 24px; font-size:14px; font-weight:500;
+    letter-spacing:-.01em;
   }
   nav{
-    position:sticky; top:0; z-index:10; background:#fff;
-    border-bottom:1px solid var(--border); display:flex; overflow-x:auto;
-    box-shadow:0 2px 6px rgba(0,0,0,.05);
+    position:sticky; top:0; z-index:10; background:rgba(251,251,253,.82);
+    -webkit-backdrop-filter:saturate(180%) blur(20px); backdrop-filter:saturate(180%) blur(20px);
+    border-bottom:1px solid var(--line);
+  }
+  #tabNav{
+    display:flex; justify-content:center; gap:4px; max-width:920px; margin:0 auto;
+    padding:0 16px; overflow-x:auto;
   }
   nav button{
-    flex:0 0 auto; padding:14px 18px; border:none; background:transparent;
-    font-size:14px; font-weight:600; color:var(--gray); cursor:pointer;
-    border-bottom:3px solid transparent; white-space:nowrap;
+    flex:0 0 auto; padding:16px 18px; border:none; background:transparent;
+    font-size:13.5px; font-weight:500; color:var(--sub); cursor:pointer;
+    border-bottom:2px solid transparent; white-space:nowrap; transition:color .15s;
   }
-  nav button.active{color:var(--navy); border-bottom-color:var(--accent);}
-  main{max-width:920px; margin:0 auto; padding:22px 16px 60px;}
+  nav button:hover{color:var(--ink);}
+  nav button.active{color:var(--ink); border-bottom-color:var(--ink); font-weight:600;}
+  main{max-width:760px; margin:0 auto; padding:32px 20px 80px;}
   section{display:none;}
-  section.active{display:block; animation:fade .25s ease;}
-  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+  section.active{display:block; animation:fade .3s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
   .card{
-    background:#fff; border:1px solid var(--border); border-radius:12px;
-    padding:20px 22px; margin-bottom:16px; box-shadow:0 1px 3px rgba(0,0,0,.04);
+    background:var(--card); border:1px solid var(--line); border-radius:18px;
+    padding:28px 30px; margin-bottom:20px;
   }
-  .card h2{margin:0 0 12px; font-size:18px; color:var(--navy); border-left:4px solid var(--accent); padding-left:10px;}
-  .card h3{margin:18px 0 8px; font-size:15px; color:var(--accent);}
-  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px;}
+  .card h2{margin:0 0 16px; font-size:20px; font-weight:600; letter-spacing:-.01em; color:var(--ink);}
+  .card h3{margin:24px 0 10px; font-size:14.5px; font-weight:600; color:var(--ink);}
+  .card h3:first-of-type{margin-top:4px;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px;}
   .stat{
-    background:var(--light2); border:1px solid var(--border); border-radius:10px;
-    padding:14px 16px; text-align:center;
+    background:var(--chip); border-radius:14px;
+    padding:18px 16px; text-align:center;
   }
-  .stat .num{font-size:22px; font-weight:800; color:var(--navy);}
-  .stat .lbl{font-size:12px; color:var(--gray); margin-top:2px;}
-  table{width:100%; border-collapse:collapse; font-size:13px; margin-top:8px;}
-  th,td{border:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top;}
-  th{background:var(--navy); color:#fff; font-weight:600;}
-  tr:nth-child(even) td{background:var(--light2);}
+  .stat .num{font-size:19px; font-weight:700; color:var(--ink); letter-spacing:-.01em;}
+  .stat .lbl{font-size:11.5px; color:var(--sub); margin-top:4px;}
+  table{width:100%; border-collapse:collapse; font-size:13px; margin-top:6px;}
+  th,td{padding:10px 12px; text-align:left; vertical-align:top; border-bottom:1px solid var(--line);}
+  th{background:transparent; color:var(--sub); font-weight:600; font-size:11.5px; text-transform:uppercase; letter-spacing:.03em; border-bottom:1px solid var(--ink);}
+  tr:last-child td{border-bottom:none;}
   .warn{
-    background:#FDECEC; border:1px solid #F3B9B9; color:var(--red);
-    border-radius:8px; padding:10px 14px; font-size:13.5px; font-weight:600; margin:10px 0;
+    background:#fdecec; border-radius:12px; color:var(--red);
+    padding:13px 16px; font-size:13px; font-weight:500; margin:12px 0; line-height:1.5;
   }
-  .note{color:var(--gray); font-size:12.5px; font-style:italic; margin-top:6px;}
+  .note{color:var(--sub); font-size:12px; margin-top:8px; line-height:1.5;}
   .badge{
-    display:inline-block; padding:2px 9px; border-radius:999px; font-size:11px; font-weight:700;
+    display:inline-block; padding:3px 10px; border-radius:980px; font-size:11px; font-weight:600;
   }
-  .badge.done{background:#E6F4EA; color:var(--green);}
-  .badge.progress{background:#FFF4E0; color:#B8860B;}
-  .badge.todo{background:#F1F1F1; color:var(--gray);}
-  ul.clean{margin:6px 0; padding-left:20px;}
-  ul.clean li{margin-bottom:5px;}
-  .timeline{border-left:3px solid var(--accent); margin-left:8px; padding-left:18px;}
-  .tl-item{position:relative; margin-bottom:18px;}
+  .badge.done{background:#e4f5e9; color:var(--green);}
+  .badge.progress{background:#fdf3dc; color:var(--amber);}
+  .badge.todo{background:var(--chip); color:var(--sub);}
+  ul.clean{margin:8px 0; padding-left:18px;}
+  ul.clean li{margin-bottom:7px; font-size:13.5px;}
+  .timeline{border-left:2px solid var(--line); margin-left:6px; padding-left:20px;}
+  .tl-item{position:relative; margin-bottom:22px;}
   .tl-item::before{
-    content:""; position:absolute; left:-24px; top:4px; width:11px; height:11px;
-    border-radius:50%; background:var(--accent); border:2px solid #fff; box-shadow:0 0 0 2px var(--accent);
+    content:""; position:absolute; left:-25px; top:5px; width:9px; height:9px;
+    border-radius:50%; background:var(--ink);
   }
-  .tl-date{font-weight:700; color:var(--navy); font-size:13.5px;}
-  .tl-desc{font-size:13px; color:#333;}
-  .contact-row{display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px dashed var(--border); font-size:14px;}
+  .tl-date{font-weight:600; color:var(--ink); font-size:13.5px;}
+  .tl-desc{font-size:12.5px; color:var(--sub); margin-top:2px;}
+  .contact-row{display:flex; justify-content:space-between; padding:13px 0; border-bottom:1px solid var(--line); font-size:14px;}
   .contact-row:last-child{border-bottom:none;}
-  .contact-row b{color:var(--navy);}
-  footer{text-align:center; padding:24px; color:var(--gray); font-size:12px;}
-  .check{width:16px; height:16px; vertical-align:middle; margin-right:8px;}
+  .contact-row span{color:var(--sub);}
+  .contact-row b{color:var(--ink); font-weight:500;}
+  footer{text-align:center; padding:32px 20px; color:var(--sub); font-size:11.5px;}
+  p{font-size:13.5px;}
   @media (max-width:600px){
-    header h1{font-size:21px;} .card{padding:16px;}
+    header{padding:44px 20px 28px;}
+    header h1{font-size:26px;}
+    .card{padding:20px 20px;}
   }
 </style>
 </head>
@@ -98,13 +108,15 @@
   <div class="dday" id="ddayBox">D-day 계산 중...</div>
 </header>
 
-<nav id="tabNav">
-  <button data-tab="overview" class="active">개요</button>
-  <button data-tab="schedule">일정</button>
-  <button data-tab="venue">장소</button>
-  <button data-tab="participants">참가 현황</button>
-  <button data-tab="checklist">준비 체크리스트</button>
-  <button data-tab="contacts">연락처</button>
+<nav>
+  <div id="tabNav">
+    <button data-tab="overview" class="active">개요</button>
+    <button data-tab="schedule">일정</button>
+    <button data-tab="venue">장소</button>
+    <button data-tab="participants">참가 현황</button>
+    <button data-tab="checklist">준비 체크리스트</button>
+    <button data-tab="contacts">연락처</button>
+  </div>
 </nav>
 
 <main>
@@ -127,7 +139,7 @@
       </ul>
       <div class="note">2025년 수련회(“뜻을 정하여”, 단 1:8)의 운영 틀(예배·소그룹·특강·Games·조별 발표회, 3일 2박)을 기본으로 유지하며 2026년 표어에 맞춰 재구성.</div>
       <h3>학부모 기도제목 요약</h3>
-      <p style="font-size:13.5px;">65건의 기도제목 중 가장 큰 비중은 “하나님을 인격적으로 만나는 경험”이며, 성령체험·성령충만, 비전·소명 발견, 사춘기를 지혜롭게 통과함, 신앙 습관 회복, 교우 관계, 안전·건강이 뒤를 잇는다.</p>
+      <p>65건의 기도제목 중 가장 큰 비중은 “하나님을 인격적으로 만나는 경험”이며, 성령체험·성령충만, 비전·소명 발견, 사춘기를 지혜롭게 통과함, 신앙 습관 회복, 교우 관계, 안전·건강이 뒤를 잇는다.</p>
     </div>
 
     <div class="card">
@@ -164,7 +176,7 @@
         <tr><td>21:00–22:00</td><td>저녁 집회</td><td>뒷정리</td><td></td></tr>
         <tr><td>22:00–23:00</td><td>정리 및 취침</td><td>정리 및 취침</td><td></td></tr>
       </table>
-      <div class="warn">⚠ 안내문상 도착 예정(11:40)이 2025년 타임테이블 해산(15:30경)보다 훨씬 이르며, 이동 소요시간 계산상 여는예배(16:30 시작)도 지연 가능성 있음 — 아래 이동시간 계산 참고.</div>
+      <div class="warn">안내문상 도착 예정(11:40)이 2025년 타임테이블 해산(15:30경)보다 훨씬 이르며, 이동 소요시간 계산상 여는예배(16:30 시작)도 지연 가능성 있음 — 아래 이동시간 계산 참고.</div>
     </div>
 
     <div class="card">
@@ -184,10 +196,10 @@
   <section id="venue">
     <div class="card">
       <h2>Christliches Gästezentrum Westerwald (Rehe)</h2>
-      <p style="font-size:13.5px;">해발 약 600m 베스터발트 산간 지역에 위치한 기독교 수양관. 380개 침상(싱글 16 · 더블 82 · 3~4인실 62), 118개 객실 샤워/화장실 완비, 세미나실 12개(최대 200명 홀 포함).</p>
+      <p>해발 약 600m 베스터발트 산간 지역에 위치한 기독교 수양관. 380개 침상(싱글 16 · 더블 82 · 3~4인실 62), 118개 객실 샤워/화장실 완비, 세미나실 12개(최대 200명 홀 포함).</p>
       <h3>주소 / 연락처</h3>
       <table>
-        <tr><td style="width:120px;"><b>주소</b></td><td>Heimstraße 49, 56479 Rehe</td></tr>
+        <tr><td style="width:110px;"><b>주소</b></td><td>Heimstraße 49, 56479 Rehe</td></tr>
         <tr><td><b>전화</b></td><td>02664 505-0 (월~토 08:30–12:00, 14:00–18:00)</td></tr>
         <tr><td><b>이메일</b></td><td>rezeption@cgw-rehe.de</td></tr>
       </table>
@@ -198,10 +210,10 @@
         <tr><td>제공 (무료)</td><td>침구, 전 일정 식사(조·중·석 풀보드), 운동시설(축구·비치발리볼·농구·탁구·당구·테이블사커), 놀이터, 캠프파이어·그릴 공간, 도보·자전거길</td></tr>
         <tr><td>유료 / 개별 준비</td><td>카페 음료·케이크, 수건(참가자 개별 지참), 특별식(채식 등) 추가요금 가능성</td></tr>
       </table>
-      <div class="warn">⚠ 실내 수영장(무료)·사우나(유료) 시설이 있으나, 2026년 수련회 기간에는 <b>안전 관리 목적상 이용하지 않음</b>. 해당 구역에 외부로 연결되는 출입구가 있는지, 잠금이 가능한지 숙소에 사전 확인 필요.</div>
+      <div class="warn">실내 수영장(무료)·사우나(유료) 시설이 있으나, 2026년 수련회 기간에는 <b>안전 관리 목적상 이용하지 않음</b>. 해당 구역에 외부로 연결되는 출입구가 있는지, 잠금이 가능한지 숙소에 사전 확인 필요.</div>
 
       <h3>캠프파이어</h3>
-      <p style="font-size:13.5px;">부지 내 정식 “Lagerfeuer- und Grillplatz” 보유 — 2일차 저녁 캠프파이어 진행 가능. 우천 시 실내 대체 프로그램 준비 필요.</p>
+      <p>부지 내 정식 “Lagerfeuer- und Grillplatz” 보유 — 2일차 저녁 캠프파이어 진행 가능. 우천 시 실내 대체 프로그램 준비 필요.</p>
 
       <h3>식사 관련 방문자 후기</h3>
       <ul class="clean">
@@ -211,10 +223,10 @@
       </ul>
 
       <h3>날씨 · 옷차림 (8월 중순 평년 기준)</h3>
-      <p style="font-size:13.5px;">낮 최고 20~21℃, 밤 최저 14~15℃, 고지대라 아침저녁 서늘함. 반팔+얇은 겉옷, 긴팔/자켓, 우산, 편한 운동화, 모자·선크림(자외선지수 6) 권장.</p>
+      <p>낮 최고 20~21℃, 밤 최저 14~15℃, 고지대라 아침저녁 서늘함. 반팔+얇은 겉옷, 긴팔/자켓, 우산, 편한 운동화, 모자·선크림(자외선지수 6) 권장.</p>
 
       <h3>현수막 설치</h3>
-      <p style="font-size:13.5px;">60×180cm는 자립형 롤업 배너로 추정되어 별도 공간 불필요. 350×80cm는 벽면·펜스 등 부착 공간이 필요하므로 숙소에 사전 문의 필요(위 연락처 활용).</p>
+      <p>60×180cm는 자립형 롤업 배너로 추정되어 별도 공간 불필요. 350×80cm는 벽면·펜스 등 부착 공간이 필요하므로 숙소에 사전 문의 필요(위 연락처 활용).</p>
     </div>
   </section>
 
@@ -236,7 +248,7 @@
         <tr><td>요나단반</td><td>이성영</td><td>7명</td><td>0명</td></tr>
         <tr><td>엘리야반</td><td>이루다</td><td>5명</td><td>3명</td></tr>
         <tr><td>반 미배정</td><td>권준영 선교사님 자녀(권지호·권예호)</td><td>2명</td><td>0명</td></tr>
-        <tr style="font-weight:700;"><td colspan="2">합계</td><td>71명</td><td>30명</td></tr>
+        <tr style="font-weight:600;"><td colspan="2">합계</td><td>71명</td><td>30명</td></tr>
       </table>
       <div class="note">여호수아반 담당교사는 이길헌 부장집사님에서 장현정 선생님으로 변경 확정됨. 모세반 권지연 선생님은 참석 불가로 대체 교사 배정 필요.</div>
       <div class="warn">신청 기간이 거의 마감되어 71명을 최종 참가 인원으로 확정하고 조 편성·물품 발주를 진행함. 수련회 조(소그룹·게임) 편성은 위 반 편성과 무관하게 별도로 진행.</div>
