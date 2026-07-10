@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 청소년1부 여름 수련회 준비 페이지</title>
+<style>
+  :root{
+    --navy:#1F3864; --accent:#2E75B6; --light:#EAF1F8; --light2:#F5F7FA;
+    --red:#C00000; --green:#2E7D32; --gray:#6B7280; --border:#E1E6EC;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:"Malgun Gothic","맑은 고딕",-apple-system,sans-serif;
+    background:#F0F3F7; color:#1A1A1A; line-height:1.6;
+  }
+  header{
+    background:linear-gradient(135deg,var(--navy),var(--accent));
+    color:#fff; padding:36px 24px 28px; text-align:center;
+  }
+  header h1{margin:0 0 6px; font-size:26px; letter-spacing:.5px;}
+  header .theme{font-size:16px; opacity:.95; margin-bottom:4px;}
+  header .sub{font-size:13px; opacity:.8;}
+  .dday{
+    display:inline-block; margin-top:14px; background:rgba(255,255,255,.15);
+    border:1px solid rgba(255,255,255,.4); border-radius:999px;
+    padding:8px 22px; font-size:15px; font-weight:700;
+  }
+  nav{
+    position:sticky; top:0; z-index:10; background:#fff;
+    border-bottom:1px solid var(--border); display:flex; overflow-x:auto;
+    box-shadow:0 2px 6px rgba(0,0,0,.05);
+  }
+  nav button{
+    flex:0 0 auto; padding:14px 18px; border:none; background:transparent;
+    font-size:14px; font-weight:600; color:var(--gray); cursor:pointer;
+    border-bottom:3px solid transparent; white-space:nowrap;
+  }
+  nav button.active{color:var(--navy); border-bottom-color:var(--accent);}
+  main{max-width:920px; margin:0 auto; padding:22px 16px 60px;}
+  section{display:none;}
+  section.active{display:block; animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+  .card{
+    background:#fff; border:1px solid var(--border); border-radius:12px;
+    padding:20px 22px; margin-bottom:16px; box-shadow:0 1px 3px rgba(0,0,0,.04);
+  }
+  .card h2{margin:0 0 12px; font-size:18px; color:var(--navy); border-left:4px solid var(--accent); padding-left:10px;}
+  .card h3{margin:18px 0 8px; font-size:15px; color:var(--accent);}
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px;}
+  .stat{
+    background:var(--light2); border:1px solid var(--border); border-radius:10px;
+    padding:14px 16px; text-align:center;
+  }
+  .stat .num{font-size:22px; font-weight:800; color:var(--navy);}
+  .stat .lbl{font-size:12px; color:var(--gray); margin-top:2px;}
+  table{width:100%; border-collapse:collapse; font-size:13px; margin-top:8px;}
+  th,td{border:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top;}
+  th{background:var(--navy); color:#fff; font-weight:600;}
+  tr:nth-child(even) td{background:var(--light2);}
+  .warn{
+    background:#FDECEC; border:1px solid #F3B9B9; color:var(--red);
+    border-radius:8px; padding:10px 14px; font-size:13.5px; font-weight:600; margin:10px 0;
+  }
+  .note{color:var(--gray); font-size:12.5px; font-style:italic; margin-top:6px;}
+  .badge{
+    display:inline-block; padding:2px 9px; border-radius:999px; font-size:11px; font-weight:700;
+  }
+  .badge.done{background:#E6F4EA; color:var(--green);}
+  .badge.progress{background:#FFF4E0; color:#B8860B;}
+  .badge.todo{background:#F1F1F1; color:var(--gray);}
+  ul.clean{margin:6px 0; padding-left:20px;}
+  ul.clean li{margin-bottom:5px;}
+  .timeline{border-left:3px solid var(--accent); margin-left:8px; padding-left:18px;}
+  .tl-item{position:relative; margin-bottom:18px;}
+  .tl-item::before{
+    content:""; position:absolute; left:-24px; top:4px; width:11px; height:11px;
+    border-radius:50%; background:var(--accent); border:2px solid #fff; box-shadow:0 0 0 2px var(--accent);
+  }
+  .tl-date{font-weight:700; color:var(--navy); font-size:13.5px;}
+  .tl-desc{font-size:13px; color:#333;}
+  .contact-row{display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px dashed var(--border); font-size:14px;}
+  .contact-row:last-child{border-bottom:none;}
+  .contact-row b{color:var(--navy);}
+  footer{text-align:center; padding:24px; color:var(--gray); font-size:12px;}
+  .check{width:16px; height:16px; vertical-align:middle; margin-right:8px;}
+  @media (max-width:600px){
+    header h1{font-size:21px;} .card{padding:16px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>2026년 청소년1부 여름 수련회</h1>
+  <div class="theme">예배의 승리자들 : 부흥의 세대 (잠언 21:30-31)</div>
+  <div class="sub">한마음교회 청소년1부 · 2026. 8. 14(금) ~ 8. 16(일)</div>
+  <div class="dday" id="ddayBox">D-day 계산 중...</div>
+</header>
+
+<nav id="tabNav">
+  <button data-tab="overview" class="active">개요</button>
+  <button data-tab="schedule">일정</button>
+  <button data-tab="venue">장소</button>
+  <button data-tab="participants">참가 현황</button>
+  <button data-tab="checklist">준비 체크리스트</button>
+  <button data-tab="contacts">연락처</button>
+</nav>
+
+<main>
+
+  <!-- 개요 -->
+  <section id="overview" class="active">
+    <div class="card">
+      <h2>핵심 요약</h2>
+      <div class="grid">
+        <div class="stat"><div class="num">71명</div><div class="lbl">최종 참가 인원</div></div>
+        <div class="stat"><div class="num">2박 3일</div><div class="lbl">8/14(금)~8/16(일)</div></div>
+        <div class="stat"><div class="num">130€ / 120€</div><div class="lbl">회비 (1인 / 둘째자녀)</div></div>
+        <div class="stat"><div class="num">권준영 선교사님</div><div class="lbl">말씀·특강 강사 확정</div></div>
+      </div>
+      <h3>수련회 목적</h3>
+      <ul class="clean">
+        <li>① 예배의 감격을 회복한다</li>
+        <li>② 성령의 충만함으로 영적 담대함을 소유한다</li>
+        <li>③ 삶의 예배자로 파송된다</li>
+      </ul>
+      <div class="note">2025년 수련회(“뜻을 정하여”, 단 1:8)의 운영 틀(예배·소그룹·특강·Games·조별 발표회, 3일 2박)을 기본으로 유지하며 2026년 표어에 맞춰 재구성.</div>
+      <h3>학부모 기도제목 요약</h3>
+      <p style="font-size:13.5px;">65건의 기도제목 중 가장 큰 비중은 “하나님을 인격적으로 만나는 경험”이며, 성령체험·성령충만, 비전·소명 발견, 사춘기를 지혜롭게 통과함, 신앙 습관 회복, 교우 관계, 안전·건강이 뒤를 잇는다.</p>
+    </div>
+
+    <div class="card">
+      <h2>2025 → 2026 주요 변경사항</h2>
+      <ul class="clean">
+        <li>시기: 10월 → <b>8월(여름)</b> — 더위 대비·여름방학 일정 점검 필요</li>
+        <li>장소: Haus Höhenblick → <b>Gästezentrum Rehe</b></li>
+        <li>표어: “뜻을 정하여”(단 1:8) → <b>“예배의 승리자들: 부흥의 세대”</b>(잠 21:30-31)</li>
+        <li>참가 인원: 약 90명(2025) → <b>71명(2026, 최종 확정)</b></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 일정 -->
+  <section id="schedule">
+    <div class="card">
+      <h2>전체 타임테이블 (2025 기반 2026 적용안)</h2>
+      <table>
+        <tr><th>시간</th><th>1일차 (금, 8/14)</th><th>2일차 (토, 8/15)</th><th>3일차 (일, 8/16)</th></tr>
+        <tr><td>06:30–07:00</td><td></td><td>기상 및 세면</td><td>기상 및 세면</td></tr>
+        <tr><td>07:00–08:00</td><td></td><td>아침 체조 & Switch On</td><td>아침 체조 & Switch On</td></tr>
+        <tr><td>08:00–09:00</td><td></td><td>아침 식사</td><td>아침 식사</td></tr>
+        <tr><td>09:00–09:30</td><td></td><td>짐 정리 및 방 청소</td><td>소그룹 모임 4 (발표 준비)</td></tr>
+        <tr><td>09:30–10:00</td><td></td><td>소그룹 모임 2</td><td>조별 발표회</td></tr>
+        <tr><td>10:00–11:30</td><td></td><td>특강</td><td>조별 발표회</td></tr>
+        <tr><td>11:30–12:30</td><td></td><td>찬양 퀴즈 + 점심 식사</td><td>점심 식사</td></tr>
+        <tr><td>12:30–13:30</td><td></td><td>찬양 퀴즈 + 점심 식사</td><td>닫는 예배</td></tr>
+        <tr><td>13:30–14:30</td><td></td><td>Games</td><td>최종 점검·탑승 / 교회로 이동</td></tr>
+        <tr><td>14:30–15:00</td><td></td><td>Games</td><td>교회 도착·해산 (약 11:40 예정*)</td></tr>
+        <tr><td>15:00–16:00</td><td>접수 및 등록 / 수련회 장소로 이동</td><td>소그룹 모임 3 + 발표회 준비</td><td></td></tr>
+        <tr><td>16:00–17:30</td><td>수련회 장소로 이동 / 여는 예배</td><td>찬양 퀴즈 + 저녁 식사</td><td></td></tr>
+        <tr><td>17:30–19:00</td><td>저녁 식사</td><td>저녁 집회</td><td></td></tr>
+        <tr><td>19:00–21:00</td><td>소그룹 모임 1</td><td>캠프 파이어</td><td></td></tr>
+        <tr><td>21:00–22:00</td><td>저녁 집회</td><td>뒷정리</td><td></td></tr>
+        <tr><td>22:00–23:00</td><td>정리 및 취침</td><td>정리 및 취침</td><td></td></tr>
+      </table>
+      <div class="warn">⚠ 안내문상 도착 예정(11:40)이 2025년 타임테이블 해산(15:30경)보다 훨씬 이르며, 이동 소요시간 계산상 여는예배(16:30 시작)도 지연 가능성 있음 — 아래 이동시간 계산 참고.</div>
+    </div>
+
+    <div class="card">
+      <h2>이동 소요시간 (한마음교회 → 수련회 장소)</h2>
+      <table>
+        <tr><th>구간</th><th>내용</th></tr>
+        <tr><td>거리</td><td>약 88km (Frankfurt Sossenheim → Rehe)</td></tr>
+        <tr><td>승용차 기준</td><td>약 1시간 15분</td></tr>
+        <tr><td>전세버스 기준 (여유 포함)</td><td>약 1시간 15분~1시간 30분</td></tr>
+        <tr><td>출발 15:30 → 예상 도착</td><td><b>16:45 ~ 17:00경</b></td></tr>
+      </table>
+      <div class="note">거리·소요시간은 rome2rio.com, viamichelin.com 참고값. 실제 교통 상황에 따라 달라질 수 있음.</div>
+    </div>
+  </section>
+
+  <!-- 장소 -->
+  <section id="venue">
+    <div class="card">
+      <h2>Christliches Gästezentrum Westerwald (Rehe)</h2>
+      <p style="font-size:13.5px;">해발 약 600m 베스터발트 산간 지역에 위치한 기독교 수양관. 380개 침상(싱글 16 · 더블 82 · 3~4인실 62), 118개 객실 샤워/화장실 완비, 세미나실 12개(최대 200명 홀 포함).</p>
+      <h3>주소 / 연락처</h3>
+      <table>
+        <tr><td style="width:120px;"><b>주소</b></td><td>Heimstraße 49, 56479 Rehe</td></tr>
+        <tr><td><b>전화</b></td><td>02664 505-0 (월~토 08:30–12:00, 14:00–18:00)</td></tr>
+        <tr><td><b>이메일</b></td><td>rezeption@cgw-rehe.de</td></tr>
+      </table>
+
+      <h3>숙소 제공 / 미제공</h3>
+      <table>
+        <tr><th>구분</th><th>내용</th></tr>
+        <tr><td>제공 (무료)</td><td>침구, 전 일정 식사(조·중·석 풀보드), 운동시설(축구·비치발리볼·농구·탁구·당구·테이블사커), 놀이터, 캠프파이어·그릴 공간, 도보·자전거길</td></tr>
+        <tr><td>유료 / 개별 준비</td><td>카페 음료·케이크, 수건(참가자 개별 지참), 특별식(채식 등) 추가요금 가능성</td></tr>
+      </table>
+      <div class="warn">⚠ 실내 수영장(무료)·사우나(유료) 시설이 있으나, 2026년 수련회 기간에는 <b>안전 관리 목적상 이용하지 않음</b>. 해당 구역에 외부로 연결되는 출입구가 있는지, 잠금이 가능한지 숙소에 사전 확인 필요.</div>
+
+      <h3>캠프파이어</h3>
+      <p style="font-size:13.5px;">부지 내 정식 “Lagerfeuer- und Grillplatz” 보유 — 2일차 저녁 캠프파이어 진행 가능. 우천 시 실내 대체 프로그램 준비 필요.</p>
+
+      <h3>식사 관련 방문자 후기</h3>
+      <ul class="clean">
+        <li>전반적으로 “푸짐하고 맛있다” 호평 다수</li>
+        <li>식사 시간이 약 45분으로 빠듯하다는 후기 있음 — 배식 동선 여유 있게 계획</li>
+        <li>채식 등 특별식 요청 시 추가 요금 가능성 있음 — 사전 확인 필요</li>
+      </ul>
+
+      <h3>날씨 · 옷차림 (8월 중순 평년 기준)</h3>
+      <p style="font-size:13.5px;">낮 최고 20~21℃, 밤 최저 14~15℃, 고지대라 아침저녁 서늘함. 반팔+얇은 겉옷, 긴팔/자켓, 우산, 편한 운동화, 모자·선크림(자외선지수 6) 권장.</p>
+
+      <h3>현수막 설치</h3>
+      <p style="font-size:13.5px;">60×180cm는 자립형 롤업 배너로 추정되어 별도 공간 불필요. 350×80cm는 벽면·펜스 등 부착 공간이 필요하므로 숙소에 사전 문의 필요(위 연락처 활용).</p>
+    </div>
+  </section>
+
+  <!-- 참가 현황 -->
+  <section id="participants">
+    <div class="card">
+      <h2>반별 참석·불참 현황 (최종, 2026-07-10 기준)</h2>
+      <table>
+        <tr><th>반</th><th>담당교사</th><th>참석</th><th>불참</th></tr>
+        <tr><td>다니엘반</td><td>김은실</td><td>8명</td><td>2명</td></tr>
+        <tr><td>이사야반</td><td>하만후</td><td>6명</td><td>4명</td></tr>
+        <tr><td>여호수아반</td><td>장현정</td><td>5명</td><td>5명</td></tr>
+        <tr><td>갈렙반</td><td>백민호</td><td>7명</td><td>2명</td></tr>
+        <tr><td>모세반</td><td>권지연 (불참)</td><td>6명</td><td>4명</td></tr>
+        <tr><td>다윗반</td><td>신혜연</td><td>6명</td><td>2명</td></tr>
+        <tr><td>요셉반</td><td>유성민</td><td>6명</td><td>3명</td></tr>
+        <tr><td>이삭반</td><td>강경희</td><td>7명</td><td>2명</td></tr>
+        <tr><td>에스더반</td><td>조광호</td><td>6명</td><td>3명</td></tr>
+        <tr><td>요나단반</td><td>이성영</td><td>7명</td><td>0명</td></tr>
+        <tr><td>엘리야반</td><td>이루다</td><td>5명</td><td>3명</td></tr>
+        <tr><td>반 미배정</td><td>권준영 선교사님 자녀(권지호·권예호)</td><td>2명</td><td>0명</td></tr>
+        <tr style="font-weight:700;"><td colspan="2">합계</td><td>71명</td><td>30명</td></tr>
+      </table>
+      <div class="note">여호수아반 담당교사는 이길헌 부장집사님에서 장현정 선생님으로 변경 확정됨. 모세반 권지연 선생님은 참석 불가로 대체 교사 배정 필요.</div>
+      <div class="warn">신청 기간이 거의 마감되어 71명을 최종 참가 인원으로 확정하고 조 편성·물품 발주를 진행함. 수련회 조(소그룹·게임) 편성은 위 반 편성과 무관하게 별도로 진행.</div>
+    </div>
+
+    <div class="card">
+      <h2>단체 티셔츠 사이즈 (teamshirts.de 발주)</h2>
+      <table>
+        <tr><th>XS</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th><th>합계</th></tr>
+        <tr><td>1</td><td>19</td><td>25</td><td>17</td><td>8</td><td>1</td><td><b>71</b></td></tr>
+      </table>
+      <div class="note">M 사이즈 최다 수요. teamshirts.de 사이트의 실측 사이즈표를 반드시 대조 후 최종 발주. 인쇄 불량 대비 사이즈별 1~2매 여유분만 추가. 교사·스태프 티셔츠는 별도 인원 파악 필요.</div>
+    </div>
+
+    <div class="card">
+      <h2>식사 알러지 · 특별 식습관 (11건)</h2>
+      <ul class="clean">
+        <li>견과류 계열 알러지 4건 (견과류, 호두×2, 헤즐넛) — 조리 시 교차오염 주의</li>
+        <li>기타: 망고, 사과, 멜론, 갑각류(조개·새우·해산물), 생야채·과일(일부 제외) 알러지 각 1건</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>교통편 지원 필요 (4명)</h2>
+      <ul class="clean">
+        <li>변예율(다니엘반) — 이동 도움 필요, 도착 시간 미정 → 사전 연락 필요</li>
+        <li>곽수현(이삭반) — 대중교통 이용</li>
+        <li>이민서(요나단반) — 이동 도움 필요</li>
+        <li>박주원(요셉반) — 이동 도움 필요</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 준비 체크리스트 -->
+  <section id="checklist">
+    <div class="card">
+      <h2>준비 추진 타임라인</h2>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-date">7/15(수) — 회비 마감</div><div class="tl-desc">반별 회비 수합 완료</div></div>
+        <div class="tl-item"><div class="tl-date">7/12(일)경 — 로고 확정</div><div class="tl-desc">편집부 · 이성영 선생님 담당</div></div>
+        <div class="tl-item"><div class="tl-date">7/23~7/27 — 배너·포스터 제작</div><div class="tl-desc">디자인 확정 및 인쇄 발주 (편집부 · 이성영 선생님)</div></div>
+        <div class="tl-item"><div class="tl-date">7월 말 — 프로그램/설교 본문 확정</div><div class="tl-desc">권준영 선교사님과 예배·특강 본문 협의</div></div>
+        <div class="tl-item"><div class="tl-date">7월 말 — 단체티 발주</div><div class="tl-desc">teamshirts.de, 사이즈 최종 집계 기준</div></div>
+        <div class="tl-item"><div class="tl-date">8월 초 — Games 최종 확정</div><div class="tl-desc">게임 추가 기획 및 물품 발주</div></div>
+        <div class="tl-item"><div class="tl-date">8월 첫째 주 — 소책자 초안(V1)</div></div>
+        <div class="tl-item"><div class="tl-date">8/11(화)경 — 소책자·명찰·대형인쇄 최종본</div></div>
+        <div class="tl-item"><div class="tl-date">8/13(목) — 명찰 누락분 보완</div></div>
+        <div class="tl-item"><div class="tl-date">8/14(금) 15:00 — 출발</div><div class="tl-desc">등록 후 15:30 수련회 장소로 출발</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>제작·준비물 체크리스트</h2>
+      <table>
+        <tr><th>분류</th><th>2025 산출물</th><th>2026 상태</th></tr>
+        <tr><td>로고/디자인</td><td>로고(흑/백), 티셔츠 로고</td><td><span class="badge todo">미착수</span></td></tr>
+        <tr><td>배너/포스터</td><td>350×80, 60×180 배너, A4 포스터</td><td><span class="badge todo">미착수</span></td></tr>
+        <tr><td>명찰</td><td>조별 명찰 (V3~V4)</td><td><span class="badge todo">미착수</span></td></tr>
+        <tr><td>소책자(핸드북)</td><td>20p 소책자</td><td><span class="badge todo">미착수</span></td></tr>
+        <tr><td>대형 인쇄물</td><td>타임테이블·조편성 A3</td><td><span class="badge todo">미착수</span></td></tr>
+        <tr><td>방 배정</td><td>방별 인원 배정표</td><td><span class="badge todo">미착수</span></td></tr>
+        <tr><td>Games 준비</td><td>진행표·점수표·물품</td><td><span class="badge progress">일부 착수</span></td></tr>
+        <tr><td>예배 PPT</td><td>여는/저녁×2/닫는</td><td><span class="badge todo">미착수</span></td></tr>
+        <tr><td>간증문</td><td>조별 간증문 취합</td><td><span class="badge todo">미착수</span></td></tr>
+        <tr><td>단체 티셔츠</td><td>사이즈 집계 완료</td><td><span class="badge progress">발주 필요 (teamshirts.de)</span></td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>안전 관리 체크</h2>
+      <ul class="clean">
+        <li>도착 즉시 오리엔테이션에서 수영장·사우나 구역을 “출입 금지 구역”으로 공지</li>
+        <li>체크인 시 리셉션에 해당 구역 출입문 잠금/접근 제한 요청</li>
+        <li>외부(주차장·야외 데크)로 연결되는 별도 출입구 존재 여부 사전 확인</li>
+        <li>연결 통로가 있으면 시간대별 교사 배치 또는 순찰 동선 포함</li>
+        <li>식사·취침 점호 시 인원수 철저 확인</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 연락처 -->
+  <section id="contacts">
+    <div class="card">
+      <h2>비상 연락망</h2>
+      <div class="contact-row"><span>총괄 / 비상연락</span><b>이길헌 부장선생님 ☎ 0178-823-5198</b></div>
+      <div class="contact-row"><span>숙소 리셉션</span><b>02664 505-0 / rezeption@cgw-rehe.de</b></div>
+    </div>
+    <div class="card">
+      <h2>역할 분담</h2>
+      <table>
+        <tr><th>역할군</th><th>담당 업무</th><th>비고</th></tr>
+        <tr><td>총괄</td><td>전체 기획·대외 연락</td><td>이길헌 부장선생님</td></tr>
+        <tr><td>소그룹 담당 교사</td><td>조별 진행/부진행/타임키퍼</td><td>2025년 조당 1~3명</td></tr>
+        <tr><td>예배/찬양팀</td><td>예배 큐시트, 찬양 인도</td><td>말씀: 권준영 선교사님</td></tr>
+        <tr><td>Games 진행팀</td><td>게임 기획·진행·점수</td><td>조광호·장현정 등 일부 착수</td></tr>
+        <tr><td>디자인/제작팀</td><td>로고·배너·포스터·명찰·소책자</td><td>편집부, 이성영 선생님</td></tr>
+        <tr><td>숙식/총무</td><td>회비, 방 배정, 식사·물품</td><td>회비 마감 7/15</td></tr>
+        <tr><td>의료/안전</td><td>상비약, 비상 대응</td><td>휴대폰 수거 등</td></tr>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  2026년 청소년1부 여름 수련회 기획안 기준 · 2026-07-10 작성 · 한마음교회 청소년1부
+</footer>
+
+<script>
+  const buttons = document.querySelectorAll('#tabNav button');
+  const sections = document.querySelectorAll('main section');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      sections.forEach(s => s.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+
+  function updateDday(){
+    const target = new Date('2026-08-14T15:00:00+02:00');
+    const now = new Date();
+    const diffMs = target - now;
+    const box = document.getElementById('ddayBox');
+    if (diffMs <= 0) {
+      box.textContent = '수련회 진행 중 / 종료';
+      return;
+    }
+    const days = Math.ceil(diffMs / (1000*60*60*24));
+    box.textContent = 'D-' + days + '  (출발 8/14 15:00 기준)';
+  }
+  updateDday();
+</script>
+
+</body>
+</html>
