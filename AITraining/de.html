@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Winsoul KI-Lernen</title>
+<meta name="description" content="Praxisleitfaden zur Arbeitsautomatisierung mit Claude, ChatGPT und Gemini — mittel- bis langfristige Strategie, Markt-/Preis-/Produktanalyse, Datenanalyse, RPA, automatisiertes E-Mail-Versenden, Management-Reporting und abteilungsübergreifende Zusammenarbeit (2026)">
+<style>
+  :root{
+    --bg:#f5f5f7;
+    --card:#ffffff;
+    --text:#1d1d1f;
+    --sub:#6e6e73;
+    --accent:#0071e3;
+    --accent-dark:#0058b0;
+    --border:#e5e5e7;
+    --claude:#c96442;
+    --chatgpt:#10a37f;
+    --gemini:#4285f4;
+    --radius:18px;
+    --maxw:1080px;
+    --fs-scale:1;
+  }
+  *{box-sizing:border-box;}
+  html{font-size:calc(16px * var(--fs-scale));scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  a{color:var(--accent);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  img{max-width:100%;display:block;}
+  nav.topnav{position:sticky;top:0;z-index:100;backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);background:rgba(245,245,247,0.8);border-bottom:1px solid var(--border);}
+  .nav-inner{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:28px;padding:14px 40px;overflow-x:auto;}
+  .nav-brand{font-weight:600;font-size:0.95rem;letter-spacing:-0.01em;white-space:nowrap;flex:0 0 auto;}
+  .nav-links{display:flex;align-items:center;gap:22px;flex-wrap:nowrap;}
+  .nav-links a{color:var(--text);font-size:0.85rem;opacity:0.75;white-space:nowrap;}
+  .nav-links a:hover{opacity:1;text-decoration:none;}
+  .lang-switch{display:flex;align-items:center;gap:10px;padding-left:14px;border-left:1px solid var(--border);}
+  .lang-switch a{font-size:0.78rem;opacity:0.55;white-space:nowrap;}
+  .lang-switch a:hover{opacity:1;text-decoration:none;}
+  .lang-switch a.lang-current{opacity:1;font-weight:700;pointer-events:none;}
+  .lang-gate{position:fixed;inset:0;z-index:1000;background:rgba(245,245,247,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:none;align-items:center;justify-content:center;padding:24px;}
+  .lang-gate.show{display:flex;}
+  .lang-gate-card{background:var(--card);border-radius:24px;padding:48px 40px;max-width:420px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.15);}
+  .lang-gate-title{font-size:1.1rem;font-weight:600;color:var(--text);margin-bottom:28px;letter-spacing:-0.01em;}
+  .lang-gate-btns{display:flex;flex-direction:column;gap:12px;}
+  .lang-gate-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:16px;border-radius:14px;border:1px solid var(--border);font-size:1rem;font-weight:600;color:var(--text);background:#fafafa;transition:transform .15s ease, background .15s ease;}
+  .lang-gate-btn:hover{background:#f0f0f2;transform:translateY(-1px);text-decoration:none;}
+  header.hero{max-width:var(--maxw);margin:0 auto;padding:96px 40px 64px;text-align:center;}
+  header.hero h1{font-size:2.75rem;font-weight:700;letter-spacing:-0.03em;margin:0 0 16px;background:linear-gradient(135deg,#1d1d1f,#4a4a4f);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  header.hero p{font-size:1.15rem;color:var(--sub);max-width:680px;margin:0 auto 12px;}
+  .hero-badges{display:flex;gap:10px;justify-content:center;margin-top:28px;flex-wrap:wrap;}
+  .badge{padding:6px 14px;border-radius:999px;font-size:0.8rem;font-weight:500;background:var(--card);border:1px solid var(--border);color:var(--sub);}
+  .updated{margin-top:20px;font-size:0.8rem;color:var(--sub);}
+  section{max-width:var(--maxw);margin:0 auto;padding:64px 40px;}
+  section h2{font-size:1.9rem;font-weight:700;letter-spacing:-0.02em;margin:0 0 8px;}
+  section > p.lead{color:var(--sub);font-size:1.02rem;margin:0 0 36px;max-width:720px;}
+  .section-tag{display:inline-block;font-size:0.75rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;}
+  .grid{display:grid;gap:20px;}
+  .grid.cols-3{grid-template-columns:repeat(3,1fr);}
+  .grid.cols-2{grid-template-columns:repeat(2,1fr);}
+  @media(max-width:860px){.grid.cols-3{grid-template-columns:1fr;}.grid.cols-2{grid-template-columns:1fr;}}
+  @media(max-width:600px){.nav-inner{padding:14px 20px;}header.hero{padding:72px 20px 48px;}section{padding:48px 20px;}}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;}
+  .table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);background:var(--card);}
+  table{width:100%;border-collapse:collapse;font-size:0.9rem;}
+  th,td{text-align:left;padding:14px 18px;border-bottom:1px solid var(--border);vertical-align:top;}
+  th{background:#fafafa;font-weight:600;color:var(--sub);font-size:0.78rem;text-transform:uppercase;letter-spacing:0.04em;}
+  tr:last-child td{border-bottom:none;}
+  .tool-section{scroll-margin-top:70px;}
+  .tool-head{display:flex;align-items:center;gap:14px;margin-bottom:10px;}
+  .tool-logo{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1.1rem;flex:0 0 auto;}
+  .logo-claude{background:linear-gradient(135deg,#c96442,#a84e30);}
+  .logo-chatgpt{background:linear-gradient(135deg,#10a37f,#0c7a5f);}
+  .logo-gemini{background:linear-gradient(135deg,#4285f4,#8ab4f8);}
+  .tool-head h2{margin:0;}
+  .tool-ver{font-size:0.8rem;color:var(--sub);margin:2px 0 0;}
+  .tier-tabs{display:inline-flex;background:#eeeef0;border-radius:12px;padding:4px;gap:4px;margin:22px 0 28px;}
+  .tier-tab-btn{border:none;background:transparent;padding:9px 20px;border-radius:9px;font-size:0.85rem;font-weight:600;color:var(--sub);cursor:pointer;font-family:inherit;}
+  .tier-tab-btn.active{background:#fff;color:var(--text);box-shadow:0 1px 5px rgba(0,0,0,0.12);}
+  .tier-panel{display:none;}
+  .tier-panel.active{display:block;}
+  .feature-list{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:8px 28px;margin-bottom:28px;}
+  .feature-item{display:flex;gap:16px;padding:18px 0;border-bottom:1px solid var(--border);}
+  .feature-item:last-child{border-bottom:none;}
+  .feature-num{flex:0 0 auto;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.72rem;font-weight:700;margin-top:2px;}
+  .feature-body h4{margin:0 0 5px;font-size:0.98rem;letter-spacing:-0.01em;}
+  .feature-body p{margin:0;font-size:0.87rem;color:var(--sub);}
+  .subhead{font-size:0.78rem;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:0.06em;margin:0 0 14px;}
+  .usecase{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;margin-bottom:16px;}
+  .usecase-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+  .usecase-num{font-size:0.78rem;color:var(--accent);font-weight:700;}
+  .usecase h3{font-size:1.15rem;margin:0;letter-spacing:-0.01em;}
+  .usecase-tools{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap;}
+  .tool-chip{font-size:0.72rem;padding:4px 10px;border-radius:999px;font-weight:600;color:#fff;}
+  .chip-claude{background:var(--claude);}
+  .chip-chatgpt{background:var(--chatgpt);}
+  .chip-gemini{background:var(--gemini);}
+  .step-list{margin:0;padding:0;list-style:none;counter-reset:step;}
+  .step-list li{counter-increment:step;position:relative;padding:10px 0 10px 34px;font-size:0.9rem;border-bottom:1px dashed var(--border);}
+  .step-list li:last-child{border-bottom:none;}
+  .step-list li::before{content:counter(step);position:absolute;left:0;top:9px;width:22px;height:22px;border-radius:50%;background:var(--text);color:#fff;font-size:0.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
+  .step-list b{font-weight:600;}
+  .step-list .step-tool{display:inline-block;font-size:0.68rem;font-weight:700;color:#fff;padding:2px 8px;border-radius:999px;margin-right:6px;vertical-align:middle;}
+  .usecase .prompt{background:#f6f6f8;border-radius:12px;padding:14px 16px;font-size:0.83rem;color:#333;margin-top:14px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre-wrap;}
+  .usecase .label{font-weight:600;font-size:0.76rem;color:var(--sub);text-transform:uppercase;letter-spacing:0.04em;margin-top:16px;display:block;}
+  .video-row{margin-top:6px;}
+  .video-card{display:block;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:transform .18s ease, box-shadow .18s ease;cursor:pointer;}
+  .video-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,0.08);text-decoration:none;}
+  .video-card:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .video-card.playing{cursor:default;}
+  .video-card.playing:hover{transform:none;box-shadow:none;}
+  .video-thumb{position:relative;width:100%;padding-top:56.25%;background:#111;overflow:hidden;}
+  .video-thumb img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;}
+  .video-thumb iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;}
+  .play-circle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:52px;height:52px;border-radius:50%;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.15rem;backdrop-filter:blur(2px);}
+  .yt-tag{position:absolute;right:10px;bottom:10px;background:rgba(0,0,0,0.65);color:#fff;font-size:0.65rem;font-weight:700;padding:3px 8px;border-radius:6px;letter-spacing:0.02em;}
+  .video-info{padding:16px 18px;}
+  .video-info h4{margin:0 0 6px;font-size:0.92rem;letter-spacing:-0.01em;color:var(--text);}
+  .video-info p{margin:0;font-size:0.8rem;color:var(--sub);}
+  footer{max-width:var(--maxw);margin:0 auto;padding:48px 24px 100px;border-top:1px solid var(--border);color:var(--sub);font-size:0.82rem;}
+  footer a{color:var(--sub);}
+  footer .sources{margin-top:16px;line-height:2;}
+  .float-controls{position:fixed;right:24px;bottom:24px;z-index:200;display:flex;flex-direction:column;gap:10px;align-items:flex-end;}
+  .fc-group{display:flex;background:rgba(255,255,255,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:999px;box-shadow:0 4px 18px rgba(0,0,0,0.08);overflow:hidden;}
+  .fc-btn{width:42px;height:42px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;font-size:1rem;color:var(--text);font-weight:600;font-family:inherit;}
+  .fc-btn:hover{background:rgba(0,0,0,0.05);}
+  .fc-group .fc-btn + .fc-btn{border-left:1px solid var(--border);}
+  #toTopBtn{width:44px;height:44px;border-radius:50%;background:var(--text);color:#fff;border:none;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,0.18);display:flex;align-items:center;justify-content:center;font-size:1.1rem;opacity:0;pointer-events:none;transform:translateY(10px);transition:opacity .25s ease, transform .25s ease;}
+  #toTopBtn.show{opacity:1;pointer-events:auto;transform:translateY(0);}
+  code{background:#f0f0f2;padding:2px 6px;border-radius:6px;font-size:0.85em;}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="nav-inner">
+    <div class="nav-brand">Winsoul KI-Lernen</div>
+    <div class="nav-links">
+      <a href="#overview">Überblick</a>
+      <a href="#claude">Claude</a>
+      <a href="#chatgpt">ChatGPT</a>
+      <a href="#gemini">Gemini</a>
+      <a href="#usecases">Anwendungsfälle</a>
+      <a href="#videos">Videos</a>
+      <a href="#footer">Quellen</a>
+      <span class="lang-switch">
+        <a href="index.html">한국어</a>
+        <a href="en.html">English</a>
+        <a href="de.html" class="lang-current">Deutsch</a>
+      </span>
+    </div>
+  </div>
+</nav>
+
+<div class="lang-gate" id="langGate">
+  <div class="lang-gate-card">
+    <div class="lang-gate-title">언어를 선택하세요<br>Choose your language · Sprache wählen</div>
+    <div class="lang-gate-btns">
+      <a href="index.html" class="lang-gate-btn" data-lang="ko">한국어</a>
+      <a href="en.html" class="lang-gate-btn" data-lang="en">English</a>
+      <a href="de.html" class="lang-gate-btn" data-lang="de">Deutsch</a>
+    </div>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="section-tag">Ausgabe 2026</div>
+  <h1>So automatisierst du deine Arbeit<br>mit Claude · ChatGPT · Gemini</h1>
+  <p>Von der mittel- bis langfristigen Strategie über Markt-, Preis- und Produkttrendanalysen, Datenanalyse, Prozessverbesserung, RPA, automatisiertes E-Mail-Versenden und Management-Reporting bis hin zur abteilungsübergreifenden Zusammenarbeit — alle Funktionen der drei KI-Tools, vom Einsteiger- bis zum Experten-Niveau geordnet.</p>
+  <div class="hero-badges">
+    <span class="badge">🟠 Claude (Opus 4.7 / Cowork / Skills / Agent Teams)</span>
+    <span class="badge">🟢 ChatGPT (GPT-5.5 / Agent Mode / Excel)</span>
+    <span class="badge">🔵 Gemini (Deep Research / Workspace / Chrome)</span>
+  </div>
+  <div class="updated">Letzte Aktualisierung: Juli 2026 · Wird laufend an die neuesten Versionen angepasst</div>
+</header>
+
+<section id="overview">
+  <span class="section-tag">Überblick</span>
+  <h2>Warum du alle drei zusammen nutzen solltest</h2>
+  <p class="lead">Claude, ChatGPT und Gemini haben sich 2026 von einfachen Chatbots zu vollwertigen Agenten weiterentwickelt. Sie lesen Dokumente, recherchieren im Web, bearbeiten Tabellen direkt, versenden E-Mails und arbeiten sogar als KI-Teams zusammen. Da jedes Tool andere Stärken hat, ist die situative Kombination aller drei Tools 2026 der effizienteste Ansatz.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Kategorie</th><th>Claude</th><th>ChatGPT</th><th>Gemini</th></tr></thead>
+      <tbody>
+        <tr><td>Aktuellstes Modell (2026)</td><td>Claude Opus 4.7 (stärker bei Langzeitaufgaben, Selbstüberprüfung, Bildverständnis)</td><td>GPT-5.5 (treibt ChatGPT für Excel/Sheets an)</td><td>Gemini-3-Familie + eigenes Deep-Research-Modell</td></tr>
+        <tr><td>Wichtigste Automatisierungsfunktionen</td><td>Skills (wiederverwendbare Workflows), Agent Teams (Multi-Agenten-Zusammenarbeit), Cowork, Computer Use</td><td>Agent Mode (Browser-Automatisierung), ChatGPT für Excel/Sheets, Canvas, Deep Research</td><td>Deep Research, Gemini in Chrome, vollständige Workspace-Integration (Gmail·Docs·Sheets·Meet)</td></tr>
+        <tr><td>Office-/Dokumentenintegration</td><td>Projects + 500K–1M Token Kontext für große Dokumente, erstellt Word/Excel/PPT</td><td>Offizielles Excel- und Google-Sheets-Add-in (Start Mai 2026), Umwandlung in Word/PPT</td><td>Nativ in Docs·Sheets·Slides·Gmail·Meet integriert</td></tr>
+        <tr><td>Größte Stärke</td><td>Lange Berichte und Konzepte, komplexe Daten-/Code-Analysen, Wiederholaufgaben als Skills speichern</td><td>Excel-Modellierung und Finanzanalyse, Browser-Automatisierung (RPA-ähnliche Aufgaben), schnelle erste Entwürfe</td><td>Echtzeit-Recherche (Markt-/Wettbewerbsanalyse), abteilungsübergreifende Zusammenarbeit über Google, automatische Meeting-Zusammenfassungen</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="claude" class="tool-section">
+  <div class="tool-head">
+    <div class="tool-logo logo-claude">C</div>
+    <div>
+      <h2>Claude meistern</h2>
+      <div class="tool-ver">Opus 4.7 · Sonnet · Haiku · Cowork · Skills · Agent Teams · MCP</div>
+    </div>
+  </div>
+  <p class="lead">Am stärksten bei langen Berichten, komplexen Analysen und der Umwandlung von Wiederholaufgaben in wiederverwendbare Skills. Arbeite dich von Einsteiger über Fortgeschritten bis Experte vor.</p>
+
+  <div class="tier-tabs" data-tool="claude">
+    <button class="tier-tab-btn active" data-tier="beginner">Einsteiger</button>
+    <button class="tier-tab-btn" data-tier="intermediate">Fortgeschritten</button>
+    <button class="tier-tab-btn" data-tier="advanced">Experte</button>
+  </div>
+
+  <div class="tier-panel active" data-tool="claude" data-tier="beginner">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">1</div><div class="feature-body"><h4>Grundlegende Chats & Prompt-Schreiben</h4><p>Starte ein Gespräch auf Claude.ai im Web oder in der App. Prompts nach dem Muster „Rolle – Kontext – Anfrage – Ausgabeformat" verbessern die Antwortqualität deutlich.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">2</div><div class="feature-body"><h4>Modellwahl (Haiku / Sonnet / Opus)</h4><p>Haiku für schnelle, einfache Antworten, Sonnet für den Alltag wie E-Mails und Social-Posts, Opus für anspruchsvolle Aufgaben wie Vertragsprüfung oder komplexe Strategieanalysen.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">3</div><div class="feature-body"><h4>Datei-Upload & Analyse</h4><p>Lade PDFs, Bilder, Word-, Excel- oder CSV-Dateien hoch und lass sie zusammenfassen, analysieren oder übersetzen.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">4</div><div class="feature-body"><h4>Styles (Gesprächston)</h4><p>Speichere Voreinstellungen für formellen, knappen oder lockeren Ton, damit du es nicht jedes Mal neu erklären musst.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">5</div><div class="feature-body"><h4>Verlauf durchsuchen</h4><p>Durchsuche deinen Chatverlauf und speichere Favoriten für späteren schnellen Zugriff.</p></div></div>
+    </div>
+    <p class="subhead">Passende Videos</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="I8CNU7GLwTY" tabindex="0" role="button" aria-label="Video abspielen: Claude AI Tutorial Komplette Einführung für Anfänger">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/I8CNU7GLwTY/hqdefault.jpg" alt="Claude AI Tutorial: Komplette Einführung für Anfänger" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Claude AI Tutorial: Komplette Einführung für Anfänger (2026)</h4><p>In unter 10 Minuten produktiv mit Claude</p></div>
+      </div>
+      <div class="video-card" data-yt="JEXCaG95iBs" tabindex="0" role="button" aria-label="Video abspielen: Anthropic Claude richtig nutzen">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/JEXCaG95iBs/hqdefault.jpg" alt="Anthropic Claude richtig nutzen Tutorial für Einsteiger" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Anthropic Claude richtig nutzen — Tutorial für Einsteiger 2026</h4><p>Grundlagen sauber erklärt</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tier-panel" data-tool="claude" data-tier="intermediate">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">1</div><div class="feature-body"><h4>Projects</h4><p>Erstelle einen eigenen Wissensbereich für eine bestimmte Aufgabe mit gespeicherten Referenzmaterialien und individuellen Anweisungen, sodass du nicht jedes Mal dieselben Dateien hochladen musst.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">2</div><div class="feature-body"><h4>Artifacts</h4><p>Erzeuge funktionierenden Code, Dokumente, Web-Apps und Datenvisualisierungen in einem Seitenfenster und bearbeite sie direkt dort.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">3</div><div class="feature-body"><h4>Claude für Excel / PPT / Word</h4><p>Erstelle und bearbeite Tabellen mit Formeln, Folien und Dokumente direkt im Gespräch.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">4</div><div class="feature-body"><h4>Connectors (MCP)</h4><p>Verbinde Google Drive, Slack, Gmail, Linear und mehr, sodass Claude bei Bedarf automatisch die richtigen Daten holt oder Nachrichten sendet.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">5</div><div class="feature-body"><h4>Claude Code Grundlagen</h4><p>Auch Nicht-Entwickler können in natürlicher Sprache Datenanalyse-Skripte schreiben und ausführen, um große Dateien oder komplexe Berechnungen zu verarbeiten.</p></div></div>
+    </div>
+    <p class="subhead">Passende Videos</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="r6qA03kU_uk" tabindex="0" role="button" aria-label="Video abspielen: Claude Tutorial Anleitung 2026">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/r6qA03kU_uk/hqdefault.jpg" alt="Claude Tutorial Anleitung 2026" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Claude Tutorial / Anleitung 2026</h4><p>Von der Kontoeinrichtung bis zu den wichtigsten Funktionen</p></div>
+      </div>
+      <div class="video-card" data-yt="i4riecDACXw" tabindex="0" role="button" aria-label="Video abspielen: App mit KI bauen Claude Code Tutorial">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/i4riecDACXw/hqdefault.jpg" alt="App mit KI bauen Claude Code Tutorial für Einsteiger" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>App mit KI bauen: Claude Code Tutorial für Einsteiger 2026</h4><p>Erste Schritte mit Claude Code</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tier-panel" data-tool="claude" data-tier="advanced">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">1</div><div class="feature-body"><h4>Skills erstellen</h4><p>Speichere eine Wiederholaufgabe wie „monatlichen Vorstandsbericht erstellen" inklusive Vorlage, Datenquellen und Schwerpunkten, damit jeder im Team sie in gleicher Qualität ausführen kann.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">2</div><div class="feature-body"><h4>Agent Teams</h4><p>Ein leitender Claude steuert mehrere Claude-Instanzen in unterschiedlichen Rollen (Marktanalyst, Planer, Entwickler, QA) parallel. Jedes Teammitglied arbeitet im eigenen Kontext und stimmt sich über eine gemeinsame Aufgabenliste und Direktnachrichten ab.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">3</div><div class="feature-body"><h4>Cowork-Modus</h4><p>Eine agentische Arbeitsumgebung für Dateizugriff, geplante Aufgaben (Scheduled Tasks) und automatische Ordnerorganisation im gesamten Desktop-Workflow.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">4</div><div class="feature-body"><h4>Computer Use</h4><p>Claude sieht deinen tatsächlichen Bildschirm und steuert Maus und Tastatur, um weitere Desktop-Apps zu automatisieren (RPA-ähnliche Aufgaben).</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">5</div><div class="feature-body"><h4>Individuelle Automatisierung über API/SDK</h4><p>Binde Claude direkt in interne Systeme ein, um vollständig maßgeschneiderte Automatisierungs-Pipelines zu bauen.</p></div></div>
+    </div>
+    <p class="subhead">Passende Videos</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="Lu95f1ZBIos" tabindex="0" role="button" aria-label="Video abspielen: Automatisiere ALLES mit Claude Code">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/Lu95f1ZBIos/hqdefault.jpg" alt="Automatisiere ALLES mit Claude Code" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Automatisiere ALLES mit Claude Code: Das ultimative Tutorial</h4><p>Vom Anfänger zum Profi, komplett auf Deutsch</p></div>
+      </div>
+      <div class="video-card" data-yt="upy_2nK1bzc" tabindex="0" role="button" aria-label="Video abspielen: Claude Cowork A-Z Tutorial">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/upy_2nK1bzc/hqdefault.jpg" alt="Claude Cowork A-Z Tutorial für Einsteiger" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Claude Cowork A-Z Tutorial: Für Einsteiger in 2026</h4><p>Der agentische Arbeitsmodus im Detail</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="chatgpt" class="tool-section">
+  <div class="tool-head">
+    <div class="tool-logo logo-chatgpt">G</div>
+    <div>
+      <h2>ChatGPT meistern</h2>
+      <div class="tool-ver">GPT-5.5 · Agent Mode · ChatGPT für Excel · Canvas · Deep Research</div>
+    </div>
+  </div>
+  <p class="lead">Am stärksten bei Excel-Modellierung und Browser-Automatisierung (RPA-ähnliche Aufgaben). Gehe von Einsteiger über Fortgeschritten zu Experte vor.</p>
+
+  <div class="tier-tabs" data-tool="chatgpt">
+    <button class="tier-tab-btn active" data-tier="beginner">Einsteiger</button>
+    <button class="tier-tab-btn" data-tier="intermediate">Fortgeschritten</button>
+    <button class="tier-tab-btn" data-tier="advanced">Experte</button>
+  </div>
+
+  <div class="tier-panel active" data-tool="chatgpt" data-tier="beginner">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">1</div><div class="feature-body"><h4>Grundlegende Chats & Modellwahl</h4><p>Verstehe die Abwägungen zwischen Geschwindigkeit, Kosten und Qualität bei GPT-5.5, 4o und weiteren Modellen und wähle das passende für die Aufgabe.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">2</div><div class="feature-body"><h4>Datei-Upload & Sprachmodus</h4><p>Lade Bilder oder Dokumente zur Analyse hoch oder sprich freihändig im Sprachmodus.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">3</div><div class="feature-body"><h4>Custom Instructions</h4><p>Lege Rolle, Ton und feste Regeln einmal fest, damit du den Kontext nicht jedes Mal wiederholen musst.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">4</div><div class="feature-body"><h4>Memory (Gedächtnis)</h4><p>ChatGPT merkt sich Vorlieben und Kontext aus früheren Chats und wendet sie automatisch in Zukunft an.</p></div></div>
+    </div>
+    <p class="subhead">Passende Videos</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="yk5Q6sm9ibs" tabindex="0" role="button" aria-label="Video abspielen: ChatGPT Tutorial für Anfänger">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/yk5Q6sm9ibs/hqdefault.jpg" alt="ChatGPT Tutorial für Anfänger mit praktischen Tipps" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>ChatGPT Tutorial für Anfänger + praktische Tipps</h4><p>Komplette Anleitung für den Einstieg</p></div>
+      </div>
+      <div class="video-card" data-yt="ze4UpSJ50sw" tabindex="0" role="button" aria-label="Video abspielen: ChatGPT Tutorial deutsch Anleitung für Anfänger">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/ze4UpSJ50sw/hqdefault.jpg" alt="ChatGPT Tutorial deutsch Anleitung für Anfänger mit Beispielen" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>ChatGPT Tutorial (deutsch): Anleitung für Anfänger mit Beispielen</h4><p>Praxisnahe Beispiele zum Mitmachen</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tier-panel" data-tool="chatgpt" data-tier="intermediate">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">1</div><div class="feature-body"><h4>GPTs (individuelle Chatbots)</h4><p>Baue einen Chatbot für eine bestimmte Aufgabe, lade Wissensdateien hoch und teile ihn mit deinem Team.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">2</div><div class="feature-body"><h4>Canvas</h4><p>Bearbeite ein Dokument in Echtzeit gemeinsam in einem Seitenfenster, mit Versionsverlauf und Formatierungswerkzeugen.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">3</div><div class="feature-body"><h4>Advanced Data Analysis</h4><p>Lade Daten hoch und lass ChatGPT Code schreiben und ausführen für Bereinigung, Visualisierung und Regressionsanalysen.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">4</div><div class="feature-body"><h4>ChatGPT für Excel / Sheets</h4><p>Offiziell gestartet im Mai 2026. Erstelle und aktualisiere Tabellenmodelle in natürlicher Sprache, automatisiere Lagerverwaltung und Budgetierung.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">5</div><div class="feature-body"><h4>Deep Research</h4><p>Gib ein Rechercheziel ein und erhalte einen automatisch strukturierten Bericht aus Dutzenden Webquellen.</p></div></div>
+    </div>
+    <p class="subhead">Passende Videos</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="6F1HQzkunAU" tabindex="0" role="button" aria-label="Video abspielen: ChatGPT Tutorial für 2026 In 30 Minuten zum Profi">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/6F1HQzkunAU/hqdefault.jpg" alt="ChatGPT Tutorial für 2026 In 30 Minuten zum Profi" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>ChatGPT Tutorial für 2026 (Deutsch): In 30 Minuten zum Profi!</h4><p>Kompakter Grundkurs für den Arbeitsalltag</p></div>
+      </div>
+      <div class="video-card" data-yt="Eu2GAk5gGOY" tabindex="0" role="button" aria-label="Video abspielen: In ChatGPT 5 Projekte erstellen">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/Eu2GAk5gGOY/hqdefault.jpg" alt="In ChatGPT 5 Projekte erstellen und mächtige Tricks" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>In ChatGPT 5 Projekte erstellen + mächtige Tricks (2026)</h4><p>Projects und Produktivitäts-Tricks</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tier-panel" data-tool="chatgpt" data-tier="advanced">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">1</div><div class="feature-body"><h4>Agent Mode</h4><p>In einem virtuellen Browser navigiert ChatGPT auf Websites, meldet sich an, füllt Formulare aus und lädt Dateien herunter wie ein Mensch. Start über das Werkzeugmenü oder mit <code>/agent</code>. Aufgaben dauern 5–30 Minuten (Websites mit CAPTCHA sind eine Einschränkung).</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">2</div><div class="feature-body"><h4>Projects</h4><p>Bündle zusammengehörige Chats und Dateien in einem Arbeitsbereich, um länger laufende Projekte zu verwalten.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">3</div><div class="feature-body"><h4>Custom GPT Actions</h4><p>Verbinde externe APIs mit einem GPT, um vollständige Automatisierung zu bauen, die direkt mit internen Systemen kommuniziert.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">4</div><div class="feature-body"><h4>Codex (Entwickler-Automatisierung)</h4><p>Ein macOS-Desktop-Agent, der das Schreiben und Ausführen von Code auf deinem lokalen Rechner automatisiert.</p></div></div>
+    </div>
+    <p class="subhead">Passende Videos</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="XyRXWLPMqlI" tabindex="0" role="button" aria-label="Video abspielen: Datenanalyse mit ChatGPT Praxisbeispiel">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/XyRXWLPMqlI/hqdefault.jpg" alt="Datenanalyse mit ChatGPT Praxisbeispiel und Tutorial" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Datenanalyse mit ChatGPT — Praxisbeispiel & Tutorial</h4><p>Excel-Daten analysieren lassen</p></div>
+      </div>
+      <div class="video-card" data-yt="4RW9zHsHdkE" tabindex="0" role="button" aria-label="Video abspielen: Die besten Excel Tricks für ChatGPT">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/4RW9zHsHdkE/hqdefault.jpg" alt="Die besten Excel Tricks für ChatGPT" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Die besten Excel-Tricks für ChatGPT</h4><p>Vom Excel-Anfänger zum Profi dank KI</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gemini" class="tool-section">
+  <div class="tool-head">
+    <div class="tool-logo logo-gemini">Ge</div>
+    <div>
+      <h2>Gemini meistern</h2>
+      <div class="tool-ver">Gemini 3 · Deep Research · Gems · NotebookLM · Gemini in Chrome</div>
+    </div>
+  </div>
+  <p class="lead">Am stärksten bei Echtzeit-Recherche und abteilungsübergreifender Zusammenarbeit auf Basis von Google Workspace. Gehe von Einsteiger über Fortgeschritten zu Experte vor.</p>
+
+  <div class="tier-tabs" data-tool="gemini">
+    <button class="tier-tab-btn active" data-tier="beginner">Einsteiger</button>
+    <button class="tier-tab-btn" data-tier="intermediate">Fortgeschritten</button>
+    <button class="tier-tab-btn" data-tier="advanced">Experte</button>
+  </div>
+
+  <div class="tier-panel active" data-tool="gemini" data-tier="beginner">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">1</div><div class="feature-body"><h4>Grundlegende Chats</h4><p>Starte ein Gespräch in der Gemini-App oder im Web und lade Bilder oder Dokumente zur Analyse hoch.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">2</div><div class="feature-body"><h4>Gmail- & Docs-Integration</h4><p>Mit einem Workspace-Business-Plan kannst du E-Mails entwerfen und Dokumente zusammenfassen, ohne etwas zu installieren oder die App zu verlassen.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">3</div><div class="feature-body"><h4>Bilderzeugung mit Imagen</h4><p>Beschreibe ein Bild in Textform, um es zu erzeugen, und ändere den Stil einfach — „mach daraus einen Animationsstil."</p></div></div>
+    </div>
+    <p class="subhead">Passende Videos</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="0SvykdJ6508" tabindex="0" role="button" aria-label="Video abspielen: Google Gemini 2026 Tutorial Lerne Gemini in 20 Minuten">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/0SvykdJ6508/hqdefault.jpg" alt="Google Gemini 2026 Tutorial Lerne Gemini in 20 Minuten" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Google Gemini 2026 Tutorial: Lerne Gemini in 20 Minuten</h4><p>Schneller Einstieg auf Deutsch</p></div>
+      </div>
+      <div class="video-card" data-yt="KBBiRL3dL0E" tabindex="0" role="button" aria-label="Video abspielen: Google Gemini Tutorial 2026 Vom Anfänger zum Profi">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/KBBiRL3dL0E/hqdefault.jpg" alt="Google Gemini Tutorial 2026 Vom Anfänger zum Profi" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Google Gemini Tutorial 2026 — Vom Anfänger zum Profi</h4><p>Inklusive Beispiel-Prompts zum Download</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tier-panel" data-tool="gemini" data-tier="intermediate">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">1</div><div class="feature-body"><h4>Gems (individuelle Agenten)</h4><p>Lege Name, Beschreibung und klare Anweisungen fest, um deine eigene Gemini-Version für eine wiederkehrende Aufgabe zu erstellen — ähnlich wie GPTs bei ChatGPT.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">2</div><div class="feature-body"><h4>Deep Research</h4><p>Gib ein Thema ein, und Gemini durchsucht Dutzende Webquellen und erstellt asynchron einen strukturierten Bericht. Zwei Versionen: ein schnelles Vorschaumodell und ein besonders gründliches Modell.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">3</div><div class="feature-body"><h4>Vollständige Workspace-Integration</h4><p>Erzeuge automatisch Tabellen in Sheets, entwirf Slides-Präsentationen und lass Meet Besprechungen automatisch zusammenfassen und die Notizen per E-Mail versenden.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">4</div><div class="feature-body"><h4>NotebookLM-Integration</h4><p>Speichere vertrauenswürdiges Quellenmaterial in einem Notizbuch, das Gemini als dauerhafte Wissensbasis nutzt — ohne es jedes Mal neu hochzuladen.</p></div></div>
+    </div>
+    <p class="subhead">Passende Videos</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="L4Si-0ype-4" tabindex="0" role="button" aria-label="Video abspielen: Google GEMINI kompletter Grundkurs">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/L4Si-0ype-4/hqdefault.jpg" alt="Google GEMINI kompletter Grundkurs Beginner zu Profi" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Google GEMINI kompletter Grundkurs: Beginner zu Profi in 30 min</h4><p>Inklusive KI-Deepdive-Workbook</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tier-panel" data-tool="gemini" data-tier="advanced">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">1</div><div class="feature-body"><h4>Gemini in Chrome — agentisches Browsen</h4><p>Ein einziger Prompt kann mehrstufige Web-Aufgaben erledigen (Flüge suchen, Hotel buchen). Bis zu 10 Tabs werden gleichzeitig gelesen, Daten extrahiert und verglichen — jederzeit kannst du mit „Steuerung übernehmen" selbst eingreifen.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">2</div><div class="feature-body"><h4>Gemini Enterprise / Agentspace</h4><p>Verbinde von Partnern erstellte individuelle Agenten, um End-to-End-Workflows zu automatisieren.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">3</div><div class="feature-body"><h4>Gemini API / Vertex-AI-Integration</h4><p>Baue vollständig maßgeschneiderte Automatisierungs-Pipelines in interne Systeme.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">4</div><div class="feature-body"><h4>Multi-Tab-Recherche-Automatisierung</h4><p>Ein fortgeschrittener Recherche-Workflow, der Daten über mehrere Websites hinweg abgleicht und automatisch Vergleichstabellen erstellt.</p></div></div>
+    </div>
+    <p class="subhead">Passende Videos</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="zKIS1etdFuQ" tabindex="0" role="button" aria-label="Video abspielen: Gemini Dein neuer KI Assistent in Google Workspace">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/zKIS1etdFuQ/hqdefault.jpg" alt="Gemini Dein neuer KI Assistent in Google Workspace" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Gemini: Dein neuer KI-Assistent in Google Workspace</h4><p>Tiefe Workspace-Integration im Detail</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="usecases">
+  <span class="section-tag">Playbook</span>
+  <h2>Schritt-für-Schritt-Anleitungen nach Szenario</h2>
+  <p class="lead">Genau welches Tool du in welcher Reihenfolge und mit wie vielen Schritten einsetzt — für 10 typische Geschäftsszenarien.</p>
+
+  <div class="usecase">
+    <div class="usecase-head"><span class="usecase-num">01</span><h3>Mittel- bis langfristige Strategie</h3><div class="usecase-tools"><span class="tool-chip chip-gemini">Gemini</span><span class="tool-chip chip-claude">Claude</span><span class="tool-chip chip-chatgpt">ChatGPT</span></div></div>
+    <ul class="step-list">
+      <li><span class="step-tool" style="background:var(--gemini)">Gemini</span><b>Deep Research (gründliche Version)</b> für die Recherche von Branchentrends und Wettbewerbsentwicklungen über einen 5-Jahres-Horizont.</li>
+      <li><span class="step-tool" style="background:var(--claude)">Claude</span><b>Projects</b> — lade die Recherche zusammen mit internen Finanzdaten hoch und lass 3 Szenarien (konservativ/Basis/aggressiv) mit SWOT erstellen.</li>
+      <li><span class="step-tool" style="background:var(--chatgpt)">ChatGPT</span><b>Canvas</b> — verfeinere den Entwurf zu einer einseitigen Zusammenfassung für die Geschäftsführung.</li>
+      <li><span class="step-tool" style="background:var(--claude)">Claude</span><b>Skills</b> — als Workflow „jährlicher Strategiebericht-Generator" speichern, um ihn nächstes Jahr in gleicher Qualität wiederzuverwenden.</li>
+    </ul>
+    <span class="label">Beispiel-Prompt (Schritt 2, Claude)</span>
+    <div class="prompt">Wir erarbeiten eine mittel- bis langfristige Strategie für 2027–2029 für unser Unternehmen (Branche: ___, Umsatzgröße: ___). Erstelle anhand der beigefügten Marktrecherche und Finanzdaten 3 Wachstumsszenarien (konservativ/Basis/aggressiv) inklusive SWOT und zentraler Risikofaktoren.</div>
+  </div>
+
+  <div class="usecase">
+    <div class="usecase-head"><span class="usecase-num">02</span><h3>Marktanalyse</h3><div class="usecase-tools"><span class="tool-chip chip-gemini">Gemini</span><span class="tool-chip chip-chatgpt">ChatGPT</span><span class="tool-chip chip-claude">Claude</span></div></div>
+    <ul class="step-list">
+      <li><span class="step-tool" style="background:var(--gemini)">Gemini</span><b>Deep Research</b> für eine erste Einschätzung von Marktgröße und Wachstumsrate.</li>
+      <li><span class="step-tool" style="background:var(--chatgpt)">ChatGPT</span><b>Deep Research</b> zur Gegenprüfung desselben Themas mit anderen Quellen (News, Patente, Rezensionen).</li>
+      <li><span class="step-tool" style="background:var(--claude)">Claude</span> — beide Berichte einspeisen und bitten, „Übereinstimmungen und Widersprüche zusammenzufassen und finale Erkenntnisse abzuleiten".</li>
+    </ul>
+  </div>
+
+  <div class="usecase">
+    <div class="usecase-head"><span class="usecase-num">03</span><h3>Preisanalyse</h3><div class="usecase-tools"><span class="tool-chip chip-chatgpt">ChatGPT</span><span class="tool-chip chip-claude">Claude</span><span class="tool-chip chip-gemini">Gemini</span></div></div>
+    <ul class="step-list">
+      <li><span class="step-tool" style="background:var(--chatgpt)">ChatGPT</span><b>für Excel</b> — Wettbewerber-Preisdaten einfügen und um eine Preispositionierungs-Matrix bitten.</li>
+      <li><span class="step-tool" style="background:var(--claude)">Claude</span><b>Code</b> — Kostenstruktur und Margensensitivität in Python simulieren.</li>
+      <li><span class="step-tool" style="background:var(--gemini)">Gemini</span><b>Slides</b> — Ergebnisse in eine visuelle Präsentation umwandeln und mit den Fachabteilungen teilen.</li>
+    </ul>
+  </div>
+
+  <div class="usecase">
+    <div class="usecase-head"><span class="usecase-num">04</span><h3>Produkttrendanalyse</h3><div class="usecase-tools"><span class="tool-chip chip-gemini">Gemini</span><span class="tool-chip chip-claude">Claude</span><span class="tool-chip chip-chatgpt">ChatGPT</span></div></div>
+    <ul class="step-list">
+      <li><span class="step-tool" style="background:var(--gemini)">Gemini</span><b>in Chrome (agentisches Browsen)</b> — mehrere Rezensions-/Community-Tabs gleichzeitig öffnen und automatisch eine Vergleichstabelle erstellen.</li>
+      <li><span class="step-tool" style="background:var(--claude)">Claude</span><b>Skills</b> — als „monatliches Produkttrend-Briefing" registrieren und regelmäßig ausführen.</li>
+      <li><span class="step-tool" style="background:var(--chatgpt)">ChatGPT</span><b>Canvas</b> — das finale Briefing-Dokument bearbeiten und für die Verteilung formatieren.</li>
+    </ul>
+  </div>
+
+  <div class="usecase">
+    <div class="usecase-head"><span class="usecase-num">05</span><h3>Datenanalyse (allgemein)</h3><div class="usecase-tools"><span class="tool-chip chip-chatgpt">ChatGPT</span><span class="tool-chip chip-claude">Claude</span><span class="tool-chip chip-gemini">Gemini</span></div></div>
+    <ul class="step-list">
+      <li>Strukturierte Tabellen: sofort mit <span class="step-tool" style="background:var(--chatgpt)">ChatGPT</span><b>für Excel</b> oder der <span class="step-tool" style="background:var(--gemini)">Gemini</span><b>Sheets-Integration</b> bearbeiten.</li>
+      <li>Große oder unstrukturierte Daten (Logs, Zusammenführung mehrerer Dateien): Python-Skripte mit <span class="step-tool" style="background:var(--claude)">Claude</span><b>Code</b> schreiben und ausführen.</li>
+      <li>Ergebnisse mit <span class="step-tool" style="background:var(--gemini)">Gemini</span> Slides oder <span class="step-tool" style="background:var(--chatgpt)">ChatGPT</span> Canvas visuell aufbereiten.</li>
+    </ul>
+  </div>
+
+  <div class="usecase">
+    <div class="usecase-head"><span class="usecase-num">06</span><h3>Prozessverbesserung</h3><div class="usecase-tools"><span class="tool-chip chip-claude">Claude</span><span class="tool-chip chip-gemini">Gemini</span></div></div>
+    <ul class="step-list">
+      <li><span class="step-tool" style="background:var(--claude)">Claude</span><b>Agent Teams</b> — Aufteilung in „Analyst für den Ist-Prozess / Verantwortlicher für die Neugestaltung / Risikoprüfer" zur parallelen Prüfung.</li>
+      <li>Die finale Verbesserung als <span class="step-tool" style="background:var(--claude)">Claude</span><b>Skill</b> registrieren, damit sie zu einem wiederholbaren Standardprozess wird.</li>
+      <li><span class="step-tool" style="background:var(--gemini)">Gemini</span><b>Docs</b> — dokumentieren und in Echtzeit mit der gesamten Abteilung teilen.</li>
+    </ul>
+  </div>
+
+  <div class="usecase">
+    <div class="usecase-head"><span class="usecase-num">07</span><h3>RPA (wiederkehrende Downloads & Web-Automatisierung)</h3><div class="usecase-tools"><span class="tool-chip chip-chatgpt">ChatGPT</span><span class="tool-chip chip-claude">Claude</span></div></div>
+    <ul class="step-list">
+      <li><span class="step-tool" style="background:var(--chatgpt)">ChatGPT</span><b>Agent Mode</b> meldet sich auf einer Website an, lädt Daten herunter und speichert sie automatisch (bei Websites ohne CAPTCHA).</li>
+      <li><span class="step-tool" style="background:var(--claude)">Claude</span><b>Computer Use</b> ordnet und benennt die heruntergeladenen Dateien gemäß deiner Ordnerstruktur um.</li>
+      <li>Wiederkehrende Aufgaben mit einem No-Code-Tool wie n8n verbinden, für tägliche/wöchentliche Zeitpläne.</li>
+    </ul>
+  </div>
+
+  <div class="usecase">
+    <div class="usecase-head"><span class="usecase-num">08</span><h3>Automatisiertes E-Mail-Versenden</h3><div class="usecase-tools"><span class="tool-chip chip-gemini">Gemini</span><span class="tool-chip chip-chatgpt">ChatGPT</span></div></div>
+    <ul class="step-list">
+      <li><span class="step-tool" style="background:var(--gemini)">Gemini</span><b>in Meet</b> fasst das Meeting zusammen und verschickt automatisch eine E-Mail an die Teilnehmer.</li>
+      <li><span class="step-tool" style="background:var(--chatgpt)">ChatGPT</span><b>Outlook-Integration</b> entwirft personalisierte E-Mails für Kunden in großer Zahl.</li>
+      <li><span class="step-tool" style="background:var(--gemini)">Gemini</span><b>in Gmail</b> prüft alles vor dem Versand ein letztes Mal.</li>
+    </ul>
+  </div>
+
+  <div class="usecase">
+    <div class="usecase-head"><span class="usecase-num">09</span><h3>Management-Reporting</h3><div class="usecase-tools"><span class="tool-chip chip-gemini">Gemini</span><span class="tool-chip chip-claude">Claude</span><span class="tool-chip chip-chatgpt">ChatGPT</span></div></div>
+    <ul class="step-list">
+      <li><span class="step-tool" style="background:var(--gemini)">Gemini</span> oder <span class="step-tool" style="background:var(--chatgpt)">ChatGPT</span> <b>Deep Research</b> zur Beschaffung von Daten und Recherchen.</li>
+      <li><span class="step-tool" style="background:var(--claude)">Claude</span><b>Skills'</b> „Monatlicher Vorstandsbericht-Generator" entwirft den Bericht automatisch nach deiner Vorlage.</li>
+      <li><span class="step-tool" style="background:var(--chatgpt)">ChatGPT</span><b>Canvas</b> wandelt ihn in Word/PPT um und poliert das finale Design.</li>
+    </ul>
+    <span class="label">Beispiel-Prompt (Schritt 2, Ausführung des Claude Skills)</span>
+    <div class="prompt">Erstelle den Vorstandsbericht mit den beigefügten Umsatz-, Kosten- und Recherchedaten dieses Monats. Vorlage: Zusammenfassung → Leistungs-Highlights → Risiken → Maßnahmen für den nächsten Monat.</div>
+  </div>
+
+  <div class="usecase">
+    <div class="usecase-head"><span class="usecase-num">10</span><h3>Abteilungsübergreifende Zusammenarbeit</h3><div class="usecase-tools"><span class="tool-chip chip-claude">Claude</span><span class="tool-chip chip-gemini">Gemini</span></div></div>
+    <ul class="step-list">
+      <li><span class="step-tool" style="background:var(--claude)">Claude</span><b>Agent Teams</b> teilt die Arbeit nach Abteilungsrollen (Planung, Entwicklung, QA usw.) auf, mit einer gemeinsamen Aufgabenliste zur Fortschrittsverfolgung.</li>
+      <li><span class="step-tool" style="background:var(--gemini)">Gemini</span><b>Docs / Sheets</b> für Echtzeit-Zusammenarbeit und automatisch geteilte Meeting-Zusammenfassungen.</li>
+      <li><span class="step-tool" style="background:var(--gemini)">Gemini</span><b>in Chrome (Multi-Tab-Ansicht)</b> fasst den Status jeder Abteilung auf einem Bildschirm für ein wöchentliches Briefing zusammen.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="videos">
+  <span class="section-tag">Watch &amp; Learn</span>
+  <h2>Direktvergleiche &amp; Deep Dives</h2>
+  <p class="lead">Unsicher, welches Tool du nutzen sollst? Hier findest du den Einstieg.</p>
+  <div class="grid cols-2 video-row">
+    <div class="video-card" data-yt="pPK9OFE6xGU" tabindex="0" role="button" aria-label="Video abspielen: Gemini vs Claude AI vs ChatGPT Welches KI-Tool lohnt sich">
+      <div class="video-thumb"><img src="https://i.ytimg.com/vi/pPK9OFE6xGU/hqdefault.jpg" alt="Gemini vs Claude AI vs ChatGPT Welches KI-Tool lohnt sich 2026" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+      <div class="video-info"><h4>Gemini vs Claude AI vs ChatGPT: Welches KI-Tool lohnt sich 2026 wirklich?</h4><p>Der große Vergleich auf Deutsch</p></div>
+    </div>
+    <div class="video-card" data-yt="Vo5bhfMjpU4" tabindex="0" role="button" aria-label="Video abspielen: Claude vs Gemini vs ChatGPT Welche KI ist 20 Euro wert">
+      <div class="video-thumb"><img src="https://i.ytimg.com/vi/Vo5bhfMjpU4/hqdefault.jpg" alt="Claude vs Gemini vs ChatGPT Welche KI ist 20 Euro wert" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+      <div class="video-info"><h4>Claude vs. Gemini vs ChatGPT: Welche KI ist 2026 tatsächlich 20€ wert?</h4><p>Praxistest der drei Abos</p></div>
+    </div>
+  </div>
+</section>
+
+<footer id="footer">
+  <div>Diese Seite wurde auf Basis öffentlich zugänglicher Quellen mit Stand Juli 2026 erstellt. Da sich die Funktionen der Tools laufend ändern, prüfe vor der praktischen Anwendung immer die offizielle Dokumentation.</div>
+  <div class="sources">
+    <div><strong>Quellen</strong></div>
+    <div>· <a href="https://beginnersinai.org/claude-for-business/" target="_blank" rel="noopener">Claude for Business: The Complete Enterprise Guide (2026)</a></div>
+    <div>· <a href="https://suprmind.ai/hub/claude/features/" target="_blank" rel="noopener">Claude Features 2026 — Projects, Artifacts, Memory, Computer Use, Skills, MCP</a></div>
+    <div>· <a href="https://code.claude.com/docs/en/agent-teams" target="_blank" rel="noopener">Claude Code — Agent Teams Dokumentation</a></div>
+    <div>· <a href="https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities" target="_blank" rel="noopener">Claude Connectors (MCP) Dokumentation</a></div>
+    <div>· <a href="https://openai.com/index/chatgpt-for-excel/" target="_blank" rel="noopener">Introducing ChatGPT for Excel and new financial data integrations — OpenAI</a></div>
+    <div>· <a href="https://openai.com/index/introducing-chatgpt-agent/" target="_blank" rel="noopener">Introducing ChatGPT agent: bridging research and action — OpenAI</a></div>
+    <div>· <a href="https://gemini.google/overview/deep-research/" target="_blank" rel="noopener">Gemini Deep Research — dein persönlicher Rechercheassistent</a></div>
+    <div>· <a href="https://knowledge.workspace.google.com/admin/generative-ai/workspace-with-gemini/google-workspace-with-gemini" target="_blank" rel="noopener">Google Workspace with Gemini</a></div>
+    <div>· <a href="https://gemini.google/overview/gemini-in-chrome/" target="_blank" rel="noopener">Gemini in Chrome — Google-Überblick</a></div>
+  </div>
+  <div style="margin-top:20px;">winsoul.de / AITraining</div>
+</footer>
+
+<div class="float-controls">
+  <div class="fc-group">
+    <button class="fc-btn" id="fontDec" aria-label="Schrift verkleinern" title="Schrift verkleinern">A−</button>
+    <button class="fc-btn" id="fontInc" aria-label="Schrift vergrößern" title="Schrift vergrößern">A+</button>
+  </div>
+  <button id="toTopBtn" aria-label="Nach oben" title="Nach oben">↑</button>
+</div>
+
+<script>
+(function(){
+  var gate = document.getElementById('langGate');
+  if(gate){
+    if(!localStorage.getItem('aitraining_lang')){
+      gate.classList.add('show');
+    }
+    gate.querySelectorAll('.lang-gate-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        localStorage.setItem('aitraining_lang', btn.getAttribute('data-lang'));
+      });
+    });
+  }
+
+  var root = document.documentElement;
+  var scale = parseFloat(localStorage.getItem('aitraining_fontScale')) || 1;
+  function apply(){ root.style.setProperty('--fs-scale', scale.toFixed(2)); }
+  apply();
+  document.getElementById('fontInc').addEventListener('click', function(){
+    scale = Math.min(1.6, +(scale + 0.1).toFixed(2));
+    localStorage.setItem('aitraining_fontScale', scale);
+    apply();
+  });
+  document.getElementById('fontDec').addEventListener('click', function(){
+    scale = Math.max(0.7, +(scale - 0.1).toFixed(2));
+    localStorage.setItem('aitraining_fontScale', scale);
+    apply();
+  });
+
+  var toTop = document.getElementById('toTopBtn');
+  window.addEventListener('scroll', function(){
+    if(window.scrollY > 480){ toTop.classList.add('show'); }
+    else { toTop.classList.remove('show'); }
+  });
+  toTop.addEventListener('click', function(){
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  document.querySelectorAll('.tier-tabs').forEach(function(tabGroup){
+    var tool = tabGroup.getAttribute('data-tool');
+    var buttons = tabGroup.querySelectorAll('.tier-tab-btn');
+    buttons.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        buttons.forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        var tier = btn.getAttribute('data-tier');
+        document.querySelectorAll('.tier-panel[data-tool="'+tool+'"]').forEach(function(panel){
+          panel.classList.toggle('active', panel.getAttribute('data-tier') === tier);
+        });
+      });
+    });
+  });
+
+  document.querySelectorAll('.video-card[data-yt]').forEach(function(card){
+    function playInline(){
+      if(card.classList.contains('playing')) return;
+      var id = card.getAttribute('data-yt');
+      var thumb = card.querySelector('.video-thumb');
+      thumb.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
+      card.classList.add('playing');
+    }
+    card.addEventListener('click', playInline);
+    card.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); playInline(); }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

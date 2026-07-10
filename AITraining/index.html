@@ -30,9 +30,20 @@
   nav.topnav{position:sticky;top:0;z-index:100;backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);background:rgba(245,245,247,0.8);border-bottom:1px solid var(--border);}
   .nav-inner{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:28px;padding:14px 40px;overflow-x:auto;}
   .nav-brand{font-weight:600;font-size:0.95rem;letter-spacing:-0.01em;white-space:nowrap;flex:0 0 auto;}
-  .nav-links{display:flex;gap:22px;flex-wrap:nowrap;}
+  .nav-links{display:flex;align-items:center;gap:22px;flex-wrap:nowrap;}
   .nav-links a{color:var(--text);font-size:0.85rem;opacity:0.75;white-space:nowrap;}
   .nav-links a:hover{opacity:1;text-decoration:none;}
+  .lang-switch{display:flex;align-items:center;gap:10px;padding-left:14px;border-left:1px solid var(--border);}
+  .lang-switch a{font-size:0.78rem;opacity:0.55;white-space:nowrap;}
+  .lang-switch a:hover{opacity:1;text-decoration:none;}
+  .lang-switch a.lang-current{opacity:1;font-weight:700;pointer-events:none;}
+  .lang-gate{position:fixed;inset:0;z-index:1000;background:rgba(245,245,247,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:none;align-items:center;justify-content:center;padding:24px;}
+  .lang-gate.show{display:flex;}
+  .lang-gate-card{background:var(--card);border-radius:24px;padding:48px 40px;max-width:420px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.15);}
+  .lang-gate-title{font-size:1.1rem;font-weight:600;color:var(--text);margin-bottom:28px;letter-spacing:-0.01em;}
+  .lang-gate-btns{display:flex;flex-direction:column;gap:12px;}
+  .lang-gate-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:16px;border-radius:14px;border:1px solid var(--border);font-size:1rem;font-weight:600;color:var(--text);background:#fafafa;transition:transform .15s ease, background .15s ease;}
+  .lang-gate-btn:hover{background:#f0f0f2;transform:translateY(-1px);text-decoration:none;}
   header.hero{max-width:var(--maxw);margin:0 auto;padding:96px 40px 64px;text-align:center;}
   header.hero h1{font-size:2.75rem;font-weight:700;letter-spacing:-0.03em;margin:0 0 16px;background:linear-gradient(135deg,#1d1d1f,#4a4a4f);-webkit-background-clip:text;background-clip:text;color:transparent;}
   header.hero p{font-size:1.15rem;color:var(--sub);max-width:680px;margin:0 auto 12px;}
@@ -131,9 +142,25 @@
       <a href="#usecases">업무별 활용법</a>
       <a href="#videos">추천 영상</a>
       <a href="#footer">참고자료</a>
+      <span class="lang-switch">
+        <a href="index.html" class="lang-current">한국어</a>
+        <a href="en.html">English</a>
+        <a href="de.html">Deutsch</a>
+      </span>
     </div>
   </div>
 </nav>
+
+<div class="lang-gate" id="langGate">
+  <div class="lang-gate-card">
+    <div class="lang-gate-title">언어를 선택하세요<br>Choose your language · Sprache wählen</div>
+    <div class="lang-gate-btns">
+      <a href="index.html" class="lang-gate-btn" data-lang="ko">한국어</a>
+      <a href="en.html" class="lang-gate-btn" data-lang="en">English</a>
+      <a href="de.html" class="lang-gate-btn" data-lang="de">Deutsch</a>
+    </div>
+  </div>
+</div>
 
 <header class="hero">
   <div class="section-tag">2026년 최신판</div>
@@ -550,6 +577,18 @@
 
 <script>
 (function(){
+  var gate = document.getElementById('langGate');
+  if(gate){
+    if(!localStorage.getItem('aitraining_lang')){
+      gate.classList.add('show');
+    }
+    gate.querySelectorAll('.lang-gate-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        localStorage.setItem('aitraining_lang', btn.getAttribute('data-lang'));
+      });
+    });
+  }
+
   var root = document.documentElement;
   var scale = parseFloat(localStorage.getItem('aitraining_fontScale')) || 1;
   function apply(){ root.style.setProperty('--fs-scale', scale.toFixed(2)); }
