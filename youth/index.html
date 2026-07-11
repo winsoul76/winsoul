@@ -98,10 +98,67 @@
     header h1{font-size:26px;}
     .card{padding:20px 20px;}
   }
+
+  /* ---------- Lock screen ---------- */
+  .lock-overlay{
+    position:fixed; inset:0; z-index:2000;
+    background:linear-gradient(180deg, #fbfaf8 0%, var(--bg) 100%);
+    display:flex; align-items:center; justify-content:center; padding:24px;
+  }
+  .lock-card{
+    width:100%; max-width:340px; background:var(--card);
+    border-radius:24px; padding:40px 30px 32px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.08); text-align:center;
+  }
+  .lock-icon{
+    width:56px; height:56px; margin:0 auto 20px; border-radius:50%;
+    background:#eaf2fc; display:flex; align-items:center; justify-content:center; font-size:24px;
+  }
+  .lock-card h2{font-size:19px; font-weight:700; letter-spacing:-0.3px; margin-bottom:6px;}
+  .lock-card p{font-size:13px; color:var(--sub); margin-bottom:24px;}
+  .pw-wrap{position:relative;}
+  .lock-card input{
+    width:100%; border:1.5px solid var(--line); border-radius:14px;
+    padding:14px 46px 14px 16px; font-size:20px; text-align:center; letter-spacing:6px;
+    color:var(--ink); outline:none; background:#fafafa; transition:border-color .15s ease;
+  }
+  .lock-card input:focus{border-color:var(--accent); background:#fff;}
+  .pw-wrap #pwToggle{
+    position:absolute; right:4px; top:50%; transform:translateY(-50%);
+    width:36px; height:36px; border:none; background:transparent;
+    font-size:16px; cursor:pointer; opacity:.55; padding:0;
+  }
+  .pw-wrap #pwToggle:active{opacity:1;}
+  .lock-err{color:var(--red); font-size:12.5px; margin-top:10px; font-weight:500;}
+  .lock-card button[type="submit"]{
+    width:100%; margin-top:18px; border:none; border-radius:14px; padding:14px;
+    font-size:15px; font-weight:600; color:#fff; background:var(--accent);
+    cursor:pointer; transition:opacity .15s ease;
+  }
+  .lock-card button[type="submit"]:active{opacity:.75;}
+  .lock-foot{margin-top:20px; font-size:11px; color:#c2c2c2; letter-spacing:.05em;}
 </style>
 </head>
 <body>
 
+<div class="lock-overlay" id="lockOverlay">
+  <div class="lock-card">
+    <div class="lock-icon">🔒</div>
+    <h2>청1 사역 교사용 자료</h2>
+    <p>담당 교사·스태프만 열람 가능합니다. 비밀번호를 입력해 주세요.</p>
+    <form id="lockForm" autocomplete="off">
+      <div class="pw-wrap">
+        <input type="password" id="pwInput" maxlength="24" placeholder="••••••" autocomplete="off">
+        <button type="button" id="pwToggle" aria-label="비밀번호 표시">👁</button>
+      </div>
+      <div class="lock-err" id="lockErr" style="display:none;">비밀번호가 올바르지 않습니다</div>
+      <button type="submit" id="unlockBtn">확인</button>
+    </form>
+    <div class="lock-foot">청소년1부 · WINSOUL</div>
+  </div>
+</div>
+
+<div id="app" style="display:none;">
 <header>
   <h1>2026년 청소년1부 여름 수련회</h1>
   <div class="theme">예배의 승리자들 : 부흥의 세대 (잠언 21:30-31)</div>
@@ -353,6 +410,75 @@
   본 페이지는 청소년1부 교사·스태프 내부 준비용입니다. 개인정보 보호를 위해 이름 일부·연락처를 마스킹했으며 검색엔진 노출을 차단했습니다. 외부 공유를 자제해 주세요.
 </footer>
 
+</div><!-- #app -->
+
+<script>
+  /* ============================================================
+     비밀번호 게이트 (SHA-256 해시 비교, 평문 비밀번호를 소스에 남기지 않음)
+     비밀번호 변경 방법: 브라우저 개발자도구 콘솔에서
+       crypto.subtle.digest("SHA-256", new TextEncoder().encode("새비밀번호")).then(b=>console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")))
+     를 실행해 나온 값을 아래 PW_HASH 에 붙여넣으면 됩니다.
+     주의: 정적 사이트 특성상 완벽한 보안은 아니며, 캐주얼한 접근을 막는 수준입니다.
+     ============================================================ */
+  var PW_HASH = "0a1f317b4c2fb0728dedf260e1f54b6a389e57685e42a8f9acc85f483e6934d5";
+  var LOCK_KEY = "youth2026_unlocked";
+  var lockOverlay = document.getElementById("lockOverlay");
+  var appEl = document.getElementById("app");
+  var lockForm = document.getElementById("lockForm");
+  var pwInput = document.getElementById("pwInput");
+  var pwToggle = document.getElementById("pwToggle");
+  var lockErr = document.getElementById("lockErr");
+
+  function sha256Hex(str) {
+    var enc = new TextEncoder().encode(str);
+    return crypto.subtle.digest("SHA-256", enc).then(function (buf) {
+      return Array.prototype.map
+        .call(new Uint8Array(buf), function (b) { return b.toString(16).padStart(2, "0"); })
+        .join("");
+    });
+  }
+
+  pwToggle.addEventListener("click", function () {
+    var showing = pwInput.type === "text";
+    pwInput.type = showing ? "password" : "text";
+    pwToggle.textContent = showing ? "👁" : "🙈";
+    pwInput.focus();
+  });
+
+  function tryUnlock() {
+    sha256Hex(pwInput.value).then(function (hash) {
+      if (hash === PW_HASH) {
+        try { localStorage.setItem(LOCK_KEY, "1"); } catch (e) {}
+        lockOverlay.style.display = "none";
+        appEl.style.display = "block";
+      } else {
+        lockErr.style.display = "block";
+        pwInput.value = "";
+        pwInput.focus();
+      }
+    });
+  }
+
+  lockForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    tryUnlock();
+  });
+  pwInput.addEventListener("input", function () {
+    lockErr.style.display = "none";
+  });
+
+  (function initLock() {
+    var already = false;
+    try { already = localStorage.getItem(LOCK_KEY) === "1"; } catch (e) {}
+    if (already) {
+      lockOverlay.style.display = "none";
+      appEl.style.display = "block";
+    } else {
+      pwInput.focus();
+    }
+  })();
+</script>
+
 <script>
   const buttons = document.querySelectorAll('#tabNav button');
   const sections = document.querySelectorAll('main section');
@@ -383,4 +509,3 @@
 
 </body>
 </html>
-                                                                                                

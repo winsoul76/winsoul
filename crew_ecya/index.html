@@ -299,7 +299,7 @@
     <p>비밀번호를 입력해 주세요</p>
     <form id="lockForm" autocomplete="off">
       <div class="pw-wrap">
-        <input type="password" id="pwInput" inputmode="numeric" maxlength="12" placeholder="••••••" autocomplete="off">
+        <input type="password" id="pwInput" maxlength="24" placeholder="••••••" autocomplete="off">
         <button type="button" id="pwToggle" aria-label="비밀번호 표시">👁</button>
       </div>
       <div class="lock-err" id="lockErr" style="display:none;">비밀번호가 올바르지 않습니다</div>
@@ -927,8 +927,24 @@
 
 <script>
   // ---------- Lock ----------
-  var PW = "260815";
+  /* ============================================================
+     비밀번호 게이트 (SHA-256 해시 비교, 평문 비밀번호를 소스에 남기지 않음)
+     비밀번호 변경 방법: 브라우저 개발자도구 콘솔에서
+       crypto.subtle.digest("SHA-256", new TextEncoder().encode("새비밀번호")).then(b=>console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")))
+     를 실행해 나온 값을 아래 PW_HASH 에 붙여넣으면 됩니다.
+     주의: 정적 사이트 특성상 완벽한 보안은 아니며, 캐주얼한 접근을 막는 수준입니다.
+     ============================================================ */
+  var PW_HASH = "0a1f317b4c2fb0728dedf260e1f54b6a389e57685e42a8f9acc85f483e6934d5";
   var LOCK_KEY = "ecya_2026_unlocked";
+
+  function sha256Hex(str) {
+    var enc = new TextEncoder().encode(str);
+    return crypto.subtle.digest("SHA-256", enc).then(function (buf) {
+      return Array.prototype.map
+        .call(new Uint8Array(buf), function (b) { return b.toString(16).padStart(2, "0"); })
+        .join("");
+    });
+  }
   var lockOverlay = document.getElementById("lockOverlay");
   var app = document.getElementById("app");
   var lockForm = document.getElementById("lockForm");
@@ -952,15 +968,17 @@
 
   function tryUnlock() {
     var entered = normalize(pwInput.value);
-    if (entered === PW) {
-      try { localStorage.setItem(LOCK_KEY, "1"); } catch (e) {}
-      lockOverlay.style.display = "none";
-      app.style.display = "block";
-    } else {
-      lockErr.style.display = "block";
-      pwInput.value = "";
-      pwInput.focus();
-    }
+    sha256Hex(entered).then(function (hash) {
+      if (hash === PW_HASH) {
+        try { localStorage.setItem(LOCK_KEY, "1"); } catch (e) {}
+        lockOverlay.style.display = "none";
+        app.style.display = "block";
+      } else {
+        lockErr.style.display = "block";
+        pwInput.value = "";
+        pwInput.focus();
+      }
+    });
   }
 
   lockForm.addEventListener("submit", function (e) {

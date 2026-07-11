@@ -331,6 +331,45 @@
       margin: 18px 0 8px;
     }
 
+    .video-facade {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      background: #111;
+    }
+
+    .video-facade img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.88;
+    }
+
+    .video-facade .play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+
+    .video-facade:hover .play-btn,
+    .video-facade:focus-visible .play-btn {
+      background: var(--accent);
+      transform: translate(-50%, -50%) scale(1.08);
+    }
+
     .video-block + .video-block {
       margin-top: 24px;
     }
@@ -622,6 +661,34 @@
 
   <script type="text/babel">
     const { useMemo, useState } = React;
+
+    function VideoFacade({ id, title }) {
+      const [playing, setPlaying] = useState(false);
+      if (playing) {
+        return (
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`}
+            title={title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          />
+        );
+      }
+      const play = () => setPlaying(true);
+      return (
+        <div
+          className="video-facade"
+          role="button"
+          tabIndex={0}
+          aria-label={`영상 재생: ${title}`}
+          onClick={play}
+          onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); play(); } }}
+        >
+          <img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} alt={title} loading="lazy" />
+          <div className="play-btn">▶</div>
+        </div>
+      );
+    }
 
     const videos = {
       1: { id: "mC2b57u_s0k", title: "논문으로 검증된 26가지 프롬프트 엔지니어링 개꿀팁" },
@@ -1036,12 +1103,7 @@
             <div className="video-block" key={video.id}>
               {dayVideos.length > 1 && <div className="video-label">추천 영상 {index + 1}</div>}
               <div className="video-wrap">
-                <iframe
-                  src={`https://www.youtube.com/embed/${video.id}`}
-                  title={video.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                />
+                <VideoFacade id={video.id} title={video.title} />
               </div>
               <div className="video-note">
                 현재 영상: {video.title} · <a href={`https://www.youtube.com/watch?v=${video.id}`} target="_blank" rel="noreferrer">YouTube 원본 열기</a>.

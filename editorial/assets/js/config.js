@@ -9,9 +9,10 @@ window.EDITORIAL_CONFIG = {
   // 예: "https://script.google.com/macros/s/AKfycb.../exec"
   GAS_URL: "https://script.google.com/macros/s/AKfycby7ahraeNMKWv_FdbbIKjZq2rwDNMpVClUC5vjbQWOOey2lmGS2kG_m-XkBZF5SD-Ji/exec",
 
-  // ⚠️ 기본 비밀번호입니다. 반드시 변경하세요! (변경 방법: gas/설치가이드.md 참고)
-  // 사이트 비밀번호(기본값 "") — 편집부원·선생님이 사이트 열람 시 사용
-  SITE_PASSWORD_HASH: "ad716383d325456fe93b8d940db0d1c747234b03d101c4cea6f40d7c87bf9e04",
+  // 사이트 비밀번호 — 편집부원·선생님이 사이트 열람 시 사용
+  // ⚠️ 이 값을 바꿀 때는 editorial/gas/Code.gs 의 SITE_KEY_HASH 도 반드시 같은
+  //    비밀번호의 해시로 함께 바꾸고 Apps Script를 다시 배포해야 합니다.
+  SITE_PASSWORD_HASH: "940c69409d8170121b7ab1a5d016f059ee29f51443dad14fa7e995ff19fbcda8",
   // 관리자 비밀번호(기본값 "") — 담당 선생님이 체크 입력 시 사용
   ADMIN_PASSWORD_HASH: "0a1f317b4c2fb0728dedf260e1f54b6a389e57685e42a8f9acc85f483e6934d5",
 
