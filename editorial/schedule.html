@@ -64,7 +64,7 @@
     <div class="section-head"><h2>편집부원 명단</h2><span class="sub">총 <span id="memberCount"></span>명</span></div>
     <div class="table-scroll">
       <table>
-        <thead><tr><th>이름</th><th>생일</th></tr></thead>
+        <thead><tr><th>이름</th></tr></thead>
         <tbody id="memberBody"></tbody>
       </table>
     </div>
@@ -126,9 +126,7 @@ EditorialAPI.hydrate().then(function(){
 
   document.getElementById('memberCount').textContent = members.length;
   document.getElementById('memberBody').innerHTML = members.map(function(m){
-    var masked = EditorialUtils.maskOne(m.name);
-    var bday = (m.birthday || '').replace('-', '.');
-    return '<tr><td>' + masked + '</td><td>' + (bday || '-') + '</td></tr>';
+    return '<tr><td>' + EditorialUtils.maskOne(m.name) + '</td></tr>';
   }).join('');
 });
 });

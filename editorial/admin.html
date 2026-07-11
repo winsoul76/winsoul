@@ -403,7 +403,7 @@
   }
 
   EditorialAuth.readyAdmin(function(){
-    EditorialAPI.hydrate().then(function(){
+    EditorialAPI.hydrateAdmin().then(function(){
       members = EDITORIAL_CONFIG.members;
       var content = document.getElementById('adminContent');
       content.style.display = '';

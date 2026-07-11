@@ -20,21 +20,24 @@ window.EDITORIAL_CONFIG = {
   meetingTime: "매달 첫째·둘째 주일 오후 4:30 ~ 5:20",
 
   // 편집부원 명단 (2026-07 기준, 총 14명)
+  // ⚠️ 개인정보 보호: 이 파일은 로그인 없이 누구나 내려받을 수 있는 정적 파일이라
+  //    생년/생일 등 민감 정보는 여기 넣지 않습니다. (실제 값은 관리자 키로만 조회되는
+  //    구글 시트에 보관되고, 관리자 화면에서만 표시됩니다.)
   members: [
-    { name: "신지민", birthYear: 2012, birthday: "03-18", role: "그림" },
-    { name: "변예율", birthYear: 2012, birthday: "09-24", role: "그림" },
-    { name: "윤설",   birthYear: 2013, birthday: "09-09", role: "그림" },
-    { name: "박하윤", birthYear: 2013, birthday: "12-11", role: "글/그림" },
-    { name: "이제인", birthYear: 2013, birthday: "03-17", role: "글/그림" },
-    { name: "장아릿다", birthYear: 2013, birthday: "12-03", role: "그림" },
-    { name: "김가은", birthYear: 2013, birthday: "09-07", role: "글" },
-    { name: "최재민", birthYear: 2013, birthday: "01-24", role: "글/그림" },
-    { name: "강이린", birthYear: 2013, birthday: "07-03", role: "그림" },
-    { name: "권유나", birthYear: 2014, birthday: "01-16", role: "글/그림" },
-    { name: "조하랑", birthYear: 2014, birthday: "04-08", role: "글/그림" },
-    { name: "홍지원", birthYear: 2014, birthday: "07-31", role: "글/그림" },
-    { name: "채린",   birthYear: 2014, birthday: "05-24", role: "글/그림" },
-    { name: "신지우", birthYear: 2014, birthday: "06-14", role: "글/그림" }
+    { name: "신지민", role: "그림" },
+    { name: "변예율", role: "그림" },
+    { name: "윤설",   role: "그림" },
+    { name: "박하윤", role: "글/그림" },
+    { name: "이제인", role: "글/그림" },
+    { name: "장아릿다", role: "그림" },
+    { name: "김가은", role: "글" },
+    { name: "최재민", role: "글/그림" },
+    { name: "강이린", role: "그림" },
+    { name: "권유나", role: "글/그림" },
+    { name: "조하랑", role: "글/그림" },
+    { name: "홍지원", role: "글/그림" },
+    { name: "채린",   role: "글/그림" },
+    { name: "신지우", role: "글/그림" }
   ],
 
   // 2026년 하반기 주보 담당 & 모임 일정
