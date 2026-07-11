@@ -79,6 +79,11 @@ function doPost(e) {
       return jsonOut_(submitWorkbook(body.payload));
     }
 
+    if (body.action === 'setStatus') {
+      requireAdmin_(body.payload && body.payload.password);
+      return jsonOut_(setManualStatus_(body.payload));
+    }
+
     return jsonOut_({ error: '알 수 없는 요청입니다.' });
   } catch (err) {
     return jsonOut_({ error: err.message || String(err) });
@@ -115,10 +120,11 @@ function initializeSheets() {
   sh.setFrozenRows(1);
 
   // --- Applicants ---
+  // ManualStatus: 관리자가 수기로 제출 여부를 조정한 값. ''(자동/기본), '제출완료'(수동 제출 처리), '미제출'(수동 무효 처리)
   sh = ss.getSheetByName(SHEET_APPLICANTS) || ss.insertSheet(SHEET_APPLICANTS);
   sh.clear();
-  sh.getRange(1, 1, 1, 2).setValues([['Name', 'Church']]).setFontWeight('bold');
-  sh.getRange(2, 1, 1, 2).setValues([['(신청자 명단을 여기에 채워주세요)', '']]);
+  sh.getRange(1, 1, 1, 3).setValues([['Name', 'Church', 'ManualStatus']]).setFontWeight('bold');
+  sh.getRange(2, 1, 1, 3).setValues([['(신청자 명단을 여기에 채워주세요)', '', '']]);
 
   // --- Responses ---
   sh = ss.getSheetByName(SHEET_RESPONSES) || ss.insertSheet(SHEET_RESPONSES);
@@ -262,24 +268,35 @@ function getDashboardData() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const answerKeyMap = getAnswerKeyMap_();
 
-  // 신청자 명단
+  // 신청자 명단 (ManualStatus: 관리자가 수기로 조정한 제출 여부 — '', '제출완료', '미제출')
   const appValues = ss.getSheetByName(SHEET_APPLICANTS).getDataRange().getValues().slice(1);
   const applicants = appValues
     .filter(r => r[0])
-    .map(r => ({ name: String(r[0]).trim(), church: String(r[1] || '').trim() }));
+    .map(r => ({
+      name: String(r[0]).trim(),
+      church: String(r[1] || '').trim(),
+      manualStatus: String(r[2] || '').trim()
+    }));
+  const manualStatusMap = {};
+  applicants.forEach(a => { manualStatusMap[(a.name + '|' + a.church).toLowerCase()] = a.manualStatus; });
 
   // 제출 명단
   const subValues = ss.getSheetByName(SHEET_SUBMISSIONS).getDataRange().getValues().slice(1);
   const submissions = subValues
     .filter(r => r[0])
-    .map(r => ({
-      submissionId: r[0],
-      timestamp: r[1] instanceof Date ? r[1].toISOString() : String(r[1]),
-      name: String(r[2]).trim(),
-      church: String(r[3] || '').trim(),
-      correctCount: 0,
-      gradedCount: 0
-    }));
+    .map(r => {
+      const name = String(r[2]).trim();
+      const church = String(r[3] || '').trim();
+      return {
+        submissionId: r[0],
+        timestamp: r[1] instanceof Date ? r[1].toISOString() : String(r[1]),
+        name,
+        church,
+        correctCount: 0,
+        gradedCount: 0,
+        manualStatus: manualStatusMap[(name + '|' + church).toLowerCase()] || ''
+      };
+    });
   const submissionById = {};
   submissions.forEach(s => { submissionById[s.submissionId] = s; });
 
@@ -308,14 +325,14 @@ function getDashboardData() {
     s.percent = s.gradedCount > 0 ? Math.round((s.correctCount / s.gradedCount) * 1000) / 10 : null;
   });
 
-  const totalSubmitted = submissions.length;
+  const totalRealSubmitted = submissions.length;
   const videoStats = Object.keys(videoSubSets)
     .sort((a, b) => Number(a) - Number(b))
     .map(videoNo => ({
       videoNo,
       videoTitle: videoTitles[videoNo],
       count: videoSubSets[videoNo].size,
-      rate: totalSubmitted ? Math.round((videoSubSets[videoNo].size / totalSubmitted) * 1000) / 10 : 0
+      rate: totalRealSubmitted ? Math.round((videoSubSets[videoNo].size / totalRealSubmitted) * 1000) / 10 : 0
     }));
 
   const gradedSubs = submissions.filter(s => s.gradedCount > 0);
@@ -323,8 +340,19 @@ function getDashboardData() {
     ? Math.round((gradedSubs.reduce((sum, s) => sum + s.percent, 0) / gradedSubs.length) * 10) / 10
     : null;
 
+  // 제출 여부 최종 판정: 관리자가 수기로 조정한 값이 있으면 그것을 우선 적용
+  // (예: 오프라인으로 제출했지만 시스템엔 기록이 없는 경우 '제출완료'로,
+  //  중복/오류 제출을 무효화하고 싶은 경우 '미제출'로 수동 지정 가능)
   const submittedKeySet = new Set(submissions.map(s => (s.name + '|' + s.church).toLowerCase()));
-  const missing = applicants.filter(a => !submittedKeySet.has((a.name + '|' + a.church).toLowerCase()));
+  applicants.forEach(a => {
+    const key = (a.name + '|' + a.church).toLowerCase();
+    const realSubmitted = submittedKeySet.has(key);
+    if (a.manualStatus === '제출완료') a.effectiveSubmitted = true;
+    else if (a.manualStatus === '미제출') a.effectiveSubmitted = false;
+    else a.effectiveSubmitted = realSubmitted;
+  });
+  const missing = applicants.filter(a => !a.effectiveSubmitted);
+  const totalSubmitted = applicants.filter(a => a.effectiveSubmitted).length;
 
   return {
     totalApplicants: applicants.length,
@@ -334,6 +362,41 @@ function getDashboardData() {
     videoStats,
     avgPercent
   };
+}
+
+// ---------------------------------------------------------------------------
+// 관리자가 제출 여부를 수기로 조정 (Applicants 시트의 ManualStatus 열에 기록)
+// status: '' (자동으로 되돌림) | '제출완료' (수동으로 제출 처리) | '미제출' (수동으로 무효 처리)
+// ---------------------------------------------------------------------------
+function setManualStatus_(payload) {
+  if (!payload || !payload.name) {
+    throw new Error('이름 정보가 없습니다.');
+  }
+  const status = payload.status || '';
+  if (['', '제출완료', '미제출'].indexOf(status) === -1) {
+    throw new Error('잘못된 상태 값입니다.');
+  }
+  const targetName = String(payload.name).trim();
+  const targetChurch = String(payload.church || '').trim();
+
+  const lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sh = ss.getSheetByName(SHEET_APPLICANTS);
+    const values = sh.getDataRange().getValues();
+    for (let i = 1; i < values.length; i++) {
+      const rowName = String(values[i][0] || '').trim();
+      const rowChurch = String(values[i][1] || '').trim();
+      if (rowName === targetName && rowChurch === targetChurch) {
+        sh.getRange(i + 1, 3).setValue(status);
+        return { ok: true };
+      }
+    }
+    throw new Error('신청자 명단에서 해당 이름/교회를 찾을 수 없습니다.');
+  } finally {
+    lock.releaseLock();
+  }
 }
 
 // 개인별 상세 답변 (정답 대조 포함)
@@ -504,9 +567,18 @@ const SEED_QUESTIONS = [
   [2, '2강. 복음 DNA와 정체성', 'https://youtu.be/F4D5dXoT_q4', 7, 'BLANK', '은혜는 죄와 자아를 (　　　　)시키는 능력이 있다.', '', '', '', '', '분리'],
   [2, '2강. 복음 DNA와 정체성', 'https://youtu.be/F4D5dXoT_q4', 8, 'BLANK', '복음 DNA는 (　　　　)을 따라 내 안으로 내려온다.', '', '', '', '', '마음의 지층'],
   [2, '2강. 복음 DNA와 정체성', 'https://youtu.be/F4D5dXoT_q4', 9, 'BLANK', '복음 DNA는 마음의 가장 깊은 곳, (　　　　)의 자리에 자리 잡는다.', '', '', '', '', '은혜'],
-  [2, '2강. 복음 DNA와 정체성', 'https://youtu.be/F4D5dXoT_q4', 10, 'BLANK', '새로운 정체성은 병들었던 나를 (　　　　)한다.', '', '', '', '', '치유하고 새롭게']
+  [2, '2강. 복음 DNA와 정체성', 'https://youtu.be/F4D5dXoT_q4', 10, 'BLANK', '새로운 정체성은 병들었던 나를 (　　　　)한다.', '', '', '', '', '치유하고 새롭게'],
 
-  // 3강: 영상 링크가 오면 아래와 같은 형식으로 10줄을 추가하거나
-  // Questions 시트에서 VideoNo=3 으로 직접 입력하면 자동으로 반영됩니다.
-  // [3, '3강. ...', 'https://youtu.be/XXXXXXXXXXX', 1, 'BLANK', '...(　　　　)...', '', '', '', '', '정답1|정답2'],
+  // 3강 영상 링크가 아직 없어서 VideoURL을 빈 값으로 둠 — 링크가 오면
+  // Questions 시트에서 이 행들의 VideoURL 칸에 직접 채워 넣으면 됨 (코드 수정 불필요)
+  [3, '3강. 복음 DNA와 성장 (겨자씨 비유)', '', 1, 'BLANK', '예수님은 하나님 나라를 아주 작은 (　　　　) 한 알과 같다고 하셨다.', '', '', '', '', '겨자씨'],
+  [3, '3강. 복음 DNA와 성장 (겨자씨 비유)', '', 2, 'BLANK', '씨앗이 작아도 자랄 수 있는 이유는 그 안에 (　　　　)가 들어있기 때문이다.', '', '', '', '', 'DNA'],
+  [3, '3강. 복음 DNA와 성장 (겨자씨 비유)', '', 3, 'BLANK', '씨앗은 외적으로는 폭발적으로 성장하고, 내적으로는 (　　　　)처럼 스며들어 퍼진다.', '', '', '', '', '누룩'],
+  [3, '3강. 복음 DNA와 성장 (겨자씨 비유)', '', 4, 'BLANK', '씨앗이 자라기 위해 토양에 필요한 네 가지는 물, 산소, 온도, (　　　　)이다.', '', '', '', '', '빛'],
+  [3, '3강. 복음 DNA와 성장 (겨자씨 비유)', '', 5, 'BLANK', '토양에서 물은 성령이 나의 (　　　　)을 여는 것을 의미한다.', '', '', '', '', '마음|마음 문'],
+  [3, '3강. 복음 DNA와 성장 (겨자씨 비유)', '', 6, 'BLANK', '토양에서 산소는 (　　　　)를 의미한다.', '', '', '', '', '기도'],
+  [3, '3강. 복음 DNA와 성장 (겨자씨 비유)', '', 7, 'BLANK', '토양에서 빛은 (　　　　)을 의미한다.', '', '', '', '', '말씀'],
+  [3, '3강. 복음 DNA와 성장 (겨자씨 비유)', '', 8, 'BLANK', '씨앗이 자라기 전에 먼저 내 안에 복음의 씨앗이 (　　　　)져야 한다.', '', '', '', '', '뿌려'],
+  [3, '3강. 복음 DNA와 성장 (겨자씨 비유)', '', 9, 'BLANK', '뿌리 시스템을 만들기 위해 가장 먼저 필요한 것은 매일 하는 (　　　　)이다.', '', '', '', '', '큐티'],
+  [3, '3강. 복음 DNA와 성장 (겨자씨 비유)', '', 10, 'BLANK', '복음의 씨앗이 자라면 결국 (　　　　)을 다 지배하게 된다.', '', '', '', '', '모든 것|세상']
 ];
