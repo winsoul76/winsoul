@@ -98,7 +98,7 @@ const backgroundByWeek=[
 let selected=people[0],selectedWeek=0;
 const $=s=>document.querySelector(s);
 function renderPeople(){
- $('#peopleGrid').innerHTML=people.map((p,i)=>`<button class="person ${p.id===selected.id?'active':''}" data-id="${p.id}"><span class="person-no">${String(i+1).padStart(2,'0')}</span><b>${p.name}</b><small>${p.weeks.length}주 과정 · ${p.ref}</small></button>`).join('');
+ $('#peopleGrid').innerHTML=people.map((p,i)=>`<button class="person ${p.id===selected.id?'active':''}" data-id="${p.id}"><span class="person-no">${String(i+1).padStart(2,'0')}</span><b>${p.name}</b><small>${p.weeks.length}주 과정 · ${p.ref}</small></button>${p.id===selected.id?'<div id="weekStrip" class="week-strip inline-weeks" aria-live="polite"></div>':''}`).join('');
  document.querySelectorAll('.person').forEach(b=>b.onclick=()=>{selected=people.find(p=>p.id===b.dataset.id);selectedWeek=0;renderPeople();renderWeeks();requestAnimationFrame(()=>$('#weekStrip').scrollIntoView({behavior:'smooth',block:'center'}));});
 }
 function renderWeeks(){
@@ -117,7 +117,7 @@ function renderLesson(){
  $('#background').innerHTML=`<p>${backgroundByWeek[bookIndex]}</p>`;
  $('#mapLink').href=`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selected.place)}`;
  $('#imagine').innerHTML=`<p>${imagineByWeek[bookIndex]}</p>`;
- $('#bookFlow').innerHTML=book.sections.filter(section=>section.name!=='눌러봐').map((section,si)=>`<section class="book-section"><h3><span class="step-no">${si+1}</span>${section.name}</h3><div class="qa">${section.items.length?section.items.map((item,qi)=>`<details><summary>${item.q}</summary><div class="answer"><b>${section.name==='잡아봐'?'성경에서 찾은 답':'예시 답안'}</b><p>${item.a}</p></div></details>`).join(''):'<p>이 부분에는 별도의 질문이 없습니다. 교재 본문을 따라 진행하세요.</p>'}</div></section>`).join('');
+ $('#bookFlow').innerHTML=book.sections.filter(section=>section.name!=='눌러봐').map((section,si)=>`<section class="book-section"><h3><span class="step-no">${si+1}</span>${section.name}</h3><div class="qa">${section.items.length?section.items.map((item,qi)=>`<div class="qa-item"><h4>${item.q}</h4><div class="answer"><b>${section.name==='잡아봐'?'성경에서 찾은 답':'예시 답안'}</b><p>${item.a}</p></div></div>`).join(''):'<p>이 부분에는 별도의 질문이 없습니다. 교재 본문을 따라 진행하세요.</p>'}</div></section>`).join('');
  $('#youtubeLink').href=`https://www.youtube.com/results?search_query=${encodeURIComponent('성경 '+selected.name+' '+l.title+' '+selected.ref)}`;
  document.title=`${selected.name} ${l.n}주 · ${l.title} | Vision of Diaspora`;
 }
