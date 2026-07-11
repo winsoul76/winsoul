@@ -57,18 +57,6 @@
   </div>
 </section>
 
-<section>
-  <div class="wrap">
-    <div class="section-head"><h2>편집부원 명단</h2><span class="sub">총 <span id="memberCount"></span>명</span></div>
-    <div class="table-scroll">
-      <table>
-        <thead><tr><th>이름</th></tr></thead>
-        <tbody id="memberBody"></tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
 <footer>
   <div class="wrap">한마음 교회 청소년 1부 편집부 · winsoul.de/editorial</div>
 </footer>
@@ -121,11 +109,6 @@ EditorialAPI.hydrate().then(function(){
 
   filterSel.addEventListener('change', function(){ render(filterSel.value); });
   render('');
-
-  document.getElementById('memberCount').textContent = members.length;
-  document.getElementById('memberBody').innerHTML = members.map(function(m){
-    return '<tr><td>' + EditorialUtils.maskOne(m.name) + '</td></tr>';
-  }).join('');
 });
 });
 </script>

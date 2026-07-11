@@ -28,11 +28,6 @@
 
 <section id="adminContent" style="display:none;">
   <div class="wrap">
-    <div class="tabbar">
-      <button class="tab-btn active" data-tab="sched">🗓️ 일정 관리</button>
-      <button class="tab-btn" data-tab="mem">🧑‍🤝‍🧑 명단 관리</button>
-    </div>
-
     <div id="panelSched">
       <p class="muted" style="margin-bottom:14px; font-size: var(--fs-sm);">날짜별 1면·2면 담당을 수정합니다. 담당란은 쉼표(,)로 여러 명 입력할 수 있고, 성을 빼고 별명만 적어도 자동으로 이름을 인식합니다. "모임"에 체크하면 해당 주가 편집부 모임 주간이 됩니다.</p>
       <div class="table-scroll">
@@ -49,23 +44,6 @@
         <span id="schedStatus" style="font-size: var(--fs-sm); color: var(--text-secondary);"></span>
       </div>
     </div>
-
-    <div id="panelMembers" style="display:none;">
-      <p class="muted" style="margin-bottom:14px; font-size: var(--fs-sm);">편집부원 명단을 수정합니다. 이름은 성을 포함한 전체 이름으로 입력해 주세요 (예: 이제인). 일정표의 담당자 이름 자동 인식은 이 명단을 기준으로 동작합니다.</p>
-      <div class="table-scroll">
-        <table>
-          <thead>
-            <tr><th>이름</th><th>담당</th><th></th></tr>
-          </thead>
-          <tbody id="memBody"></tbody>
-        </table>
-      </div>
-      <div style="margin-top:16px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-        <button class="btn btn-secondary" id="memAddBtn">+ 행 추가</button>
-        <button class="btn btn-primary" id="memSaveBtn">저장하기</button>
-        <span id="memStatus" style="font-size: var(--fs-sm); color: var(--text-secondary);"></span>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -80,21 +58,6 @@
 <script>
 (function(){
   function escAttr(s){ return (s == null ? '' : String(s)).replace(/&/g,'&amp;').replace(/"/g,'&quot;'); }
-
-  function initTabs(){
-    var buttons = document.querySelectorAll('.tab-btn');
-    var panels = { sched: 'panelSched', mem: 'panelMembers' };
-    buttons.forEach(function(btn){
-      btn.addEventListener('click', function(){
-        buttons.forEach(function(b){ b.classList.remove('active'); });
-        btn.classList.add('active');
-        var tab = btn.getAttribute('data-tab');
-        Object.keys(panels).forEach(function(key){
-          document.getElementById(panels[key]).style.display = (key === tab) ? '' : 'none';
-        });
-      });
-    });
-  }
 
   /* ---------- 일정 관리 ---------- */
   function initSchedule(){
@@ -170,63 +133,10 @@
     });
   }
 
-  /* ---------- 명단 관리 ---------- */
-  function initMembers(){
-    var body = document.getElementById('memBody');
-    var rows = [];
-
-    function renderRows(){
-      body.innerHTML = rows.map(function(r, i){
-        return '<tr>' +
-          '<td><input type="text" data-i="' + i + '" data-f="name" value="' + escAttr(r.name) + '"></td>' +
-          '<td><input type="text" data-i="' + i + '" data-f="role" value="' + escAttr(r.role) + '"></td>' +
-          '<td><button type="button" class="btn-icon-del" data-i="' + i + '" title="삭제">✕</button></td>' +
-        '</tr>';
-      }).join('');
-
-      body.querySelectorAll('input').forEach(function(inp){
-        inp.addEventListener('change', function(){
-          var i = +inp.getAttribute('data-i'), f = inp.getAttribute('data-f');
-          rows[i][f] = inp.value;
-        });
-      });
-      body.querySelectorAll('.btn-icon-del').forEach(function(btn){
-        btn.addEventListener('click', function(){
-          rows.splice(+btn.getAttribute('data-i'), 1);
-          renderRows();
-        });
-      });
-    }
-
-    document.getElementById('memStatus').textContent = '불러오는 중...';
-    EditorialAPI.loadMembersAdmin().then(function(data){
-      rows = (data || []).map(function(r){
-        return { name: r.name || '', role: r.role || '' };
-      });
-      renderRows();
-      document.getElementById('memStatus').textContent = EditorialAPI.isLive() ? '구글 시트와 동기화됨' : '⚠️ 로컬 저장 모드';
-    });
-
-    document.getElementById('memAddBtn').addEventListener('click', function(){
-      rows.push({ name: '', role: '' });
-      renderRows();
-    });
-    document.getElementById('memSaveBtn').addEventListener('click', function(){
-      var clean = rows.filter(function(r){ return r.name; });
-      document.getElementById('memStatus').textContent = '저장 중...';
-      EditorialAPI.saveMembers(clean).then(function(res){
-        document.getElementById('memStatus').textContent = (res && res.ok === false) ? '저장 실패' : '저장 완료 ✓ (새로고침 시 반영)';
-        showToast('편집부원 명단이 저장되었습니다.');
-      });
-    });
-  }
-
   EditorialAuth.readyAdmin(function(){
     var content = document.getElementById('adminContent');
     content.style.display = '';
-    initTabs();
     initSchedule();
-    initMembers();
   });
 })();
 </script>
