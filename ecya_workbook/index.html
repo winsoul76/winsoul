@@ -146,7 +146,13 @@
         '    </div>' +
         '  </div>' +
         (videoId
-          ? '<div class="video-embed"><iframe src="https://www.youtube.com/embed/' + videoId + '" allowfullscreen></iframe></div>'
+          ? '<div class="video-embed" id="video-embed-box">' +
+            '  <button type="button" class="video-facade" id="video-facade" data-video-id="' + escapeAttr(videoId) + '" ' +
+            '    style="background-image:url(\'https://i.ytimg.com/vi/' + escapeAttr(videoId) + '/hqdefault.jpg\')" ' +
+            '    aria-label="영상 재생: ' + escapeAttr(video.videoTitle) + '">' +
+            '    <span class="play-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>' +
+            '  </button>' +
+            '</div>'
           : '<p class="desc" style="margin:0;">영상 링크가 아직 등록되지 않았습니다.</p>') +
         '</div></div>' +
         '<div class="qscroll"><div class="qscroll-inner">' +
@@ -180,6 +186,14 @@
       if (submitBtn) submitBtn.addEventListener('click', onSubmit);
       if (fontIncBtn) fontIncBtn.addEventListener('click', () => changeFontSize(1));
       if (fontDecBtn) fontDecBtn.addEventListener('click', () => changeFontSize(-1));
+
+      // 유튜브 영상은 처음엔 썸네일(파사드)만 보여주고, 클릭했을 때만 실제
+      // iframe을 심는 지연 로딩 방식을 쓴다. 페이지 최초 로딩 시 유튜브
+      // iframe이 곧바로 여러 개 뜨면서 무거워지는 것을 막기 위함.
+      const facadeBtn = document.getElementById('video-facade');
+      if (facadeBtn) {
+        facadeBtn.addEventListener('click', () => loadYoutubeIframe(facadeBtn));
+      }
 
       // 질문 입력창에 포커스가 갈 때(키보드가 뜨는 시점) 바깥 페이지가 밀리지 않도록
       // 여러 타이밍(즉시/한 박자 뒤/키보드 애니메이션 이후)에 걸쳐 스크롤을 0으로 고정한다.
@@ -300,6 +314,19 @@
       const el = document.getElementById(id);
       el.textContent = msg;
       el.style.display = 'block';
+    }
+
+    function loadYoutubeIframe(facadeBtn) {
+      const videoId = facadeBtn.dataset.videoId;
+      const box = document.getElementById('video-embed-box');
+      if (!box || !videoId) return;
+      const iframe = document.createElement('iframe');
+      iframe.setAttribute('src', 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0');
+      iframe.setAttribute('title', 'YouTube video player');
+      iframe.setAttribute('allow', 'accelerate-cpu; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+      iframe.setAttribute('allowfullscreen', '');
+      box.innerHTML = '';
+      box.appendChild(iframe);
     }
 
     function extractYoutubeId(url) {
