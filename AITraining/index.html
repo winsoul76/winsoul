@@ -205,6 +205,8 @@
     <button class="tier-tab-btn active" data-tier="beginner">입문</button>
     <button class="tier-tab-btn" data-tier="intermediate">실무</button>
     <button class="tier-tab-btn" data-tier="advanced">전문가</button>
+    <button class="tier-tab-btn" data-tier="security">보안</button>
+    <button class="tier-tab-btn" data-tier="token">토큰</button>
   </div>
 
   <div class="tier-panel active" data-tool="claude" data-tier="beginner">
@@ -277,6 +279,61 @@
       </div>
     </div>
   </div>
+  <div class="tier-panel" data-tool="claude" data-tier="security">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">1</div><div class="feature-body"><h4>학습 데이터 설정부터 확인</h4><p>Settings → Privacy에서 &ldquo;Help improve Claude&rdquo;(모델 개선을 위한 데이터 제공) 토글을 끄세요. 2025년 9월부터 개인 계정은 기본값이 켜짐으로 바뀌었습니다. 회사용 Claude for Work·API는 기본적으로 학습에 사용되지 않습니다.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">2</div><div class="feature-body"><h4>개인정보는 입력 전에 가명화 (GDPR/DSGVO 핵심)</h4><p>독일에서는 고객의 이름·이메일·전화번호·계약번호를 법적 근거 없이 외부 서비스로 보내는 것 자체가 &ldquo;개인정보 처리&rdquo;에 해당합니다. 입력 전에 실명→[고객A], 계약번호→[V-XXXX]로 치환하고, 답변을 받은 뒤 실제 값을 다시 채워 넣으세요.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">3</div><div class="feature-body"><h4>개인 계정과 회사 계정을 구분</h4><p>고객 데이터가 포함된 업무는 DPA(데이터 처리 계약)가 체결된 회사 Team/Enterprise 계정에서만 처리하세요. 개인 Pro 계정은 개인 학습·일반 자료 조사 용도로만 사용하는 것이 안전합니다.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">4</div><div class="feature-body"><h4>Projects·커넥터에 올리는 파일 점검</h4><p>Projects에 참고자료를 올리기 전, 엑셀의 고객 연락처 열이나 PDF의 서명·주소부터 삭제하세요. Google Drive·Slack 커넥터는 꼭 필요한 폴더·채널로만 접근 범위를 최소화합니다.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">5</div><div class="feature-body"><h4>회사 차원의 규칙을 지키기</h4><p>데이터를 공개/내부/기밀/개인정보 4단계로 분류하고 &ldquo;AI에 넣어도 되는 것&rdquo;을 목록화하세요. 실수로 개인정보를 입력했다면 대화를 삭제하고 즉시 데이터보호책임자(DSB)에게 알립니다. GDPR 위반 시 회사에 최대 2,000만 유로 또는 연매출 4%의 과징금이 부과될 수 있습니다.</p></div></div>
+    </div>
+    <div class="usecase">
+      <span class="label">실전 예시 — 가명화한 프롬프트</span>
+      <div class="prompt">다음 고객 불만 메일에 대한 정중한 답장 초안을 작성해줘. (개인정보는 치환했음)
+
+고객: [고객A] · 계약번호: [V-XXXX] · 지역: [도시명]
+내용: 6월 청구서에 이중 청구가 발생했다는 문의. 환불 절차와 처리 기한을 안내해야 함.</div>
+    </div>
+    <p class="subhead">관련 영상</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="EZCe9SbMtGE" tabindex="0" role="button" aria-label="영상 재생: 회사 기밀이 줄줄 새는 진짜 이유">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/EZCe9SbMtGE/hqdefault.jpg" alt="회사 기밀이 줄줄 새는 진짜 이유" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>회사 기밀이 줄줄 새는 진짜 이유</h4><p>회의록·소스코드를 AI에 붙여넣을 때 생기는 일</p></div>
+      </div>
+      <div class="video-card" data-yt="7QXY4FkxIEQ" tabindex="0" role="button" aria-label="영상 재생: 삼성도 털렸다! ChatGPT 기밀 유출 사태와 기업 보안">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/7QXY4FkxIEQ/hqdefault.jpg" alt="삼성 기밀 유출 사태와 기업 보안" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>삼성도 털렸다! AI 기밀 유출 사태와 기업 보안</h4><p>실제 기업 유출 사례에서 배우는 교훈</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tier-panel" data-tool="claude" data-tier="token">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">1</div><div class="feature-body"><h4>대화는 짧게, 작업마다 새로 시작</h4><p>매 답변마다 이전 대화 전체가 다시 처리되기 때문에, 대화가 길어질수록 토큰 소모가 기하급수로 늘어납니다. 주제가 바뀌면 반드시 새 대화를 여세요.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">2</div><div class="feature-body"><h4>한 번에 제대로 요청하기</h4><p>역할·배경·요청·출력 형식을 갖춘 잘 짜인 프롬프트 1개가, 모호한 질문으로 5번 주고받는 것보다 훨씬 적은 토큰을 씁니다. 보내기 전에 &ldquo;이 요청만 보고 작업할 수 있나?&rdquo;를 자문하세요.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">3</div><div class="feature-body"><h4>필요한 부분만 첨부</h4><p>100쪽 PDF 전체 대신 관련 챕터만, 엑셀 전체 대신 해당 시트만 올리세요. 반복 참조할 자료는 Projects에 넣어두면 캐시 덕분에 매번 다시 읽는 것보다 효율적입니다.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">4</div><div class="feature-body"><h4>모델 다운시프트</h4><p>요약·번역·이메일 초안은 Haiku/Sonnet으로 충분합니다. Opus는 계약서 분석·전략 수립처럼 꼭 필요한 작업에만 쓰세요. 사용량 한도도 상위 모델일수록 빨리 소모됩니다.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">5</div><div class="feature-body"><h4>반복 지시는 Styles·Skills로 저장</h4><p>매번 톤과 규칙을 재설명하지 말고 Styles와 Skills에 저장하세요. 긴 대화를 이어가야 한다면 &ldquo;지금까지의 결정사항을 10줄로 요약해줘&rdquo;를 받아 새 대화에 붙여넣는 것이 가장 싼 방법입니다.</p></div></div>
+    </div>
+    <div class="usecase">
+      <span class="label">실전 예시 — 토큰 효율이 좋은 프롬프트</span>
+      <div class="prompt">역할: B2B 서비스 회사의 재무 분석가
+자료: 첨부한 3분기 매출 시트의 'DE' 탭만 사용
+요청: 전분기 대비 편차가 큰 상위 5개 항목과 원인 가설
+형식: 표 1개 + 5줄 요약 (다른 설명 생략)</div>
+    </div>
+    <p class="subhead">관련 영상</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="6E5KtsVGgBs" tabindex="0" role="button" aria-label="영상 재생: 클로드 토큰 아끼는 개꿀팁 11가지">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/6E5KtsVGgBs/hqdefault.jpg" alt="클로드 토큰 아끼는 꿀팁 11가지" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>나만 알고싶은 클로드 토큰 아끼는 개꿀팁 11가지</h4><p>한도 제한 없이 오래 쓰는 실전 절약법</p></div>
+      </div>
+      <div class="video-card" data-yt="zMM5zqesL1g" tabindex="0" role="button" aria-label="영상 재생: Stop Wasting Tokens: The Art of Context Engineering">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/zMM5zqesL1g/hqdefault.jpg" alt="Stop Wasting Tokens Context Engineering" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Stop Wasting Tokens: The Art of Context Engineering</h4><p>컨텍스트 설계로 토큰 낭비를 막는 법 (영어)</p></div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section id="chatgpt" class="tool-section">
@@ -293,6 +350,8 @@
     <button class="tier-tab-btn active" data-tier="beginner">입문</button>
     <button class="tier-tab-btn" data-tier="intermediate">실무</button>
     <button class="tier-tab-btn" data-tier="advanced">전문가</button>
+    <button class="tier-tab-btn" data-tier="security">보안</button>
+    <button class="tier-tab-btn" data-tier="token">토큰</button>
   </div>
 
   <div class="tier-panel active" data-tool="chatgpt" data-tier="beginner">
@@ -355,6 +414,60 @@
       </div>
     </div>
   </div>
+  <div class="tier-panel" data-tool="chatgpt" data-tier="security">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">1</div><div class="feature-body"><h4>Data Controls 설정 끄기</h4><p>Settings → Data Controls → &ldquo;Improve the model for everyone&rdquo;을 끄세요. 켜져 있으면 입력한 내용이 모델 학습에 사용될 수 있습니다. 민감한 일회성 질문은 Temporary Chat(임시 채팅)으로 하면 기록이 남지 않습니다.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">2</div><div class="feature-body"><h4>Memory에 쌓이는 정보 관리</h4><p>Memory 기능은 대화 속 개인정보·회사 정보를 장기 저장할 수 있습니다. Settings → Personalization → Memory에서 저장된 항목을 주기적으로 확인하고 불필요한 것은 삭제하세요.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">3</div><div class="feature-body"><h4>무료/Plus 계정으로 고객 데이터 금지</h4><p>독일 기준으로 무료·Plus 개인 계정은 고객 개인정보 처리에 부적합합니다. 고객 데이터가 필요한 업무는 DPA와 EU Data Residency(2025년부터 지원)가 제공되는 회사 Team/Enterprise 계정에서만 하세요. 기본적으로 학습에도 사용되지 않습니다.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">4</div><div class="feature-body"><h4>입력 전 가명화 습관</h4><p>실명→[고객A], 이메일→[이메일], 계좌→[IBAN] 식으로 치환한 뒤 질문하고, 답변을 받은 후 실제 값을 다시 채워 넣으세요. 이 습관 하나로 GDPR 리스크의 대부분이 사라집니다.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">5</div><div class="feature-body"><h4>GPTs·Actions 공유 시 주의</h4><p>팀과 공유하는 GPT의 지식 파일에 고객 데이터를 넣지 마세요. Actions로 사내 시스템을 연결할 때는 IT·데이터보호책임자(DSB) 승인을 먼저 받고, 실수로 개인정보를 입력했다면 대화 삭제 후 즉시 보고합니다.</p></div></div>
+    </div>
+    <div class="usecase">
+      <span class="label">실전 예시 — 이렇게 바꿔서 입력하세요</span>
+      <div class="prompt">(나쁜 예) "고객 Thomas Müller (thomas.mueller@web.de, 계약 4711)의 해지 요청 답장 써줘"
+
+(좋은 예) "고객 [고객A], 계약 [번호]의 해지 요청에 대한 답장 초안. 위약금 규정 안내 포함, 정중한 존댓말"</div>
+    </div>
+    <p class="subhead">관련 영상</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="1PAfDC5SsUM" tabindex="0" role="button" aria-label="영상 재생: 챗GPT 활용 시 보안 주의 사항">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/1PAfDC5SsUM/hqdefault.jpg" alt="챗GPT 활용 시 보안 주의 사항" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>챗GPT 활용 시 보안 주의 사항</h4><p>개인정보 보호 설정과 데이터 제어 방법</p></div>
+      </div>
+      <div class="video-card" data-yt="-Ngr8ZKqjdM" tabindex="0" role="button" aria-label="영상 재생: 클릭 한번으로 챗GPT 개인정보 유출 막는법">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/-Ngr8ZKqjdM/hqdefault.jpg" alt="챗GPT 개인정보 유출 막는법" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>대부분 모르는, 클릭 한번으로 챗GPT 개인정보 유출 막는법</h4><p>학습 데이터 제공 끄기 실습</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tier-panel" data-tool="chatgpt" data-tier="token">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">1</div><div class="feature-body"><h4>긴 스레드 대신 새 채팅</h4><p>대화가 길어질수록 매 답변마다 전체 히스토리가 다시 처리됩니다. 주제가 바뀌면 새 채팅을 열고, 이어가야 하면 이전 대화의 핵심만 요약해 가져오세요.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">2</div><div class="feature-body"><h4>Custom Instructions로 반복 설명 제거</h4><p>직무·톤·출력 규칙을 Custom Instructions에 한 번 저장하면 매 대화마다 배경 설명에 쓰는 토큰이 사라집니다.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">3</div><div class="feature-body"><h4>파일은 필요한 시트·섹션만</h4><p>Advanced Data Analysis에 워크북 전체 대신 필요한 탭만 올리세요. &ldquo;A열~F열, 2026년 데이터만 분석해&rdquo;처럼 범위를 명시하면 처리량과 오답이 함께 줄어듭니다.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">4</div><div class="feature-body"><h4>기능별 한도를 아껴 쓰기</h4><p>Deep Research와 Agent Mode는 회당 소모가 크고 횟수 제한이 있습니다. 단순 요약·초안은 경량(미니) 모델로 처리하고, 고급 기능은 질문을 완성한 뒤 1회에 끝내세요.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">5</div><div class="feature-body"><h4>반복 업무는 GPTs로 템플릿화</h4><p>지시문과 참고 지식을 GPT에 넣어두면 매번 긴 프롬프트를 붙여넣을 필요가 없습니다. 장기 작업은 중간중간 &ldquo;결정사항 요약&rdquo;을 받아 컨텍스트를 압축하세요.</p></div></div>
+    </div>
+    <div class="usecase">
+      <span class="label">실전 예시 — 왕복을 줄이는 프롬프트</span>
+      <div class="prompt">역할: 마케팅 팀 카피라이터
+작업: 첨부 제품설명서 기반 뉴스레터 문구 3안
+조건: 각 안 60자 이내, CTA 포함, 격식체
+출력: 표 (안 / 문구 / CTA) — 설명 없이 표만</div>
+    </div>
+    <p class="subhead">관련 영상</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="RrU-AfgWb5U" tabindex="0" role="button" aria-label="영상 재생: 10분 만에 챗GPT 제대로 쓰는 법">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/RrU-AfgWb5U/hqdefault.jpg" alt="10분 만에 챗GPT 제대로 쓰는 법" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>10분 만에 챗GPT &lsquo;제대로&rsquo; 쓰는 법 (프롬프트 공유)</h4><p>한 번에 원하는 답을 얻는 질문법</p></div>
+      </div>
+      <div class="video-card" data-yt="Q0Kzsda5K9I" tabindex="0" role="button" aria-label="영상 재생: 프롬프트 엔지니어링 실전 전략">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/Q0Kzsda5K9I/hqdefault.jpg" alt="프롬프트 엔지니어링 실전 전략" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>이것만 알면 ChatGPT 고수 — 프롬프트 엔지니어링 실전 전략</h4><p>생성형 AI 교육용 실전 프롬프트 설계</p></div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section id="gemini" class="tool-section">
@@ -371,6 +484,8 @@
     <button class="tier-tab-btn active" data-tier="beginner">입문</button>
     <button class="tier-tab-btn" data-tier="intermediate">실무</button>
     <button class="tier-tab-btn" data-tier="advanced">전문가</button>
+    <button class="tier-tab-btn" data-tier="security">보안</button>
+    <button class="tier-tab-btn" data-tier="token">토큰</button>
   </div>
 
   <div class="tier-panel active" data-tool="gemini" data-tier="beginner">
@@ -428,6 +543,59 @@
       <div class="video-card" data-yt="l5Hv9a42Qbs" tabindex="0" role="button" aria-label="영상 재생: 생성형 AI 데이터 분석 30분 무료강의">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/l5Hv9a42Qbs/hqdefault.jpg" alt="생성형 AI 데이터 분석 강의" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>생성형 AI 데이터 분석 30분 무료강의</h4><p>AI·Notion·Excel 플러그인 결합 활용법</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="tier-panel" data-tool="gemini" data-tier="security">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">1</div><div class="feature-body"><h4>Gemini Apps Activity 끄기</h4><p>기본 설정에서는 대화가 저장되고 품질 개선을 위해 사람 검토자가 열람할 수 있습니다. myactivity.google.com에서 Gemini Apps Activity를 끄고, 민감한 질문은 Temporary Chat을 사용하세요.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">2</div><div class="feature-body"><h4>개인 구글 계정과 회사 Workspace 계정 구분</h4><p>회사 Workspace Business/Enterprise 계정에서는 입력 내용이 모델 학습에 사용되지 않고 조직 내에 머뭅니다. 고객 데이터가 포함된 업무는 반드시 회사 계정으로만 처리하세요.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">3</div><div class="feature-body"><h4>Gmail·Docs 통합의 접근 범위 인식</h4><p>Gemini는 요청 시 메일·문서 내용에 접근합니다. 고객 개인정보가 담긴 문서라면 &ldquo;요약해줘&rdquo; 요청도 GDPR상 개인정보 처리입니다. 꼭 필요한 문서만, 회사 계정에서만 다루세요.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">4</div><div class="feature-body"><h4>입력 전 가명화</h4><p>실명→[고객A], 주소→[도시명] 식으로 치환한 뒤 질문하세요. NotebookLM 등에 소스 파일을 올릴 때도 개인정보 열·서명·연락처를 먼저 제거합니다.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">5</div><div class="feature-body"><h4>조직 가이드라인과 사고 대응</h4><p>부서별로 &ldquo;AI 입력 가능 데이터 목록&rdquo;을 정하고 신입에게 교육하세요. 개인정보를 실수로 입력했다면 활동 기록에서 삭제하고 데이터보호책임자(DSB)에게 보고합니다. 독일에서는 책임이 개인이 아닌 회사에 있습니다.</p></div></div>
+    </div>
+    <div class="usecase">
+      <span class="label">실전 체크 — 입력 전 3초 점검</span>
+      <div class="prompt">① 이 내용에 실명·연락처·계약번호가 있는가? → 있다면 치환
+② 지금 개인 계정인가, 회사 Workspace 계정인가? → 고객 데이터는 회사 계정만
+③ 이 데이터는 회사 분류상 "AI 입력 가능"인가? → 모르면 DSB에 확인</div>
+    </div>
+    <p class="subhead">관련 영상</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="hSUtumpvnx4" tabindex="0" role="button" aria-label="영상 재생: 회사에서 ChatGPT 못 쓰게 하는 이유">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/hSUtumpvnx4/hqdefault.jpg" alt="회사에서 AI 못 쓰게 하는 이유" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>회사에서 AI 못 쓰게 하는 이유? 내 정보까지 유출될 수 있다?</h4><p>업무용 AI 사용의 유출 경로 이해하기</p></div>
+      </div>
+      <div class="video-card" data-yt="J8Lq7XfLA9s" tabindex="0" role="button" aria-label="영상 재생: AI한테 개인정보 안뺏기는 정법">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/J8Lq7XfLA9s/hqdefault.jpg" alt="AI한테 개인정보 안뺏기는 정법" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>AI한테 개인정보 안뺏기는 정법</h4><p>생성형 AI 개인정보 보호 설정 총정리</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tier-panel" data-tool="gemini" data-tier="token">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">1</div><div class="feature-body"><h4>고급 기능은 횟수 제한을 의식</h4><p>Deep Research(특히 심화형)와 동영상 생성 같은 고급 기능은 하루/월 사용 횟수가 제한됩니다. 실행 전에 조사 범위·항목·출력 형식을 완성해 한 번에 끝내세요.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">2</div><div class="feature-body"><h4>모델 선택 — Flash vs Pro</h4><p>메일 초안·간단 요약은 Flash 계열이 빠르고 한도 소모가 적습니다. 복잡한 분석·긴 문서 작업만 Pro 계열을 쓰세요.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">3</div><div class="feature-body"><h4>Gems에 반복 지시 저장</h4><p>&ldquo;주간보고 작성기&rdquo;, &ldquo;독일어 비즈니스 메일 교정기&rdquo;처럼 반복 업무를 Gem으로 만들면 매번 지시문을 다시 쓰는 토큰과 시간이 사라집니다.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">4</div><div class="feature-body"><h4>NotebookLM으로 자료 질문 분리</h4><p>같은 자료에 여러 번 질문할 거라면 대화에 매번 파일을 올리지 말고 NotebookLM에 소스로 등록하세요. 업로드한 소스 기반으로만 답해 반복 질문에 효율적입니다.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">5</div><div class="feature-body"><h4>대화는 짧게, 요청은 구체적으로</h4><p>역할·자료 범위·출력 형식을 명시한 프롬프트 1개가 모호한 질문 여러 번보다 쌉니다. 주제가 바뀌면 새 대화를 열어 히스토리 재처리를 줄이세요.</p></div></div>
+    </div>
+    <div class="usecase">
+      <span class="label">실전 예시 — Deep Research 1회에 끝내기</span>
+      <div class="prompt">주제: 독일 중견 제조업의 AI 도입 동향 (2024~2026)
+반드시 포함: ① 도입률 통계 ② 주요 사용 분야 top5 ③ 대표 사례 3개 ④ 규제(EU AI Act) 영향
+출력: 목차 있는 보고서, 표 위주, 출처 명기</div>
+    </div>
+    <p class="subhead">관련 영상</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="pmgvnha5OaI" tabindex="0" role="button" aria-label="영상 재생: 더 정확한 답변을 얻는 프롬프트 엔지니어링 꿀팁">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/pmgvnha5OaI/hqdefault.jpg" alt="프롬프트 엔지니어링 꿀팁" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>더 정확한 답변을 얻는 프롬프트 엔지니어링 꿀팁</h4><p>왕복 없이 한 번에 원하는 답 받기</p></div>
+      </div>
+      <div class="video-card" data-yt="pGByFXOtAh8" tabindex="0" role="button" aria-label="영상 재생: 프롬프트 엔지니어링 기술 5가지">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/pGByFXOtAh8/hqdefault.jpg" alt="프롬프트 엔지니어링 기술 5가지" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>AI 실력자 되는 법: 프롬프트 엔지니어링 기술 5가지</h4><p>성능을 146% 높이는 질문 설계법</p></div>
       </div>
     </div>
   </div>

@@ -205,6 +205,8 @@
     <button class="tier-tab-btn active" data-tier="beginner">Beginner</button>
     <button class="tier-tab-btn" data-tier="intermediate">Intermediate</button>
     <button class="tier-tab-btn" data-tier="advanced">Advanced</button>
+    <button class="tier-tab-btn" data-tier="security">Security</button>
+    <button class="tier-tab-btn" data-tier="token">Tokens</button>
   </div>
 
   <div class="tier-panel active" data-tool="claude" data-tier="beginner">
@@ -277,6 +279,61 @@
       </div>
     </div>
   </div>
+  <div class="tier-panel" data-tool="claude" data-tier="security">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">1</div><div class="feature-body"><h4>Check your training-data setting first</h4><p>Go to Settings → Privacy and turn off &ldquo;Help improve Claude&rdquo;. Since September 2025, consumer accounts are opted in by default. Claude for Work and API traffic are excluded from training by default.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">2</div><div class="feature-body"><h4>Pseudonymize before you paste (GDPR core rule)</h4><p>Under German data protection law (GDPR/BDSG), sending a customer's name, email, phone, or contract number to an external AI already counts as &ldquo;processing personal data&rdquo; and needs a legal basis. Replace real names with [Customer A] and contract numbers with [V-XXXX] before pasting; re-insert real values afterwards.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">3</div><div class="feature-body"><h4>Separate personal and company accounts</h4><p>Anything containing customer data belongs only in a company Team/Enterprise account covered by a DPA (data processing agreement). Keep your personal Pro account for learning and general research.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">4</div><div class="feature-body"><h4>Audit files before Projects & connectors</h4><p>Before uploading reference files to Projects, delete customer contact columns in spreadsheets and signatures/addresses in PDFs. Limit Google Drive/Slack connectors to the specific folders and channels you actually need.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">5</div><div class="feature-body"><h4>Follow your company's rules</h4><p>Classify data as public / internal / confidential / personal, and keep a whitelist of what may go into AI tools. If personal data slips in, delete the conversation and inform your data protection officer (DSB) immediately — GDPR fines can reach €20M or 4% of global revenue, and in Germany the company is liable.</p></div></div>
+    </div>
+    <div class="usecase">
+      <span class="label">Practical example — a pseudonymized prompt</span>
+      <div class="prompt">Draft a polite reply to this customer complaint. (Personal data replaced)
+
+Customer: [Customer A] · Contract: [V-XXXX] · City: [City]
+Issue: double charge on the June invoice. Explain the refund process and timeline.</div>
+    </div>
+    <p class="subhead">Related videos</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="p9oJyE38Zbk" tabindex="0" role="button" aria-label="Play video: AI Privacy Rules You Need to Know Now">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/p9oJyE38Zbk/hqdefault.jpg" alt="AI Privacy Rules You Need to Know Now" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>AI Privacy Rules You Need to Know Now</h4><p>What is safe — and unsafe — to share with AI tools</p></div>
+      </div>
+      <div class="video-card" data-yt="sktH_tbongw" tabindex="0" role="button" aria-label="Play video: How To Keep Your Data Secure With ChatGPT">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/sktH_tbongw/hqdefault.jpg" alt="How To Keep Your Data Secure With ChatGPT" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>How To Keep Your Data Secure With AI Chatbots</h4><p>Practical privacy settings walkthrough</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tier-panel" data-tool="claude" data-tier="token">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">1</div><div class="feature-body"><h4>Keep chats short — start fresh per task</h4><p>Every reply reprocesses the entire conversation history, so long threads burn tokens exponentially. When the topic changes, open a new chat.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">2</div><div class="feature-body"><h4>One well-scoped prompt beats five clarifications</h4><p>A prompt with role, context, request, and output format costs far fewer tokens than a vague question followed by rounds of back-and-forth. Before sending, ask: &ldquo;Could someone complete this task from this message alone?&rdquo;</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">3</div><div class="feature-body"><h4>Attach only what's needed</h4><p>Upload the relevant chapter, not the 100-page PDF; the one sheet, not the whole workbook. Put frequently reused material into Projects — cached project knowledge is cheaper than re-uploading every time.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">4</div><div class="feature-body"><h4>Downshift the model</h4><p>Summaries, translations, and email drafts are fine on Haiku/Sonnet. Save Opus for contract analysis and strategy work — usage limits drain faster on bigger models.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">5</div><div class="feature-body"><h4>Store repeated instructions in Styles & Skills</h4><p>Stop re-explaining tone and rules — save them once. To continue a long thread, ask for a 10-line summary of decisions so far and paste it into a fresh chat: the cheapest way to carry context forward.</p></div></div>
+    </div>
+    <div class="usecase">
+      <span class="label">Practical example — a token-efficient prompt</span>
+      <div class="prompt">Role: financial analyst at a B2B services company
+Data: use only the 'DE' tab of the attached Q3 revenue sheet
+Task: top 5 items with the largest quarter-over-quarter variance + likely causes
+Format: one table + a 5-line summary (nothing else)</div>
+    </div>
+    <p class="subhead">Related videos</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="zMM5zqesL1g" tabindex="0" role="button" aria-label="Play video: Stop Wasting Tokens: The Art of Context Engineering">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/zMM5zqesL1g/hqdefault.jpg" alt="Stop Wasting Tokens: The Art of Context Engineering" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Stop Wasting Tokens: The Art of Context Engineering</h4><p>Why context — not longer prompts — saves your budget</p></div>
+      </div>
+      <div class="video-card" data-yt="qBlX6FhDm2E" tabindex="0" role="button" aria-label="Play video: The ADVANCED 2026 Guide to Prompt Engineering">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/qBlX6FhDm2E/hqdefault.jpg" alt="The ADVANCED 2026 Guide to Prompt Engineering" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>The ADVANCED 2026 Guide to Prompt Engineering</h4><p>Master the perfect prompt and cut wasted round-trips</p></div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section id="chatgpt" class="tool-section">
@@ -293,6 +350,8 @@
     <button class="tier-tab-btn active" data-tier="beginner">Beginner</button>
     <button class="tier-tab-btn" data-tier="intermediate">Intermediate</button>
     <button class="tier-tab-btn" data-tier="advanced">Advanced</button>
+    <button class="tier-tab-btn" data-tier="security">Security</button>
+    <button class="tier-tab-btn" data-tier="token">Tokens</button>
   </div>
 
   <div class="tier-panel active" data-tool="chatgpt" data-tier="beginner">
@@ -355,6 +414,60 @@
       </div>
     </div>
   </div>
+  <div class="tier-panel" data-tool="chatgpt" data-tier="security">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">1</div><div class="feature-body"><h4>Turn off model training in Data Controls</h4><p>Settings → Data Controls → disable &ldquo;Improve the model for everyone&rdquo;. For sensitive one-off questions, use Temporary Chat so nothing is kept in history.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">2</div><div class="feature-body"><h4>Review what Memory stores</h4><p>Memory can retain personal and company details across conversations. Check Settings → Personalization → Memory regularly and delete anything sensitive.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">3</div><div class="feature-body"><h4>No customer data on Free/Plus accounts</h4><p>For German companies, Free and Plus personal accounts are not suitable for processing customer data. Use a company Team/Enterprise account — it comes with a DPA, is excluded from training by default, and offers EU Data Residency (since 2025).</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">4</div><div class="feature-body"><h4>Make pseudonymization a habit</h4><p>Replace real names with [Customer A], emails with [email], bank details with [IBAN] before asking — then re-insert the real values in the final document. This single habit removes most GDPR risk.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">5</div><div class="feature-body"><h4>Be careful with shared GPTs & Actions</h4><p>Never put customer data into the knowledge files of a GPT shared with your team. Get IT/DSB approval before connecting internal systems via Actions. If personal data slips in: delete the chat and report it immediately.</p></div></div>
+    </div>
+    <div class="usecase">
+      <span class="label">Practical example — rewrite before you paste</span>
+      <div class="prompt">(Bad) "Write a reply to Thomas Müller (thomas.mueller@web.de, contract 4711) about his cancellation"
+
+(Good) "Draft a reply to customer [Customer A], contract [No.], about their cancellation request. Include the early-termination fee policy. Formal tone."</div>
+    </div>
+    <p class="subhead">Related videos</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="M1Cw1hXlZ5k" tabindex="0" role="button" aria-label="Play video: Is ChatGPT Sharing Your Data? 6 Settings To Protect Your Privacy">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/M1Cw1hXlZ5k/hqdefault.jpg" alt="Is ChatGPT Sharing Your Data? 6 Settings To Protect Your Privacy" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Is ChatGPT Sharing Your Data? 6 Settings To Protect Your Privacy</h4><p>Step-by-step privacy settings walkthrough</p></div>
+      </div>
+      <div class="video-card" data-yt="b-X_ZmU3EIA" tabindex="0" role="button" aria-label="Play video: ChatGPT Privacy and Security Settings You Need to Change">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/b-X_ZmU3EIA/hqdefault.jpg" alt="ChatGPT Privacy & Security Settings You Need to Change" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>ChatGPT Privacy &amp; Security Settings You Need to Change Right Now</h4><p>Stop your conversations being used for training</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tier-panel" data-tool="chatgpt" data-tier="token">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">1</div><div class="feature-body"><h4>New chat instead of endless threads</h4><p>Long threads reprocess the whole history with every reply. Open a fresh chat per task; if you need continuity, carry over a short summary of the key decisions.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">2</div><div class="feature-body"><h4>Custom Instructions kill repeated context</h4><p>Save your role, tone, and output rules once in Custom Instructions — and stop spending tokens re-explaining your job in every conversation.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">3</div><div class="feature-body"><h4>Upload only the relevant sheet or section</h4><p>Give Advanced Data Analysis the one tab you need, not the whole workbook. Scope explicitly: &ldquo;analyze columns A–F, 2026 data only&rdquo; — less processing and fewer wrong answers.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">4</div><div class="feature-body"><h4>Treat heavy features as a budget</h4><p>Deep Research and Agent Mode consume a lot per run and have usage caps. Route summaries and drafts to lighter (mini) models, and fire the heavy features only once your question is fully formed.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">5</div><div class="feature-body"><h4>Turn recurring work into GPTs</h4><p>Put instructions and reference knowledge into a GPT so you never paste long prompts twice. On long projects, periodically ask for a &ldquo;decision summary&rdquo; to compress the context.</p></div></div>
+    </div>
+    <div class="usecase">
+      <span class="label">Practical example — a prompt that avoids round-trips</span>
+      <div class="prompt">Role: copywriter on the marketing team
+Task: 3 newsletter blurbs based on the attached product sheet
+Constraints: max 60 characters each, include a CTA, formal tone
+Output: table (option / copy / CTA) — table only, no commentary</div>
+    </div>
+    <p class="subhead">Related videos</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="E8L02elkgII" tabindex="0" role="button" aria-label="Play video: Prompt Engineering Explained (2026)">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/E8L02elkgII/hqdefault.jpg" alt="Prompt Engineering Explained (2026)" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Prompt Engineering Explained (2026) — Talk to AI Like a Pro</h4><p>Turn basic responses into accurate results, fewer retries</p></div>
+      </div>
+      <div class="video-card" data-yt="T_-2M_1pgoE" tabindex="0" role="button" aria-label="Play video: Prompt Engineering for Beginners">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/T_-2M_1pgoE/hqdefault.jpg" alt="Prompt Engineering for Beginners: How to Write Better AI Prompts" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Prompt Engineering for Beginners: Write Better AI Prompts</h4><p>Get the answer you want on the first try</p></div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section id="gemini" class="tool-section">
@@ -371,6 +484,8 @@
     <button class="tier-tab-btn active" data-tier="beginner">Beginner</button>
     <button class="tier-tab-btn" data-tier="intermediate">Intermediate</button>
     <button class="tier-tab-btn" data-tier="advanced">Advanced</button>
+    <button class="tier-tab-btn" data-tier="security">Security</button>
+    <button class="tier-tab-btn" data-tier="token">Tokens</button>
   </div>
 
   <div class="tier-panel active" data-tool="gemini" data-tier="beginner">
@@ -428,6 +543,59 @@
       <div class="video-card" data-yt="SUlf_JpbHjc" tabindex="0" role="button" aria-label="Play video: Google Gemini in Google Workspace Complete Tutorial">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/SUlf_JpbHjc/hqdefault.jpg" alt="Google Gemini in Google Workspace Complete Tutorial" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>Gemini in Google Workspace: Complete Tutorial</h4><p>Plus NotebookLM & Gemini Enterprise</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="tier-panel" data-tool="gemini" data-tier="security">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">1</div><div class="feature-body"><h4>Turn off Gemini Apps Activity</h4><p>By default conversations are stored and may be reviewed by humans to improve quality. Disable Gemini Apps Activity at myactivity.google.com and use Temporary Chat for sensitive questions.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">2</div><div class="feature-body"><h4>Personal Google account ≠ company Workspace account</h4><p>In Workspace Business/Enterprise, prompts are not used to train models and stay within your organization. Anything involving customer data belongs exclusively in the company account.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">3</div><div class="feature-body"><h4>Know what the Gmail/Docs integration can reach</h4><p>Gemini accesses mail and document content on request. If a document contains customer data, even &ldquo;summarize this&rdquo; is personal-data processing under GDPR — touch only what you need, only in the company account.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">4</div><div class="feature-body"><h4>Pseudonymize before input</h4><p>Swap real names for [Customer A] and addresses for [City] before asking. The same applies to source files you upload to NotebookLM — strip contact columns and signatures first.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">5</div><div class="feature-body"><h4>Company guidelines & incident response</h4><p>Agree on a per-team list of &ldquo;data allowed into AI&rdquo; and train new colleagues on it. If personal data was entered by mistake, delete it from the activity log and inform the data protection officer — under German law the company, not the employee, is liable.</p></div></div>
+    </div>
+    <div class="usecase">
+      <span class="label">Practical check — 3 seconds before you hit Enter</span>
+      <div class="prompt">① Does this contain names, contacts, or contract numbers? → replace them
+② Am I on my personal account or the company Workspace account? → customer data: company only
+③ Is this data classified as "AI-allowed" by my company? → if unsure, ask the DSB</div>
+    </div>
+    <p class="subhead">Related videos</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="vQBm6nuAlXs" tabindex="0" role="button" aria-label="Play video: Is Google's Gemini Sharing Your Data? 6 Settings To Protect Your Privacy">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/vQBm6nuAlXs/hqdefault.jpg" alt="Is Google's Gemini Sharing Your Data?" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Is Google&rsquo;s Gemini Sharing Your Data? 6 Settings To Protect Your Privacy</h4><p>Including how to stop training on your data</p></div>
+      </div>
+      <div class="video-card" data-yt="LRWApssTRoo" tabindex="0" role="button" aria-label="Play video: How to Manage Gemini Privacy Settings (full guide 2026)">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/LRWApssTRoo/hqdefault.jpg" alt="How to Manage Gemini Privacy Settings (full guide 2026)" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>How to Manage Gemini Privacy Settings (Full Guide 2026)</h4><p>Activity, review, and deletion settings explained</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tier-panel" data-tool="gemini" data-tier="token">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">1</div><div class="feature-body"><h4>Mind the caps on heavy features</h4><p>Deep Research (especially the max variant) and video generation have daily/monthly limits. Finalize scope, required sections, and output format before you launch — aim to run it once.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">2</div><div class="feature-body"><h4>Flash vs Pro — pick deliberately</h4><p>Email drafts and quick summaries run fine on Flash models, which drain limits far more slowly. Reserve Pro-class models for complex analysis and long documents.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">3</div><div class="feature-body"><h4>Save recurring instructions as Gems</h4><p>Build Gems like &ldquo;weekly report writer&rdquo; or &ldquo;German business email polisher&rdquo; — repeated instructions stop costing tokens and time.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">4</div><div class="feature-body"><h4>Use NotebookLM for repeated questions on the same material</h4><p>Instead of re-uploading files into every chat, register them once as NotebookLM sources. It answers strictly from your sources — efficient for repeated Q&amp;A.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">5</div><div class="feature-body"><h4>Short chats, specific requests</h4><p>One prompt stating role, data scope, and output format beats several vague ones. Start a new conversation when the topic changes to avoid reprocessing history.</p></div></div>
+    </div>
+    <div class="usecase">
+      <span class="label">Practical example — one-shot Deep Research</span>
+      <div class="prompt">Topic: AI adoption in German mid-sized manufacturing (2024–2026)
+Must include: ① adoption statistics ② top 5 use cases ③ 3 case studies ④ EU AI Act impact
+Output: report with table of contents, tables preferred, cite sources</div>
+    </div>
+    <p class="subhead">Related videos</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="5GCS2cKtOGU" tabindex="0" role="button" aria-label="Play video: Prompt engineering = talking to AI the right way">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/5GCS2cKtOGU/hqdefault.jpg" alt="Prompt engineering = talking to AI the right way" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Prompt Engineering = Talking to AI the Right Way</h4><p>Be specific, give context, guide the output</p></div>
+      </div>
+      <div class="video-card" data-yt="-Hjw0_PMyfQ" tabindex="0" role="button" aria-label="Play video: Learn Better Prompt Engineering in 7 Minutes">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/-Hjw0_PMyfQ/hqdefault.jpg" alt="Learn Better Prompt Engineering in 7 Minutes" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Learn Better Prompt Engineering in 7 Minutes</h4><p>The essentials for efficient day-to-day prompting</p></div>
       </div>
     </div>
   </div>

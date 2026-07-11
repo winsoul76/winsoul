@@ -205,6 +205,8 @@
     <button class="tier-tab-btn active" data-tier="beginner">Einsteiger</button>
     <button class="tier-tab-btn" data-tier="intermediate">Fortgeschritten</button>
     <button class="tier-tab-btn" data-tier="advanced">Experte</button>
+    <button class="tier-tab-btn" data-tier="security">Sicherheit</button>
+    <button class="tier-tab-btn" data-tier="token">Tokens</button>
   </div>
 
   <div class="tier-panel active" data-tool="claude" data-tier="beginner">
@@ -269,6 +271,61 @@
       </div>
     </div>
   </div>
+  <div class="tier-panel" data-tool="claude" data-tier="security">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">1</div><div class="feature-body"><h4>Trainingsdaten-Einstellung zuerst prüfen</h4><p>Unter Settings → Privacy die Option &bdquo;Help improve Claude&ldquo; deaktivieren. Seit September 2025 sind private Konten standardmäßig opt-in. Claude for Work und API-Nutzung werden standardmäßig nicht für das Training verwendet.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">2</div><div class="feature-body"><h4>Vor der Eingabe pseudonymisieren (DSGVO-Kernregel)</h4><p>Schon das Übermitteln von Kundenname, E-Mail, Telefonnummer oder Vertragsnummer an eine externe KI ist eine &bdquo;Verarbeitung personenbezogener Daten&ldquo; (Art. 4, 6 DSGVO) und braucht eine Rechtsgrundlage. Vor dem Einfügen: Klarname → [Kunde A], Vertragsnummer → [V-XXXX]. Echte Werte erst im fertigen Dokument wieder einsetzen.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">3</div><div class="feature-body"><h4>Privates Konto und Firmenkonto trennen</h4><p>Alles mit Kundendaten gehört ausschließlich in ein Firmen-Team/Enterprise-Konto mit AVV (Auftragsverarbeitungsvertrag, Art. 28 DSGVO). Das private Pro-Konto nur für Lernen und allgemeine Recherche nutzen.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">4</div><div class="feature-body"><h4>Dateien vor Projects & Konnektoren prüfen</h4><p>Vor dem Upload in Projects: Kontaktspalten aus Excel-Listen löschen, Unterschriften und Adressen aus PDFs entfernen. Google-Drive/Slack-Konnektoren nur auf die wirklich benötigten Ordner und Kanäle beschränken.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">5</div><div class="feature-body"><h4>Unternehmensregeln einhalten</h4><p>Daten in öffentlich / intern / vertraulich / personenbezogen klassifizieren und eine Positivliste führen, was in KI-Tools darf. Sind doch personenbezogene Daten eingegeben worden: Chat löschen und sofort den Datenschutzbeauftragten (DSB) informieren. DSGVO-Bußgelder: bis 20 Mio. € oder 4 % des Jahresumsatzes — haftbar ist das Unternehmen.</p></div></div>
+    </div>
+    <div class="usecase">
+      <span class="label">Praxisbeispiel — pseudonymisierter Prompt</span>
+      <div class="prompt">Entwirf eine höfliche Antwort auf diese Kundenbeschwerde. (Personenbezogene Daten ersetzt)
+
+Kunde: [Kunde A] · Vertrag: [V-XXXX] · Ort: [Stadt]
+Anliegen: Doppelabbuchung auf der Juni-Rechnung. Erstattungsprozess und Frist erklären.</div>
+    </div>
+    <p class="subhead">Passende Videos</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="g6lUrCUqgL0" tabindex="0" role="button" aria-label="Video abspielen: Datenschutz ist kein KI-Verhinderer">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/g6lUrCUqgL0/hqdefault.jpg" alt="Datenschutz ist kein KI-Verhinderer" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Datenschutz ist kein KI-Verhinderer — warum die DSGVO ein Verbündeter ist</h4><p>Dr. Sebastian Kraska über KI &amp; Datenschutz in der Praxis</p></div>
+      </div>
+      <div class="video-card" data-yt="Zkeiw6wXJ94" tabindex="0" role="button" aria-label="Video abspielen: Kundendaten in KI-Chats eingeben?">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/Zkeiw6wXJ94/hqdefault.jpg" alt="Kundendaten in KI-Chats eingeben?" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Kundendaten in KI-Chats eingeben? Das kann 2026 teuer werden</h4><p>Typische Fehler von Mitarbeitenden — und wie man sie vermeidet</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tier-panel" data-tool="claude" data-tier="token">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">1</div><div class="feature-body"><h4>Chats kurz halten — pro Aufgabe neu starten</h4><p>Bei jeder Antwort wird der gesamte Gesprächsverlauf erneut verarbeitet. Lange Threads verbrennen Tokens exponentiell. Themenwechsel = neuer Chat.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">2</div><div class="feature-body"><h4>Ein präziser Prompt statt fünf Rückfragen</h4><p>Ein Prompt mit Rolle, Kontext, Anfrage und Ausgabeformat kostet deutlich weniger als eine vage Frage mit mehreren Korrekturrunden. Vor dem Absenden fragen: &bdquo;Könnte jemand die Aufgabe allein mit dieser Nachricht erledigen?&ldquo;</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">3</div><div class="feature-body"><h4>Nur das Nötige anhängen</h4><p>Das relevante Kapitel statt des 100-Seiten-PDFs, das eine Tabellenblatt statt der ganzen Arbeitsmappe. Häufig genutztes Material in Projects ablegen — gecachtes Projektwissen ist günstiger als ständiges Neu-Hochladen.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">4</div><div class="feature-body"><h4>Modell herunterschalten</h4><p>Zusammenfassungen, Übersetzungen und E-Mail-Entwürfe laufen gut auf Haiku/Sonnet. Opus nur für Vertragsanalysen und Strategiearbeit — Nutzungslimits schrumpfen bei großen Modellen schneller.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--claude)">5</div><div class="feature-body"><h4>Wiederkehrende Anweisungen in Styles & Skills speichern</h4><p>Ton und Regeln einmal speichern statt jedes Mal neu erklären. Für lange Vorhaben: eine 10-Zeilen-Zusammenfassung der bisherigen Entscheidungen anfordern und in einen frischen Chat übernehmen — der günstigste Weg, Kontext mitzunehmen.</p></div></div>
+    </div>
+    <div class="usecase">
+      <span class="label">Praxisbeispiel — token-effizienter Prompt</span>
+      <div class="prompt">Rolle: Finanzanalyst in einem B2B-Dienstleister
+Daten: nur das Blatt 'DE' der angehängten Q3-Umsatztabelle
+Aufgabe: Top-5-Positionen mit größter Abweichung zum Vorquartal + mögliche Ursachen
+Format: eine Tabelle + 5 Zeilen Zusammenfassung (sonst nichts)</div>
+    </div>
+    <p class="subhead">Passende Videos</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="hDnU4-IlyOQ" tabindex="0" role="button" aria-label="Video abspielen: Grundkurs Prompt Engineering Teil 1">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/hDnU4-IlyOQ/hqdefault.jpg" alt="Grundkurs Prompt Engineering Teil 1" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Grundkurs Prompt Engineering Teil 1: So schreibst du bessere Prompts</h4><p>Weniger Korrekturrunden, bessere Ergebnisse</p></div>
+      </div>
+      <div class="video-card" data-yt="A18IyZnEP_4" tabindex="0" role="button" aria-label="Video abspielen: Die 5 besten Prompt Engineering Tipps in nur 5 Minuten">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/A18IyZnEP_4/hqdefault.jpg" alt="Die 5 besten Prompt Engineering Tipps" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Die 5 besten Prompt-Engineering-Tipps in nur 5 Minuten</h4><p>Schnellkurs für den Arbeitsalltag</p></div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section id="chatgpt" class="tool-section">
@@ -285,6 +342,8 @@
     <button class="tier-tab-btn active" data-tier="beginner">Einsteiger</button>
     <button class="tier-tab-btn" data-tier="intermediate">Fortgeschritten</button>
     <button class="tier-tab-btn" data-tier="advanced">Experte</button>
+    <button class="tier-tab-btn" data-tier="security">Sicherheit</button>
+    <button class="tier-tab-btn" data-tier="token">Tokens</button>
   </div>
 
   <div class="tier-panel active" data-tool="chatgpt" data-tier="beginner">
@@ -347,6 +406,60 @@
       </div>
     </div>
   </div>
+  <div class="tier-panel" data-tool="chatgpt" data-tier="security">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">1</div><div class="feature-body"><h4>Modelltraining in den Data Controls abschalten</h4><p>Settings → Data Controls → &bdquo;Improve the model for everyone&ldquo; deaktivieren. Für sensible Einzelfragen den Temporary Chat nutzen — dort wird nichts im Verlauf gespeichert.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">2</div><div class="feature-body"><h4>Memory im Blick behalten</h4><p>Die Memory-Funktion kann persönliche und Firmendetails dauerhaft speichern. Regelmäßig unter Settings → Personalization → Memory prüfen und Sensibles löschen.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">3</div><div class="feature-body"><h4>Keine Kundendaten in Free/Plus-Konten</h4><p>Free- und Plus-Konten sind aus DSGVO-Sicht für Kundendaten ungeeignet. Dafür ausschließlich das Firmen-Team/Enterprise-Konto verwenden — mit AVV, standardmäßig ohne Training und seit 2025 mit EU Data Residency.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">4</div><div class="feature-body"><h4>Pseudonymisieren zur Gewohnheit machen</h4><p>Vor der Eingabe: Klarnamen → [Kunde A], E-Mail → [E-Mail], Bankdaten → [IBAN]. Die echten Werte erst im fertigen Dokument einsetzen. Diese eine Gewohnheit beseitigt den Großteil des DSGVO-Risikos.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">5</div><div class="feature-body"><h4>Vorsicht bei geteilten GPTs & Actions</h4><p>Keine Kundendaten in die Wissensdateien von team-weit geteilten GPTs legen. Vor dem Anbinden interner Systeme über Actions: Freigabe von IT und DSB einholen. Bei versehentlicher Eingabe: Chat löschen und sofort melden.</p></div></div>
+    </div>
+    <div class="usecase">
+      <span class="label">Praxisbeispiel — vor dem Einfügen umschreiben</span>
+      <div class="prompt">(Schlecht) „Schreibe eine Antwort an Thomas Müller (thomas.mueller@web.de, Vertrag 4711) zu seiner Kündigung"
+
+(Gut) „Entwirf eine Antwort an Kunde [Kunde A], Vertrag [Nr.], zur Kündigungsanfrage. Hinweis auf die Regelung zur vorzeitigen Beendigung, förmlicher Ton."</div>
+    </div>
+    <p class="subhead">Passende Videos</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="cSYW-SU1ER4" tabindex="0" role="button" aria-label="Video abspielen: ChatGPT im Unternehmen richtig einsetzen und DSGVO konform">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/cSYW-SU1ER4/hqdefault.jpg" alt="ChatGPT im Unternehmen richtig einsetzen & DSGVO konform" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>ChatGPT im Unternehmen richtig einsetzen &amp; DSGVO-konform</h4><p>So schützt du deine Unternehmensdaten</p></div>
+      </div>
+      <div class="video-card" data-yt="BNZ0Kw9rI24" tabindex="0" role="button" aria-label="Video abspielen: Ist ChatGPT Datenschutz-konform? OpenAI im DSGVO-Check">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/BNZ0Kw9rI24/hqdefault.jpg" alt="OpenAI im DSGVO-Check" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Ist ChatGPT datenschutzkonform? OpenAI im DSGVO-Check</h4><p>Rechtliche Einordnung für den Unternehmenseinsatz</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tier-panel" data-tool="chatgpt" data-tier="token">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">1</div><div class="feature-body"><h4>Neuer Chat statt Endlos-Thread</h4><p>Lange Threads verarbeiten bei jeder Antwort den kompletten Verlauf neu. Pro Aufgabe einen frischen Chat öffnen; bei Bedarf eine kurze Zusammenfassung der Entscheidungen mitnehmen.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">2</div><div class="feature-body"><h4>Custom Instructions sparen Wiederholungen</h4><p>Rolle, Ton und Ausgaberegeln einmal in den Custom Instructions hinterlegen — und nie wieder Tokens dafür ausgeben, den eigenen Job zu erklären.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">3</div><div class="feature-body"><h4>Nur das relevante Blatt hochladen</h4><p>Advanced Data Analysis bekommt das eine benötigte Tab, nicht die ganze Arbeitsmappe. Umfang explizit angeben: &bdquo;nur Spalten A–F, nur Daten 2026&ldquo; — weniger Verarbeitung, weniger Fehler.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">4</div><div class="feature-body"><h4>Schwere Funktionen wie ein Budget behandeln</h4><p>Deep Research und Agent Mode verbrauchen viel pro Lauf und sind kontingentiert. Zusammenfassungen und Entwürfe auf leichte (Mini-)Modelle legen; schwere Funktionen erst starten, wenn die Frage fertig formuliert ist.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--chatgpt)">5</div><div class="feature-body"><h4>Wiederkehrende Arbeit in GPTs gießen</h4><p>Anweisungen und Referenzwissen in ein GPT packen — lange Prompts nie zweimal einfügen. Bei langen Projekten regelmäßig eine &bdquo;Entscheidungs-Zusammenfassung&ldquo; anfordern, um den Kontext zu komprimieren.</p></div></div>
+    </div>
+    <div class="usecase">
+      <span class="label">Praxisbeispiel — Prompt ohne Korrekturschleifen</span>
+      <div class="prompt">Rolle: Texter im Marketing-Team
+Aufgabe: 3 Newsletter-Teaser auf Basis des angehängten Produktblatts
+Vorgaben: max. 60 Zeichen je Teaser, mit CTA, förmlicher Ton
+Ausgabe: Tabelle (Variante / Text / CTA) — nur die Tabelle, kein Kommentar</div>
+    </div>
+    <p class="subhead">Passende Videos</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="QOSPik4yT-c" tabindex="0" role="button" aria-label="Video abspielen: Grundkurs Prompt Engineering Teil 2">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/QOSPik4yT-c/hqdefault.jpg" alt="Grundkurs Prompt Engineering Teil 2" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Grundkurs Prompt Engineering Teil 2: Bessere Ergebnisse bei ChatGPT &amp; Co</h4><p>Fortgeschrittene Techniken für präzise Antworten</p></div>
+      </div>
+      <div class="video-card" data-yt="G4jpWlXSoAU" tabindex="0" role="button" aria-label="Video abspielen: So geht Prompt Engineering! 4 Tipps für Einsteiger">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/G4jpWlXSoAU/hqdefault.jpg" alt="So geht Prompt Engineering - 4 Tipps" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>So geht Prompt Engineering! 4 Tipps für Einsteiger</h4><p>Bessere Ergebnisse mit weniger Anläufen</p></div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section id="gemini" class="tool-section">
@@ -363,6 +476,8 @@
     <button class="tier-tab-btn active" data-tier="beginner">Einsteiger</button>
     <button class="tier-tab-btn" data-tier="intermediate">Fortgeschritten</button>
     <button class="tier-tab-btn" data-tier="advanced">Experte</button>
+    <button class="tier-tab-btn" data-tier="security">Sicherheit</button>
+    <button class="tier-tab-btn" data-tier="token">Tokens</button>
   </div>
 
   <div class="tier-panel active" data-tool="gemini" data-tier="beginner">
@@ -412,6 +527,59 @@
       <div class="video-card" data-yt="zKIS1etdFuQ" tabindex="0" role="button" aria-label="Video abspielen: Gemini Dein neuer KI Assistent in Google Workspace">
         <div class="video-thumb"><img src="https://i.ytimg.com/vi/zKIS1etdFuQ/hqdefault.jpg" alt="Gemini Dein neuer KI Assistent in Google Workspace" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
         <div class="video-info"><h4>Gemini: Dein neuer KI-Assistent in Google Workspace</h4><p>Tiefe Workspace-Integration im Detail</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="tier-panel" data-tool="gemini" data-tier="security">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">1</div><div class="feature-body"><h4>Gemini Apps Activity deaktivieren</h4><p>Standardmäßig werden Unterhaltungen gespeichert und können zur Qualitätsverbesserung von Menschen eingesehen werden. Unter myactivity.google.com die Gemini Apps Activity ausschalten; für sensible Fragen den Temporary Chat nutzen.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">2</div><div class="feature-body"><h4>Privates Google-Konto ≠ Firmen-Workspace-Konto</h4><p>In Workspace Business/Enterprise werden Eingaben nicht für das Modelltraining verwendet und bleiben in der Organisation. Alles mit Kundendaten gehört ausschließlich in das Firmenkonto.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">3</div><div class="feature-body"><h4>Reichweite der Gmail/Docs-Integration kennen</h4><p>Gemini greift auf Anfrage auf Mail- und Dokumentinhalte zu. Enthält ein Dokument Kundendaten, ist schon &bdquo;fasse das zusammen&ldquo; eine Verarbeitung personenbezogener Daten nach DSGVO — nur das Nötige anfassen, nur im Firmenkonto.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">4</div><div class="feature-body"><h4>Vor der Eingabe pseudonymisieren</h4><p>Klarnamen → [Kunde A], Adressen → [Stadt]. Gleiches gilt für Quelldateien in NotebookLM — Kontaktspalten und Unterschriften vorher entfernen.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">5</div><div class="feature-body"><h4>Team-Leitlinien & Vorfallmeldung</h4><p>Pro Team eine Liste &bdquo;erlaubte Daten für KI&ldquo; festlegen und neue Kolleginnen und Kollegen darauf schulen. Bei versehentlicher Eingabe: aus dem Aktivitätsverlauf löschen und den DSB informieren — nach deutschem Recht haftet das Unternehmen, nicht der einzelne Mitarbeitende.</p></div></div>
+    </div>
+    <div class="usecase">
+      <span class="label">Praxis-Check — 3 Sekunden vor dem Absenden</span>
+      <div class="prompt">① Enthält die Eingabe Namen, Kontaktdaten oder Vertragsnummern? → ersetzen
+② Bin ich im privaten Konto oder im Firmen-Workspace? → Kundendaten: nur Firma
+③ Ist diese Datenklasse laut Unternehmensrichtlinie „KI-erlaubt"? → im Zweifel DSB fragen</div>
+    </div>
+    <p class="subhead">Passende Videos</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="lBWtk4quiaI" tabindex="0" role="button" aria-label="Video abspielen: KI sicher bei DSGVO und Datenschutz">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/lBWtk4quiaI/hqdefault.jpg" alt="So wird KI sicher bei DSGVO & Datenschutz" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>KI im Unternehmen: So wird sie sicher bei DSGVO &amp; Datenschutz</h4><p>Praxisgespräch zu Compliance im KI-Alltag</p></div>
+      </div>
+      <div class="video-card" data-yt="0tcjViMCjnQ" tabindex="0" role="button" aria-label="Video abspielen: So machst Du KI endlich DSGVO-sicher">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/0tcjViMCjnQ/hqdefault.jpg" alt="So machst Du KI endlich DSGVO-sicher" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>So machst du KI endlich DSGVO-sicher!</h4><p>Konkrete Schritte für den rechtssicheren Einsatz</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tier-panel" data-tool="gemini" data-tier="token">
+    <div class="feature-list">
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">1</div><div class="feature-body"><h4>Limits der schweren Funktionen beachten</h4><p>Deep Research (besonders die Max-Variante) und Videogenerierung haben Tages-/Monatslimits. Umfang, Pflichtabschnitte und Ausgabeformat vorab festlegen — Ziel: ein einziger Lauf.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">2</div><div class="feature-body"><h4>Flash vs. Pro — bewusst wählen</h4><p>E-Mail-Entwürfe und schnelle Zusammenfassungen laufen gut auf Flash-Modellen, die die Limits viel langsamer aufbrauchen. Pro-Modelle für komplexe Analysen und lange Dokumente reservieren.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">3</div><div class="feature-body"><h4>Wiederkehrende Anweisungen als Gems speichern</h4><p>Gems wie &bdquo;Wochenbericht-Schreiber&ldquo; oder &bdquo;Business-E-Mail-Korrektor&ldquo; anlegen — wiederholte Anweisungen kosten dann weder Tokens noch Zeit.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">4</div><div class="feature-body"><h4>NotebookLM für wiederholte Fragen zum selben Material</h4><p>Dateien nicht in jeden Chat neu hochladen, sondern einmal als NotebookLM-Quellen registrieren. Antworten kommen strikt aus den Quellen — effizient für wiederholtes Nachfragen.</p></div></div>
+      <div class="feature-item"><div class="feature-num" style="background:var(--gemini)">5</div><div class="feature-body"><h4>Kurze Chats, konkrete Anfragen</h4><p>Ein Prompt mit Rolle, Datenumfang und Ausgabeformat schlägt mehrere vage Anläufe. Bei Themenwechsel neue Unterhaltung starten, damit der Verlauf nicht ständig neu verarbeitet wird.</p></div></div>
+    </div>
+    <div class="usecase">
+      <span class="label">Praxisbeispiel — Deep Research in einem Lauf</span>
+      <div class="prompt">Thema: KI-Einführung im deutschen Mittelstand (Fertigung, 2024–2026)
+Pflichtinhalte: ① Statistiken zur Verbreitung ② Top-5-Einsatzfelder ③ 3 Fallbeispiele ④ Auswirkungen des EU AI Act
+Ausgabe: Bericht mit Inhaltsverzeichnis, bevorzugt Tabellen, Quellen angeben</div>
+    </div>
+    <p class="subhead">Passende Videos</p>
+    <div class="grid cols-2 video-row">
+      <div class="video-card" data-yt="sSW0Qg1BwEA" tabindex="0" role="button" aria-label="Video abspielen: So schreibst du perfekte Prompts - Prompt Engineering Guide von Google">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/sSW0Qg1BwEA/hqdefault.jpg" alt="Prompt Engineering Guide von Google" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>So schreibst du perfekte Prompts — der Guide von Google</h4><p>Googles eigene Empfehlungen, ideal für Gemini</p></div>
+      </div>
+      <div class="video-card" data-yt="s5lx3l2-U1c" tabindex="0" role="button" aria-label="Video abspielen: Die 6 besten Prompts - Maximum aus ChatGPT, Gemini und Co">
+        <div class="video-thumb"><img src="https://i.ytimg.com/vi/s5lx3l2-U1c/hqdefault.jpg" alt="Die 6 besten Prompts für ChatGPT, Gemini und Co" loading="lazy"><div class="play-circle">▶</div><span class="yt-tag">YouTube</span></div>
+        <div class="video-info"><h4>Die 6 besten Prompts — das Maximum aus Gemini &amp; Co. herausholen</h4><p>Effiziente Prompt-Muster für den Alltag</p></div>
       </div>
     </div>
   </div>
