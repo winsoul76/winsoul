@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#fafafa">
+<title>03화 엑셀을 2배 잘하는 전략 | 일잘러의 전략 | 윈솔</title>
+<style>
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; min-height: 100vh; background: #fafafa; color: #1d1d1f;
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+.wrap { max-width: 640px; margin: 0 auto; padding: 28px 20px 64px; }
+.topnav { display: flex; align-items: center; gap: 8px; margin-bottom: 28px; }
+.topnav a {
+  font-size: 13px; font-weight: 600; color: #6e6e73; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.topnav a:hover { color: #1d1d1f; }
+.crumb-sep { color: #d0d0d3; font-size: 12px; }
+
+
+.crumb { font-size: 12.5px; color: #9a9a9a; margin-bottom: 18px; }
+.crumb a { color: #9a9a9a; text-decoration: none; }
+.crumb a:hover { color: #1d1d1f; }
+.article-head { margin-bottom: 30px; }
+.ch-badge { display:inline-block; font-size: 12px; font-weight: 800; color:#b8860b; background:#f5e9d0; border-radius: 980px; padding: 4px 12px; margin-bottom: 14px; }
+.article-head h1 { font-size: 23px; font-weight: 700; line-height: 1.4; margin: 0 0 10px; }
+.article-date { font-size: 12.5px; color: #b0b0b3; }
+article { font-size: 16.5px; line-height: 1.9; color: #2c2c2e; }
+article p { margin: 0 0 20px; }
+article p.subhead { font-weight: 700; font-size: 16.5px; color: #1d1d1f; margin-top: 32px; }
+article ul { margin: 0 0 20px; padding-left: 22px; }
+article li { margin-bottom: 8px; }
+article a { color: #b8860b; word-break: break-all; }
+.ch-nav-wrap { display: flex; gap: 10px; margin-top: 44px; }
+.ch-nav {
+  flex: 1; min-width: 0; background: #ffffff; border-radius: 14px; padding: 14px 16px;
+  text-decoration: none; color: #1d1d1f; box-shadow: 0 1px 3px rgba(0,0,0,0.04); display: flex; flex-direction: column; gap: 4px;
+}
+.ch-nav.next { text-align: right; align-items: flex-end; }
+.ch-nav:hover { box-shadow: 0 6px 16px rgba(0,0,0,0.07); }
+.ch-nav-label { font-size: 11px; color: #b0b0b3; font-weight: 700; }
+.ch-nav-title { font-size: 13px; font-weight: 600; }
+.ch-nav.empty { background: transparent; box-shadow: none; }
+.toc-back { display:block; text-align:center; margin-top: 22px; font-size: 13px; font-weight: 600; color: #6e6e73; text-decoration:none; }
+.toc-back:hover { color: #1d1d1f; }
+.src-note { margin-top: 32px; text-align: center; font-size: 12px; color: #c2c2c2; }
+.src-note a { color: #9a9a9a; text-decoration: underline; }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topnav"><a href="/reading/winsoul76/">‹ 목차</a></div>
+  <div class="crumb"><a href="/reading/">독서</a> <span class="crumb-sep">›</span> <a href="/reading/winsoul76/">일잘러의 전략</a></div>
+  <div class="article-head">
+    <span class="ch-badge">03화</span>
+    <h1>엑셀을 2배 잘하는 전략</h1>
+    <div class="article-date">Apr 12. 2025</div>
+  </div>
+  <article>
+<p>엑셀의 달인이 되자</p>
+<p>회사에서 나의 닉네임은 &#x27;엑셀의 달인&#x27;이다.</p>
+<p>이 닉네임을 언제부터 넣었는지는 잘 기억이 안 나지만 한 20년쯤 된 것 같다. 당연히 엑셀을 입사하기 전부터 잘했던 것은 아니었다.</p>
+<p>입사 후 첫해에 나는 마케팅으로 배정이 되었고, 당연히 나의 업무 중에서 가장 중요한 것은 매일 한 페이지의 보고서를 만드는 일이었다.</p>
+<p>이 한 페이지는 엑셀로 만든 보고서였고, 정말 한 페이지가 꽉 찬 숫자로 만들어진 것이었다. 나의 역할은 그 안의 숫자를 매일 최신 숫자로 업데이트하는 것이었다.</p>
+<p>다양한 Source의 데이터를 다운로드하여서 한 페이지의 리포트를 만드는 일은 쉽지 않았다. 시간도 많이 걸리는 일이었고, 다양한 데이터를 가공하다 보니 당연히 실수도 생겼다.</p>
+<p>한 달 정도 동일한 일을 반복하다 보니 문득 이런 생각이 들었다.</p>
+<p>&#x27;왜 이렇게 해야 되지?&#x27;</p>
+<p>그때부터 반복적인 일이 예상되는 엑셀의 작업은 무조건 자동화한다는 철칙이 생겼다.</p>
+<p class="subhead">1. 다른 사람들 보다 2배 시간을 단축시킨다.</p>
+<p>동일한 일을 하는데 남들보다 2배 더 빨리 할 수 있는 방법은 무엇일까?</p>
+<ul><li>마우스 대신 키보드를 써야 한다.</li></ul>
+<p>마우스는 편하지만, 원하는 기능을 입력하거나 사용하기 위해서 여러 번 움직이거나 클릭해야 하는 수고로움이 있다. 그래서 자주 사용하는 기능의 단축키를 외워서 키보드로 쓰게 되면, 다른 사람들보다 최소 2배 이상의 시간을 단축할 수 있다.</p>
+<p>예를 들어 엑셀 표에서 필터 설정을 한다고 해보면, 마우스를 이동하고 필터 기능을 찾아서 클릭하는 시간과 Ctrl + Shift + L을 눌러서 필터를 적용하는 시간은 최소 두 배 이상 차이가 난다.</p>
+<p>딱 10번만 마우스를 움직이려는 편안함을 참고 키보드의 단축키를 쓰는 연습을 해보면, 그다음부터는 그 기능은 절대 마우스 쓸 일이 없을 것이다.</p>
+<p>모든 기능의 단축키를 외울 필요는 없다. 자주 쓰는 기능의 단축키를 찾아서 외우면 된다.</p>
+<ul><li>단축키가 없는 경우 마우스의 움직임이나 클릭 수를 최소화한다.</li></ul>
+<p>모든 엑셀의 기능이 단축키를 제공하지는 않기 때문에 어쩔 수 없이 마우스를 사용해야 하는 경우가 생긴다. 이 경우에는 &quot;빠른 실행 도구 모음&quot;에 해당 기능을 찾아서 넣어주고, 리본 메뉴의 아래쪽으로 빠른 실행 도구 모음을 배치해서 마우스의 원클릭으로 해당 기능을 사용하는 방법이 있다. (물론 빠른 실행 도구 모음에 넣고, 나만의 단축키를 지정하는 방법도 있다.)</p>
+<p>결론은 어떤 방식이던 엑셀 기능들을 좀 더 빨리 작동시키기 위한 방법을 찾는 것이다.</p>
+<p class="subhead">2. 다른 사람들보다 정확도를 2배 향상한다.</p>
+<p>엑셀에서 수작업을 최소화하거나 제거하는 것이 다른 사람들보다 정확도를 2배 향상하는 방법이다.</p>
+<p>일단, 복사해서 붙여 넣는 방식은 Raw 데이터를 넣기 위한 방식에만 적용한다. 이 경우 기존 데이터의 포맷대로 붙여야 한다. 여기서 중요한 것은 Raw 데이터를 포맷을 바꿔서는 안 된다는 것이다. (나중에 자동화를 시키더라도 이 부분은 너무나 중요하다)</p>
+<p>이 외에 어떤 수작업도 허용해서는 안된다. 이를 허용하는 순간 바로 실수의 Risk 가 생기는 것이고, 정확도는 보장되지 않는다.</p>
+<p>내가 처음 입사해서 받았던 리포트는 이 수작업이 엄청나게 많고 복잡했던 리포트였다. 이를 수식으로 자동화하고 나서는 기존에 2시간 이상 소요되던 작업이 30분 이하로 줄었다. (Raw 데이터 몇 개만 다운로드하여서 붙여 넣으면 끝났기 때문이다.)</p>
+<p>이미 수년동안 선배들이 작업하던 파일이었기 때문에 아무런 생각없이 이 작업을 반복적으로 했던 것인데, 이렇게 줄이고 나니 주변에서 다른 리포트들도 봐달라는 요청이 들어오기 시작했다.</p>
+<p>자동화라는 것이 RPA (Robotics Process Automation)나 자동화 프로그램을 사용하라는 말이 아니다. Macro 나 VBA를 쓰지 않고 그냥 엑셀의 기본 Function 인 Sumif, Vlookup, Index, Match 함수를 사용하기만 해도 된다. (앞서 이야기한 것처럼 이 함수들은 안 보고도 자유자재로 넣을 수 있도록 키보드로 손에 익혀야 한다.)</p>
+<p>괜히 어렵게 엑셀을 만들지 말고 최대한 Simple하게 단순화해야겠다는 생각을 가지고 접근해 보면 생각보다 어렵지 않다.</p>
+<p>업무 영역이 각종 데이터를 다뤄야 하는 일이 아니더라도 원칙은 같다.</p>
+<p>수작업을 없애라. 그게 정확도를 2배로 올리는 전략이다.</p>
+  </article>
+  <div class="ch-nav-wrap">
+    <a class="ch-nav prev" href="/reading/winsoul76/02.html"><span class="ch-nav-label">‹ 이전화</span><span class="ch-nav-title">파일명에서부터 일잘러는 다르다</span></a>
+    <a class="ch-nav next" href="/reading/winsoul76/04.html"><span class="ch-nav-label">다음화 ›</span><span class="ch-nav-title">파워포인트를 2배 잘하는 전략</span></a>
+  </div>
+  <a class="toc-back" href="/reading/winsoul76/">전체 목차 보기 (총 15화)</a>
+  <div class="src-note">원문 · <a href="https://brunch.co.kr/brunchbook/winsoul76" target="_blank" rel="noopener">brunch.co.kr</a></div>
+</div>
+</body>
+</html>
