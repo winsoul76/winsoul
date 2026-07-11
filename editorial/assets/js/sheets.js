@@ -163,10 +163,7 @@ window.EditorialAPI = (function () {
       }
       if (res[1] && res[1].length) {
         cfg.members = res[1].map(function (r) {
-          return {
-            name: r.name, birthYear: Number(r.birthYear) || r.birthYear,
-            birthday: r.birthday || "", role: r.role || ""
-          };
+          return { name: r.name, role: r.role || "" };
         });
       }
     });

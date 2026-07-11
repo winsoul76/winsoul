@@ -22,54 +22,18 @@
   <div class="wrap">
     <span class="admin-badge">🛡️ 관리자 전용</span>
     <h1>편집부 관리자 화면</h1>
-    <p>이 화면은 담당 선생님만 접근합니다. 여기서 입력·수정한 내용은 구글 시트에 저장되고, 편집부 사이트 각 페이지(마스킹된 이름)에 바로 반영됩니다.</p>
+    <p>이 화면은 담당 선생님만 접근합니다. 여기서 입력·수정한 내용은 구글 시트에 저장되고, 편집부 사이트 각 페이지에 바로 반영됩니다.</p>
   </div>
 </header>
 
 <section id="adminContent" style="display:none;">
   <div class="wrap">
     <div class="tabbar">
-      <button class="tab-btn active" data-tab="att">✅ 모임 출석 체크</button>
-      <button class="tab-btn" data-tab="scr">✍️ 주일 말씀 요약 체크</button>
-      <button class="tab-btn" data-tab="sched">🗓️ 일정 관리</button>
+      <button class="tab-btn active" data-tab="sched">🗓️ 일정 관리</button>
       <button class="tab-btn" data-tab="mem">🧑‍🤝‍🧑 명단 관리</button>
     </div>
 
-    <div id="panelAtt">
-      <div class="field" style="max-width:360px;">
-        <label>모임 날짜 (가장 최근 모임 주차)</label>
-        <div id="meetingDateLabel" style="font-weight:700; font-size: var(--fs-md); padding: 11px 14px; border-radius: var(--radius-sm); border: 1px solid var(--line); background: var(--bg-elevated);">-</div>
-      </div>
-      <div class="summary-bar">
-        <div class="summary-pill">👥 전체 <span id="attTotal">-</span>명</div>
-        <div class="summary-pill">✅ 참석 <span id="attPresent">-</span>명</div>
-        <div class="summary-pill">❌ 결석 <span id="attAbsent">-</span>명</div>
-      </div>
-      <div class="roster" id="attRoster"></div>
-      <div style="margin-top:22px; display:flex; gap:10px; align-items:center;">
-        <button class="btn btn-primary" id="attSaveBtn">저장하기</button>
-        <span id="attStatus" style="font-size: var(--fs-sm); color: var(--text-secondary);"></span>
-      </div>
-    </div>
-
-    <div id="panelScr" style="display:none;">
-      <div class="field" style="max-width:360px;">
-        <label>주일 날짜 (가장 최근 주차)</label>
-        <div id="sundayDateLabel" style="font-weight:700; font-size: var(--fs-md); padding: 11px 14px; border-radius: var(--radius-sm); border: 1px solid var(--line); background: var(--bg-elevated);">-</div>
-      </div>
-      <div class="summary-bar">
-        <div class="summary-pill">👥 전체 <span id="scrTotal">-</span>명</div>
-        <div class="summary-pill">✍️ 완료 <span id="scrDone">-</span>명</div>
-        <div class="summary-pill">⏳ 미완료 <span id="scrUndone">-</span>명</div>
-      </div>
-      <div class="roster" id="scrRoster"></div>
-      <div style="margin-top:22px; display:flex; gap:10px; align-items:center;">
-        <button class="btn btn-primary" id="scrSaveBtn">저장하기</button>
-        <span id="scrStatus" style="font-size: var(--fs-sm); color: var(--text-secondary);"></span>
-      </div>
-    </div>
-
-    <div id="panelSched" style="display:none;">
+    <div id="panelSched">
       <p class="muted" style="margin-bottom:14px; font-size: var(--fs-sm);">날짜별 1면·2면 담당을 수정합니다. 담당란은 쉼표(,)로 여러 명 입력할 수 있고, 성을 빼고 별명만 적어도 자동으로 이름을 인식합니다. "모임"에 체크하면 해당 주가 편집부 모임 주간이 됩니다.</p>
       <div class="table-scroll">
         <table>
@@ -87,11 +51,11 @@
     </div>
 
     <div id="panelMembers" style="display:none;">
-      <p class="muted" style="margin-bottom:14px; font-size: var(--fs-sm);">편집부원 명단을 수정합니다. 이름은 성을 포함한 전체 이름으로 입력해 주세요 (예: 이제인). 일정표의 담당자 이름 자동 인식과 이름 마스킹은 이 명단을 기준으로 동작합니다.</p>
+      <p class="muted" style="margin-bottom:14px; font-size: var(--fs-sm);">편집부원 명단을 수정합니다. 이름은 성을 포함한 전체 이름으로 입력해 주세요 (예: 이제인). 일정표의 담당자 이름 자동 인식은 이 명단을 기준으로 동작합니다.</p>
       <div class="table-scroll">
         <table>
           <thead>
-            <tr><th>이름</th><th>출생연도</th><th>생일 (MM-DD)</th><th>담당</th><th></th></tr>
+            <tr><th>이름</th><th>담당</th><th></th></tr>
           </thead>
           <tbody id="memBody"></tbody>
         </table>
@@ -115,13 +79,11 @@
 <script src="assets/js/main.js?v=2"></script>
 <script>
 (function(){
-  var members = EDITORIAL_CONFIG.members;
-
   function escAttr(s){ return (s == null ? '' : String(s)).replace(/&/g,'&amp;').replace(/"/g,'&quot;'); }
 
   function initTabs(){
     var buttons = document.querySelectorAll('.tab-btn');
-    var panels = { att: 'panelAtt', scr: 'panelScr', sched: 'panelSched', mem: 'panelMembers' };
+    var panels = { sched: 'panelSched', mem: 'panelMembers' };
     buttons.forEach(function(btn){
       btn.addEventListener('click', function(){
         buttons.forEach(function(b){ b.classList.remove('active'); });
@@ -132,143 +94,6 @@
         });
       });
     });
-  }
-
-  function notSundayCard(){
-    return '<div class="card">' +
-      '<h3>오늘은 일요일이 아니에요</h3>' +
-      '<p>출석 체크와 말씀 요약 체크는 일요일에만 할 수 있습니다. 일요일에 다시 접속해 주세요.</p>' +
-    '</div>';
-  }
-
-  /* ---------- 출석 체크 ---------- */
-  function initAttendance(){
-    var label = document.getElementById('meetingDateLabel');
-    var roster = document.getElementById('attRoster');
-    var today = EditorialUtils.todayISO();
-
-    var m = EditorialUtils.latestMeetingDate();
-    var defaultDate = m ? m.date : null;
-    label.textContent = defaultDate
-      ? (EditorialUtils.fmtKorean(defaultDate) + (defaultDate === today ? ' (오늘)' : ''))
-      : '등록된 모임 일정이 없습니다';
-
-    var state = {};
-
-    function renderRoster(){
-      roster.innerHTML = members.map(function(m){
-        var present = state[m.name] !== false;
-        return '<div class="roster-item" data-name="' + m.name + '">' +
-          '<div class="who"><div class="avatar">' + m.name.charAt(0) + '</div>' +
-            '<div class="meta"><div class="name">' + m.name + '</div><div class="sub">생일 ' + (m.birthday || '-').replace('-', '.') + '</div></div></div>' +
-          '<button class="toggle ' + (present ? 'on' : 'off') + '" data-name="' + m.name + '">' +
-            '<span class="toggle-label"><span>참석</span><span>결석</span></span>' +
-            '<span class="knob">' + (present ? 'ON' : 'OFF') + '</span>' +
-          '</button>' +
-        '</div>';
-      }).join('');
-      roster.querySelectorAll('.toggle').forEach(function(btn){
-        btn.addEventListener('click', function(){
-          var name = btn.getAttribute('data-name');
-          state[name] = !(state[name] !== false);
-          renderRoster();
-          updateSummary();
-        });
-      });
-    }
-    function updateSummary(){
-      var present = members.filter(function(m){ return state[m.name] !== false; }).length;
-      document.getElementById('attTotal').textContent = members.length;
-      document.getElementById('attPresent').textContent = present;
-      document.getElementById('attAbsent').textContent = members.length - present;
-    }
-    function loadForDate(date){
-      document.getElementById('attStatus').textContent = '불러오는 중...';
-      state = {};
-      members.forEach(function(m){ state[m.name] = true; });
-      EditorialAPI.loadAttendanceAdmin(date).then(function(records){
-        records.forEach(function(r){ state[r.name] = !!r.value; });
-        renderRoster();
-        updateSummary();
-        document.getElementById('attStatus').textContent = EditorialAPI.isLive() ? '구글 시트와 동기화됨' : '⚠️ 로컬 저장 모드';
-      });
-    }
-    document.getElementById('attSaveBtn').addEventListener('click', function(){
-      if (!defaultDate) return;
-      var records = members.map(function(m){ return { name: m.name, value: state[m.name] !== false }; });
-      document.getElementById('attStatus').textContent = '저장 중...';
-      EditorialAPI.saveAttendance(defaultDate, records).then(function(res){
-        document.getElementById('attStatus').textContent = (res && res.ok === false) ? '저장 실패: ' + (res.error||'권한 확인 필요') : '저장 완료 ✓';
-        showToast('출석 체크가 저장되었습니다.');
-      });
-    });
-    if (defaultDate) loadForDate(defaultDate);
-    else { roster.innerHTML = ''; document.getElementById('attStatus').textContent = '등록된 모임 일정이 없습니다.'; }
-  }
-
-  /* ---------- 말씀 요약 체크 ---------- */
-  function initScripture(){
-    var label = document.getElementById('sundayDateLabel');
-    var roster = document.getElementById('scrRoster');
-    var today = EditorialUtils.todayISO();
-
-    var s = EditorialUtils.latestSunday();
-    var defaultDate = s ? s.date : null;
-    label.textContent = defaultDate
-      ? (EditorialUtils.fmtKorean(defaultDate) + (defaultDate === today ? ' (오늘)' : ''))
-      : '등록된 주일 일정이 없습니다';
-
-    var state = {};
-
-    function renderRoster(){
-      roster.innerHTML = members.map(function(m){
-        var done = state[m.name] === true;
-        return '<div class="roster-item" data-name="' + m.name + '">' +
-          '<div class="who"><div class="avatar">' + m.name.charAt(0) + '</div>' +
-            '<div class="meta"><div class="name">' + m.name + '</div><div class="sub">생일 ' + (m.birthday || '-').replace('-', '.') + '</div></div></div>' +
-          '<button class="toggle ' + (done ? 'on' : 'off') + '" data-name="' + m.name + '">' +
-            '<span class="toggle-label"><span>완료</span><span>미완료</span></span>' +
-            '<span class="knob">' + (done ? 'ON' : 'OFF') + '</span>' +
-          '</button>' +
-        '</div>';
-      }).join('');
-      roster.querySelectorAll('.toggle').forEach(function(btn){
-        btn.addEventListener('click', function(){
-          var name = btn.getAttribute('data-name');
-          state[name] = !(state[name] === true);
-          renderRoster();
-          updateSummary();
-        });
-      });
-    }
-    function updateSummary(){
-      var done = members.filter(function(m){ return state[m.name] === true; }).length;
-      document.getElementById('scrTotal').textContent = members.length;
-      document.getElementById('scrDone').textContent = done;
-      document.getElementById('scrUndone').textContent = members.length - done;
-    }
-    function loadForDate(date){
-      document.getElementById('scrStatus').textContent = '불러오는 중...';
-      state = {};
-      members.forEach(function(m){ state[m.name] = false; });
-      EditorialAPI.loadScriptureAdmin(date).then(function(records){
-        records.forEach(function(r){ state[r.name] = !!r.value; });
-        renderRoster();
-        updateSummary();
-        document.getElementById('scrStatus').textContent = EditorialAPI.isLive() ? '구글 시트와 동기화됨' : '⚠️ 로컬 저장 모드';
-      });
-    }
-    document.getElementById('scrSaveBtn').addEventListener('click', function(){
-      if (!defaultDate) return;
-      var records = members.map(function(m){ return { name: m.name, value: state[m.name] === true }; });
-      document.getElementById('scrStatus').textContent = '저장 중...';
-      EditorialAPI.saveScripture(defaultDate, records).then(function(res){
-        document.getElementById('scrStatus').textContent = (res && res.ok === false) ? '저장 실패: ' + (res.error||'권한 확인 필요') : '저장 완료 ✓';
-        showToast('말씀 요약 체크가 저장되었습니다.');
-      });
-    });
-    if (defaultDate) loadForDate(defaultDate);
-    else { roster.innerHTML = ''; document.getElementById('scrStatus').textContent = '등록된 주일 일정이 없습니다.'; }
   }
 
   /* ---------- 일정 관리 ---------- */
@@ -354,8 +179,6 @@
       body.innerHTML = rows.map(function(r, i){
         return '<tr>' +
           '<td><input type="text" data-i="' + i + '" data-f="name" value="' + escAttr(r.name) + '"></td>' +
-          '<td><input type="number" data-i="' + i + '" data-f="birthYear" value="' + escAttr(r.birthYear) + '"></td>' +
-          '<td><input type="text" placeholder="MM-DD" data-i="' + i + '" data-f="birthday" value="' + escAttr(r.birthday) + '"></td>' +
           '<td><input type="text" data-i="' + i + '" data-f="role" value="' + escAttr(r.role) + '"></td>' +
           '<td><button type="button" class="btn-icon-del" data-i="' + i + '" title="삭제">✕</button></td>' +
         '</tr>';
@@ -378,14 +201,14 @@
     document.getElementById('memStatus').textContent = '불러오는 중...';
     EditorialAPI.loadMembersAdmin().then(function(data){
       rows = (data || []).map(function(r){
-        return { name: r.name || '', birthYear: r.birthYear || '', birthday: r.birthday || '', role: r.role || '' };
+        return { name: r.name || '', role: r.role || '' };
       });
       renderRows();
       document.getElementById('memStatus').textContent = EditorialAPI.isLive() ? '구글 시트와 동기화됨' : '⚠️ 로컬 저장 모드';
     });
 
     document.getElementById('memAddBtn').addEventListener('click', function(){
-      rows.push({ name: '', birthYear: '', birthday: '', role: '' });
+      rows.push({ name: '', role: '' });
       renderRows();
     });
     document.getElementById('memSaveBtn').addEventListener('click', function(){
@@ -398,21 +221,12 @@
     });
   }
 
-  function isSundayToday(){
-    return new Date().getDay() === 0; // 0 = 일요일
-  }
-
   EditorialAuth.readyAdmin(function(){
-    EditorialAPI.hydrateAdmin().then(function(){
-      members = EDITORIAL_CONFIG.members;
-      var content = document.getElementById('adminContent');
-      content.style.display = '';
-      initTabs();
-      initAttendance();
-      initScripture();
-      initSchedule();
-      initMembers();
-    });
+    var content = document.getElementById('adminContent');
+    content.style.display = '';
+    initTabs();
+    initSchedule();
+    initMembers();
   });
 })();
 </script>
