@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#fafafa">
+<title>09화 확장성을 고려하라 | 엑셀의 달인 | 윈솔</title>
+<style>
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; min-height: 100vh; background: #fafafa; color: #1d1d1f;
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+.wrap { max-width: 640px; margin: 0 auto; padding: 28px 20px 64px; }
+.topnav { display: flex; align-items: center; gap: 8px; margin-bottom: 28px; }
+.topnav a {
+  font-size: 13px; font-weight: 600; color: #6e6e73; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.topnav a:hover { color: #1d1d1f; }
+.crumb-sep { color: #d0d0d3; font-size: 12px; }
+
+
+.crumb { font-size: 12.5px; color: #9a9a9a; margin-bottom: 18px; }
+.crumb a { color: #9a9a9a; text-decoration: none; }
+.crumb a:hover { color: #1d1d1f; }
+.article-head { margin-bottom: 30px; }
+.ch-badge { display:inline-block; font-size: 12px; font-weight: 800; color:#2f6fed; background:#eaf1fe; border-radius: 980px; padding: 4px 12px; margin-bottom: 14px; }
+.article-head h1 { font-size: 23px; font-weight: 700; line-height: 1.4; margin: 0 0 10px; }
+.article-date { font-size: 12.5px; color: #b0b0b3; }
+article { font-size: 16.5px; line-height: 1.9; color: #2c2c2e; }
+article p { margin: 0 0 20px; }
+article p.subhead { font-weight: 700; font-size: 16.5px; color: #1d1d1f; margin-top: 32px; }
+article ul { margin: 0 0 20px; padding-left: 22px; }
+article li { margin-bottom: 8px; }
+article a { color: #2f6fed; word-break: break-all; }
+.ch-nav-wrap { display: flex; gap: 10px; margin-top: 44px; }
+.ch-nav {
+  flex: 1; min-width: 0; background: #ffffff; border-radius: 14px; padding: 14px 16px;
+  text-decoration: none; color: #1d1d1f; box-shadow: 0 1px 3px rgba(0,0,0,0.04); display: flex; flex-direction: column; gap: 4px;
+}
+.ch-nav.next { text-align: right; align-items: flex-end; }
+.ch-nav:hover { box-shadow: 0 6px 16px rgba(0,0,0,0.07); }
+.ch-nav-label { font-size: 11px; color: #b0b0b3; font-weight: 700; }
+.ch-nav-title { font-size: 13px; font-weight: 600; }
+.ch-nav.empty { background: transparent; box-shadow: none; }
+.toc-back { display:block; text-align:center; margin-top: 22px; font-size: 13px; font-weight: 600; color: #6e6e73; text-decoration:none; }
+.toc-back:hover { color: #1d1d1f; }
+.src-note { margin-top: 32px; text-align: center; font-size: 12px; color: #c2c2c2; }
+.src-note a { color: #9a9a9a; text-decoration: underline; }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topnav"><a href="/reading/excel/">‹ 목차</a></div>
+  <div class="crumb"><a href="/reading/">독서</a> <span class="crumb-sep">›</span> <a href="/reading/excel/">엑셀의 달인</a></div>
+  <div class="article-head">
+    <span class="ch-badge">09화</span>
+    <h1>확장성을 고려하라</h1>
+    <div class="article-date">Sep 20. 2025</div>
+  </div>
+  <article>
+<p>얼마 전에 막내딸이 나에게 했던 말이 있다.</p>
+<p>&quot;아빠! 난 수학이 제일 재밌어. 왜냐하면 답이 하나거든.&quot;</p>
+<p>상황에 따라서 이렇게도 해석이 되고, 다르게도 해석이 되는 문학과 달리, 수학은 1개의 답을 찾아가는 과정이다.</p>
+<p>엑셀도 그렇다. 답은 정해져 있다. 그 답을 구하기 위한 방식은 여러 개 일 수 있지만 말이다.</p>
+<p>1. 한 개의 수식으로 단순화하라.<br>엑셀은 데이터베이스와의 싸움이다. Pivot 함수를 자주 사용하게 될 텐데, 데이터의 포맷을 변형하거나 요약하는 것에 유익하다.<br>복잡한 포맷과 수식이 콤비로 섞여 있는 경우라면 Vlookup이나 Sumif, Index, Match를 적절히 사용하게 될 것이다.<br>여기서 중요한 키가 있다. 바로 수식을 하나로 통합하는 것이다. A1에 입력한 수식을 Copy 해서 B1, A2에 Paste 할 수 있도록 설계하되, 절대 수작업으로 셀의 수식을 바꾸지 않도록 만드는 것이다.<br>이를 위해서는 $(절대위치)의 개념을 명확하게 이해하고 있어야 한다. 열을 고정해야 하는 경우 $를 알파벳 앞에, 행을 고정해야 하는 경우 $를 숫자 앞에 붙인다.<br>이 절대·상대의 개념을 활용해서 단 한 개의 수식만 입력하고 나머지 셀은 붙여 넣기 하는 방식으로 설계하면 작업 시간을 줄이고, 정확도를 올리는 일타쌍피의 기술을 터득하게 될 것이다.</p>
+<p>2. 모두 바꾸기 (Ctrl+H) 기능을 활용해 보라.<br>1번의 방식으로 해결하기 어려운 경우에는 전체 열이나 행을 선택해서 모두 바꾸기를 하는 방법이 있다. 모두 바꾸기는 단순히 데이터만을 바꾸는 것이 아니라 셀 안의 수식의 일부를 모두 바꾸기 할 수도 있다.<br>이 방식은 셀을 하나하나 바꾸다가 에러가 생기는 것을 막아준다. 같은 포맷으로 여러 개의 데이터 Sheet 가 있는 경우, 특정 고정 열이나 행의 수식들을 일괄로 바꿔야 할 경우에 자주 쓰인다.</p>
+<p>3. Vlookup의 자동화 기술<br>직장 생활 2년 차(2004년) 때 우연한 기회로 만든, 22년 차(2025년)인 지금도 쓰고 있는 비법을 공개한다.<br>Vlookup(찾기를 원하는 내용, 참조할 구간, 열의 위치, 정확도) 함수에서, 데이터의 구간이 확장되면 모두 바꾸기로 해결하면 되지만, 가져와야 할 열 위치(3번째 인자)가 바뀌는 경우는 수작업이 필요해 난처하다.<br>여기서 발견한 방식은, 상단의 쓰지 않는 행 하나에 이 위치를 숫자로 넣어 두고 해당 숫자를 참조하도록 수식을 세팅하는 것이다.<br>- 기존: vlookup($A3,Sheet2!$B:$D,3,0)<br>- 변경: vlookup($A3,Sheet2!$B:$D, C$1,0)<br>이제 C1에 숫자 3을 넣어주면 된다. 이 vlookup은 이제 천하무적이다. 어느 위치에 수식을 복사하든 아무것도 바꿀 필요가 없다. (index&amp;match로도 비슷한 효과를 얻을 수 있지만 속도 면에서 지정해 주는 것이 더 빠르다.)</p>
+<p>최대한 단순하게, 최대한 쉽게 수식을 디자인하는 것이 엑셀의 달인이 되는 길이다. 복잡도가 증가하면, 속도가 느려지고, 실수가 생긴다는 사실을 잊지 않기를 바란다.</p>
+  </article>
+  <div class="ch-nav-wrap">
+    <a class="ch-nav prev" href="/reading/excel/08.html"><span class="ch-nav-label">‹ 이전화</span><span class="ch-nav-title">RPA 보다 엑셀이 먼저다</span></a>
+    <a class="ch-nav next" href="/reading/excel/10.html"><span class="ch-nav-label">다음화 ›</span><span class="ch-nav-title">엑셀의 달인이 되는 방법</span></a>
+  </div>
+  <a class="toc-back" href="/reading/excel/">전체 목차 보기 (총 10화)</a>
+  <div class="src-note">원문 · <a href="https://brunch.co.kr/brunchbook/excel" target="_blank" rel="noopener">brunch.co.kr</a></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#fafafa">
+<title>03화 숫자는 절대 믿지 말아라 | 엑셀의 달인 | 윈솔</title>
+<style>
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; min-height: 100vh; background: #fafafa; color: #1d1d1f;
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+.wrap { max-width: 640px; margin: 0 auto; padding: 28px 20px 64px; }
+.topnav { display: flex; align-items: center; gap: 8px; margin-bottom: 28px; }
+.topnav a {
+  font-size: 13px; font-weight: 600; color: #6e6e73; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.topnav a:hover { color: #1d1d1f; }
+.crumb-sep { color: #d0d0d3; font-size: 12px; }
+
+
+.crumb { font-size: 12.5px; color: #9a9a9a; margin-bottom: 18px; }
+.crumb a { color: #9a9a9a; text-decoration: none; }
+.crumb a:hover { color: #1d1d1f; }
+.article-head { margin-bottom: 30px; }
+.ch-badge { display:inline-block; font-size: 12px; font-weight: 800; color:#2f6fed; background:#eaf1fe; border-radius: 980px; padding: 4px 12px; margin-bottom: 14px; }
+.article-head h1 { font-size: 23px; font-weight: 700; line-height: 1.4; margin: 0 0 10px; }
+.article-date { font-size: 12.5px; color: #b0b0b3; }
+article { font-size: 16.5px; line-height: 1.9; color: #2c2c2e; }
+article p { margin: 0 0 20px; }
+article p.subhead { font-weight: 700; font-size: 16.5px; color: #1d1d1f; margin-top: 32px; }
+article ul { margin: 0 0 20px; padding-left: 22px; }
+article li { margin-bottom: 8px; }
+article a { color: #2f6fed; word-break: break-all; }
+.ch-nav-wrap { display: flex; gap: 10px; margin-top: 44px; }
+.ch-nav {
+  flex: 1; min-width: 0; background: #ffffff; border-radius: 14px; padding: 14px 16px;
+  text-decoration: none; color: #1d1d1f; box-shadow: 0 1px 3px rgba(0,0,0,0.04); display: flex; flex-direction: column; gap: 4px;
+}
+.ch-nav.next { text-align: right; align-items: flex-end; }
+.ch-nav:hover { box-shadow: 0 6px 16px rgba(0,0,0,0.07); }
+.ch-nav-label { font-size: 11px; color: #b0b0b3; font-weight: 700; }
+.ch-nav-title { font-size: 13px; font-weight: 600; }
+.ch-nav.empty { background: transparent; box-shadow: none; }
+.toc-back { display:block; text-align:center; margin-top: 22px; font-size: 13px; font-weight: 600; color: #6e6e73; text-decoration:none; }
+.toc-back:hover { color: #1d1d1f; }
+.src-note { margin-top: 32px; text-align: center; font-size: 12px; color: #c2c2c2; }
+.src-note a { color: #9a9a9a; text-decoration: underline; }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topnav"><a href="/reading/excel/">‹ 목차</a></div>
+  <div class="crumb"><a href="/reading/">독서</a> <span class="crumb-sep">›</span> <a href="/reading/excel/">엑셀의 달인</a></div>
+  <div class="article-head">
+    <span class="ch-badge">03화</span>
+    <h1>숫자는 절대 믿지 말아라</h1>
+    <div class="article-date">Aug 9. 2025</div>
+  </div>
+  <article>
+<p>우리가 가장 많이 하는 실수는 사내 시스템이던 사외 시스템이던 Database는 맞다고 가정하는 것이다.</p>
+<p>당연히 맞아야 하는 것이지만, 또 당연하지도 않다.</p>
+<ul><li> 데이터에 오류가 발생하는 경우는 아래와 같다.</li><li>시스템에 누군가가 숫자를 잘못 입력하거나 (담당자가 실수)</li><li>시스템과 시스템 사이의 데이터 인터페이스 중에 문제가 생기거나 (여기서 데이터 누락이 발생)</li><li>마스터 매핑이 잘못되는 일이 생기거나 (마스터를 사람이 수작업으로 관리한다면)</li><li>타이밍상 오류 (실물과 전산이 다르게 움직인다던지 등)</li></ul>
+<p>보고를 다 마치고 왔는데, 알고 보니 원본 데이터가 잘못되었고, 이로 인해 엉뚱한 분석 결과가 보고된 것이라면 정말 난처한 일이다.</p>
+<p>오랜 경험이 있거나, 매의 눈을 가진 사람이라면 그나마 문제가 되는 숫자를 쉽게 찾아낼 수 있겠지만, 그렇지 않다면 엑셀이 아무리 좋아도, 결국 엉뚱한 보고와 그에 따른 경영 의사결정의 오류, 회사의 손실로 이어지게 될 수도 있다.</p>
+<p>그래서 엑셀의 달인이 되려면, 먼저 가장 근본적인 Database의 검증 작업부터 명확한 기준을 세팅해서 Data의 Quality를 확보해야 한다.</p>
+<p>위의 Case 들을 기반으로 몇 가지 적용할 수 있는 포인트를 정리해 보면 이렇다.</p>
+<p>1. 담당자를 명확히 해둔다. (특히 사외 시스템과 연계된다면 이슈 발생 시 해결할 수 있는 사람이 누구인지 담당자를 파악해야 한다.)<br>아무리 잘 세팅해도 시스템은 언제든지 바뀐다. 특히 보안 취약점 개선 등 다양한 사유로 시스템은 항상 업그레이드될 수 있다는 점을 잊지 말아야 한다. 이슈가 발생하지 않으면 다행이지만, 시스템 변경 사항에 대한 사전 공유, UAT, 이슈 발생 시 즉시 해결할 수 있는 시나리오별 대응 방법 및 책임자를 알아야 문제를 해결할 수 있다.</p>
+<p>2. 마스터의 오류는 상시 점검하여 Zero화 한다.<br>마스터 오류가 발생하는 이유는 대부분 일부 프로세스를 사람이 담당하기 때문이다. 정기적으로 마스터와 매핑 등을 점검할 수 있도록 해두어야 누락 등 큰 사고를 피할 수 있다.</p>
+<p>3. 숫자가 튀는 현상을 기준에 의해 자동으로 센싱하고 Risk를 자동 메일링으로 전달하도록 하고, 데이터 오류시 1번의 담당자와 즉시 확인 및 조치토록 세팅한다.<br>숫자가 튄다는 건 뭔가 이슈가 있다는 말이다. 이를 체크하는 기준 로직을 반영해서 데이터의 Outlier를 파악하고 조치하도록 한다. 특히 Fraud (고의로 데이터를 조작하는 행위) Case에 대한 체크 로직을 반영해줘야 한다.</p>
+<p>4. 숫자의 감각을 익혀라.<br>아무런 문제가 없어 보여도, 숫자의 감각이 있는 사람은 금세 이슈를 발견할 수 있다. 특히 해당 분야의 숫자를 오랜 시간 바라본 경영진들은 동물적인 감각으로 숫자의 오류를 바로 알아차리기도 한다. 정상 범위가 머릿속에 있어야 Outlier 기준을 세팅할 수 있다. 이를 눈으로 보면서 감각을 키우는 것을 추천한다. 혹시 누가 알까? 나중에 본인이 경영진이 될 수 있을지...</p>
+<p>처음부터 완벽을 기할 수는 없겠지만, 이 노하우가 쌓이면 점점 완벽한 Database 가 될 것이다.</p>
+<p>Data Quality에 집착하는 것이 가장 기본이다. Data가 틀리면 결과는 무조건 틀리다. 꼭 이 부분을 고려해서 시간이 걸리고 돈이 든다고 해도 충분히 투자할 가치가 있음을 기억해 주길 바란다.</p>
+  </article>
+  <div class="ch-nav-wrap">
+    <a class="ch-nav prev" href="/reading/excel/02.html"><span class="ch-nav-label">‹ 이전화</span><span class="ch-nav-title">Why Excel?</span></a>
+    <a class="ch-nav next" href="/reading/excel/04.html"><span class="ch-nav-label">다음화 ›</span><span class="ch-nav-title">숫자에 대한 감각을 키워라</span></a>
+  </div>
+  <a class="toc-back" href="/reading/excel/">전체 목차 보기 (총 10화)</a>
+  <div class="src-note">원문 · <a href="https://brunch.co.kr/brunchbook/excel" target="_blank" rel="noopener">brunch.co.kr</a></div>
+</div>
+</body>
+</html>
