@@ -8,64 +8,76 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<meta name="theme-color" content="#fafafa">
-<title>08화 RPA 보다 엑셀이 먼저다 | 엑셀의 달인 | 윈솔</title>
+<meta name="theme-color" content="#fbfbfd">
+<title>RPA 보다 엑셀이 먼저다 | 엑셀의 달인 | 윈솔</title>
 <style>
-* { box-sizing: border-box; }
-html, body {
-  margin: 0; min-height: 100vh; background: #fafafa; color: #1d1d1f;
-  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
-  -webkit-font-smoothing: antialiased;
+:root{ --ink:#1d1d1f; --sub:#86868b; --bg:#fbfbfd; --card:#ffffff; --line:#e5e5e7; --accent:#0066cc; }
+*{ box-sizing:border-box; }
+html{ font-size:100%; scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+body{
+  margin:0; min-height:100vh; background:var(--bg); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  -webkit-font-smoothing:antialiased; line-height:1.55;
 }
-a { color: inherit; }
-.wrap { max-width: 640px; margin: 0 auto; padding: 28px 20px 64px; }
-.topnav { display: flex; align-items: center; gap: 8px; margin-bottom: 28px; }
-.topnav a {
-  font-size: 13px; font-weight: 600; color: #6e6e73; text-decoration: none;
-  display: inline-flex; align-items: center; gap: 4px;
+a{ color:inherit; text-decoration:none; }
+.wrap{ max-width:40rem; margin:0 auto; padding:2.75rem 1.25rem 6rem; }
+.topnav{ margin-bottom:2rem; }
+.topnav a{ font-size:.8125rem; font-weight:600; color:var(--sub); transition:color .15s ease; }
+.topnav a:hover{ color:var(--ink); }
+.crumb{ font-size:.8125rem; color:var(--sub); margin-bottom:1.25rem; }
+.crumb a{ color:var(--sub); }
+.crumb a:hover{ color:var(--ink); }
+.crumb-sep{ color:#d2d2d7; margin:0 .2rem; }
+
+.copyright{
+  margin-top:3.5rem; padding-top:1.5rem; border-top:1px solid var(--line);
+  font-size:.75rem; line-height:1.7; color:#a1a1a6; text-align:center;
 }
-.topnav a:hover { color: #1d1d1f; }
-.crumb-sep { color: #d0d0d3; font-size: 12px; }
+.copyright b{ color:var(--sub); font-weight:600; }
+
+.floating-controls{ position:fixed; right:1rem; bottom:1.1rem; display:flex; flex-direction:column; gap:.5rem; z-index:80; align-items:center; }
+.floating-controls button{
+  width:2.5rem; height:2.5rem; border-radius:50%; border:none;
+  background:rgba(29,29,31,.86); backdrop-filter:saturate(180%) blur(6px); -webkit-backdrop-filter:saturate(180%) blur(6px);
+  color:#fff; font-size:.75rem; font-weight:700; box-shadow:0 4px 14px rgba(0,0,0,.18);
+  opacity:1; transition:transform .15s ease, opacity .15s ease; cursor:pointer;
+}
+.floating-controls button:hover{ transform:translateY(-1px) scale(1.06); }
+.floating-controls button:active{ transform:scale(.94); }
+.floating-controls button.dim{ opacity:0; pointer-events:none; }
+.floating-controls button#rdToTop{ background:var(--accent); font-size:1rem; }
 
 
-.crumb { font-size: 12.5px; color: #9a9a9a; margin-bottom: 18px; }
-.crumb a { color: #9a9a9a; text-decoration: none; }
-.crumb a:hover { color: #1d1d1f; }
-.article-head { margin-bottom: 30px; }
-.ch-badge { display:inline-block; font-size: 12px; font-weight: 800; color:#2f6fed; background:#eaf1fe; border-radius: 980px; padding: 4px 12px; margin-bottom: 14px; }
-.article-head h1 { font-size: 23px; font-weight: 700; line-height: 1.4; margin: 0 0 10px; }
-.article-date { font-size: 12.5px; color: #b0b0b3; }
-article { font-size: 16.5px; line-height: 1.9; color: #2c2c2e; }
-article p { margin: 0 0 20px; }
-article p.subhead { font-weight: 700; font-size: 16.5px; color: #1d1d1f; margin-top: 32px; }
-article ul { margin: 0 0 20px; padding-left: 22px; }
-article li { margin-bottom: 8px; }
-article a { color: #2f6fed; word-break: break-all; }
-.ch-nav-wrap { display: flex; gap: 10px; margin-top: 44px; }
-.ch-nav {
-  flex: 1; min-width: 0; background: #ffffff; border-radius: 14px; padding: 14px 16px;
-  text-decoration: none; color: #1d1d1f; box-shadow: 0 1px 3px rgba(0,0,0,0.04); display: flex; flex-direction: column; gap: 4px;
+.article-head{ margin-bottom:2.25rem; }
+.article-head h1{ font-size:1.875rem; font-weight:700; line-height:1.4; letter-spacing:-0.015em; margin:0; }
+article{ font-size:1.0625rem; line-height:1.85; color:#2c2c2e; }
+article p{ margin:0 0 1.35rem; }
+article p.subhead{ font-weight:700; font-size:1.0625rem; color:var(--ink); margin-top:2.1rem; }
+article ul{ margin:0 0 1.35rem; padding-left:1.35rem; }
+article li{ margin-bottom:.5rem; }
+article a{ color:#2f6fed; word-break:break-all; text-decoration:underline; text-underline-offset:2px; }
+.ch-nav-wrap{ display:flex; gap:1px; margin-top:2.75rem; border-top:1px solid var(--line); }
+.ch-nav{
+  flex:1; min-width:0; padding:1.1rem .25rem; display:flex; flex-direction:column; gap:.3rem;
+  transition:background .12s ease;
 }
-.ch-nav.next { text-align: right; align-items: flex-end; }
-.ch-nav:hover { box-shadow: 0 6px 16px rgba(0,0,0,0.07); }
-.ch-nav-label { font-size: 11px; color: #b0b0b3; font-weight: 700; }
-.ch-nav-title { font-size: 13px; font-weight: 600; }
-.ch-nav.empty { background: transparent; box-shadow: none; }
-.toc-back { display:block; text-align:center; margin-top: 22px; font-size: 13px; font-weight: 600; color: #6e6e73; text-decoration:none; }
-.toc-back:hover { color: #1d1d1f; }
-.src-note { margin-top: 32px; text-align: center; font-size: 12px; color: #c2c2c2; }
-.src-note a { color: #9a9a9a; text-decoration: underline; }
+.ch-nav:hover{ background:#f5f5f7; }
+.ch-nav.next{ text-align:right; align-items:flex-end; }
+.ch-nav-label{ font-size:.6875rem; color:#b0b0b5; font-weight:700; text-transform:uppercase; letter-spacing:.06em; }
+.ch-nav-title{ font-size:.875rem; font-weight:600; }
+.toc-back{ display:block; text-align:center; margin-top:1.5rem; font-size:.8125rem; font-weight:600; color:var(--sub); }
+.toc-back:hover{ color:var(--ink); }
+.src-note{ margin-top:2rem; text-align:center; font-size:.75rem; color:#c2c2c2; }
+.src-note a{ color:var(--sub); text-decoration:underline; }
 
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="topnav"><a href="/reading/excel/">‹ 목차</a></div>
-  <div class="crumb"><a href="/reading/">독서</a> <span class="crumb-sep">›</span> <a href="/reading/excel/">엑셀의 달인</a></div>
+  <div class="crumb"><a href="/reading/">독서</a><span class="crumb-sep">›</span><a href="/reading/excel/">엑셀의 달인</a></div>
   <div class="article-head">
-    <span class="ch-badge">08화</span>
     <h1>RPA 보다 엑셀이 먼저다</h1>
-    <div class="article-date">Sep 13. 2025</div>
   </div>
   <article>
 <p>반복적인 엑셀 보고서로 인해 지친 직장인들은 자동화라는 해결책을 원한다.</p>
@@ -79,8 +91,43 @@ article a { color: #2f6fed; word-break: break-all; }
     <a class="ch-nav prev" href="/reading/excel/07.html"><span class="ch-nav-label">‹ 이전화</span><span class="ch-nav-title">시간을 단축시켜 주는 키, 단축키</span></a>
     <a class="ch-nav next" href="/reading/excel/09.html"><span class="ch-nav-label">다음화 ›</span><span class="ch-nav-title">확장성을 고려하라</span></a>
   </div>
-  <a class="toc-back" href="/reading/excel/">전체 목차 보기 (총 10화)</a>
+  <a class="toc-back" href="/reading/excel/">전체 목차 보기</a>
   <div class="src-note">원문 · <a href="https://brunch.co.kr/brunchbook/excel" target="_blank" rel="noopener">brunch.co.kr</a></div>
+  <div class="copyright">
+  이 글의 저작권은 원저작자인 <b>신버터(윈솔)</b> 본인에게 있습니다.<br>
+  무단 전재·복제·재배포를 금하며, 인용 또는 공유 시 반드시 저작자의 사전 허락을 받아주세요.
 </div>
+</div>
+<div class="floating-controls">
+  <button id="rdFsUp" title="글자 크게">A+</button>
+  <button id="rdFsDown" title="글자 작게">A-</button>
+  <button id="rdToTop" class="dim" title="맨 위로">↑</button>
+</div>
+<script>
+(function(){
+  function applyFs(px){
+    document.documentElement.style.fontSize = px + "px";
+    try{ localStorage.setItem("winsoul_reading_fs", px); }catch(e){}
+  }
+  var saved = null;
+  try{ saved = localStorage.getItem("winsoul_reading_fs"); }catch(e){}
+  if(saved) applyFs(parseInt(saved,10));
+  var up = document.getElementById("rdFsUp");
+  var down = document.getElementById("rdFsDown");
+  var top = document.getElementById("rdToTop");
+  up.addEventListener("click", function(){
+    var cur = parseInt(getComputedStyle(document.documentElement).fontSize,10) || 16;
+    applyFs(Math.min(cur + 1, 22));
+  });
+  down.addEventListener("click", function(){
+    var cur = parseInt(getComputedStyle(document.documentElement).fontSize,10) || 16;
+    applyFs(Math.max(cur - 1, 14));
+  });
+  window.addEventListener("scroll", function(){
+    if(window.scrollY > 350) top.classList.remove("dim"); else top.classList.add("dim");
+  });
+  top.addEventListener("click", function(){ window.scrollTo({top:0, behavior:"smooth"}); });
+})();
+</script>
 </body>
 </html>
