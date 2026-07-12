@@ -13,7 +13,7 @@ function renderPeople() {
   const people = window.DATA.people;
   $('#peopleGrid').innerHTML = people.map(p =>
     `<button class="person ${p.id === selected.id ? 'active' : ''}" data-id="${p.id}">
-       <b>${p.name}</b><small>${p.weeks.length}주 · ${p.ref}</small>
+       <b>${p.name}</b>
      </button>`
   ).join('');
   document.querySelectorAll('.person').forEach(b => b.onclick = () => {
@@ -21,6 +21,7 @@ function renderPeople() {
     selectedWeek = 0;
     renderPeople();
     renderWeeks();
+    renderLesson();
     requestAnimationFrame(() => $('#weekStrip').scrollIntoView({ behavior: 'smooth', block: 'center' }));
   });
 }
@@ -105,4 +106,5 @@ function initSmallgroupApp() {
   initFloatingControls();
   renderPeople();
   renderWeeks();
+  renderLesson();
 }
