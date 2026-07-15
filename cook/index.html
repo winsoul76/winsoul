@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<title>자취 간편요리 20 | 윈솔</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<meta name="theme-color" content="#fff8f2">
+<style>
+  :root{
+    --fs-scale:1; --bg:#fff8f2; --card:#ffffff; --text:#241c14; --sub:#7a6a5a; --muted:#a3947f;
+    --accent:#e0562b; --accent-tint:#fdece0; --line:#f0e4d8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html,body{overflow-x:hidden;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Apple SD Gothic Neo',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;word-break:keep-all;}
+  .fab-group{position:fixed;left:16px;top:16px;z-index:900;}
+  .fab-group button{width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);color:var(--text);font-size:16px;font-weight:700;box-shadow:0 2px 10px rgba(0,0,0,.08);cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .side-fab{position:fixed;right:16px;bottom:24px;z-index:900;display:flex;flex-direction:column;gap:10px;}
+  .side-fab button{width:44px;height:44px;border-radius:50%;border:none;background:#241c14;color:#fff;font-size:14px;font-weight:700;box-shadow:0 2px 10px rgba(0,0,0,.22);cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .side-fab #toTop{display:none;background:var(--accent);font-size:18px;}
+  .wrap{max-width:680px;margin:0 auto;padding:64px 16px 90px;}
+  .hero{text-align:center;margin-bottom:26px;}
+  .hero .eyebrow{font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+  .hero h1{font-size:26px;font-weight:800;letter-spacing:-.4px;margin-bottom:8px;}
+  .hero p{font-size:14px;color:var(--sub);line-height:1.6;}
+  .segmented{display:flex;background:rgba(36,28,20,.07);border-radius:14px;padding:3px;margin-bottom:14px;position:sticky;top:12px;z-index:100;backdrop-filter:blur(20px);}
+  .seg-btn{flex:1;border:none;background:transparent;padding:10px 6px;font-size:13.5px;font-weight:700;color:var(--sub);border-radius:11px;cursor:pointer;}
+  .seg-btn.active{background:#fff;color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.12);}
+  .subnav-scroll{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 16px;scrollbar-width:none;}
+  .subnav-scroll::-webkit-scrollbar{display:none;}
+  .chip{flex:0 0 auto;border:none;background:#fff;color:var(--sub);font-size:13px;font-weight:700;padding:9px 15px;border-radius:100px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.05);white-space:nowrap;}
+  .chip.active{background:var(--accent);color:#fff;}
+  .panel{display:none;}
+  .panel.active{display:block;}
+  .card{background:var(--card);border-radius:18px;padding:22px 20px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+  .card.tint{background:var(--accent-tint);}
+  .section-label{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .intro-p{font-size:13.5px;color:var(--sub);line-height:1.75;margin-bottom:4px;}
+  .recipe-list{display:none;}
+  .recipe-list.active{display:block;}
+  details.recipe{background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:8px;overflow:hidden;}
+  details.recipe summary{list-style:none;cursor:pointer;padding:15px 16px;font-size:14.5px;font-weight:800;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  details.recipe summary::-webkit-details-marker{display:none;}
+  details.recipe summary .r-badge{font-size:10.5px;font-weight:700;color:var(--accent);background:var(--accent-tint);padding:3px 8px;border-radius:100px;flex-shrink:0;}
+  details.recipe summary::after{content:"+";font-size:18px;color:var(--muted);transition:transform .2s ease;margin-left:4px;}
+  details.recipe[open] summary::after{transform:rotate(45deg);}
+  details.recipe .r-body{padding:0 16px 18px;}
+  .r-sub{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:12px 0 6px;}
+  .r-sub:first-child{margin-top:0;}
+  .r-body p{font-size:13.5px;line-height:1.85;color:var(--text);}
+  .r-body ul{list-style:none;}
+  .r-body ul li{position:relative;padding-left:16px;font-size:13.5px;line-height:1.75;color:var(--text);margin-bottom:5px;}
+  .r-body ul li::before{content:"";position:absolute;left:2px;top:8px;width:4px;height:4px;border-radius:50%;background:var(--accent);}
+  .tip-line{margin-top:8px;background:var(--accent-tint);border-left:3px solid var(--accent);border-radius:8px;padding:9px 12px;font-size:12.5px;line-height:1.7;color:#8a3d1c;}
+  .yt-link{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:8px 13px;border-radius:100px;background:#241c14;color:#fff!important;text-decoration:none;font-weight:700;font-size:12px;}
+  .yt-link:active{opacity:.8;}
+  .special-card .r-sub{margin-top:14px;}
+  .footer{text-align:center;font-size:12px;color:#c2b6a6;margin-top:28px;line-height:1.8;}
+  @media(max-width:420px){.hero h1{font-size:23px;}}
+</style>
+</head>
+<body>
+
+<div class="fab-group"><button onclick="location.href='/'" aria-label="홈으로">‹</button></div>
+<div class="side-fab">
+  <button id="fontUp" aria-label="글자 크게">A+</button>
+  <button id="fontDown" aria-label="글자 작게">A-</button>
+  <button id="toTop" aria-label="맨 위로">↑</button>
+</div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Solo Kitchen · 2인분 기준</div>
+    <h1>자취생 간편요리 20</h1>
+    <p>계량 없이 대충 만들어도 맛있는, 집밥 한식 레시피 모음입니다.<br>모든 재료는 2인분(2끼) 기준이고, 꼭 필요한 재료만 담았습니다.</p>
+  </div>
+
+  <div class="segmented" id="topTabs">
+    <button class="seg-btn active" data-top="recipes">레시피 20</button>
+    <button class="seg-btn" data-top="special">라면 &amp; 고기 특별편</button>
+  </div>
+
+  <div class="subnav-scroll" id="subnavRecipes">
+    <button class="chip active" data-cat="rice">밥 · 덮밥</button>
+    <button class="chip" data-cat="soup">찌개 · 국</button>
+    <button class="chip" data-cat="main">메인요리</button>
+    <button class="chip" data-cat="side">밑반찬</button>
+  </div>
+
+  <div id="content">
+
+    <!-- ===================== 레시피 패널 ===================== -->
+    <section id="panel-recipes" class="panel active">
+      <p class="intro-p" style="margin:0 0 14px;">🍚 재료 손질 공통 꿀팁 — 파는 한 번에 썰어 냉동해두면 두고두고 씁니다. 대파·양파는 냉동해도 맛이 거의 그대로예요.</p>
+
+      <!-- 밥/덮밥 -->
+      <div class="recipe-list active" data-cat="rice">
+        <details class="recipe" open>
+          <summary><span>계란볶음밥</span><span class="r-badge">10분</span></summary>
+          <div class="r-body">
+            <div class="r-sub">재료 (2인분)</div>
+            <ul><li>찬밥 2공기, 계란 3개, 대파 1/2대, 식용유, 간장 1~2바퀴, 참기름 살짝, 소금 약간</li></ul>
+            <div class="r-sub">만드는 법</div>
+            <p>기름 두른 팬에 파를 먼저 볶아 파기름을 낸다 → 계란을 풀어 넣고 반쯤 익으면 밥을 넣고 강불에서 빠르게 볶는다 → 간장 살짝, 소금으로 간 맞추고 마지막에 참기름 한 바퀴.</p>
+            <div class="tip-line"><b>실수 방지</b> — 밥은 반드시 찬밥(냉장고에 하루 묵힌 밥)을 써야 질척이지 않고 고슬고슬합니다. 갓 지은 밥이면 살짝 펼쳐서 5분만 식히세요.</div>
+            <a class="yt-link" href="https://www.youtube.com/results?search_query=%EA%B3%84%EB%9E%80%EB%B3%B6%EC%9D%8C%EB%B0%A5%20%EB%A0%88%EC%8B%9C%ED%94%BC%20%EB%B0%B1%EC%A2%85%EC%9B%90" target="_blank">▶ 검증 레시피 영상 찾아보기</a>
+          </div>
+        </details>
+        <details class="recipe">
+          <summary><span>김치볶음밥</span><span class="r-badge">10분</span></summary>
+          <div class="r-body">
+            <div class="r-sub">재료 (2인분)</div>
+            <ul><li>신김치 1/4포기(잘게 썬 것), 찬밥 2공기, 스팸 또는 참치 1/2캔(선택), 식용유, 고추장 1스푼, 설탕 약간, 계란프라이 2개</li></ul>
+            <div class="r-sub">만드는 법</div>
+            <p>기름을 넉넉히 두르고 신김치를 먼저 볶아 신맛을 날린다 → 김칫국물 2~3스푼과 고추장, 설탕 약간 넣고 볶는다 → 밥 넣고 김치 색이 골고루 배도록 볶은 뒤, 계란프라이를 올려 마무리.</p>
+            <div class="tip-line"><b>꿀팁</b> — 신김치일수록 맛있습니다. 안 신 김치라면 식초 한 티스푼을 넣으면 비슷한 맛이 납니다.</div>
+            <a class="yt-link" href="https://www.youtube.com/results?search_query=%EA%B9%80%EC%B9%98%EB%B3%B6%EC%9D%8C%EB%B0%A5%20%EB%A0%88%EC%8B%9C%ED%94%BC%20%EB%A7%9B%EC%A7%91" target="_blank">▶ 검증 레시피 영상 찾아보기</a>
+          </div>
+        </details>
+        <details class="recipe">
+          <summary><span>스팸마요덮밥</span><span class="r-badge">10분</span></summary>
+          <div class="r-body">
+            <div class="r-sub">재료 (2인분)</div>
+            <ul><li>스팸 1/2캔, 밥 2공기, 마요네즈 3스푼, 간장 1스푼, 계란 2개, 김가루</li></ul>
+            <div class="r-sub">만드는 법</div>
+            <p>스팸을 작게 썰어 노릇하게 굽는다 → 마요네즈+간장을 1:1보다 살짝 마요 많게 섞어 소스를 만든다 → 밥 위에 스팸, 계란프라이, 소스, 김가루 순서로 올린다.</p>
+            <div class="tip-line"><b>꿀팁</b> — 마요 소스에 스리라차나 고추기름을 한 방울 더하면 매콤함이 살아납니다.</div>
+            <a class="yt-link" href="https://www.youtube.com/results?search_query=%EC%8A%A4%ED%8C%B8%EB%A7%88%EC%9A%94%EB%8D%AE%EB%B0%A5%20%EB%A0%88%EC%8B%9C%ED%94%BC" target="_blank">▶ 검증 레시피 영상 찾아보기</a>
+          </div>
+        </details>
+        <details class="recipe">
+          <summary><span>참치마요덮밥</span><span class="r-badge">5분</span></summary>
+          <div class="r-body">
+            <div class="r-sub">재료 (2인분)</div>
+            <ul><li>참치캔 1개, 마요네즈 2스푼, 간장 1/2스푼, 밥 2공기, 김가루, 통깨</li></ul>
+            <div class="r-sub">만드는 법</div>
+            <p>참치는 기름을 살짝 빼고 마요네즈, 간장과 섞는다 → 밥 위에 올리고 김가루, 통깨 뿌리면 끝. 계란프라이를 추가하면 더 든든합니다.</p>
+            <div class="tip-line"><b>꿀팁</b> — 참치 기름을 완전히 빼지 말고 살짝만 남기면 더 고소합니다.</div>
+            <a class="yt-link" href="https://www.youtube.com/results?search_query=%EC%B0%B8%EC%B9%98%EB%A7%88%EC%9A%94%EB%8D%AE%EB%B0%A5%20%EB%A0%88%EC%8B%9C%ED%94%BC" target="_blank">▶ 검증 레시피 영상 찾아보기</a>
+          </div>
+        </details>
+        <details class="recipe">
+          <summary><span>스팸 계란후라이 백반</span><span class="r-badge">10분</span></summary>
+          <div class="r-body">
+            <div class="r-sub">재료 (2인분)</div>
+            <ul><li>스팸 1/2캔, 계란 2개, 밥 2공기, 간장 약간(계란 간용)</li></ul>
+            <div class="r-sub">만드는 법</div>
+            <p>스팸을 도톰하게 썰어 기름 없이(또는 아주 살짝) 앞뒤로 노릇하게 굽는다 → 같은 팬에 계란프라이를 반숙으로 부친다 → 밥과 함께 그릇에 담고 간장 몇 방울.</p>
+            <div class="tip-line"><b>꿀팁</b> — 스팸은 끓는 물에 10초만 데치면 짠맛과 기름기가 빠져 더 깔끔합니다.</div>
+            <a class="yt-link" href="https://www.youtube.com/results?search_query=%EC%8A%A4%ED%8C%B8%EA%B5%AC%EC%9D%B4%20%EA%B3%84%EB%9E%80%ED%9B%84%EB%9D%BC%EC%9D%B4%20%EB%B0%B1%EB%B0%98" target="_blank">▶ 검증 레시피 영상 찾아보기</a>
+          </div>
+        </details>
+      </div>
+
+      <!-- 찌개/국 -->
+      <div class="recipe-list" data-cat="soup">
+        <details class="recipe" open>
+          <summary><span>김치찌개</span><span class="r-badge">20분</span></summary>
+          <div class="r-body">
+            <div class="r-sub">재료 (2인분)</div>
+            <ul><li>신김치 1/4포기, 돼지고기(목살·앞다리) 150g, 두부 1/2모, 대파, 식용유, 고춧가루 1스푼, 다진마늘 1스푼, 물 500ml</li></ul>
+            <div class="r-sub">만드는 법</div>
+            <p>냄비에 기름을 두르고 돼지고기를 볶다가 김치를 넣고 같이 볶는다 → 고춧가루, 다진마늘 넣고 조금 더 볶은 뒤 물을 붓고 끓인다 → 끓으면 두부, 대파 넣고 5분 더 끓인다.</p>
+            <div class="tip-line"><b>대대로 내려오는 비법</b> — 김치를 미리 볶는 게 핵심입니다. 그냥 끓이면 안 나는 깊은 맛이 볶는 과정에서 나옵니다.</div>
+            <a class="yt-link" href="https://www.youtube.com/results?search_query=%EA%B9%80%EC%B9%98%EC%B0%8C%EA%B0%9C%20%EB%A0%88%EC%8B%9C%ED%94%BC%20%EB%B0%B1%EC%A2%85%EC%9B%90" target="_blank">▶ 검증 레시피 영상 찾아보기</a>
+          </div>
+        </details>
+        <details class="recipe">
+          <summary><span>된장찌개 (자취 버전)</span><span class="r-badge">15분</span></summary>
+          <div class="r-body">
+            <div class="r-sub">재료 (2인분)</div>
+            <ul><li>된장 2스푼, 두부 1/2모, 감자 1/2개, 애호박 또는 양파, 대파, 다진마늘, 물 500ml</li></ul>
+            <div class="r-sub">만드는 법</div>
+            <p>물에 된장을 풀어 끓인다 → 감자, 애호박(또는 양파) 넣고 끓이다가 두부, 대파, 다진마늘 넣고 3~4분 더 끓인다.</p>
+            <div class="tip-line"><b>꿀팁</b> — 멸치육수 팩(또는 다시다 반 스푼)만 넣어도 맛이 확 살아납니다. 없으면 그냥 물로도 충분히 맛있어요.</div>
+            <a class="yt-link" href="https://www.youtube.com/results?search_query=%EB%90%9C%EC%9E%A5%EC%B0%8C%EA%B0%9C%20%EB%A0%88%EC%8B%9C%ED%94%BC%20%EA%B0%84%EB%8B%A8" target="_blank">▶ 검증 레시피 영상 찾아보기</a>
+          </div>
+        </details>
+        <details class="recipe">
+          <summary><span>순두부찌개</span><span class="r-badge">15분</span></summary>
+          <div class="r-body">
+            <div class="r-sub">재료 (2인분)</div>
+            <ul><li>순두부 1봉, 돼지고기 또는 참치 100g, 고춧가루 1스푼, 다진마늘, 대파, 계란 1개, 물 400ml</li></ul>
+            <div class="r-sub">만드는 법</div>
+            <p>기름에 고춧가루를 살짝 볶아 고추기름을 낸다 → 고기 볶고 물 부어 끓인다 → 순두부를 숟가락으로 큼직하게 잘라 넣고 대파, 다진마늘 넣어 끓이다가 계란을 톡 깨서 올린다.</p>
+            <div class="tip-line"><b>꿀팁</b> — 고춧가루를 기름에 먼저 볶으면 순두부집처럼 색과 향이 훨씬 진해집니다.</div>
+            <a class="yt-link" href="https://www.youtube.com/results?search_query=%EC%88%9C%EB%91%90%EB%B6%80%EC%B0%8C%EA%B0%9C%20%EB%A0%88%EC%8B%9C%ED%94%BC%20%EC%A7%91%EC%97%90%EC%84%9C" target="_blank">▶ 검증 레시피 영상 찾아보기</a>
+          </div>
+        </details>
+        <details class="recipe">
+          <summary><span>소고기미역국</span><span class="r-badge">25분</span></summary>
+          <div class="r-body">
+            <div class="r-sub">재료 (2인분)</div>
+            <ul><li>건미역 한 줌(불려서), 소고기 국거리 100g, 참기름, 국간장 1~2스푼, 다진마늘, 물 600ml</li></ul>
+            <div class="r-sub">만드는 법</div>
+            <p>불린 미역과 소고기를 참기름에 달달 볶는다(이 과정이 핵심) → 물을 붓고 국간장, 다진마늘 넣어 20분 이상 푹 끓인다.</p>
+            <div class="tip-line"><b>실수 방지</b> — 미역을 볶지 않고 바로 끓이면 밍밍합니다. 참기름에 충분히 볶아 고소한 향을 먼저 내세요.</div>
+            <a class="yt-link" href="https://www.youtube.com/results?search_query=%EC%86%8C%EA%B3%A0%EA%B8%B0%EB%AF%B8%EC%97%AD%EA%B5%AD%20%EB%A0%88%EC%8B%9C%ED%94%BC%20%EB%A7%9B%EC%A7%91" target="_blank">▶ 검증 레시피 영상 찾아보기</a>
+          </div>
+        </details>
+        <details class="recipe">
+          <summary><span>콩나물국밥</span><span class="r-badge">15분</span></summary>
+          <div class="r-body">
+            <div class="r-sub">재료 (2인분)</div>
+            <ul><li>콩나물 1봉, 새우젓 또는 국간장, 다진마늘, 대파, 계란 2개, 밥, 물 500ml</li></ul>
+            <div class="r-sub">만드는 법</div>
+            <p>물에 콩나물을 넣고 뚜껑을 덮은 채 끓인다(중간에 뚜껑 열면 비린내) → 익으면 국간장·새우젓으로 간, 다진마늘·대파 넣고 계란을 풀어 넣는다 → 밥을 말아 먹는다.</p>
+            <div class="tip-line"><b>꿀팁</b> — 콩나물 익을 때까지 뚜껑을 열지 않는 게 비린내 안 나게 하는 비법입니다.</div>
+            <a class="yt-link" href="https://www.youtube.com/results?search_query=%EC%BD%A9%EB%82%98%EB%AC%BC%EA%B5%AD%EB%B0%A5%20%EB%A0%88%EC%8B%9C%ED%94%BC%20%EC%A7%91%EC%97%90%EC%84%9C" target="_blank">▶ 검증 레시피 영상 찾아보기</a>
+          </div>
+        </details>
+      </div>
+
+      <!-- 메인요리 -->
+      <div class="recipe-list" data-cat="main">
+        <details class="recipe" open>
+          <summary><span>제육볶음</span><span class="r-badge">20분</span></summary>
+          <div class="r-body">
+            <div class="r-sub">재료 (2인분)</div>
+            <ul><li>돼지고기 앞다리·목살 300g, 양파 1/2개, 대파, 고추장 2스푼, 고춧가루 1스푼, 간장 1스푼, 설탕 1스푼, 다진마늘 1스푼</li></ul>
+            <div class="r-sub">만드는 법</div>
+            <p>양념(고추장·고춧가루·간장·설탕·다진마늘)을 미리 섞어둔다 → 고기에 양념을 버무려 10분 재운다(급하면 생략 가능) → 센 불에 양파와 함께 볶다가 마지막에 대파 넣고 마무리.</p>
+            <div class="tip-line"><b>실수 방지</b> — 양념한 고기를 처음부터 약불에 볶으면 물이 생겨 질척여집니다. 센 불에서 빠르게 볶아야 불맛이 납니다.</div>
+            <a class="yt-link" href="https://www.youtube.com/results?search_query=%EC%A0%9C%EC%9C%A1%EB%B3%B6%EC%9D%8C%20%EB%A0%88%EC%8B%9C%ED%94%BC%20%EB%B0%B1%EC%A2%85%EC%9B%90" target="_blank">▶ 검증 레시피 영상 찾아보기</a>
+          </div>
+        </details>
+        <details class="recipe">
+          <summary><span>두부조림</span><span class="r-badge">15분</span></summary>
+          <div class="r-body">
+            <div class="r-sub">재료 (2인분)</div>
+            <ul><li>두부 1모, 간장 3스푼, 고춧가루 1스푼, 다진마늘, 대파, 물 100ml, 식용유</li></ul>
+            <div class="r-sub">만드는 법</div>
+            <p>두부를 도톰하게 썰어 기름에 앞뒤로 노릇하게 굽는다 → 간장·고춧가루·다진마늘·물을 섞은 양념장을 붓고 졸인다 → 대파 올려 마무리.</p>
+            <div class="tip-line"><b>꿀팁</b> — 두부를 먼저 구워야 조릴 때 부서지지 않고 양념도 잘 뱁니다.</div>
+            <a class="yt-link" href="https://www.youtube.com/results?search_query=%EB%91%90%EB%B6%80%EC%A1%B0%EB%A6%BC%20%EB%A0%88%EC%8B%9C%ED%94%BC%20%EA%B0%84%EB%8B%A8" target="_blank">▶ 검증 레시피 영상 찾아보기</a>
+          </div>
+        </details>
+        <details class="recipe">
+          <summary><span>오징어채볶음</span><span class="r-badge">10분</span></summary>
+          <div class="r-body">
+            <div class="r-sub">재료 (2인분)</div>
+            <ul><li>오징어채 1줌, 마요네즈 1스푼, 고추장 1스푼, 물엿(또는 올리고당) 1스푼, 다진마늘</li></ul>
+            <div class="r-sub">만드는 법</div>
+            <p>오징어채를 마요네즈와 먼저 버무려 부드럽게 만든다(비법) → 팬에 고추장, 물엿, 다진마늘을 약불에 살짝 볶다가 오징어채를 넣고 재빨리 버무린다.</p>
+            <div class="tip-line"><b>대대로 내려오는 비법</b> — 마요네즈로 먼저 버무리면 오징어채가 딱딱하지 않고 촉촉해집니다. 이게 반찬가게 맛의 비밀입니다.</div>
+            <a class="yt-link" href="https://www.youtube.com/results?search_query=%EC%98%A4%EC%A7%95%EC%96%B4%EC%B1%84%EB%B3%B6%EC%9D%8C%20%EB%A0%88%EC%8B%9C%ED%94%BC%20%EB%A7%88%EC%9A%94%EB%84%A4%EC%A6%88" target="_blank">▶ 검증 레시피 영상 찾아보기</a>
+          </div>
+        </details>
+        <details class="recipe">
+          <summary><span>계란말이</span><span class="r-badge">10분</span></summary>
+          <div class="r-body">
+            <div class="r-sub">재료 (2인분)</div>
+            <ul><li>계란 4개, 다진 대파(또는 당근·햄) 약간, 소금 약간, 식용유</li></ul>
+            <div class="r-sub">만드는 법</div>
+            <p>계란을 곱게 풀어 체에 한 번 걸러준다(선택이지만 훨씬 부드러움) → 약불로 예열한 팬에 얇게 부어 반쯤 익으면 돌돌 말고, 빈 자리에 계란물을 더 부어 반복.</p>
+            <div class="tip-line"><b>실수 방지</b> — 불이 세면 겉만 타고 안이 안 익습니다. 약불에서 천천히가 포인트입니다.</div>
+            <a class="yt-link" href="https://www.youtube.com/results?search_query=%EA%B3%84%EB%9E%80%EB%A7%90%EC%9D%B4%20%EB%A0%88%EC%8B%9C%ED%94%BC%20%EC%B4%88%EB%B3%B4" target="_blank">▶ 검증 레시피 영상 찾아보기</a>
+          </div>
+        </details>
+        <details class="recipe">
+          <summary><span>두부김치</span><span class="r-badge">15분</span></summary>
+          <div class="r-body">
+            <div class="r-sub">재료 (2인분)</div>
+            <ul><li>두부 1모(데친 것), 신김치 1/4포기, 돼지고기(선택) 100g, 참기름, 설탕 약간</li></ul>
+            <div class="r-sub">만드는 법</div>
+            <p>두부는 끓는 물에 살짝 데쳐 썰어둔다 → 팬에 돼지고기(또는 그냥 기름)와 김치를 볶다가 설탕 약간, 참기름을 넣어 마무리 → 데친 두부 위에 볶은 김치를 올린다.</p>
+            <div class="tip-line"><b>꿀팁</b> — 두부를 데치면 물기가 빠지고 더 쫀득해져서 잘 부서지지 않습니다.</div>
+            <a class="yt-link" href="https://www.youtube.com/results?search_query=%EB%91%90%EB%B6%80%EA%B9%80%EC%B9%98%20%EB%A0%88%EC%8B%9C%ED%94%BC%20%EA%B0%84%EB%8B%A8" target="_blank">▶ 검증 레시피 영상 찾아보기</a>
+          </div>
+        </details>
+      </div>
+
+      <!-- 밑반찬 -->
+      <div class="recipe-list" data-cat="side">
+        <details class="recipe" open>
+          <summary><span>감자채볶음</span><span class="r-badge">10분</span></summary>
+          <div class="r-body">
+            <div class="r-sub">재료 (2인분)</div>
+            <ul><li>감자 2개(채썬 것), 당근 약간, 식용유, 소금, 후추</li></ul>
+            <div class="r-sub">만드는 법</div>
+            <p>채 썬 감자를 찬물에 5분 담가 전분기를 뺀다(중요) → 기름에 감자, 당근을 넣고 소금 간해서 센 불에 빠르게 볶는다.</p>
+            <div class="tip-line"><b>실수 방지</b> — 전분기를 안 빼면 감자끼리 서로 들러붙습니다. 찬물에 담갔다가 물기 잘 빼고 볶으세요.</div>
+            <a class="yt-link" href="https://www.youtube.com/results?search_query=%EA%B0%90%EC%9E%90%EC%B1%84%EB%B3%B6%EC%9D%8C%20%EB%A0%88%EC%8B%9C%ED%94%BC" target="_blank">▶ 검증 레시피 영상 찾아보기</a>
+          </div>
+        </details>
+        <details class="recipe">
+          <summary><span>어묵볶음</span><span class="r-badge">10분</span></summary>
+          <div class="r-body">
+            <div class="r-sub">재료 (2인분)</div>
+            <ul><li>사각어묵 2~3장, 양파, 대파, 간장 1.5스푼, 고춧가루 1/2스푼(선택), 설탕 1/2스푼, 물엿 약간</li></ul>
+            <div class="r-sub">만드는 법</div>
+            <p>어묵은 끓는 물에 살짝 데쳐 기름기를 뺀다 → 팬에 양파와 어묵을 볶다가 간장, 설탕, 물엿을 넣고 국물이 자작해질 때까지 볶는다.</p>
+            <div class="tip-line"><b>꿀팁</b> — 어묵을 데치는 한 단계만 추가해도 훨씬 깔끔한 맛이 납니다.</div>
+            <a class="yt-link" href="https://www.youtube.com/results?search_query=%EC%96%B4%EB%AC%B5%EB%B3%B6%EC%9D%8C%20%EB%A0%88%EC%8B%9C%ED%94%BC%20%EA%B0%84%EB%8B%A8" target="_blank">▶ 검증 레시피 영상 찾아보기</a>
+          </div>
+        </details>
+        <details class="recipe">
+          <summary><span>콩나물무침</span><span class="r-badge">10분</span></summary>
+          <div class="r-body">
+            <div class="r-sub">재료 (2인분)</div>
+            <ul><li>콩나물 1봉, 소금, 참기름, 다진마늘, 통깨, 대파(선택)</li></ul>
+            <div class="r-sub">만드는 법</div>
+            <p>냄비에 콩나물과 물 약간, 소금 한 꼬집 넣고 뚜껑 덮어 4~5분 찐다(뚜껑 열지 않기) → 찬물에 헹궈 물기를 꽉 짠 뒤 참기름, 다진마늘, 통깨로 무친다.</p>
+            <div class="tip-line"><b>실수 방지</b> — 여기서도 뚜껑 원칙은 동일! 익는 도중 열면 비린내가 남습니다.</div>
+            <a class="yt-link" href="https://www.youtube.com/results?search_query=%EC%BD%A9%EB%82%98%EB%AC%BC%EB%AC%B4%EC%B9%A8%20%EB%A0%88%EC%8B%9C%ED%94%BC%20%EA%B0%84%EB%8B%A8" target="_blank">▶ 검증 레시피 영상 찾아보기</a>
+          </div>
+        </details>
+        <details class="recipe">
+          <summary><span>멸치볶음</span><span class="r-badge">10분</span></summary>
+          <div class="r-body">
+            <div class="r-sub">재료 (2인분)</div>
+            <ul><li>잔멸치 1컵, 간장 1스푼, 물엿(또는 올리고당) 1.5스푼, 식용유, 마늘 약간, 견과류(선택)</li></ul>
+            <div class="r-sub">만드는 법</div>
+            <p>마른 팬에 멸치만 먼저 살짝 볶아 비린내를 날린다(중요) → 기름에 마늘 볶다가 멸치, 간장 넣고 볶은 뒤 불을 끄고 물엿을 넣어 버무린다.</p>
+            <div class="tip-line"><b>실수 방지</b> — 물엿을 불 위에서 계속 볶으면 딱딱하게 굳습니다. 불 끄고 여열로 버무리세요.</div>
+            <a class="yt-link" href="https://www.youtube.com/results?search_query=%EB%A9%B8%EC%B9%98%EB%B3%B6%EC%9D%8C%20%EB%A0%88%EC%8B%9C%ED%94%BC%20%EC%95%88%EB%94%B1%EB%94%B1" target="_blank">▶ 검증 레시피 영상 찾아보기</a>
+          </div>
+        </details>
+        <details class="recipe">
+          <summary><span>진미채볶음</span><span class="r-badge">10분</span></summary>
+          <div class="r-body">
+            <div class="r-sub">재료 (2인분)</div>
+            <ul><li>진미채 1줌, 고추장 1스푼, 간장 1/2스푼, 물엿 1스푼, 마요네즈 1스푼, 다진마늘</li></ul>
+            <div class="r-sub">만드는 법</div>
+            <p>진미채를 가위로 먹기 좋게 자른다 → 따뜻한 물에 1~2분 불려 부드럽게 만든다(중요, 물기는 꼭 짜기) → 양념(고추장·간장·물엿·마요네즈·마늘)과 버무리기만 하면 끝.</p>
+            <div class="tip-line"><b>꿀팁</b> — 진미채를 안 불리면 질겨서 뻣뻣합니다. 살짝 불렸다가 물기를 꽉 짜야 부드럽고 양념도 잘 뱁니다.</div>
+            <a class="yt-link" href="https://www.youtube.com/results?search_query=%EC%A7%84%EB%AF%B8%EC%B1%84%EB%B3%B6%EC%9D%8C%20%EB%A0%88%EC%8B%9C%ED%94%BC%20%EB%B6%88%EB%A6%AC%EC%A7%80%EC%95%8A%EA%B2%8C" target="_blank">▶ 검증 레시피 영상 찾아보기</a>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ===================== 특별편 패널 ===================== -->
+    <section id="panel-special" class="panel">
+      <div class="card special-card">
+        <div class="section-label">🍜 라면 맛있게 끓이는 법</div>
+        <div class="r-sub">기본 원칙</div>
+        <ul>
+          <li>물은 봉지 권장량보다 살짝 적게 (500ml 대신 480ml) — 국물이 더 진해집니다.</li>
+          <li>물이 팔팔 끓은 뒤에 면과 스프를 같이 넣습니다.</li>
+          <li>면은 젓가락으로 자주 뒤집어가며 3분 30초~4분만 끓입니다 (봉지 시간보다 30초 덜).</li>
+        </ul>
+        <div class="r-sub">한 끗 차이 꿀팁</div>
+        <ul>
+          <li>스프를 다 넣지 않고 90%만 넣으면 짜지 않고 감칠맛은 그대로 살아있습니다.</li>
+          <li>계란은 풀지 말고 통째로 넣어 반숙으로 익히면 국물이 안 탁해집니다.</li>
+          <li>다 끓기 30초 전에 대파를 넣으면 향이 확 살아납니다.</li>
+          <li>찬물 대신 얼음 한 조각을 넣고 끓이면(찬물 투입) 면발이 더 쫄깃해진다는 유명 트레이너급 라면 맛집들의 팁도 있습니다.</li>
+        </ul>
+        <a class="yt-link" href="https://www.youtube.com/results?search_query=%EB%9D%BC%EB%A9%B4%20%EB%A7%9B%EC%9E%88%EA%B2%8C%20%EB%81%93%EC%9D%B4%EB%8A%94%EB%B2%95%20%EB%B0%B1%EC%A2%85%EC%9B%90" target="_blank">▶ 라면 맛있게 끓이는 법 영상 찾아보기</a>
+      </div>
+
+      <div class="card special-card">
+        <div class="section-label">🥩 고기 맛있게 굽는 법</div>
+        <div class="r-sub">삼겹살 / 목살</div>
+        <ul>
+          <li>고기는 굽기 30분 전 냉장고에서 미리 꺼내 실온에 둡니다 (차가운 채로 구우면 겉만 타고 속은 안 익음).</li>
+          <li>팬을 충분히 달군 뒤(연기 살짝 날 정도) 고기를 올리고, 자주 뒤집지 말고 한쪽 면이 노릇해질 때까지 기다립니다.</li>
+          <li>도톰한 고기는 처음엔 센 불로 겉을 굽고, 이후 중불로 낮춰 속까지 천천히 익힙니다.</li>
+        </ul>
+        <div class="r-sub">스테이크 / 안심</div>
+        <ul>
+          <li>굽기 전 키친타월로 겉면 핏물을 완전히 닦아야 노릇한 색이 잘 납니다.</li>
+          <li>소금·후추는 굽기 직전에 뿌립니다 (미리 뿌리면 육즙이 빠져나옵니다).</li>
+          <li>한 면당 1분 30초~2분씩 구운 뒤, 불을 끄고 3~5분간 그대로 두었다가(레스팅) 썰어야 육즙이 빠지지 않습니다.</li>
+        </ul>
+        <div class="tip-line"><b>공통 꿀팁</b> — 버터 한 조각과 마늘, 로즈마리(또는 그냥 마늘만)를 마지막에 넣고 기울인 팬의 기름을 고기에 끼얹으며 마무리하면 맛집 스타일이 됩니다.</div>
+        <a class="yt-link" href="https://www.youtube.com/results?search_query=%EA%B3%A0%EA%B8%B0%20%EB%A7%9B%EC%9E%88%EA%B2%8C%20%EA%B5%BD%EB%8A%94%EB%B2%95%20%EC%82%BC%EA%B2%B9%EC%82%B4%20%EC%8A%A4%ED%85%8C%EC%9D%B4%ED%81%AC" target="_blank">▶ 고기 맛있게 굽는 법 영상 찾아보기</a>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="footer">모든 레시피는 2인분(2끼 식사) 기준이며, 계량은 대략적인 감으로 조절해도 좋습니다.<br>© 2026 winsoul.de</div>
+</div>
+
+<script>
+  function getFontScale(){var v=parseFloat(localStorage.getItem("cook_fontScale"));return(!isNaN(v)&&v>=0.85&&v<=1.6)?v:1;}
+  function applyFontScale(v){document.documentElement.style.setProperty("--fs-scale",v);}
+  function bumpFontScale(delta){var v=Math.min(1.6,Math.max(0.85,+(getFontScale()+delta).toFixed(2)));try{localStorage.setItem("cook_fontScale",v);}catch(e){}applyFontScale(v);}
+  applyFontScale(getFontScale());
+  document.getElementById("fontUp").addEventListener("click",function(){bumpFontScale(0.1);});
+  document.getElementById("fontDown").addEventListener("click",function(){bumpFontScale(-0.1);});
+  var toTopBtn=document.getElementById("toTop");
+  toTopBtn.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"});});
+  window.addEventListener("scroll",function(){toTopBtn.style.display=window.scrollY>400?"flex":"none";});
+
+  var topTabs=document.querySelectorAll("#topTabs .seg-btn");
+  var subnavRecipes=document.getElementById("subnavRecipes");
+  var panelRecipes=document.getElementById("panel-recipes");
+  var panelSpecial=document.getElementById("panel-special");
+
+  topTabs.forEach(function(btn){
+    btn.addEventListener("click",function(){
+      topTabs.forEach(function(b){b.classList.remove("active");});
+      btn.classList.add("active");
+      if(btn.dataset.top==="recipes"){
+        subnavRecipes.style.display="flex";
+        panelRecipes.classList.add("active");
+        panelSpecial.classList.remove("active");
+      }else{
+        subnavRecipes.style.display="none";
+        panelRecipes.classList.remove("active");
+        panelSpecial.classList.add("active");
+      }
+      window.scrollTo({top:0,behavior:"instant" in window ? "instant":"auto"});
+    });
+  });
+
+  subnavRecipes.querySelectorAll(".chip").forEach(function(chip){
+    chip.addEventListener("click",function(){
+      subnavRecipes.querySelectorAll(".chip").forEach(function(c){c.classList.remove("active");});
+      chip.classList.add("active");
+      document.querySelectorAll(".recipe-list").forEach(function(list){
+        list.classList.toggle("active", list.dataset.cat===chip.dataset.cat);
+      });
+      window.scrollTo({top:0,behavior:"instant" in window ? "instant":"auto"});
+    });
+  });
+</script>
+</body>
+</html>
