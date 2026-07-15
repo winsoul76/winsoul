@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<title>헬린이 가이드 | 윈솔</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<meta name="theme-color" content="#14131a">
+<style>
+  :root{
+    --fs-scale:1; --bg:#f6f5f3; --card:#ffffff; --text:#181717; --sub:#6b6864; --muted:#94908a;
+    --accent:#ff5a36; --accent2:#0f9d6e; --accent-tint:#fff0ea; --line:#ece9e4; --men:#2f6fed; --women:#e0457b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html,body{overflow-x:hidden;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Apple SD Gothic Neo',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;word-break:keep-all;}
+  .fab-group{position:fixed;left:16px;top:16px;z-index:900;}
+  .fab-group button{width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);color:var(--text);font-size:16px;font-weight:700;box-shadow:0 2px 10px rgba(0,0,0,.1);cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .side-fab{position:fixed;right:16px;bottom:24px;z-index:900;display:flex;flex-direction:column;gap:10px;}
+  .side-fab button{width:44px;height:44px;border-radius:50%;border:none;background:#181717;color:#fff;font-size:14px;font-weight:700;box-shadow:0 2px 10px rgba(0,0,0,.22);cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .side-fab #toTop{display:none;background:var(--accent);font-size:18px;}
+  .wrap{max-width:680px;margin:0 auto;padding:64px 16px 90px;}
+  .hero{text-align:center;margin-bottom:26px;}
+  .hero .eyebrow{font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+  .hero h1{font-size:26px;font-weight:800;letter-spacing:-.4px;margin-bottom:8px;}
+  .hero p{font-size:14px;color:var(--sub);line-height:1.6;}
+  .segmented{display:flex;background:rgba(24,23,23,.06);border-radius:14px;padding:3px;margin-bottom:14px;position:sticky;top:12px;z-index:100;backdrop-filter:blur(20px);}
+  .seg-btn{flex:1;border:none;background:transparent;padding:10px 6px;font-size:13.5px;font-weight:700;color:var(--sub);border-radius:11px;cursor:pointer;}
+  .seg-btn.active{background:#fff;color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.12);}
+  .subnav-scroll{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 16px;scrollbar-width:none;}
+  .subnav-scroll::-webkit-scrollbar{display:none;}
+  .chip{flex:0 0 auto;border:none;background:#fff;color:var(--sub);font-size:13px;font-weight:700;padding:9px 15px;border-radius:100px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.05);white-space:nowrap;}
+  .chip.active{background:var(--accent);color:#fff;}
+  .panel{display:none;}
+  .panel.active{display:block;}
+  .card{background:var(--card);border-radius:18px;padding:22px 20px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+  .card.tint{background:var(--accent-tint);}
+  .section-label{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .goal-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+  .goal-head .num{flex:0 0 30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;}
+  .goal-head h2{font-size:18px;font-weight:800;letter-spacing:-.2px;}
+  .goal-desc{font-size:13.5px;color:var(--sub);line-height:1.7;margin-bottom:14px;}
+  .place-toggle{display:flex;gap:8px;margin-bottom:14px;}
+  .place-toggle button{flex:1;border:1.5px solid var(--line);background:#fff;color:var(--sub);font-weight:700;font-size:13px;padding:10px;border-radius:12px;cursor:pointer;}
+  .place-toggle button.active{background:var(--text);color:#fff;border-color:var(--text);}
+  .place-panel{display:none;}
+  .place-panel.active{display:block;}
+  details.acc{background:#fbfaf8;border:1px solid var(--line);border-radius:14px;margin-bottom:8px;overflow:hidden;}
+  details.acc summary{list-style:none;cursor:pointer;padding:14px 16px;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:space-between;}
+  details.acc summary::-webkit-details-marker{display:none;}
+  details.acc summary::after{content:"+";font-size:18px;color:var(--muted);transition:transform .2s ease;margin-left:10px;}
+  details.acc[open] summary::after{transform:rotate(45deg);}
+  details.acc .acc-body{padding:0 16px 16px;font-size:13.5px;line-height:1.8;color:var(--text);}
+  details.acc .acc-body ul{padding-left:18px;margin-top:6px;}
+  details.acc .acc-body li{margin-bottom:5px;}
+  .tip-box{margin-top:10px;background:var(--accent-tint);border-left:3px solid var(--accent);border-radius:10px;padding:11px 13px;font-size:12.5px;line-height:1.7;color:#7a3520;}
+  .tip-box b{color:var(--accent);}
+  .yt-link{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:9px 14px;border-radius:100px;background:#181717;color:#fff!important;text-decoration:none;font-weight:700;font-size:12.5px;}
+  .yt-link:active{opacity:.8;}
+  .weight-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px;}
+  .weight-table th,.weight-table td{padding:9px 6px;text-align:center;border-bottom:1px solid var(--line);}
+  .weight-table th{color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase;}
+  .weight-table td:first-child,.weight-table th:first-child{text-align:left;font-weight:700;}
+  .bullet-list{list-style:none;}
+  .bullet-list li{position:relative;padding-left:18px;font-size:13.5px;line-height:1.8;color:var(--text);margin-bottom:9px;}
+  .bullet-list li:last-child{margin-bottom:0;}
+  .bullet-list li::before{content:"";position:absolute;left:2px;top:9px;width:5px;height:5px;border-radius:50%;background:var(--accent);}
+  .meal-row{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13.5px;align-items:flex-start;}
+  .meal-row:last-child{border-bottom:none;}
+  .meal-time{flex:0 0 62px;font-weight:800;color:var(--accent);font-size:12.5px;}
+  .meal-desc{flex:1;color:var(--text);line-height:1.6;}
+  .habit-grid{display:grid;grid-template-columns:1fr;gap:10px;}
+  .habit-item{background:#fbfaf8;border:1px solid var(--line);border-radius:12px;padding:13px 14px;}
+  .habit-item b{display:block;font-size:13.5px;margin-bottom:4px;}
+  .habit-item span{font-size:12.5px;color:var(--sub);line-height:1.6;}
+  .footer{text-align:center;font-size:12px;color:#b3afaa;margin-top:28px;line-height:1.8;}
+  @media(max-width:420px){.hero h1{font-size:23px;}}
+</style>
+</head>
+<body>
+
+<div class="fab-group"><button onclick="location.href='/'" aria-label="홈으로">‹</button></div>
+<div class="side-fab">
+  <button id="fontUp" aria-label="글자 크게">A+</button>
+  <button id="fontDown" aria-label="글자 작게">A-</button>
+  <button id="toTop" aria-label="맨 위로">↑</button>
+</div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Beginner Fitness Guide</div>
+    <h1>헬린이를 위한<br>처음 헬스 가이드</h1>
+    <p>운동을 처음 시작하는 분들을 위해<br>목표별·성별별로 무리 없이 따라 할 수 있도록 정리했습니다.</p>
+  </div>
+
+  <div class="segmented" id="topTabs">
+    <button class="seg-btn active" data-top="men">남자 가이드</button>
+    <button class="seg-btn" data-top="women">여자 가이드</button>
+    <button class="seg-btn" data-top="common">식단 · 습관 · 무게</button>
+  </div>
+
+  <!-- ===== 남자 ===== -->
+  <div class="subnav-scroll" id="subnavMen">
+    <button class="chip active" data-target="men-bulk">근육량 증가</button>
+    <button class="chip" data-target="men-cut">체지방 감소</button>
+    <button class="chip" data-target="men-health">체력 · 건강</button>
+  </div>
+
+  <!-- ===== 여자 ===== -->
+  <div class="subnav-scroll" id="subnavWomen" style="display:none;">
+    <button class="chip active" data-target="women-diet">체중 감량</button>
+    <button class="chip" data-target="women-line">탄력있는 바디라인</button>
+    <button class="chip" data-target="women-health">스트레스 해소 · 건강</button>
+  </div>
+
+  <!-- ===== 공통 ===== -->
+  <div class="subnav-scroll" id="subnavCommon" style="display:none;">
+    <button class="chip active" data-target="c-weight">시작 무게 가이드</button>
+    <button class="chip" data-target="c-diet">식사 · 단백질</button>
+    <button class="chip" data-target="c-habit">습관 만들기</button>
+  </div>
+
+  <div id="content">
+
+    <!-- ============ 남자: 근육량 증가 ============ -->
+    <section id="men-bulk" class="panel active">
+      <div class="card">
+        <div class="goal-head"><div class="num">1</div><h2>근육량 증가 (벌크업)</h2></div>
+        <p class="goal-desc">남자가 헬스를 시작하는 가장 흔한 이유 1위. 어깨가 넓어지고 팔·가슴이 붙는 변화가 가장 눈에 잘 보여서 동기부여가 잘 되는 목표입니다.</p>
+        <div class="place-toggle">
+          <button type="button" class="place-btn active" data-place="gym">🏋️ 헬스장</button>
+          <button type="button" class="place-btn" data-place="home">🏠 홈트</button>
+        </div>
+        <div class="place-panel active" data-place-panel="gym">
+          <details class="acc" open>
+            <summary>1~2주차 · 폼부터 익히기</summary>
+            <div class="acc-body">
+              <ul>
+                <li>스쿼트·벤치프레스·데드리프트 3대 운동을 <b>빈 바(20kg)</b>로 자세부터 잡습니다.</li>
+                <li>주 3회, 전신 운동으로 시작 (월·수·금 추천).</li>
+                <li>세트당 8~12회, 3세트. 마지막 2개가 버거운 무게가 적당합니다.</li>
+              </ul>
+              <div class="tip-box"><b>트레이너 꿀팁</b> — Jeff Nippard, 피지컬갤러리(김계란) 등 유명 트레이너들이 공통으로 강조하는 원칙: "무게보다 자세". 처음 4주는 무게를 늘리지 말고 같은 무게로 자세를 완벽하게 만드는 데 집중하세요.</div>
+              <a class="yt-link" href="https://www.youtube.com/results?search_query=%ED%97%AC%EC%8A%A4%20%EC%B4%88%EB%B3%B4%20%EC%8A%A4%EC%BF%BC%EB%9E%80%20%EB%B2%A4%EC%B9%98%ED%94%84%EB%A0%88%EC%8A%A4%20%EB%8D%B0%EB%93%9C%EB%A6%AC%ED%94%84%ED%8A%B8%20%EC%9E%90%EC%84%B8" target="_blank">▶ 3대 운동 자세 영상 찾아보기</a>
+            </div>
+          </details>
+          <details class="acc">
+            <summary>3~4주차 · 분할 시작</summary>
+            <div class="acc-body">
+              <ul>
+                <li>상체/하체 2분할로 전환, 주 4회 (월·화·목·금).</li>
+                <li>복합운동(스쿼트, 벤치, 데드, 오버헤드프레스) 먼저 → 고립운동(이두, 삼두, 사이드레터럴) 나중.</li>
+                <li>매주 무게를 아주 조금씩(2.5kg 이하) 늘리는 <b>점진적 과부하</b>가 핵심입니다.</li>
+              </ul>
+              <div class="tip-box"><b>Jeremy Ethier 스타일 팁</b> — 한 세트를 실패 지점(더 이상 못 드는 지점)까지 가지 않고, 2회 정도 남기고 끝내는 게 부상 없이 오래 지속하는 비결입니다.</div>
+            </div>
+          </details>
+          <details class="acc">
+            <summary>5~8주차 · 볼륨 늘리기</summary>
+            <div class="acc-body">
+              <ul>
+                <li>부위별 세트 수를 주당 10~14세트까지 서서히 늘립니다.</li>
+                <li>단백질 섭취량을 다시 점검하세요 (아래 '식단·습관·무게' 탭 참고).</li>
+                <li>4주마다 사진을 찍어 변화를 기록하면 동기부여에 큰 도움이 됩니다.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+        <div class="place-panel" data-place-panel="home">
+          <details class="acc" open>
+            <summary>맨몸운동으로 시작 (1~2주차)</summary>
+            <div class="acc-body">
+              <ul>
+                <li>푸시업, 스쿼트, 런지, 플랭크 4종을 각 12~15회 3세트, 주 4회.</li>
+                <li>푸시업이 힘들면 무릎 대고(니 푸시업)부터 시작해도 충분합니다.</li>
+              </ul>
+              <a class="yt-link" href="https://www.youtube.com/results?search_query=%ED%99%88%ED%8A%B8%20%EC%B4%88%EB%B3%B4%20%EA%B7%BC%EB%A0%A5%20%EC%9A%B4%EB%8F%99%20%EB%A3%A8%ED%8B%B4" target="_blank">▶ 홈트 초보 루틴 영상 찾아보기</a>
+            </div>
+          </details>
+          <details class="acc">
+            <summary>덤벨/밴드 추가 (3~4주차)</summary>
+            <div class="acc-body">
+              <ul>
+                <li>덤벨(또는 물통·쌀포대)로 로우, 숄더프레스, 바이셉컬 추가.</li>
+                <li>맨몸운동이 쉬워지면 <b>템포를 늦추거나</b>(내려갈 때 3초) 횟수를 20회 이상으로 늘려 강도를 높입니다.</li>
+              </ul>
+              <div class="tip-box"><b>Athlean-X(Jeff Cavaliere) 스타일 팁</b> — 홈트는 기구가 없는 만큼 '가동 범위(풀 레인지)'를 최대한 크게 쓰는 것이 자극을 키우는 핵심입니다.</div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 남자: 체지방 감소 ============ -->
+    <section id="men-cut" class="panel">
+      <div class="card">
+        <div class="goal-head"><div class="num">2</div><h2>체지방 감소 (다이어트)</h2></div>
+        <p class="goal-desc">뱃살을 빼고 라인을 살리고 싶어서 시작하는 경우. 근력 운동 없이 유산소만 하면 근육까지 빠지기 쉬우니, 웨이트를 병행하는 것이 핵심입니다.</p>
+        <div class="place-toggle">
+          <button type="button" class="place-btn active" data-place="gym">🏋️ 헬스장</button>
+          <button type="button" class="place-btn" data-place="home">🏠 홈트</button>
+        </div>
+        <div class="place-panel active" data-place-panel="gym">
+          <details class="acc" open>
+            <summary>기본 루틴 · 웨이트 + 유산소</summary>
+            <div class="acc-body">
+              <ul>
+                <li>주 3회 전신 웨이트 (근육량 유지가 목표) + 주 2~3회 걷기/사이클 20~30분.</li>
+                <li>고강도 인터벌(HIIT)은 체력이 붙은 뒤(4주 이후)에 시작하세요.</li>
+              </ul>
+              <div class="tip-box"><b>트레이너 꿀팁</b> — "다이어트는 주방에서 완성된다"는 말처럼, 운동보다 식단 관리 비중이 더 큽니다. 웨이트로 근육을 지키고, 칼로리는 식사로 조절하세요.</div>
+              <a class="yt-link" href="https://www.youtube.com/results?search_query=%EB%8B%A4%EC%9D%B4%EC%96%B4%ED%8A%B8%20%ED%97%AC%EC%8A%A4%20%EC%9C%A0%EC%82%B0%EC%86%8C%20%EB%B3%91%ED%96%89%20%EB%A3%A8%ED%8B%B4" target="_blank">▶ 다이어트 루틴 영상 찾아보기</a>
+            </div>
+          </details>
+          <details class="acc">
+            <summary>정체기 넘기는 법</summary>
+            <div class="acc-body">
+              <ul>
+                <li>2~3주 체중이 그대로면 활동량(걸음 수)을 먼저 늘려보세요.</li>
+                <li>일주일에 한 번은 마음 편히 먹는 '리피드 데이'를 두면 오래 지속하기 쉽습니다.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+        <div class="place-panel" data-place-panel="home">
+          <details class="acc" open>
+            <summary>홈트 서킷 루틴</summary>
+            <div class="acc-body">
+              <ul>
+                <li>버피, 마운틴클라이머, 스쿼트, 플랭크를 40초 운동/20초 휴식으로 4바퀴.</li>
+                <li>계단 오르기, 실내 걷기 등 일상 활동량을 늘리는 것도 큰 도움이 됩니다.</li>
+              </ul>
+              <a class="yt-link" href="https://www.youtube.com/results?search_query=%ED%99%88%ED%8A%B8%20%EC%84%9C%ED%82%B7%20%EC%B4%88%EB%B3%B4%20%EC%A7%80%EB%B0%A9%EA%B0%90%EB%9F%89" target="_blank">▶ 홈트 서킷 영상 찾아보기</a>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 남자: 체력/건강 ============ -->
+    <section id="men-health" class="panel">
+      <div class="card">
+        <div class="goal-head"><div class="num">3</div><h2>체력 · 건강 증진</h2></div>
+        <p class="goal-desc">계단만 올라도 숨차거나, 앉아있는 시간이 길어 체력이 걱정될 때. 무리한 목표보다 꾸준함이 가장 중요합니다.</p>
+        <div class="place-toggle">
+          <button type="button" class="place-btn active" data-place="gym">🏋️ 헬스장</button>
+          <button type="button" class="place-btn" data-place="home">🏠 홈트</button>
+        </div>
+        <div class="place-panel active" data-place-panel="gym">
+          <details class="acc" open>
+            <summary>가벼운 전신 루틴</summary>
+            <div class="acc-body">
+              <ul>
+                <li>주 2~3회, 트레드밀 걷기 15분 + 가벼운 머신 운동 (레그프레스, 랫풀다운, 체스트프레스) 각 2세트.</li>
+                <li>숨이 살짝 찰 정도의 강도로 시작해서 서서히 늘려갑니다.</li>
+              </ul>
+              <a class="yt-link" href="https://www.youtube.com/results?search_query=%ED%97%AC%EC%8A%A4%20%EC%B4%88%EB%B3%B4%20%EC%B2%B4%EB%A0%A5%20%EA%B8%B0%EA%B5%AC%20%EC%9A%B4%EB%8F%99%EB%B2%95" target="_blank">▶ 초보 머신 운동법 영상 찾아보기</a>
+            </div>
+          </details>
+        </div>
+        <div class="place-panel" data-place-panel="home">
+          <details class="acc" open>
+            <summary>맨몸 컨디셔닝</summary>
+            <div class="acc-body">
+              <ul>
+                <li>매일 10분 걷기 스트레칭 + 스쿼트 10회 x 2세트로 부담 없이 시작.</li>
+                <li>계단 이용, 정류장 한 정거장 미리 내리기 등 일상 속 움직임을 늘리세요.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 여자: 체중 감량 ============ -->
+    <section id="women-diet" class="panel">
+      <div class="card">
+        <div class="goal-head"><div class="num">1</div><h2>체중 감량 (다이어트)</h2></div>
+        <p class="goal-desc">여자가 헬스를 시작하는 가장 흔한 이유 1위. 무작정 굶기보다 근력 운동을 병행해야 요요 없이 건강하게 뺄 수 있습니다.</p>
+        <div class="place-toggle">
+          <button type="button" class="place-btn active" data-place="gym">🏋️ 헬스장</button>
+          <button type="button" class="place-btn" data-place="home">🏠 홈트</button>
+        </div>
+        <div class="place-panel active" data-place-panel="gym">
+          <details class="acc" open>
+            <summary>1~2주차 · 머신으로 감 잡기</summary>
+            <div class="acc-body">
+              <ul>
+                <li>레그프레스, 힙 어브덕션, 랫풀다운, 체스트프레스 각 12회 2~3세트.</li>
+                <li>주 3회 + 걷기 20분씩 병행.</li>
+              </ul>
+              <div class="tip-box"><b>트레이너 꿀팁</b> — "여자는 무거운 거 들면 근육 커진다"는 오해가 많은데, 여성 호르몬 특성상 벌크업이 쉽게 되지 않습니다. 가볍게 들지 말고 힘들 정도로 들어야 체지방이 잘 빠집니다.</div>
+              <a class="yt-link" href="https://www.youtube.com/results?search_query=%EC%97%AC%EC%9E%90%20%ED%97%AC%EC%8A%A4%20%EC%B4%88%EB%B3%B4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%ED%8A%B8%20%EB%A3%A8%ED%8B%B4" target="_blank">▶ 여성 초보 다이어트 루틴 영상 찾아보기</a>
+            </div>
+          </details>
+          <details class="acc">
+            <summary>3주차 이후 · 프리웨이트 도전</summary>
+            <div class="acc-body">
+              <ul>
+                <li>스쿼트, 힙쓰러스트를 빈 바로 시작해 폼을 잡고 서서히 무게 추가.</li>
+                <li>하체 위주 운동이 대사량을 크게 올려 다이어트에 효과적입니다.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+        <div class="place-panel" data-place-panel="home">
+          <details class="acc" open>
+            <summary>맨몸 홈트 루틴</summary>
+            <div class="acc-body">
+              <ul>
+                <li>스쿼트, 힙브릿지, 플랭크, 버피(또는 스텝업)를 각 30초씩 3바퀴.</li>
+                <li>강도가 부담되면 버피 대신 제자리 걷기로 대체해도 좋습니다.</li>
+              </ul>
+              <a class="yt-link" href="https://www.youtube.com/results?search_query=%EC%97%AC%EC%9E%90%20%ED%99%88%ED%8A%B8%20%EC%B4%88%EB%B3%B4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%ED%8A%B8%20%EC%9A%B4%EB%8F%99" target="_blank">▶ 여성 홈트 다이어트 영상 찾아보기</a>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 여자: 탄력있는 바디라인 ============ -->
+    <section id="women-line" class="panel">
+      <div class="card">
+        <div class="goal-head"><div class="num">2</div><h2>탄력있는 바디라인</h2></div>
+        <p class="goal-desc">애플힙, 잘록한 허리 등 '탄력'을 목표로 할 땐 체중계 숫자보다 특정 부위 근력 운동 비중을 늘리는 게 효과적입니다.</p>
+        <div class="place-toggle">
+          <button type="button" class="place-btn active" data-place="gym">🏋️ 헬스장</button>
+          <button type="button" class="place-btn" data-place="home">🏠 홈트</button>
+        </div>
+        <div class="place-panel active" data-place-panel="gym">
+          <details class="acc" open>
+            <summary>힙 · 하체 집중 루틴</summary>
+            <div class="acc-body">
+              <ul>
+                <li>힙쓰러스트, 케이블 킥백, 사이드 스텝(밴드) 각 15회 3세트.</li>
+                <li>스쿼트·런지로 마무리, 주 3~4회.</li>
+              </ul>
+              <div class="tip-box"><b>트레이너 꿀팁</b> — 힙 운동은 '느낌'이 중요합니다. 무게를 늘리기 전에 엉덩이에 자극이 제대로 오는지(마인드-머슬 커넥션) 먼저 확인하세요.</div>
+              <a class="yt-link" href="https://www.youtube.com/results?search_query=%EC%95%A0%ED%94%8C%ED%9E%99%20%EC%9A%B4%EB%8F%99%20%ED%97%AC%EC%8A%A4%20%EC%B4%88%EB%B3%B4" target="_blank">▶ 애플힙 운동 영상 찾아보기</a>
+            </div>
+          </details>
+        </div>
+        <div class="place-panel" data-place-panel="home">
+          <details class="acc" open>
+            <summary>밴드 홈트</summary>
+            <div class="acc-body">
+              <ul>
+                <li>미니밴드를 무릎 위에 걸고 스쿼트, 사이드 스텝, 힙브릿지를 각 20회.</li>
+                <li>밴드가 없다면 옆으로 눕는 레그레이즈, 힙브릿지만으로도 충분히 효과적입니다.</li>
+              </ul>
+              <a class="yt-link" href="https://www.youtube.com/results?search_query=%EB%B0%B4%EB%93%9C%20%ED%99%88%ED%8A%B8%20%ED%9E%99%20%EC%9A%B4%EB%8F%99" target="_blank">▶ 밴드 힙 운동 영상 찾아보기</a>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 여자: 스트레스/건강 ============ -->
+    <section id="women-health" class="panel">
+      <div class="card">
+        <div class="goal-head"><div class="num">3</div><h2>스트레스 해소 · 건강관리</h2></div>
+        <p class="goal-desc">체형보다 마음 건강과 컨디션을 위해 시작하는 경우. 강도보다 '즐거움'과 '꾸준함'을 목표로 삼으세요.</p>
+        <div class="place-toggle">
+          <button type="button" class="place-btn active" data-place="gym">🏋️ 헬스장</button>
+          <button type="button" class="place-btn" data-place="home">🏠 홈트</button>
+        </div>
+        <div class="place-panel active" data-place-panel="gym">
+          <details class="acc" open>
+            <summary>가볍게 시작하는 루틴</summary>
+            <div class="acc-body">
+              <ul>
+                <li>주 2~3회, 트레드밀/사이클 15~20분 + 스트레칭 위주 머신 2~3종.</li>
+                <li>운동 강도보다 '헬스장에 가는 습관'을 먼저 만드는 데 집중하세요.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+        <div class="place-panel" data-place-panel="home">
+          <details class="acc" open>
+            <summary>홈 요가 · 스트레칭</summary>
+            <div class="acc-body">
+              <ul>
+                <li>자기 전 10~15분 스트레칭 루틴으로 시작 (목, 어깨, 허리 위주).</li>
+                <li>가벼운 홈 요가 영상을 따라하는 것만으로도 충분한 효과가 있습니다.</li>
+              </ul>
+              <a class="yt-link" href="https://www.youtube.com/results?search_query=%EC%B4%88%EB%B3%B4%20%ED%99%88%EC%9A%94%EA%B0%80%20%EC%8A%A4%ED%8A%B8%EB%A0%88%EC%B9%AD%20%EC%98%81%EC%83%81" target="_blank">▶ 초보 홈요가 영상 찾아보기</a>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 공통: 시작 무게 가이드 ============ -->
+    <section id="c-weight" class="panel active">
+      <div class="card">
+        <div class="section-label">체중별 시작 무게 가이드</div>
+        <p class="goal-desc">처음엔 무조건 <b>빈 바(20kg, 여성용 15kg)</b>부터 자세를 잡고, 아래 표는 '자세가 익숙해진 뒤' 도전해볼 대략적인 기준입니다. 개인차가 크니 참고만 하세요.</p>
+        <table class="weight-table">
+          <tr><th>운동</th><th>남자 (체중 대비)</th><th>여자 (체중 대비)</th></tr>
+          <tr><td>스쿼트</td><td>0.5 ~ 0.75배</td><td>0.4 ~ 0.5배</td></tr>
+          <tr><td>벤치프레스</td><td>0.5배</td><td>0.3 ~ 0.35배</td></tr>
+          <tr><td>데드리프트</td><td>0.75 ~ 1배</td><td>0.5 ~ 0.6배</td></tr>
+        </table>
+        <div class="tip-box" style="margin-top:14px;"><b>예시</b> — 체중 70kg 남성이라면 스쿼트 35~52kg, 벤치프레스 35kg, 데드리프트 52~70kg 정도가 '초보 졸업' 기준 대략적인 목표치입니다. 처음부터 이 무게를 들 필요는 전혀 없습니다.</div>
+      </div>
+      <div class="card">
+        <div class="section-label">무게 늘리는 원칙</div>
+        <ul class="bullet-list">
+          <li>같은 무게로 목표 횟수(예: 12회 3세트)를 여유롭게 채우면, 다음 세션에 2.5~5kg만 늘립니다.</li>
+          <li>자세가 무너지기 시작하면 무게를 늘리지 말고 그대로 유지하세요.</li>
+          <li>주 단위가 아니라 '느낌'으로 판단 — 힘들면 쉬어가도 괜찮습니다.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 공통: 식단 ============ -->
+    <section id="c-diet" class="panel">
+      <div class="card">
+        <div class="section-label">단백질, 언제 얼마나</div>
+        <p class="goal-desc">근육량 유지·증가가 목표라면 <b>체중 1kg당 1.6~2.2g</b>의 단백질을 하루 3~4끼에 나눠 섭취하는 것이 가장 효율적입니다.</p>
+        <table class="weight-table">
+          <tr><th>체중</th><th>하루 목표 단백질</th></tr>
+          <tr><td>50kg</td><td>80~110g</td></tr>
+          <tr><td>60kg</td><td>96~132g</td></tr>
+          <tr><td>70kg</td><td>112~154g</td></tr>
+          <tr><td>80kg</td><td>128~176g</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="section-label">하루 식사 타이밍 예시</div>
+        <div class="meal-row"><div class="meal-time">아침</div><div class="meal-desc">계란 2~3개 + 현미밥 또는 통밀빵 + 과일. 탄수화물을 아예 빼지 마세요 (운동 에너지원).</div></div>
+        <div class="meal-row"><div class="meal-time">점심</div><div class="meal-desc">일반 식사 + 단백질 위주 반찬(고기·생선·두부)을 손바닥 크기만큼.</div></div>
+        <div class="meal-row"><div class="meal-time">운동 전후</div><div class="meal-desc">운동 1~2시간 전 가벼운 탄수화물, 운동 후 1~2시간 내 단백질 위주 식사 (프로틴쉐이크도 OK).</div></div>
+        <div class="meal-row"><div class="meal-time">저녁</div><div class="meal-desc">잡곡밥 + 단백질 + 채소 위주로, 튀김·과식만 피하면 충분합니다.</div></div>
+      </div>
+      <div class="card tint">
+        <div class="section-label">다이어트 중 식단 원칙</div>
+        <ul class="bullet-list">
+          <li>굶지 말고, 하루 세끼는 챙기되 '양'과 '튀김·설탕'을 줄이세요.</li>
+          <li>물을 하루 1.5~2L 이상 마시면 공복감 조절에 도움이 됩니다.</li>
+          <li>일주일에 한 끼 정도는 먹고 싶은 것을 먹어야 오래 지속할 수 있습니다.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 공통: 습관 ============ -->
+    <section id="c-habit" class="panel">
+      <div class="card">
+        <div class="section-label">며칠 하다 포기하지 않는 법</div>
+        <p class="goal-desc">운동을 여러 번 포기해본 분들을 위한, 의지력이 아니라 <b>구조</b>로 습관을 만드는 방법입니다.</p>
+        <div class="habit-grid">
+          <div class="habit-item"><b>1. 2일 연속 쉬지 않기</b><span>하루 빠지는 건 괜찮습니다. 다만 이틀 연속으로 쉬면 습관이 끊기기 쉬우니, 그 다음날은 짧게라도 몸을 움직이세요.</span></div>
+          <div class="habit-item"><b>2. 운동 시간을 고정하기</b><span>"시간 날 때" 운동하면 결국 안 하게 됩니다. 출근 전, 퇴근 후 등 특정 시간에 '자동으로' 하도록 고정하세요.</span></div>
+          <div class="habit-item"><b>3. 목표를 잘게 쪼개기</b><span>"살 10kg 빼기"보다 "이번 주 3번 헬스장 가기"처럼 당장 실행 가능한 단위로 목표를 세우세요.</span></div>
+          <div class="habit-item"><b>4. 기록하기</b><span>운동 앱이나 메모장에 오늘 한 운동을 간단히 기록만 해도 꾸준함이 눈에 보여 동기부여가 됩니다.</span></div>
+          <div class="habit-item"><b>5. 운동 준비물을 미리 챙기기</b><span>전날 밤 운동복·가방을 미리 챙겨두면, 다음날 '귀찮음'이라는 가장 큰 장벽을 하나 줄일 수 있습니다.</span></div>
+          <div class="habit-item"><b>6. 같이 할 사람 찾기</b><span>운동 메이트나 SNS 인증만으로도 지속률이 크게 올라갑니다.</span></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="footer">이 페이지의 정보는 일반적인 가이드이며, 개인의 건강 상태에 따라 다를 수 있습니다.<br>기저질환이 있다면 운동 시작 전 전문가와 상담하세요.<br>© 2026 winsoul.de</div>
+</div>
+
+<script>
+  function getFontScale(){var v=parseFloat(localStorage.getItem("fit_fontScale"));return(!isNaN(v)&&v>=0.85&&v<=1.6)?v:1;}
+  function applyFontScale(v){document.documentElement.style.setProperty("--fs-scale",v);}
+  function bumpFontScale(delta){var v=Math.min(1.6,Math.max(0.85,+(getFontScale()+delta).toFixed(2)));try{localStorage.setItem("fit_fontScale",v);}catch(e){}applyFontScale(v);}
+  applyFontScale(getFontScale());
+  document.getElementById("fontUp").addEventListener("click",function(){bumpFontScale(0.1);});
+  document.getElementById("fontDown").addEventListener("click",function(){bumpFontScale(-0.1);});
+  var toTopBtn=document.getElementById("toTop");
+  toTopBtn.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"});});
+  window.addEventListener("scroll",function(){toTopBtn.style.display=window.scrollY>400?"flex":"none";});
+
+  var topTabs=document.querySelectorAll("#topTabs .seg-btn");
+  var subnavMen=document.getElementById("subnavMen");
+  var subnavWomen=document.getElementById("subnavWomen");
+  var subnavCommon=document.getElementById("subnavCommon");
+
+  function showPanel(id){
+    document.querySelectorAll(".panel").forEach(function(p){p.classList.toggle("active",p.id===id);});
+    window.scrollTo({top:0,behavior:"instant" in window ? "instant":"auto"});
+  }
+  function setActiveChip(container,target){
+    container.querySelectorAll(".chip").forEach(function(c){c.classList.toggle("active",c.dataset.target===target);});
+  }
+  topTabs.forEach(function(btn){
+    btn.addEventListener("click",function(){
+      topTabs.forEach(function(b){b.classList.remove("active");});
+      btn.classList.add("active");
+      subnavMen.style.display="none";
+      subnavWomen.style.display="none";
+      subnavCommon.style.display="none";
+      if(btn.dataset.top==="men"){
+        subnavMen.style.display="flex";
+        showPanel("men-bulk");
+        setActiveChip(subnavMen,"men-bulk");
+      }else if(btn.dataset.top==="women"){
+        subnavWomen.style.display="flex";
+        showPanel("women-diet");
+        setActiveChip(subnavWomen,"women-diet");
+      }else{
+        subnavCommon.style.display="flex";
+        showPanel("c-weight");
+        setActiveChip(subnavCommon,"c-weight");
+      }
+    });
+  });
+  [subnavMen,subnavWomen,subnavCommon].forEach(function(nav){
+    nav.querySelectorAll(".chip").forEach(function(chip){
+      chip.addEventListener("click",function(){
+        setActiveChip(nav,chip.dataset.target);
+        showPanel(chip.dataset.target);
+      });
+    });
+  });
+
+  document.querySelectorAll(".place-toggle").forEach(function(toggle){
+    var card=toggle.closest(".card");
+    toggle.querySelectorAll(".place-btn").forEach(function(btn){
+      btn.addEventListener("click",function(){
+        toggle.querySelectorAll(".place-btn").forEach(function(b){b.classList.remove("active");});
+        btn.classList.add("active");
+        card.querySelectorAll(".place-panel").forEach(function(p){
+          p.classList.toggle("active", p.dataset.placePanel===btn.dataset.place);
+        });
+      });
+    });
+  });
+</script>
+</body>
+</html>
