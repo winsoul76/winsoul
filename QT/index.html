@@ -53,6 +53,11 @@
     .ai-err { font-size: 12px; color: #aeaeb2; font-style: italic; }
     .ai-link { display: inline-block; margin-top: 14px; padding: 10px 20px; background: #1d1d1f; color: #fff; border-radius: 980px; font-size: 14px; font-weight: 500; text-decoration: none; }
     .ai-link:hover { background: #3a3a3c; }
+    .day-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; gap: 8px; }
+    .nav-btn { background: #fff; border: none; border-radius: 980px; padding: 8px 16px; font-size: 14px; font-weight: 500; color: #1d1d1f; cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+    .nav-btn:active { background: #f0f0f0; }
+    .nav-btn[disabled] { color: #aeaeb2; cursor: default; box-shadow: none; }
+    .nav-date { font-size: 13px; color: #86868b; font-weight: 500; text-align: center; flex: 1; }
   </style>
 </head>
 <body>
@@ -128,9 +133,9 @@ function fmtDate(p) {
 }
 
 async function fetchPassage(dateKey) {
-  // r.jina.ai가 렌더링 결과를 캐싱하기 때문에, 날짜별로 바뀌는 쿼리를 붙여
-  // 매일 새 캐시(=새 렌더링)를 강제로 받아온다. (안 그러면 며칠~몇 주 전 캐시가 계속 반환됨)
-  const r = await fetch('https://r.jina.ai/https://bible.asher.design/?_=' + dateKey, {
+  // quiettime.php?qt_date=YYYY-MM-DD 로 날짜별 묵상 페이지를 직접 요청.
+  // URL에 날짜가 포함되므로 r.jina.ai 캐시도 날짜별로 자동 분리됨.
+  const r = await fetch('https://r.jina.ai/https://bible.asher.design/quiettime.php?t=92&qt_date=' + dateKey, {
     signal: AbortSignal.timeout(20000)
   });
   if (!r.ok) throw new Error('본문 목록 오류 (' + r.status + ')');
@@ -248,14 +253,46 @@ function setLoadingText(msg) {
   if (p) p.textContent = msg;
 }
 
-function renderApp(today, ref, verses, weekly) {
+// ---- 날짜 탐색 상태 ----
+let _todayKey = null;
+let _viewParts = null;
+
+// dateKey('YYYY-MM-DD') 기준으로 delta일 이동한 Berlin 날짜 파트 반환
+function addDays(dateKey, delta) {
+  const [y, m, d] = dateKey.split('-').map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  dt.setUTCDate(dt.getUTCDate() + delta);
+  return getBerlinParts(dt);
+}
+
+// 이전/다음 날 버튼에서 호출
+function navigate(delta) {
+  loadDate(addDays(_viewParts.dateKey, delta));
+}
+
+function makeNavBar(parts) {
+  const isFuture = parts.dateKey > _todayKey;
+  const isToday  = parts.dateKey === _todayKey;
+  const nextBtn  = isFuture
+    ? '<button class="nav-btn" style="visibility:hidden" aria-hidden="true">다음 →</button>'
+    : isToday
+      ? '<button class="nav-btn" disabled>다음 →</button>'
+      : '<button class="nav-btn" onclick="navigate(1)">다음 →</button>';
+  return '<div class="day-nav">' +
+    '<button class="nav-btn" onclick="navigate(-1)">← 이전</button>' +
+    '<span class="nav-date">' + fmtDate(parts) + '</span>' +
+    nextBtn +
+  '</div>';
+}
+
+function renderApp(parts, ref, verses, weekly) {
   document.getElementById('loading').style.display = 'none';
   const app = document.getElementById('app');
   app.style.display = 'block';
   app.innerHTML =
+    makeNavBar(parts) +
     '<div class="page-header">' +
-      '<div class="date">' + fmtDate(today) + '</div>' +
-      '<h1>오늘의 묵상</h1>' +
+      '<h1>말씀 묵상</h1>' +
       '<div class="ref-title">' + ref.raw + '</div>' +
     '</div>' +
     '<div class="card"><div class="section-label">본문 · 개역개정</div>' +
@@ -276,57 +313,54 @@ function renderApp(today, ref, verses, weekly) {
     '</div>';
 }
 
-async function main() {
-  // 독일(Europe/Berlin) 현지 날짜 기준으로 "오늘"을 계산.
-  // fetch-qt.mjs(서버)와 항상 동일한 날짜 키를 쓰게 되어, 서버-클라이언트 날짜 불일치로
-  // 본문이 갱신되지 않고 캐시된 옛 본문이 계속 보이는 문제를 막아준다.
-  const today = getBerlinParts();
-  const dateKey = today.dateKey;
-  const dow = today.dow;
+async function loadDate(parts) {
+  _viewParts = parts;
+  const dateKey = parts.dateKey;
+  const dow = parts.dow;
+  const isToday = (dateKey === _todayKey);
 
-  // 주일(일요일)은 별도 화면 표시 + 주간 암송 구절은 그대로 표시
+  // 로딩 초기화
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('err').style.display = 'none';
+  setLoadingText('묵상을 불러오는 중...');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  // 주일(일요일)
   if (dow === 0) {
     let weekly = null;
 
-    // 0. 정적 JSON 우선 시도
-    try {
-      const r = await fetch('./data/today.json', { signal: AbortSignal.timeout(5000), cache: 'no-store' });
-      if (r.ok) {
-        const data = await r.json();
-        if (data.date === dateKey && data.weekly) weekly = data.weekly;
-      }
-    } catch (e) { /* 무시 */ }
-
-    // 캐시 확인
-    if (!weekly) {
+    // 정적 JSON (오늘만)
+    if (isToday) {
       try {
-        const cachedRaw = localStorage.getItem('qt2_' + dateKey);
-        if (cachedRaw) {
-          const cached = JSON.parse(cachedRaw);
-          if (cached.weekly) weekly = cached.weekly;
-        }
+        const r = await fetch('./data/today.json', { signal: AbortSignal.timeout(5000), cache: 'no-store' });
+        if (r.ok) { const data = await r.json(); if (data.date === dateKey && data.weekly) weekly = data.weekly; }
       } catch (e) { /* 무시 */ }
     }
 
-    // 라이브 조회 (정적/캐시 둘 다 없을 때만)
+    // 캐시
+    if (!weekly) {
+      try {
+        const cr = localStorage.getItem('qt2_' + dateKey);
+        if (cr) { const c = JSON.parse(cr); if (c.weekly) weekly = c.weekly; }
+      } catch (e) { /* 무시 */ }
+    }
+
+    // 라이브 fetch
     if (!weekly) {
       try {
         const homeText = await fetchPassage(dateKey);
         weekly = parseWeekly(homeText);
-        try {
-          localStorage.setItem('qt2_' + dateKey, JSON.stringify({ sunday: true, weekly }));
-        } catch (e) { /* 무시 */ }
-      } catch (e) { /* 주간 암송을 못 가져와도 주일 메시지는 그대로 표시 */ }
+        try { localStorage.setItem('qt2_' + dateKey, JSON.stringify({ sunday: true, weekly })); } catch (e) { /* 무시 */ }
+      } catch (e) { /* 주간 암송 없어도 주일 화면은 표시 */ }
     }
 
     document.getElementById('loading').style.display = 'none';
     const app = document.getElementById('app');
     app.style.display = 'block';
     app.innerHTML =
-      '<div class="page-header">' +
-        '<div class="date">' + fmtDate(today) + '</div>' +
-        '<h1>오늘의 묵상</h1>' +
-      '</div>' +
+      makeNavBar(parts) +
+      '<div class="page-header"><h1>말씀 묵상</h1></div>' +
       '<div class="card" style="text-align:center; padding:48px 32px;">' +
         '<div style="font-size:15px; font-weight:600; color:#1d1d1f; margin-bottom:14px;">주일 예배의 날입니다</div>' +
         '<div style="font-size:14px; color:#6e6e73; line-height:1.9;">오늘은 교회에서 드리는 주일 예배를 통해<br>말씀으로 묵상하세요.</div>' +
@@ -340,33 +374,35 @@ async function main() {
     return;
   }
 
-  // 0. 정적 JSON 우선 시도 (GitHub Actions가 매일 미리 생성) — 가장 빠른 경로
-  try {
-    const r = await fetch('./data/today.json', { signal: AbortSignal.timeout(5000), cache: 'no-store' });
-    if (r.ok) {
-      const data = await r.json();
-      if (data.date === dateKey && !data.sunday && data.ref && data.verses) {
-        renderApp(today, data.ref, data.verses, data.weekly);
-        return;
+  // 정적 JSON (오늘만)
+  if (isToday) {
+    try {
+      const r = await fetch('./data/today.json', { signal: AbortSignal.timeout(5000), cache: 'no-store' });
+      if (r.ok) {
+        const data = await r.json();
+        if (data.date === dateKey && !data.sunday && data.ref && data.verses) {
+          renderApp(parts, data.ref, data.verses, data.weekly);
+          return;
+        }
       }
-    }
-  } catch (e) { /* 정적 JSON 없거나 실패 시 기존 방식으로 진행 */ }
+    } catch (e) { /* 계속 진행 */ }
+  }
 
-  // 캐시 확인: 같은 날 재방문이면 네트워크 호출 없이 즉시 렌더링
+  // localStorage 캐시
   try {
-    const cachedRaw = localStorage.getItem('qt2_' + dateKey);
-    if (cachedRaw) {
-      const cached = JSON.parse(cachedRaw);
-      renderApp(today, cached.ref, cached.verses, cached.weekly);
-      return;
+    const cr = localStorage.getItem('qt2_' + dateKey);
+    if (cr) {
+      const cached = JSON.parse(cr);
+      if (cached.ref && cached.verses) { renderApp(parts, cached.ref, cached.verses, cached.weekly); return; }
     }
-  } catch (e) { /* 캐시 파싱 실패 시 무시하고 정상 진행 */ }
+  } catch (e) { /* 계속 진행 */ }
 
+  // 라이브 fetch
   try {
-    setLoadingText('오늘의 묵상 본문 확인 중...');
+    setLoadingText('묵상 본문 확인 중...');
     const homeText = await fetchPassage(dateKey);
     const ref = parseRef(homeText);
-    if (!ref) throw new Error('오늘의 묵상 본문을 찾을 수 없습니다.');
+    if (!ref) throw new Error('묵상 본문을 찾을 수 없습니다.');
     const weekly = parseWeekly(homeText);
     const code = CODES[ref.book];
     if (!code) throw new Error('알 수 없는 성경 책: ' + ref.book);
@@ -374,37 +410,35 @@ async function main() {
     setLoadingText('성경 본문 불러오는 중...');
     let verseObjs;
     if (ref.chap2 !== ref.chap) {
-      // 장이 바뀌는 본문: 두 장을 모두 가져와 이어붙임
-      const [text1, text2] = await Promise.all([
-        fetchBible(code, ref.chap),
-        fetchBible(code, ref.chap2)
-      ]);
-      const v1 = sliceVerses(parseAllVerses(text1), ref.vs, null);
-      const v2 = sliceVerses(parseAllVerses(text2), 1, ref.ve);
-      verseObjs = [...v1, ...v2];
+      const [text1, text2] = await Promise.all([fetchBible(code, ref.chap), fetchBible(code, ref.chap2)]);
+      verseObjs = [...sliceVerses(parseAllVerses(text1), ref.vs, null), ...sliceVerses(parseAllVerses(text2), 1, ref.ve)];
     } else {
-      const bibleText = await fetchBible(code, ref.chap);
-      verseObjs = sliceVerses(parseAllVerses(bibleText), ref.vs, ref.ve);
+      verseObjs = sliceVerses(parseAllVerses(await fetchBible(code, ref.chap)), ref.vs, ref.ve);
     }
     const verses = verseObjs.map(v => v.num + ' ' + v.text);
     if (!verses.length) throw new Error('본문 텍스트를 추출하지 못했습니다.');
 
-    // 오늘자 결과 캐싱 + 어제 이전 캐시 정리
+    // 캐시 저장 (7일 초과 항목 정리)
     try {
-      Object.keys(localStorage)
-        .filter(k => k.startsWith('qt2_') && k !== 'qt2_' + dateKey)
-        .forEach(k => localStorage.removeItem(k));
+      const cutoff = 'qt2_' + addDays(dateKey, -7).dateKey;
+      Object.keys(localStorage).filter(k => k.startsWith('qt2_') && k < cutoff).forEach(k => localStorage.removeItem(k));
       localStorage.setItem('qt2_' + dateKey, JSON.stringify({ ref, verses, weekly }));
-    } catch (e) { /* 저장 공간 부족 등은 무시 */ }
+    } catch (e) { /* 무시 */ }
 
-    renderApp(today, ref, verses, weekly);
+    renderApp(parts, ref, verses, weekly);
 
-  } catch(e) {
+  } catch (e) {
     document.getElementById('loading').style.display = 'none';
     const el = document.getElementById('err');
     el.style.display = 'block';
-    el.innerHTML = '불러오기 실패<br><br>' + e.message;
+    el.innerHTML = makeNavBar(parts) + '<br>불러오기 실패<br><br>' + e.message;
   }
+}
+
+async function main() {
+  const today = getBerlinParts();
+  _todayKey = today.dateKey;
+  await loadDate(today);
 }
 
 main();
