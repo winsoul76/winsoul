@@ -133,13 +133,19 @@ function fmtDate(p) {
 }
 
 async function fetchPassage(dateKey) {
-  // quiettime.php?qt_date=YYYY-MM-DD 로 날짜별 묵상 페이지를 직접 요청.
-  // URL에 날짜가 포함되므로 r.jina.ai 캐시도 날짜별로 자동 분리됨.
-  const r = await fetch('https://r.jina.ai/https://bible.asher.design/quiettime.php?t=92&qt_date=' + dateKey, {
-    signal: AbortSignal.timeout(20000)
-  });
+  // quiettime.php?qt_date=YYYY-MM-DD 로 날짜별 묵상 페이지 요청.
+  // r.jina.ai가 빈 응답을 캐싱한 경우 x-no-cache 헤더로 재시도한다.
+  const jinaUrl = 'https://r.jina.ai/https://bible.asher.design/quiettime.php?t=92&qt_date=' + dateKey;
+  let r = await fetch(jinaUrl, { signal: AbortSignal.timeout(20000) });
   if (!r.ok) throw new Error('본문 목록 오류 (' + r.status + ')');
-  return r.text();
+  let text = await r.text();
+  if (text.length < 100) {
+    // 빈 캐시 감지 → 캐시 우회 재시도
+    r = await fetch(jinaUrl, { headers: { 'x-no-cache': 'true' }, signal: AbortSignal.timeout(25000) });
+    if (!r.ok) throw new Error('본문 목록 오류 (' + r.status + ')');
+    text = await r.text();
+  }
+  return text;
 }
 
 async function fetchBible(book, chap) {
