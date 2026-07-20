@@ -151,20 +151,34 @@ async function fetchBible(book, chap) {
 }
 
 function parseRef(text) {
+  // quiettime.php 형식: [잠언 4장 1 - 27] 또는 [느헤미야 13장 4절 - 14장 2절]
+  const m1 = text.match(/\[([가-힣]+)\s+(\d+)장\s+(\d+)(?:절)?\s*[-–~]\s*(?:(\d+)장\s*)?(\d+)/);
+  if (m1) {
+    const chap = +m1[2], vs = +m1[3], chap2 = m1[4] ? +m1[4] : chap, ve = +m1[5];
+    const raw = m1[1] + ' ' + chap + ':' + vs + (chap2 !== chap ? '-' + chap2 + ':' + ve : '-' + ve);
+    return { book: m1[1], chap, vs, chap2, ve, raw };
+  }
+  // 기존 콜론 형식 폴백: 잠언 4:1-27
   const idx = text.indexOf('묵상');
   if (idx === -1) return null;
   const snippet = text.slice(idx, idx + 150);
-  // 단일 장(3:1-32) 또는 장이 바뀌는 경우(3:33-4:6) 모두 지원
-  const p = snippet.match(/([가-힣]+)\s+(\d+):(\d+)[-–](?:(\d+):)?(\d+)/);
-  if (!p) return null;
-  return {
-    book: p[1],
-    chap: +p[2],
-    vs: +p[3],
-    chap2: p[4] ? +p[4] : +p[2],
-    ve: +p[5],
-    raw: p[0].trim()
-  };
+  const m2 = snippet.match(/([가-힣]+)\s+(\d+):(\d+)[-–](?:(\d+):)?(\d+)/);
+  if (!m2) return null;
+  return { book: m2[1], chap: +m2[2], vs: +m2[3], chap2: m2[4] ? +m2[4] : +m2[2], ve: +m2[5], raw: m2[0].trim() };
+}
+
+// quiettime.php 응답의 마크다운 테이블에서 절 목록 추출 (별도 bskorea 요청 불필요)
+function parseVersesFromPage(text) {
+  const verses = [];
+  const re = /^\|\s*(\d+)\s*\|\s*([^|]+)\|/gm;
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    const num = +m[1];
+    const txt = m[2].trim();
+    // 헤더행(책명·번역본 등 짧음) 및 구분자(---) 제외
+    if (num > 0 && txt.length >= 5 && !/^-+$/.test(txt)) verses.push({ num, text: txt });
+  }
+  return verses;
 }
 
 // 홈페이지 텍스트에서 "주간 암송" 구절(날짜 범위 / 본문 / 출처)을 추출
@@ -271,17 +285,10 @@ function navigate(delta) {
 }
 
 function makeNavBar(parts) {
-  const isFuture = parts.dateKey > _todayKey;
-  const isToday  = parts.dateKey === _todayKey;
-  const nextBtn  = isFuture
-    ? '<button class="nav-btn" style="visibility:hidden" aria-hidden="true">다음 →</button>'
-    : isToday
-      ? '<button class="nav-btn" disabled>다음 →</button>'
-      : '<button class="nav-btn" onclick="navigate(1)">다음 →</button>';
   return '<div class="day-nav">' +
     '<button class="nav-btn" onclick="navigate(-1)">← 이전</button>' +
     '<span class="nav-date">' + fmtDate(parts) + '</span>' +
-    nextBtn +
+    '<button class="nav-btn" onclick="navigate(1)">다음 →</button>' +
   '</div>';
 }
 
@@ -400,23 +407,21 @@ async function loadDate(parts) {
   // 라이브 fetch
   try {
     setLoadingText('묵상 본문 확인 중...');
-    const homeText = await fetchPassage(dateKey);
-    const ref = parseRef(homeText);
-    if (!ref) throw new Error('묵상 본문을 찾을 수 없습니다.');
-    const weekly = parseWeekly(homeText);
-    const code = CODES[ref.book];
-    if (!code) throw new Error('알 수 없는 성경 책: ' + ref.book);
+    const pageText = await fetchPassage(dateKey);
+    const ref = parseRef(pageText);
+    if (!ref) throw new Error('해당 날짜의 묵상이 없습니다.');
 
-    setLoadingText('성경 본문 불러오는 중...');
-    let verseObjs;
-    if (ref.chap2 !== ref.chap) {
-      const [text1, text2] = await Promise.all([fetchBible(code, ref.chap), fetchBible(code, ref.chap2)]);
-      verseObjs = [...sliceVerses(parseAllVerses(text1), ref.vs, null), ...sliceVerses(parseAllVerses(text2), 1, ref.ve)];
-    } else {
-      verseObjs = sliceVerses(parseAllVerses(await fetchBible(code, ref.chap)), ref.vs, ref.ve);
-    }
+    // 페이지에 절 본문이 테이블로 포함돼 있어 별도 성경 API 요청 불필요
+    const verseObjs = parseVersesFromPage(pageText);
+    if (!verseObjs.length) throw new Error('본문 텍스트를 추출하지 못했습니다.');
     const verses = verseObjs.map(v => v.num + ' ' + v.text);
-    if (!verses.length) throw new Error('본문 텍스트를 추출하지 못했습니다.');
+
+    // 주간 암송: 오늘자 캐시에서 가져옴 (quiettime 페이지에는 포함 안됨)
+    let weekly = null;
+    try {
+      const cr = localStorage.getItem('qt2_' + _todayKey);
+      if (cr) { const c = JSON.parse(cr); if (c.weekly) weekly = c.weekly; }
+    } catch (e) { /* 무시 */ }
 
     // 캐시 저장 (7일 초과 항목 정리)
     try {
