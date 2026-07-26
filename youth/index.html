@@ -312,6 +312,28 @@
       });
     }
 
+    // 작년(2025) 수련회 참고자료 다운로드 탭 추가
+    const tabNavEl = document.getElementById('tabNav');
+    const mainEl = document.querySelector('main');
+    if (tabNavEl && mainEl && !document.getElementById('archive2025')) {
+      const archiveBtn = document.createElement('button');
+      archiveBtn.dataset.tab = 'archive2025';
+      archiveBtn.textContent = '작년 자료';
+      tabNavEl.appendChild(archiveBtn);
+
+      const archiveSec = document.createElement('section');
+      archiveSec.id = 'archive2025';
+      archiveSec.innerHTML = `
+        <div class="card">
+          <h2>2025년 수련회 참고자료</h2>
+          <p>작년 수련회를 준비하며 사용했던 자료입니다. 올해 준비 시 참고하세요.</p>
+          <a href="2025-수련회-소책자.pdf" target="_blank" style="display:inline-block; margin-top:6px; padding:13px 22px; background:var(--accent); color:#fff; border-radius:14px; text-decoration:none; font-weight:600; font-size:14px;">📘 2025 수련회 소책자 다운로드</a>
+          <div class="note">명찰·방 배정·조편성 명단이 포함된 대형 인쇄물은 학생 개인정보 보호를 위해 제외했습니다.</div>
+        </div>
+      `;
+      mainEl.appendChild(archiveSec);
+    }
+
     const buttons = document.querySelectorAll('#tabNav button');
     const sections = document.querySelectorAll('main section');
     buttons.forEach(btn => {
