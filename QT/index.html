@@ -33,9 +33,10 @@
     .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #86868b; margin-bottom: 18px; }
     .passage-text { font-size: calc(15px * var(--fs-scale)); line-height: 2.15; color: #1d1d1f; overflow-wrap: break-word; word-break: keep-all; }
     .passage-text p { margin-bottom: 3px; }
-    .v-row { display: flex; align-items: flex-start; gap: 8px; cursor: pointer; }
-    .v-check { flex: 0 0 auto; width: 16px; height: 16px; margin-top: 6px; accent-color: #6e4c1e; cursor: pointer; }
-    .v-num { flex: 0 0 1.5em; padding-right: 4px; font-weight: 700; color: #6e4c1e; }
+    .v-row { display: flex; align-items: flex-start; gap: 4px; cursor: pointer; }
+    .v-check { flex: 0 0 auto; width: 16px; height: 16px; margin-top: 6px; margin-right: 2px; accent-color: #6e4c1e; cursor: pointer; }
+    .v-num { flex: 0 0 1.4em; font-weight: 700; color: #6e4c1e; }
+    .qt-hint { font-size: 11.5px; color: #aeaeb2; text-align: center; margin: -8px 0 18px; letter-spacing: 0.01em; }
     .v-text { flex: 1 1 auto; min-width: 0; overflow-wrap: break-word; word-break: keep-all; }
     .term-row { display: flex; align-items: baseline; gap: 16px; padding: 11px 0; border-bottom: 0.5px solid #f0f0f0; }
     .term-row:last-child { border-bottom: none; }
@@ -378,6 +379,7 @@ function renderApp(parts, ref, verses, weekly) {
       '<h1>말씀 묵상</h1>' +
       '<div class="ref-title">' + ref.raw + '</div>' +
     '</div>' +
+    '<p class="qt-hint">구절 체크 후 우측 <strong style="color:#6e4c1e">↗</strong> 버튼 → 6단계 나눔 템플릿 복사</p>' +
     '<div class="card"><div class="section-label">본문 · 개역개정</div>' +
       '<div class="passage-text">' + verses.map(v => {
         const m = v.match(/^(\d+)\s+([\s\S]*)$/);
