@@ -36,11 +36,12 @@
   .mascot-img { width: 52px; height: auto; margin-top: 6px; opacity: 0.95; }
   .tagline { margin-top: 20px; font-size: 13px; color: #9a9a9a; letter-spacing: 0.04em; }
   .icon-grid { width: 100%; max-width: 460px; margin-top: 48px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
-  .icon-row { display: flex; justify-content: center; gap: 16px; width: 100%; }
+  .icon-row { display: flex; justify-content: center; gap: 20px; width: 100%; }
   .icon-item {
     display: flex; align-items: center; justify-content: center;
-    background: #ffffff; border-radius: 18px; padding: 14px 18px;
+    background: #ffffff; border-radius: 22px; padding: 22px 20px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.06); transition: transform 0.15s ease, box-shadow 0.15s ease;
+    flex: 1 1 0; min-width: 0;
   }
   .icon-item:hover, .icon-item:active {
     transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.08);
@@ -49,7 +50,7 @@
   .icon-item.placeholder:hover, .icon-item.placeholder:active {
     transform: none; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
   }
-  .icon-item img { height: 32px; width: auto; display: block; }
+  .icon-item img { height: 68px; width: auto; max-width: 100%; display: block; }
   .footer { margin-top: auto; padding-top: 48px; font-size: 11px; color: #c2c2c2; letter-spacing: 0.05em; }
   @media (max-width: 480px), (max-height: 700px) {
     .wrap { padding: 32px 20px 20px; }
@@ -57,9 +58,9 @@
     .mascot-img { width: 38px; margin-top: 4px; }
     .tagline { margin-top: 12px; font-size: 12px; }
     .icon-grid { margin-top: 26px; gap: 14px; }
-    .icon-row { gap: 12px; }
-    .icon-item { padding: 11px 14px; border-radius: 14px; }
-    .icon-item img { height: 25px; }
+    .icon-row { gap: 14px; }
+    .icon-item { padding: 16px 12px; border-radius: 16px; }
+    .icon-item img { height: 52px; }
     .footer { padding-top: 20px; }
   }
 </style>
@@ -73,18 +74,19 @@
   </div>
   <div class="icon-grid">
     <div class="icon-row">
-      <a class="icon-item" href="/reading"><img src="/icons/reading.png" alt="브런치"></a>
-      <a class="icon-item" href="/german"><img src="/icons/german.png" alt="독일어"></a>
       <a class="icon-item" href="/calligraphy"><img src="/icons/calligraphy.png" alt="윈솔캘리"></a>
+      <a class="icon-item" href="/QT"><img src="/icons/qt.png" alt="말씀 묵상"></a>
     </div>
     <div class="icon-row">
-      <a class="icon-item" href="/fitness"><img src="/icons/fitness.png" alt="운동"></a>
-      <a class="icon-item" href="/QT"><img src="/icons/qt.png" alt="말씀 묵상"></a>
+      <a class="icon-item" href="/german"><img src="/icons/german.png" alt="독일어"></a>
       <a class="icon-item" href="/AITraining"><img src="/icons/ai.png" alt="AI"></a>
     </div>
     <div class="icon-row">
+      <a class="icon-item" href="/reading"><img src="/icons/reading.png" alt="브런치"></a>
+      <a class="icon-item" href="/fitness"><img src="/icons/fitness.png" alt="운동"></a>
+    </div>
+    <div class="icon-row">
       <a class="icon-item" href="/cook"><img src="/icons/cook.png" alt="요리"></a>
-      <div class="icon-item placeholder"><img src="/icons/placeholder.png" alt="준비중"></div>
       <div class="icon-item placeholder"><img src="/icons/placeholder.png" alt="준비중"></div>
     </div>
   </div>
