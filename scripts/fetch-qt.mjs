@@ -40,10 +40,16 @@ function getBerlinParts(d) {
 }
 
 async function fetchPassage(dateKey) {
-  // r.jina.ai가 렌더링 결과를 캐싱하기 때문에, 날짜별로 바뀌는 쿼리를 붙여
-  // 매일 새 캐시(=새 렌더링)를 강제로 받아온다. (안 그러면 며칠~몇 주 전 캐시가 계속 반환됨)
-  const r = await fetch('https://r.jina.ai/https://bible.asher.design/?_=' + dateKey);
+  // Node.js는 CORS 제약 없으므로 bible.asher.design 직접 요청 (r.jina.ai 불필요).
+  const r = await fetch('https://bible.asher.design/quiettime.php?t=92&qt_date=' + dateKey);
   if (!r.ok) throw new Error('본문 목록 오류 (' + r.status + ')');
+  return r.text();
+}
+
+async function fetchHomepage(dateKey) {
+  // 홈페이지에서 주간 암송 구절 가져오기 (날짜별 캐시 버스터로 r.jina.ai 캐시 무효화)
+  const r = await fetch('https://r.jina.ai/https://bible.asher.design/?_=' + dateKey);
+  if (!r.ok) throw new Error('홈페이지 오류 (' + r.status + ')');
   return r.text();
 }
 
@@ -54,19 +60,33 @@ async function fetchBible(book, chap) {
 }
 
 function parseRef(text) {
+  // quiettime.php 형식: [잠언 4장 1 - 27] 또는 [느헤미야 13장 4절 - 14장 2절]
+  const m1 = text.match(/\[([가-힣]+)\s+(\d+)장\s+(\d+)(?:절)?\s*[-–~]\s*(?:(\d+)장\s*)?(\d+)/);
+  if (m1) {
+    const chap = +m1[2], vs = +m1[3], chap2 = m1[4] ? +m1[4] : chap, ve = +m1[5];
+    const raw = m1[1] + ' ' + chap + ':' + vs + (chap2 !== chap ? '-' + chap2 + ':' + ve : '-' + ve);
+    return { book: m1[1], chap, vs, chap2, ve, raw };
+  }
+  // 기존 콜론 형식 폴백
   const idx = text.indexOf('묵상');
   if (idx === -1) return null;
   const snippet = text.slice(idx, idx + 150);
-  const p = snippet.match(/([가-힣]+)\s+(\d+):(\d+)[-–](?:(\d+):)?(\d+)/);
-  if (!p) return null;
-  return {
-    book: p[1],
-    chap: +p[2],
-    vs: +p[3],
-    chap2: p[4] ? +p[4] : +p[2],
-    ve: +p[5],
-    raw: p[0].trim()
-  };
+  const m2 = snippet.match(/([가-힣]+)\s+(\d+):(\d+)[-–](?:(\d+):)?(\d+)/);
+  if (!m2) return null;
+  return { book: m2[1], chap: +m2[2], vs: +m2[3], chap2: m2[4] ? +m2[4] : +m2[2], ve: +m2[5], raw: m2[0].trim() };
+}
+
+// quiettime.php 응답의 마크다운 테이블에서 절 목록 추출
+function parseVersesFromPage(text) {
+  const verses = [];
+  const re = /^\|\s*(\d+)\s*\|\s*([^|]+)\|/gm;
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    const num = +m[1];
+    const txt = m[2].trim();
+    if (num > 0 && txt.length >= 5 && !/^-+$/.test(txt)) verses.push({ num, text: txt });
+  }
+  return verses;
 }
 
 // 홈페이지 텍스트에서 "주간 암송" 구절(날짜 범위 / 본문 / 출처)을 추출
@@ -104,6 +124,9 @@ function parseAllVerses(raw) {
   t = t.replace(/\s+/g, ' ').trim();
   t = t.replace(/(?<=\s)\d+\)\s*/g, '');
   t = t.replace(/([가-힣]) (라|이라|에서|에게|에|와|과|을|를|은|는|도|의|로|으로|만|이고|이며|부터|까지)(?=\s|$)/g, '$1$2');
+  // 10-a. 주격 조사 이/가: 받침 유무로 판별해서 붙임 (받침 있으면 이, 없으면 가)
+  t = t.replace(/([가-힣]) 이(?=\s|$)/g, (_, p) => { const c = p.charCodeAt(0) - 0xAC00; return (c >= 0 && c % 28 !== 0) ? p + '이' : p + ' 이'; });
+  t = t.replace(/([가-힣]) 가(?=\s|$)/g, (_, p) => { const c = p.charCodeAt(0) - 0xAC00; return (c >= 0 && c % 28 === 0) ? p + '가' : p + ' 가'; });
 
   const marks = [...t.matchAll(/(?<!\d)(\d{1,3})\s+(?=[가-힣])/g)];
   const verses = [];
@@ -131,9 +154,14 @@ async function main() {
   fs.mkdirSync(outDir, { recursive: true });
   const outPath = path.join(outDir, 'today.json');
 
-  // 주일에도 주간 암송 구절은 보여줘야 하므로, 홈페이지는 요일과 상관없이 항상 가져온다.
-  const homeText = await fetchPassage(dateKey);
-  const weekly = parseWeekly(homeText);
+  // 주간 암송 구절은 홈페이지에서 가져옴 (quiettime 페이지에는 없음)
+  let weekly = null;
+  try {
+    const homeText = await fetchHomepage(dateKey);
+    weekly = parseWeekly(homeText);
+  } catch (e) {
+    console.warn('주간 암송 가져오기 실패 (무시):', e.message);
+  }
 
   if (dow === 0) {
     fs.writeFileSync(outPath, JSON.stringify({ date: dateKey, sunday: true, weekly }, null, 2));
@@ -141,26 +169,14 @@ async function main() {
     return;
   }
 
-  const ref = parseRef(homeText);
+  // quiettime.php에서 오늘의 묵상 본문 가져오기 (절 본문이 페이지에 포함됨)
+  const pageText = await fetchPassage(dateKey);
+  const ref = parseRef(pageText);
   if (!ref) throw new Error('오늘의 묵상 본문을 찾을 수 없습니다.');
-  const code = CODES[ref.book];
-  if (!code) throw new Error('알 수 없는 성경 책: ' + ref.book);
 
-  let verseObjs;
-  if (ref.chap2 !== ref.chap) {
-    const [text1, text2] = await Promise.all([
-      fetchBible(code, ref.chap),
-      fetchBible(code, ref.chap2)
-    ]);
-    const v1 = sliceVerses(parseAllVerses(text1), ref.vs, null);
-    const v2 = sliceVerses(parseAllVerses(text2), 1, ref.ve);
-    verseObjs = [...v1, ...v2];
-  } else {
-    const bibleText = await fetchBible(code, ref.chap);
-    verseObjs = sliceVerses(parseAllVerses(bibleText), ref.vs, ref.ve);
-  }
+  const verseObjs = parseVersesFromPage(pageText);
+  if (!verseObjs.length) throw new Error('본문 텍스트를 추출하지 못했습니다.');
   const verses = verseObjs.map(v => v.num + ' ' + v.text);
-  if (!verses.length) throw new Error('본문 텍스트를 추출하지 못했습니다.');
 
   const data = { date: dateKey, sunday: false, ref, verses, weekly };
   fs.writeFileSync(outPath, JSON.stringify(data, null, 2));
