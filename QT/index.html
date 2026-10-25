@@ -147,10 +147,10 @@ function shareChecked() {
   if (parts && parts.dow === 0) {
     copyToClipboard(
       dateTitle + ' 주일 말씀 나눔\n\n' +
-      '1. 들어가는 기도\n \n\n' +
+      '1. 들어가는 기도\n\n\n' +
       '2. 주일말씀 요약\n1) \n\n2) \n\n3) \n\n' +
       '3. 깨달음과 결단\n(성품) \n(행동) \n\n' +
-      '4. 올려드리는 기도\n '
+      '4. 올려드리는 기도\n'
     );
     return;
   }
@@ -165,12 +165,12 @@ function shareChecked() {
     .join('\n');
   copyToClipboard(
     dateTitle + ' 묵상 나눔' + (refTitle ? ' (' + refTitle + ')' : '') + '\n' +
-    '1. 들어가는 기도\n \n\n' +
-    '2. 본문 요약\n \n\n' +
+    '1. 들어가는 기도\n\n\n' +
+    '2. 본문 요약\n\n\n' +
     '3. 붙잡은 말씀\n' + verseLines + '\n\n' +
-    '4. 느낌과 묵상\n \n\n' +
+    '4. 느낌과 묵상\n\n\n' +
     '5. 적용과 결단\n(성품) \n(행동) \n\n' +
-    '6. 올려드리는 기도\n '
+    '6. 올려드리는 기도\n'
   );
 }
 
